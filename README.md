@@ -6,6 +6,7 @@
 
 - 메인 화면: `outputs/pushrun-site/index.html`
 - 동작/대회 데이터: `outputs/pushrun-site/app.js`
+- 대회 데이터: `outputs/pushrun-site/races.json`
 - 디자인: `outputs/pushrun-site/styles.css`
 
 ## 실행
@@ -30,4 +31,4 @@ https://runnerpyrri-lgtm.github.io/pushrun/
 
 - 1차 확인: 마라톤온라인 대회 일정
 - 접수 링크/상세 보강: 공식 대회 사이트, 러너블, 마라톤GO
-- 카드에는 접수 기간, 대회일, 지역, 거리, 접수 확인 버튼만 짧게 표시합니다.
+- 카드에는 접수 기간, 대회일, D-day, 지역, 거리, 대회 페이지 상태만 짧게 표시합니다.
