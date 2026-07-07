@@ -22,6 +22,12 @@ GitHub Pages 배포 주소:
 
 https://runnerpyrri-lgtm.github.io/pushrun/
 
-`main` 브랜치에 push하면 `.github/workflows/pages.yml`이 `outputs/pushrun-site`를 배포합니다.
+현재 공개 사이트는 `gh-pages` 브랜치의 정적 파일로 배포합니다. `outputs/pushrun-site`를 수정한 뒤 `main`에 커밋하고, 같은 파일을 `gh-pages` 브랜치에도 반영하면 위 주소가 갱신됩니다.
 
 `vercel.json`은 Vercel에서도 `outputs/pushrun-site`를 정적 사이트 출력 폴더로 사용하도록 설정되어 있습니다.
+
+## 대회 데이터 기준
+
+- 1차 확인: 마라톤온라인 대회 일정
+- 접수 링크/상세 보강: 공식 대회 사이트, 러너블, 마라톤GO
+- 카드에는 접수 기간, 대회일, 지역, 거리, 접수 확인 버튼만 짧게 표시합니다.
