@@ -1,8 +1,8 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.4.1";
-const ASSET_VERSION = "20260707-6";
+const APP_VERSION = "0.5.0";
+const ASSET_VERSION = "20260707-7";
 const DEFAULT_OFFSETS = [20, 10, 0];
 const SOON_DAYS = 14;
 const RACE_DATA_URL = `./races.json?v=${ASSET_VERSION}`;
@@ -50,7 +50,11 @@ async function loadRaceData() {
 
 function parseScheduleFeed(feed) {
   return feed.map((entry, index) => {
-    const isOpen = entry.status === "open";
+    const now = Date.now();
+    const opensAt = entry.registrationOpenAt ? new Date(entry.registrationOpenAt).getTime() : null;
+    const closesAt = entry.registrationCloseAt ? new Date(entry.registrationCloseAt).getTime() : null;
+    const isOpen = entry.status === "open" || Boolean(opensAt && opensAt <= now && (!closesAt || now <= closesAt));
+    const hasUpcomingOpen = Boolean(opensAt && opensAt > now);
     return {
       id: `schedule-${index}-${entry.date}`,
       name: entry.name,
@@ -58,21 +62,28 @@ function parseScheduleFeed(feed) {
       city: entry.venue.split(" ")[0] || entry.region,
       venue: entry.venue,
       raceDate: `${entry.date}T${normalizeRaceTime(entry.time)}+09:00`,
-      registrationOpenAt: null,
-      registrationCloseAt: null,
+      registrationOpenAt: entry.registrationOpenAt || null,
+      registrationCloseAt: entry.registrationCloseAt || null,
+      registrationPeriodLabel: entry.registrationPeriodLabel || null,
       registrationUrl: entry.registrationUrl || entry.sourceDetailUrl || MARATHON_ONLINE_LIST_URL,
       sourceDetailUrl: entry.sourceDetailUrl || null,
       linkVerifiedFrom: entry.linkVerifiedFrom || "마라톤온라인 목록",
       distances: entry.distances,
-      status: isOpen ? "open" : entry.status,
-      registrationStatus: isOpen ? "open" : entry.status || "unknown",
-      sourceStatus: isOpen ? "접수중" : statusLabel(entry.status),
-      alertCapabilities: ["race_day"],
+      courseLabel: entry.courseLabel || entry.distances.join(","),
+      organizer: entry.organizer || null,
+      status: isOpen ? "open" : hasUpcomingOpen ? "scheduled" : entry.status,
+      registrationStatus: isOpen ? "open" : hasUpcomingOpen ? "scheduled" : entry.status || "unknown",
+      sourceStatus: isOpen ? "접수중" : hasUpcomingOpen ? "접수 예정" : statusLabel(entry.status),
+      alertCapabilities: [
+        ...(hasUpcomingOpen ? ["registration_time"] : []),
+        ...(isOpen ? ["open_now"] : []),
+        "race_day"
+      ],
       capacity: null,
       popularity: 50,
       sourceName: entry.sourceName || "마라톤온라인",
-      note: `${entry.time} 예정. 마라톤온라인 원본의 접수중 표시와 홈페이지 링크를 기준으로 확인합니다.`,
-      registrationLabel: entry.status === "open" ? "접수중" : entry.status === "closed" ? "접수 마감" : "접수 일정 준비중"
+      note: `${entry.time} 출발. 접수기간은 마라톤온라인 상세 페이지 기준입니다.`,
+      registrationLabel: entry.registrationPeriodLabel || (isOpen ? "접수중" : entry.status === "closed" ? "접수 마감" : "접수 일정 준비중")
     };
   });
 }
@@ -85,8 +96,9 @@ function normalizeFeaturedRace(race) {
   const hasUpcomingOpen = opensAt && opensAt > now && !["closed", "sold_out", "cancelled"].includes(race.status);
   return {
     ...race,
+    courseLabel: race.courseLabel || race.distances.join(","),
     registrationStatus: isAccepting ? "open" : hasUpcomingOpen ? "scheduled" : race.status || "unknown",
-    sourceStatus: race.status === "open" ? "접수중" : statusLabel(race.status),
+    sourceStatus: isAccepting ? "접수중" : hasUpcomingOpen ? "접수 예정" : statusLabel(race.status),
     alertCapabilities: [
       ...(hasUpcomingOpen ? ["registration_time"] : []),
       ...(isAccepting ? ["open_now"] : []),
@@ -149,10 +161,17 @@ function formatShortDate(value) {
   return `${date.getMonth() + 1}/${date.getDate()}(${formatWeekday(value)})`;
 }
 
+function formatRegistrationPoint(value) {
+  const date = new Date(value);
+  const isPlainDate = (date.getHours() === 0 && date.getMinutes() === 0) || (date.getHours() === 23 && date.getMinutes() === 59);
+  return isPlainDate ? formatShortDate(value) : formatShortDateTime(value);
+}
+
 function formatRegistrationRange(race) {
   if (!race.registrationOpenAt) return race.registrationLabel || "접수 일정 준비중";
-  if (!race.registrationCloseAt) return formatShortDateTime(race.registrationOpenAt);
-  return `${formatShortDateTime(race.registrationOpenAt)} - ${formatShortDateTime(race.registrationCloseAt)}`;
+  if (race.registrationPeriodLabel) return race.registrationPeriodLabel;
+  if (!race.registrationCloseAt) return formatRegistrationPoint(race.registrationOpenAt);
+  return `${formatRegistrationPoint(race.registrationOpenAt)} - ${formatRegistrationPoint(race.registrationCloseAt)}`;
 }
 
 function formatDday(value, fallback = "일정 대기") {
@@ -232,7 +251,7 @@ function getConfirmedRegistrationRaces() {
 function getOpenRegistrationRaces() {
   return getActionRaces()
     .filter((race) => isAcceptingNow(race) && !canUseRegistrationTimer(race))
-    .sort((a, b) => new Date(a.raceDate).getTime() - new Date(b.raceDate).getTime());
+    .sort((a, b) => new Date(a.registrationCloseAt || a.raceDate).getTime() - new Date(b.registrationCloseAt || b.raceDate).getTime());
 }
 
 function getCategoryRaces() {
@@ -244,13 +263,13 @@ function getCategoryCopy() {
     ? {
         kicker: "Open Now",
         title: "현재 접수중",
-        description: "마라톤온라인 원본에서 접수중으로 표시된 대회만 모았습니다.",
+        description: "접수 마감이 가까운 순서로 정리했습니다.",
         empty: "현재 접수중인 대회가 없어요."
       }
     : {
         kicker: "Upcoming",
         title: "접수 예정",
-        description: "접수 첫날과 시간이 확정된 대회만 알림 대상으로 정리했습니다.",
+        description: "접수 첫날이 가까운 순서로 알림을 걸 수 있게 정리했습니다.",
         empty: "접수 시간이 확정된 대회가 없어요."
       };
 }
@@ -283,6 +302,33 @@ function displayStatusLabel(race) {
   if (isAcceptingNow(race)) return "현재 접수중";
   if (race.registrationStatus === "closed" || race.status === "closed") return "접수 마감";
   return "확인중";
+}
+
+function registrationActionText(race) {
+  if (canUseRegistrationTimer(race)) return `시작 ${formatDday(race.registrationOpenAt)}`;
+  if (isAcceptingNow(race)) return race.registrationCloseAt ? `마감 ${formatDday(race.registrationCloseAt)}` : "접수중";
+  return displayStatusLabel(race);
+}
+
+function courseTokens(race) {
+  const raw = race.courseLabel || race.distances.join(",");
+  const items = raw
+    .split(/[,/·]+/)
+    .map((item) => {
+      const value = item.trim();
+      if (value.toLowerCase() === "full") return "풀";
+      if (value.toLowerCase() === "half") return "하프";
+      if (value.toLowerCase() === "trail") return "트레일";
+      return value;
+    })
+    .filter(Boolean);
+  return items.length ? items : race.distances;
+}
+
+function courseChipsHtml(race) {
+  return `<div class="course-chips">${courseTokens(race)
+    .map((item) => `<span>${escapeHtml(item)}</span>`)
+    .join("")}</div>`;
 }
 
 function distanceMatches(race, distance) {
@@ -476,35 +522,35 @@ function raceCardHtml(race) {
   const isConfirmed = canUseRegistrationTimer(race);
   const safeId = escapeHtml(race.id);
   const statusClass = isConfirmed ? "scheduled" : isAcceptingNow(race) ? "open" : race.status;
-  const primaryLine = isConfirmed ? formatRegistrationRange(race) : "원본 접수중 표시";
-  const deadlineLine = isConfirmed ? `접수까지 ${formatDday(race.registrationOpenAt)}` : `${formatShortDate(race.raceDate)} 대회`;
   const linkNote = race.linkVerifiedFrom === "마라톤온라인 home 아이콘" ? "대회 홈페이지 연결" : "원본 목록 연결";
+  const startLabel = race.registrationOpenAt ? formatRegistrationPoint(race.registrationOpenAt) : "확인중";
+  const endLabel = race.registrationCloseAt ? formatRegistrationPoint(race.registrationCloseAt) : "확인중";
   return `
     <article class="race-card list-card${selected}" data-race-id="${safeId}">
       <div class="list-card-top">
         <div class="list-date">
-          <strong>${escapeHtml(isConfirmed ? formatDday(race.registrationOpenAt) : "접수중")}</strong>
-          <span>${escapeHtml(isConfirmed ? "첫날 알림" : formatShortDate(race.raceDate))}</span>
+          <strong>${escapeHtml(registrationActionText(race))}</strong>
+          <span>${escapeHtml(formatShortDate(race.raceDate))} 대회</span>
         </div>
         <span class="status-pill ${escapeHtml(statusClass)}">${escapeHtml(displayStatusLabel(race))}</span>
       </div>
       <h3>${escapeHtml(race.name)}</h3>
       <p class="list-meta">${escapeHtml(race.region)} · ${escapeHtml(race.venue)}</p>
-      <div class="list-info-grid">
+      <div class="registration-strip">
         <div>
-          <span>${isConfirmed ? "접수 시작" : "접수 상태"}</span>
-          <strong>${escapeHtml(primaryLine)}</strong>
-          <em>${escapeHtml(deadlineLine)}</em>
+          <span>접수 시작</span>
+          <strong>${escapeHtml(startLabel)}</strong>
         </div>
         <div>
-          <span>거리</span>
-          <strong>${escapeHtml(race.distances.join(" · "))}</strong>
-          <em>${escapeHtml(`${race.sourceName} · ${linkNote}`)}</em>
+          <span>접수 마감</span>
+          <strong>${escapeHtml(endLabel)}</strong>
         </div>
       </div>
-      <div class="list-action-row">
+      ${courseChipsHtml(race)}
+      <p class="source-line">${escapeHtml(race.sourceName)} · ${escapeHtml(linkNote)}</p>
+      <div class="list-action-row ${isConfirmed ? "" : "single"}">
         ${isConfirmed ? alertButtonHtml(race) : registrationButtonHtml(race)}
-        ${isConfirmed ? registrationButtonHtml(race) : `<span class="quiet-note">현재 접수중입니다.</span>`}
+        ${isConfirmed ? registrationButtonHtml(race) : ""}
       </div>
       ${enabled ? `<p class="focus-enabled">알림이 켜져 있어요.</p>` : ""}
     </article>
@@ -545,7 +591,7 @@ function renderDetail() {
       <div class="field-row"><span>대회일</span><strong>${escapeHtml(formatShortDateTime(race.raceDate))}</strong></div>
       <div class="field-row"><span>대회까지</span><strong>${escapeHtml(formatDday(race.raceDate))}</strong></div>
       <div class="field-row"><span>장소</span><strong>${escapeHtml(race.venue)}</strong></div>
-      <div class="field-row"><span>거리</span><strong>${escapeHtml(race.distances.join(" · "))}</strong></div>
+      <div class="field-row"><span>코스</span><strong>${escapeHtml(courseTokens(race).join(" · "))}</strong></div>
       <div class="field-row"><span>확인처</span><strong>${escapeHtml(race.sourceName)}</strong></div>
     </div>
     <div class="detail-block detail-actions">
