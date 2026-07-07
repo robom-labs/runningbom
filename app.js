@@ -38,7 +38,7 @@ const state = {
   timers: []
 };
 
-const RACES = [
+const FEATURED_RACES = [
   {
     id: "jtbc-seoul",
     name: "2026 JTBC 서울마라톤",
@@ -330,6 +330,94 @@ const RACES = [
   }
 ];
 
+const SCHEDULE_FEED = `
+2026-07-18|open|2026 전마협 청주 무료 초청 훈련 마라톤|충북|청주 무심천 롤러스케이트장|오전 6시 30분|10K
+2026-07-19|open|2026 청계산.인릉산 Trail Run|서울|화물터미널 청계산 옛골|08:00|Half,Trail
+2026-07-31|open|사우나런 in 올림픽공원|서울|올림픽공원 인근|상시|10K,5K
+2026-07-31|open|사우나런 in 석촌호수|서울|석촌호수 인근|상시|10K,5K
+2026-08-01|open|2026 인사이더런 S|서울|일산 킨텍스 제2전시장|09:30|10K
+2026-08-02|open|2026 쿨밸리 트레일레이스|전북|장수종합경기장|08:00|Trail
+2026-08-08|open|2026 양산 어필 레이스|경남|양산 에덴밸리 리조트|17:30|Trail
+2026-08-15|open|2026 전마협 광복절 무료 초청 마라톤|대전|대전엑스포다리 밑|06:00|10K,5K
+2026-08-15|open|2026 안양천 달빛 나이트런|서울|신정교 하부 영롱이 억새구장|18:30|10K,5K
+2026-08-15|open|2026 장수 나이트 트레일|전북|장수종합경기장|19:00|Trail
+2026-08-15|open|영남알프스9봉 트레일 레이스|경남|울주군 등억알프스온천호텔|14:00|Trail
+2026-08-15|open|제38회 지리산화대종주 Trail Run|전남|화엄사주차장|03:00|Trail
+2026-08-16|open|2026 Happy700 평창대관령전국하프마라톤|강원|평창동계올림픽 기념관|08:00|Half,10K
+2026-08-22|open|제2회 한양도성길 트레일런|서울|낙산공원중앙광장|08:00|Trail
+2026-08-29|open|2026 단양달빛레이스|충북|단양생태체육공원|19:00|10K,5K
+2026-08-29|open|2026 전마협 증평 무료 마라톤|충북|증평군 다목적운동장|07:00|10K
+2026-08-30|open|제3회 GO대관령 국제 트레일런|강원|평창동계올림픽기념공원|07:30|Trail,10K
+2026-08-30|open|제3회 한강 서울 하프 마라톤|서울|여의도 한강공원 물빛광장|08:00|Half,10K,5K
+2026-09-05|open|2026 하반기 JUST RUN10 세종|세종|세종마루공원 금강변|08:00|10K,5K
+2026-09-05|open|제12회 I LOVE 방송대 마라톤|서울|상암동 평화광장|08:00|10K,5K
+2026-09-05|open|제2회 2026 Vrun|서울|신정교하부 육상트랙구장|09:00|10K,5K
+2026-09-05|open|제20회 순천만울트라마라톤대회|전남|순천동천천변공원|17:00|Trail
+2026-09-06|open|제9회 인천 서구청장배 단축마라톤|인천|청라호수공원 멀티프라자|08:30|10K
+2026-09-06|open|제11회 김대중 평화 마라톤 대회|서울|뚝섬 한강공원 수변무대|08:00|Half,10K,5K
+2026-09-06|open|2026 샌드런 IN 영덕|경북|영덕 대진해수욕장|10:00|Trail
+2026-09-06|open|2026 봉화송이 전국마라톤|경북|봉화공설운동장|10:00|Half,10K,5K
+2026-09-06|open|제24회 청광종주 Trail Running|서울|양재동 화물터미널|08:00|Trail
+2026-09-12|open|제2회 화이트런 생리대 기부마라톤|서울|신정교하부 육상트랙구장|09:00|10K,5K
+2026-09-12|open|제2회 초록우산 런웨이 마라톤|대전|대전엑스포시민광장|08:00|Half,10K,5K
+2026-09-12|open|빵트레일런 2026|강원|정선 하이원 리조트|08:00|Trail,10K
+2026-09-13|open|2026 포항이차전지전국마라톤|경북|포항운하관주차장|08:00|Half,10K,5K
+2026-09-13|open|2026 런서울런|서울|서울광장|07:30|Half,10K
+2026-09-13|open|제26회 강화해변마라톤대회|인천|강화함상공원|08:30|Half,10K,5K
+2026-09-13|open|제16회 스마일 런 페스티벌|서울|상암동 평화의공원|08:30|Half,10K,5K
+2026-09-13|open|제14회 설악산공룡능선 UTMB CLIMBATHON|강원|한계령휴게소|03:00|Trail
+2026-09-19|open|제18회 사이버 영토 수호 마라톤|서울|여의도 물빛무대 앞|08:00|Half,10K,5K
+2026-09-19|open|2026 금산인삼축제 마라톤|충남|금산세계인삼엑스포주차장|08:30|Half,10K
+2026-09-20|open|제2회 마포구청장배 마라톤 대회|서울|평화의공원 평화광장|08:30|10K,5K
+2026-09-20|open|2026 한돈런|경기|미사 조정경기장|08:00|10K,5K
+2026-09-20|open|2026 동대문마라톤|서울|중랑천 제1수변공원|08:30|Half,10K,5K
+2026-09-20|closed|2026 공주마라톤|충남|공주시민운동장|08:00|Full,Half,10K
+2026-10-03|open|2026 완주트레일런|전북|완주군 고산자연휴양림|07:00|Trail
+2026-10-03|open|2026 천사데이기념 동두천천사마라톤|경기|동두천 캠프보산|09:00|10K,5K
+2026-10-03|open|2026 서산 코스모스 황금들녘 마라톤 대회|충남|서산스포츠테마파크|09:00|Half,10K,5K
+2026-10-03|open|제2회 아산이순신 트레일|충남|아산 신정호|09:00|Trail
+2026-10-04|scheduled|제23회 경남마라톤|경남|창원종합운동장 보조경기장|08:30|10K,5K
+2026-10-04|open|2026 홍천사랑마라톤|강원|홍천종합운동장|09:00|Half,10K,5K
+2026-10-04|open|2026 파주북시티마라톤|경기|파주출판도시|08:40|10K,5K
+2026-10-04|closed|2026 안동마라톤|경북|안동시민운동장|08:00|Full,Half,10K,5K
+2026-10-04|closed|제20회 달서하프마라톤|대구|호림강나루공원|08:30|Half,10K,5K
+2026-10-05|closed|2026 서울오픈마라톤|서울|광화문광장|07:30|Half,10K
+2026-10-09|scheduled|WYD와 함께하는 생명사랑 마라톤/걷기 대회|경기|안성 미리내 성지|08:30|10K,5K
+2026-10-09|open|2026 한글런|세종|세종시 중앙공원 축제마당|시간 미정|10K,5K
+2026-10-10|open|제5회 구미시장배 금오산트레일 레이스|경북|금오산 공영 대주차장|08:00|Trail,10K
+2026-10-10|open|제9회 거제시장배 섬꽃 전국 마라톤|경남|거제스포츠파크|08:30|Half,10K
+2026-10-10|open|제7회 천안삼거리 흥타령울트라마라톤|충남|천안삼거리공원|17:00|Trail
+2026-10-11|open|2026 MBN 전국 나주 마라톤대회|전남|나주종합스포츠파크|08:00|Full,Half,10K,5K
+2026-10-11|open|제10회 가을철 산불조심마라톤|서울|광평교운동장|08:00|Full,Half,10K,5K
+2026-10-17|open|2026 정선동강 마라톤|강원|정선생태체험학습장|09:00|Half,10K,5K
+2026-10-17|open|2026 대전 Dtrail 레이스|대전|보문산 숲속공연장|07:00|Trail
+2026-10-18|open|제23회 여주 세종대왕 마라톤|경기|여주 현암지구공원|08:30|Half,10K
+2026-10-18|open|제25회 대청호마라톤|대전|대청공원|09:00|Half,10K,5K
+2026-10-18|scheduled|제22회 대구 북구사랑 마라톤|대구|금호강 산격야영장|09:00|10K,5K
+2026-10-18|open|그린스텝 2026|전남|해남 솔라시도|09:00|Half,10K,5K
+2026-10-18|open|2026 아시아 오픈 마라톤|서울|서울 광화문광장|08:00|Half,10K
+2026-10-24|open|2026 제3회 감성런|서울|신정교하부 육상트랙구장|09:00|10K,5K
+2026-10-25|open|2026 광명평화마라톤|경기|광명역 일원|08:00|Half,10K,5K
+2026-10-25|open|K-RUN 챌린지|서울|뚝섬한강공원 수변광장|09:00|Half,10K,5K
+2026-10-25|scheduled|제19회 청도반시 전국마라톤|경북|청도공설운동장|09:30|Half,10K,5K
+2026-10-25|open|2026 청송사과트레일런|경북|청송군민운동장|10:00|Half,10K,5K
+2026-11-01|scheduled|제2회 대전 신채호 마라톤|대전|대전 뿌리공원 잔디광장|08:30|Half,10K,5K
+2026-11-01|scheduled|2026 김천전국마라톤대회|경북|김천종합스포츠타운|09:30|Half,10K,5K
+2026-11-01|open|2026 무안 해안 노을길 걷기 및 마라톤|전남|무안낙지공원|09:00|10K,5K
+2026-11-01|scheduled|제21회 울산인권마라톤|울산|태화강 둔치|09:30|Half,10K,5K
+2026-11-07|open|제15회 부여 굿뜨래 마라톤 대회|충남|부여 구드래나루터|08:30|Full,Half,10K,5K
+2026-11-07|scheduled|2026 영천댐 마라톤|경북|영천댐 하류공원|09:40|Half,10K,5K
+2026-11-08|open|제5회 거제시체육회장배 거제앵산트레일레이스|경남|거제 하청면스포츠타운|09:00|Trail
+2026-11-08|open|제11회 송파구청장배 마라톤|서울|송파구 여성축구장|09:00|10K,5K
+2026-11-08|open|2026 양산 배내골 애플 런|경남|장선마을 회관 앞 운동장|09:00|10K,5K
+2026-11-15|open|제24회 고창고인돌마라톤|전북|고창공설운동장|10:00|Half,10K,5K
+2026-11-15|open|2026 가민런 코리아|경기|고양종합운동장|08:00|Half,10K
+2026-11-15|open|제2회 세종특별자치시 전국 마라톤|세종|세종시민운동장|09:30|10K,5K
+2026-11-15|scheduled|제4회 영남알프스 전국 하프마라톤|울산|울주군 영남알프스 일원|09:00|Half,10K,5K
+`.trim();
+
+const RACES = mergeRaces(FEATURED_RACES, parseScheduleFeed(SCHEDULE_FEED));
+
 function loadJson(key, fallback) {
   try {
     const raw = localStorage.getItem(key);
@@ -341,6 +429,53 @@ function loadJson(key, fallback) {
 
 function saveJson(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
+}
+
+function parseScheduleFeed(feed) {
+  return feed
+    .split("\n")
+    .map((line, index) => {
+      const [date, status, name, region, venue, time, distances] = line.split("|");
+      return {
+        id: `schedule-${index}-${date}`,
+        name,
+        region,
+        city: venue.split(" ")[0] || region,
+        venue,
+        raceDate: `${date}T${normalizeRaceTime(time)}+09:00`,
+        registrationOpenAt: null,
+        registrationCloseAt: null,
+        registrationUrl: null,
+        distances: distances.split(",").map((item) => item.trim()),
+        status,
+        capacity: null,
+        popularity: 50,
+        sourceName: "마라톤GO · 마라톤온라인 참고",
+        note: `${time} 예정. 대회 페이지가 열리면 바로 연결할 수 있게 업데이트합니다.`,
+        registrationLabel: status === "open" ? "접수중" : status === "closed" ? "접수 마감" : "접수 일정 준비중"
+      };
+    });
+}
+
+function normalizeRaceTime(value) {
+  const match = value.match(/(\d{1,2}):(\d{2})/);
+  if (match) return `${pad(Number(match[1]))}:${match[2]}:00`;
+  const hourMatch = value.match(/(\d{1,2})시/);
+  if (hourMatch) return `${pad(Number(hourMatch[1]))}:00:00`;
+  return "09:00:00";
+}
+
+function mergeRaces(primary, secondary) {
+  const seen = new Set(primary.map((race) => `${race.name}|${race.raceDate.slice(0, 10)}`));
+  return [
+    ...primary,
+    ...secondary.filter((race) => {
+      const key = `${race.name}|${race.raceDate.slice(0, 10)}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+  ];
 }
 
 function formatDateTime(value) {
@@ -377,6 +512,7 @@ function formatShortDate(value) {
 }
 
 function formatRegistrationRange(race) {
+  if (!race.registrationOpenAt) return race.registrationLabel || "접수 일정 준비중";
   if (!race.registrationCloseAt) return formatShortDateTime(race.registrationOpenAt);
   return `${formatShortDateTime(race.registrationOpenAt)} - ${formatShortDateTime(race.registrationCloseAt)}`;
 }
@@ -387,17 +523,17 @@ function pad(value) {
 
 function raceSortGroup(race) {
   const now = Date.now();
-  const opensAt = new Date(race.registrationOpenAt).getTime();
-  const closesAt = new Date(race.registrationCloseAt || race.registrationOpenAt).getTime();
+  const opensAt = race.registrationOpenAt ? new Date(race.registrationOpenAt).getTime() : null;
+  const closesAt = race.registrationCloseAt ? new Date(race.registrationCloseAt).getTime() : null;
   const raceAt = new Date(race.raceDate).getTime();
-  if (race.status === "open" || (opensAt <= now && now <= closesAt)) return 0;
-  if (opensAt > now) return 1;
+  if (race.status === "open" || (opensAt && closesAt && opensAt <= now && now <= closesAt)) return 0;
+  if (opensAt && opensAt > now) return 1;
   if (raceAt > now) return 2;
   return 3;
 }
 
 function sortValueForGroup(race, group) {
-  if (group === 0) return new Date(race.registrationCloseAt || race.registrationOpenAt).getTime();
+  if (group === 0) return new Date(race.registrationCloseAt || race.raceDate).getTime();
   if (group === 1) return new Date(race.registrationOpenAt).getTime();
   if (group === 2) return new Date(race.raceDate).getTime();
   return -new Date(race.raceDate).getTime();
@@ -415,8 +551,7 @@ function getRaces() {
 function isVisibleRace(race) {
   const now = Date.now();
   const raceAt = new Date(race.raceDate).getTime();
-  const closesAt = new Date(race.registrationCloseAt || race.registrationOpenAt).getTime();
-  return raceAt >= now && closesAt >= now && !["cancelled", "postponed"].includes(race.status);
+  return raceAt >= now && !["cancelled", "postponed"].includes(race.status);
 }
 
 function isWithinDays(value, days) {
@@ -458,6 +593,7 @@ function filteredRaces() {
 }
 
 function buildRegistrationAlerts(race, offsets = DEFAULT_OFFSETS) {
+  if (!race.registrationOpenAt || race.status === "closed") return [];
   const openAt = new Date(race.registrationOpenAt);
   return offsets
     .map((offset) => {
@@ -488,6 +624,11 @@ function selectRace(id) {
 }
 
 function openAlertModal(raceId) {
+  const race = getRaces().find((item) => item.id === raceId);
+  if (!race?.registrationOpenAt || race.status === "closed") {
+    showToast("접수 시간이 열리면 알림을 설정할 수 있어요.");
+    return;
+  }
   state.modalRaceId = raceId;
   renderModal();
   document.getElementById("alertModal").hidden = false;
@@ -515,9 +656,17 @@ function renderPermissionEntry() {
 function registrationButtonHtml(race, variant = "mini") {
   const classes = variant === "detail" ? "ghost-btn" : "mini-btn";
   if (!race.registrationUrl) {
-    return `<button class="${classes}" type="button" disabled aria-disabled="true">확인 중</button>`;
+    return `<button class="${classes}" type="button" disabled aria-disabled="true">페이지 준비중</button>`;
   }
   return `<button class="${classes}" type="button" data-open-registration="${race.id}">대회 페이지</button>`;
+}
+
+function alertButtonHtml(race, variant = "mini") {
+  const classes = variant === "detail" ? "primary-btn" : "mini-btn strong";
+  if (!race.registrationOpenAt || race.status === "closed") {
+    return `<button class="${classes}" type="button" disabled aria-disabled="true">알림 대기</button>`;
+  }
+  return `<button class="${classes}" type="button" data-open-alert="${race.id}">알림 설정</button>`;
 }
 
 function renderDistanceFilters() {
@@ -570,7 +719,7 @@ function renderRaceList() {
       const selected = state.selectedRaceId === race.id ? " selected" : "";
       const enabled = state.alerts[race.id]?.enabled;
       const soon = race.status === "open" || isWithinDays(race.registrationOpenAt, SOON_DAYS);
-      const registrationChip = race.registrationUrl ? "대회 페이지" : "확인 중";
+      const registrationChip = race.registrationUrl ? "대회 페이지" : "페이지 준비중";
       return `
         <article class="race-card${selected}" data-race-id="${race.id}">
           <div class="race-card-head">
@@ -591,7 +740,7 @@ function renderRaceList() {
             <span class="chip">${race.sourceName}</span>
           </div>
           <div class="race-card-actions">
-            <button class="mini-btn strong" type="button" data-open-alert="${race.id}">알림 설정</button>
+            ${alertButtonHtml(race)}
             ${registrationButtonHtml(race)}
           </div>
         </article>
@@ -623,7 +772,7 @@ function renderDetail() {
       <span class="status-pill ${race.status}">${statusLabel(race.status)}</span>
     </div>
     <div class="detail-block date-callout">
-      <span>${race.status === "open" ? "지금 확인할 접수" : "알림 받을 접수"}</span>
+      <span>${race.registrationOpenAt ? (race.status === "open" ? "지금 확인할 접수" : "알림 받을 접수") : "접수 상태"}</span>
       <strong>${formatRegistrationRange(race)}</strong>
     </div>
     <div class="detail-block field-list">
@@ -634,7 +783,7 @@ function renderDetail() {
       <div class="field-row"><span>확인처</span><strong>${race.sourceName}</strong></div>
     </div>
     <div class="detail-block detail-actions">
-      <button class="primary-btn" type="button" data-open-alert="${race.id}">알림 설정</button>
+      ${alertButtonHtml(race, "detail")}
       ${registrationButtonHtml(race, "detail")}
     </div>
   `;

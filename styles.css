@@ -36,6 +36,11 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
 .app-shell {
   width: min(1180px, calc(100% - 32px));
   margin: 0 auto;
@@ -494,22 +499,22 @@ p {
   border: 1px solid #edf1e8;
   border-radius: var(--r);
   background: #f9fbf6;
-  padding: 10px;
+  padding: 12px;
 }
 
 .schedule-pair span {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   color: var(--muted);
-  font-size: 0.75rem;
+  font-size: 0.88rem;
   font-weight: 950;
 }
 
 .schedule-pair strong {
   display: block;
   color: var(--ink);
-  font-size: 0.88rem;
-  line-height: 1.25;
+  font-size: 1.02rem;
+  line-height: 1.3;
   overflow-wrap: anywhere;
 }
 
@@ -969,11 +974,11 @@ p {
   }
 
   .schedule-pair > div {
-    padding: 9px 8px;
+    padding: 10px 8px;
   }
 
   .schedule-pair strong {
-    font-size: 0.8rem;
+    font-size: 0.92rem;
   }
 
   .preset-grid {
