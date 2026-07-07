@@ -518,6 +518,19 @@ p {
   overflow-wrap: anywhere;
 }
 
+.schedule-pair em {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 8px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--lime);
+  padding: 5px 8px;
+  font-size: 0.82rem;
+  font-style: normal;
+  font-weight: 950;
+}
+
 .race-card-actions {
   display: flex;
   gap: 8px;
@@ -979,6 +992,11 @@ p {
 
   .schedule-pair strong {
     font-size: 0.92rem;
+  }
+
+  .schedule-pair em {
+    font-size: 0.76rem;
+    padding: 4px 7px;
   }
 
   .preset-grid {
