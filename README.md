@@ -18,4 +18,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File outputs/serve-pushrun.ps1 -P
 
 ## 배포
 
-`vercel.json`은 `outputs/pushrun-site`를 정적 사이트 출력 폴더로 사용하도록 설정되어 있습니다.
+GitHub Pages 배포 주소:
+
+https://runnerpyrri-lgtm.github.io/pushrun/
+
+`main` 브랜치에 push하면 `.github/workflows/pages.yml`이 `outputs/pushrun-site`를 배포합니다.
+
+`vercel.json`은 Vercel에서도 `outputs/pushrun-site`를 정적 사이트 출력 폴더로 사용하도록 설정되어 있습니다.
