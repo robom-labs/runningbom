@@ -1,8 +1,8 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.6.4";
-const ASSET_VERSION = "20260708-7";
+const APP_VERSION = "0.6.5";
+const ASSET_VERSION = "20260708-8";
 const DEFAULT_OFFSETS = [20, 10, 0];
 const SOON_DAYS = 14;
 const RACE_DATA_URL = `./races.json?v=${ASSET_VERSION}`;
@@ -565,12 +565,6 @@ function renderRaceList() {
   }
   list.innerHTML = `
     <section class="focus-board ${state.activeCategory}">
-      <div class="focus-board-head">
-        <div>
-          <h2>${copy.title}</h2>
-          ${copy.description ? `<p>${copy.description}</p>` : ""}
-        </div>
-      </div>
       <div class="race-list-list">
         ${races.map(raceCardHtml).join("")}
       </div>
@@ -615,6 +609,7 @@ function raceCardHtml(race) {
           <div class="list-title-row">
             <h3>${escapeHtml(race.name)}</h3>
           </div>
+          <p class="race-location">${escapeHtml(race.region)} · ${escapeHtml(race.city)}</p>
           ${courseChipsHtml(race)}
         </div>
         <div class="registration-strip">
