@@ -1040,6 +1040,16 @@ function bindEvents() {
   document.getElementById("batteryModal").addEventListener("click", (event) => {
     if (event.target.id === "batteryModal") closeBatteryGuide();
   });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const alertModal = document.getElementById("alertModal");
+    const permissionModal = document.getElementById("permissionModal");
+    const batteryModal = document.getElementById("batteryModal");
+    if (alertModal && !alertModal.hidden) closeAlertModal();
+    if (permissionModal && !permissionModal.hidden) closePermissionGuide();
+    if (batteryModal && !batteryModal.hidden) closeBatteryGuide();
+  });
 }
 
 function render() {
