@@ -1,8 +1,8 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.6.8";
-const ASSET_VERSION = "20260710-1";
+const APP_VERSION = "0.6.9";
+const ASSET_VERSION = "20260710-2";
 const DEFAULT_OFFSETS = [20, 10, 0];
 const SOON_DAYS = 14;
 const RACE_DATA_URL = `./races.json?v=${ASSET_VERSION}`;
@@ -1050,6 +1050,12 @@ function bindEvents() {
 
   document.getElementById("searchInput").addEventListener("input", (event) => {
     state.draftQuery = event.target.value;
+  });
+
+  document.getElementById("searchInput").addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    applyFilters();
   });
 
   document.addEventListener("click", (event) => {
