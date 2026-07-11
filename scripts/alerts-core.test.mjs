@@ -171,3 +171,28 @@ test("computeFireTimes 는 지난 오프셋을 걸러내고 미래 것만 남긴
   const times = core.computeFireTimes(targetAt, [20, 10, 0], NOW);
   assert.deepEqual(times.map((item) => item.offset), [10, 0]);
 });
+
+test("마감 시각이 지나면 status=open 이어도 접수중이 아니다(마감 우선)", () => {
+  // 마감이 어제였는데 status/registrationStatus 만 "open" 으로 남은 대회.
+  const closedButOpenFlag = makeRace({
+    status: "open",
+    registrationStatus: "open",
+    registrationOpenAt: iso(NOW - 5 * DAY),
+    registrationCloseAt: iso(NOW - 1 * DAY),
+    raceDate: iso(NOW + 20 * DAY)
+  });
+  // 마감이 지났으므로 접수중이 아니다(예전엔 status="open" 이 마감보다 우선해 true 였다).
+  assert.equal(core.isAcceptingNow(closedButOpenFlag, NOW), false);
+  // 접수 마감 대회는 접수 시작 알림 대상이 아니다(대회일 알림만 가능).
+  const target = core.getAlertTarget(closedButOpenFlag, NOW);
+  assert.equal(target?.type, "race_day");
+
+  // 마감 시각이 아직 미래면 status="open" 은 정상적으로 접수중이다.
+  const stillOpen = makeRace({
+    status: "open",
+    registrationStatus: "open",
+    registrationOpenAt: iso(NOW - 1 * DAY),
+    registrationCloseAt: iso(NOW + 2 * DAY)
+  });
+  assert.equal(core.isAcceptingNow(stillOpen, NOW), true);
+});

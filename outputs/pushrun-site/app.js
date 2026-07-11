@@ -1,8 +1,8 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.6.10";
-const ASSET_VERSION = "20260711-2";
+const APP_VERSION = "0.6.11";
+const ASSET_VERSION = "20260711-3";
 const DEFAULT_OFFSETS = [20, 10, 0];
 const SOON_DAYS = 14;
 const RACE_DATA_URL = `./races.json?v=${ASSET_VERSION}`;
@@ -55,7 +55,9 @@ function parseScheduleFeed(feed) {
     const now = Date.now();
     const opensAt = entry.registrationOpenAt ? new Date(entry.registrationOpenAt).getTime() : null;
     const closesAt = entry.registrationCloseAt ? new Date(entry.registrationCloseAt).getTime() : null;
-    const isOpen = entry.status === "open" || Boolean(opensAt && opensAt <= now && (!closesAt || now <= closesAt));
+    // 마감 시각이 지났으면 status="open" 이어도 접수중이 아니다(마감 대회가 목록에 남지 않게).
+    const registrationClosed = Boolean(closesAt && now > closesAt);
+    const isOpen = !registrationClosed && (entry.status === "open" || Boolean(opensAt && opensAt <= now && (!closesAt || now <= closesAt)));
     const hasUpcomingOpen = Boolean(opensAt && opensAt > now);
     // 방어: venue/time/distances 가 빠진 항목 1개 때문에 앱 전체가 하얗게 죽지 않게 한다.
     // (validate-static.mjs 가 배포 전에 FAIL 시키지만, 런타임에서도 한 번 더 방어한다.)
@@ -101,7 +103,9 @@ function normalizeFeaturedRace(race) {
   const now = Date.now();
   const opensAt = race.registrationOpenAt ? new Date(race.registrationOpenAt).getTime() : null;
   const closesAt = race.registrationCloseAt ? new Date(race.registrationCloseAt).getTime() : null;
-  const isAccepting = race.status === "open" || (opensAt && opensAt <= now && (!closesAt || now <= closesAt));
+  // 마감 시각이 지났으면 status="open" 이어도 접수중이 아니다(마감 대회가 목록에 남지 않게).
+  const registrationClosed = Boolean(closesAt && now > closesAt);
+  const isAccepting = !registrationClosed && (race.status === "open" || (opensAt && opensAt <= now && (!closesAt || now <= closesAt)));
   const hasUpcomingOpen = opensAt && opensAt > now && !["closed", "sold_out", "cancelled"].includes(race.status);
   return {
     ...race,

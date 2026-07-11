@@ -8,6 +8,17 @@
 - PWA 이름, 화면 문구, 배포 문서와 저장소 식별자를 새 브랜드로 통일했다.
 - 기존 `pushrun:*`, `PushRunAlertsCore`, `pushrun-v*` 식별자는 설치·알림 호환을 위해 유지한다.
 
+## [0.6.11] - 2026-07-11
+
+### Fixed
+- **접수 마감 지난 대회가 "현재 접수중"에 남아 `D+1`로 표시되던 문제**: 데이터의 `status="open"`
+  문자열이 실제 마감 시각(`registrationCloseAt`)보다 우선하던 충돌을 고쳤다. 마감 시각이 지났으면
+  status와 무관하게 접수중으로 보지 않아, 마감된 대회가 접수중 목록·마감 D+ 카드로 뜨지 않는다.
+  (`isAcceptingNow`, `parseScheduleFeed`, `normalizeFeaturedRace` 3곳 동일 원칙 적용.)
+
+### Tests
+- `alerts-core`에 "마감 시각이 status=open 보다 우선" 경계 테스트를 추가했다.
+
 ## [0.6.10] - 2026-07-11
 정식 공개 준비 — 좁은 폰 화면 레이아웃 깨짐과 아이콘·보안을 손봤다.
 

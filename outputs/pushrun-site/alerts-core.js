@@ -9,11 +9,15 @@
   const DEFAULT_OFFSETS = [20, 10, 0];
 
   // 지금 접수중인지(오픈 시각이 지났고 마감 전) 판단한다.
+  // ★ 마감 시각(closesAt)이 지났으면 status/registrationStatus 가 "open" 이어도 접수중이 아니다.
+  //   (데이터의 status 문자열이 실제 마감 시각보다 우선하던 충돌 수정 — 마감 지난 대회가
+  //    "현재 접수중"에 남아 D+ 로 표시되던 문제를 없앤다.)
   function isAcceptingNow(race, now) {
     if (!race) return false;
-    if (race.registrationStatus === "open") return true;
     const opensAt = race.registrationOpenAt ? new Date(race.registrationOpenAt).getTime() : null;
     const closesAt = race.registrationCloseAt ? new Date(race.registrationCloseAt).getTime() : null;
+    if (closesAt && now > closesAt) return false;
+    if (race.registrationStatus === "open") return true;
     return Boolean(opensAt && opensAt <= now && (!closesAt || now <= closesAt));
   }
 
