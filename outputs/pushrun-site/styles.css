@@ -276,7 +276,7 @@ p {
 }
 
 .compact {
-  min-height: 38px;
+  min-height: 44px;
 }
 
 .full {
@@ -1690,7 +1690,7 @@ p {
   }
 
   .mobile-tab {
-    min-height: 42px;
+    min-height: 44px;
     padding: 0 4px;
   }
 }
@@ -1727,7 +1727,7 @@ p {
   }
 
   .filter-head .ghost-btn {
-    min-height: 36px;
+    min-height: 44px;
     padding: 0 10px;
     justify-self: start;
     white-space: nowrap;
@@ -1749,7 +1749,7 @@ p {
   }
 
   .category-tab {
-    min-height: 42px;
+    min-height: 44px;
     padding: 10px;
   }
 
@@ -1784,7 +1784,7 @@ p {
   }
 
   .filters-panel .segment {
-    min-height: 40px;
+    min-height: 44px;
     padding: 0 5px;
     font-size: 0.9rem;
   }
@@ -1794,7 +1794,7 @@ p {
   }
 
   .filter-chip {
-    min-height: 42px;
+    min-height: 44px;
     padding: 0 5px;
     font-size: 0.92rem;
   }
@@ -1855,7 +1855,7 @@ p {
   }
 
   .list-card-grid {
-    grid-template-columns: 64px minmax(0, 1fr) 54px;
+    grid-template-columns: 64px minmax(0, 1fr) 60px;
     gap: 0 9px;
   }
 
