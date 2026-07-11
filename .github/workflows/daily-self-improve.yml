@@ -1,0 +1,64 @@
+name: PushRun 자가개선 (하루 2회)
+
+on:
+  schedule:
+    # UTC 09:00/21:00 = KST 18:00/06:00, 하루 2회
+    - cron: "0 9,21 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: daily-self-improve
+  cancel-in-progress: false
+
+jobs:
+  self-improve:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ANTHROPIC_API_KEY 확인
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::error::ANTHROPIC_API_KEY 시크릿이 비어 있습니다. 저장소 Settings → Secrets and variables → Actions 에 ANTHROPIC_API_KEY 를 등록해야 자가개선 워크플로가 실행됩니다."
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Claude 자가개선 실행
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_args: "--max-turns 25"
+          prompt: |
+            너는 PushRun(러닝 대회 접수 알림 PWA)의 자가개선 담당이다. 아래 규칙을 반드시 지켜라.
+
+            ## 이번 실행에서 할 일
+            - 실행당 딱 1개의 작은 개선만 한다. 우선순위:
+              1. 대회 데이터(races.json) 신선도 갱신·검증 — 지난 대회 정리, 접수 일정 갱신
+              2. 버그 수정
+              3. 테스트 보강
+            - 개선 대상을 정하기 전에 npm test 를 실행해 현재 상태(특히 신선도 경고/실패)를 확인한다.
+
+            ## 금지·필수 사항
+            - main 에 직접 push 금지. 반드시 새 브랜치 claude/self-improve-<날짜-시간> 에서 작업하고
+              draft PR 1개만 만든다.
+            - PR 을 만들기 전에 npm test 가 통과해야 한다. 실패 상태로 PR 을 올리지 않는다.
+            - 배포 파일(outputs/pushrun-site/*)을 변경하면:
+              - index.html·app.js(ASSET_VERSION)·sw.js(APP_SHELL)의 ?v= 캐시버스트를 새 값으로 함께 올린다.
+              - sw.js 의 CACHE_NAME(pushrun-vX.Y.Z)과 package.json 버전 일관성을 유지한다.
+            - package.json 버전을 PATCH 로 올리고(app.js APP_VERSION 도 함께), CHANGELOG.md 에 한국어 항목을 추가한다.
+
+            ## PR 설명 (비전공자용 한국어)
+            - 무엇을 바꿨는지 / 왜 바꿨는지 / 사용자에게 무엇이 좋아지는지 / 어떤 위험이 있는지
+              네 가지를 짧고 쉽게 쓴다.

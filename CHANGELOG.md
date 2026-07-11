@@ -2,6 +2,34 @@
 
 PushRun(러닝 대회 접수 알림)의 주요 변경 이력. [SemVer](https://semver.org/lang/ko/).
 
+## [0.6.9] - 2026-07-11
+알림 신뢰성(최신 데이터 기준 재계산)과 배포 검증을 강화한 출시 준비판.
+
+### Fixed
+- **알림 시각을 최신 대회 데이터로 다시 계산**: 알림을 켠 뒤 races.json 에서 접수 시각이 바뀌어도
+  예전 시각에 울리던 문제를 고쳤다. 앱을 열거나 새로고침할 때마다 저장된 알림의 발사 시각을
+  현재 데이터 기준으로 재계산하고, 사라진 대회의 알림(고아)과 발사 시각이 이미 지난 알림(만료)은
+  즉시 정리한다 — '내 알림'에는 실제로 울릴 알림만 남는다.
+- **서비스워커 캐시 저장 보장**: 캐시 쓰기를 `event.waitUntil` 에 묶어 워커가 먼저 종료돼도
+  저장이 유실되거나 처리되지 않은 rejection 이 생기지 않게 했다 (네트워크 우선 동작은 그대로).
+- `venue`/`time`/`distances` 가 빠진 대회 항목 1개 때문에 앱 전체가 하얗게 죽던 지점에 방어 코드를 넣었다.
+- 알림 목록 버튼의 `race.id` 를 escapeHtml 로 이스케이프하고, `cafe.naver.com` 접수 링크 2건을 https 로 바꿨다.
+
+### Added
+- `alerts-core.js`: 알림 핵심 로직(발사 시각 계산·재조정·만료 정리·24.8일 클램프)을 순수 함수로 분리.
+- `scripts/alerts-core.test.mjs`: 시각 변경 재계산, 고아 제거, 만료 정리, 재무장 클램프, 깨진 데이터
+  내성까지 검증하는 node:test 동작 테스트. `npm test` 에 포함.
+- validator 강화: 대회 필수 필드(venue·time·distances 등) 검사, 데이터 신선도 게이트(접수 예정 0개
+  또는 종료 대회 50% 초과 시 FAIL), sw.js APP_SHELL 캐시버스트·CACHE_NAME↔package.json 버전 일치 검사.
+- 설정 화면에 "알림 권한 안내" 버튼을 추가해 닿을 수 없던 권한 안내 모달을 복원하고,
+  권한을 이미 차단한 경우 브라우저 사이트 설정에서 다시 켜는 방법 안내를 더했다.
+- `.github/workflows/daily-self-improve.yml`: 하루 2회(KST 06:00/18:00) 자가개선 draft PR 자동화.
+- `npm start` 를 크로스플랫폼 정적 서버(`scripts/serve.mjs`, 의존성 없음)로 교체.
+
+### Removed
+- 존재하지 않는 DOM 을 그리던 죽은 코드(`renderDetail`·`raceSectionHtml`·`raceCountLabel`)와
+  1초 타이머의 불필요한 호출, 오래된 개인 인수인계 문서(`codex-handoff/`)를 삭제했다.
+
 ## [0.6.8] - 2026-07-10
 출시 전 알림 안내·PWA·접근성·배포 검증을 보강했다.
 
