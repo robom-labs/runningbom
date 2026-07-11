@@ -1,8 +1,8 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.6.12";
-const ASSET_VERSION = "20260711-4";
+const APP_VERSION = "0.6.13";
+const ASSET_VERSION = "20260711-5";
 const DEFAULT_OFFSETS = [20, 10, 0];
 const RACE_DATA_URL = `./races.json?v=${ASSET_VERSION}`;
 const MARATHON_ONLINE_LIST_URL = "http://www.roadrun.co.kr/schedule/list.php";
@@ -1046,6 +1046,13 @@ function bindEvents() {
 
   document.getElementById("searchInput").addEventListener("input", (event) => {
     state.draftQuery = event.target.value;
+  });
+
+  // Enter 키로 "확인" 버튼과 동일하게 필터를 즉시 적용한다. 기존 applyFilters 재사용.
+  document.getElementById("searchInput").addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    applyFilters();
   });
 
   document.addEventListener("click", (event) => {
