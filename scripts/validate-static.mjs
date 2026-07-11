@@ -68,6 +68,23 @@ for (const race of all) {
     if (race[key] && Number.isNaN(Date.parse(race[key]))) errors.push(`${key} 오류: ${race.name}`);
   }
   if (
+    race.registrationOpenTimeConfirmed !== undefined &&
+    typeof race.registrationOpenTimeConfirmed !== "boolean"
+  ) {
+    errors.push(`registrationOpenTimeConfirmed 형식 오류: ${race.name}`);
+  }
+  if (race.registrationWindows !== undefined) {
+    if (!Array.isArray(race.registrationWindows) || race.registrationWindows.length === 0) {
+      errors.push(`registrationWindows 형식 오류: ${race.name}`);
+    } else {
+      for (const window of race.registrationWindows) {
+        if (!window?.label || !window?.opensAt || Number.isNaN(Date.parse(window.opensAt))) {
+          errors.push(`종목별 접수 시각 오류: ${race.name}`);
+        }
+      }
+    }
+  }
+  if (
     race.registrationOpenAt &&
     race.registrationCloseAt &&
     Date.parse(race.registrationOpenAt) > Date.parse(race.registrationCloseAt)
@@ -103,7 +120,10 @@ for (const race of all) {
   const raceDay = String(race.raceDate || race.date || "").slice(0, 10);
   if (raceDay && raceDay < todayKst) endedRaces += 1;
   if (race.registrationCloseAt && Date.parse(race.registrationCloseAt) < now) closedRegistrations += 1;
-  if (race.registrationOpenAt && Date.parse(race.registrationOpenAt) > now) upcomingRegistrations += 1;
+  const upcomingTimes = [race.registrationOpenAt, ...(race.registrationWindows || []).map((window) => window.opensAt)]
+    .map((value) => Date.parse(value || ""))
+    .filter((value) => Number.isFinite(value) && value > now);
+  if (upcomingTimes.length) upcomingRegistrations += 1;
 }
 warn.push(
   `신선도: 총 ${all.length}개 중 대회 종료 ${endedRaces}개, 접수 마감 ${closedRegistrations}개, 접수 예정 ${upcomingRegistrations}개 (KST ${todayKst} 기준)`
