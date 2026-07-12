@@ -1,8 +1,8 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.8.0";
-const ASSET_VERSION = "20260712-7";
+const APP_VERSION = "0.9.0";
+const ASSET_VERSION = "20260712-8";
 const DEFAULT_OFFSETS = [20, 10, 0];
 const RACE_DATA_URL = `./races.json?v=${ASSET_VERSION}`;
 const MARATHON_ONLINE_LIST_URL = "http://www.roadrun.co.kr/schedule/list.php";
@@ -20,6 +20,7 @@ const state = {
   draftQuery: "",
   activeCategory: "confirmed",
   selectedCalendarDate: null,
+  calendarMonth: null,
   races: [],
   dataVersion: "",
   alerts: loadJson(ALERT_STORAGE_KEY, {}),
@@ -511,23 +512,70 @@ function heroAlertButtonHtml(race) {
   return `<button class="primary-btn" type="button" data-open-alert="${escapeHtml(race.id)}" aria-label="${escapeHtml(race.name)} 알림 설정">접수 알림 켜기</button>`;
 }
 
+// 표시 중인 달의 1일(로컬)을 돌려준다. state.calendarMonth 가 없으면 오늘이 속한 달.
+function calendarMonthStart() {
+  if (state.calendarMonth instanceof Date) return state.calendarMonth;
+  const today = new Date();
+  return new Date(today.getFullYear(), today.getMonth(), 1);
+}
+
+// 접수 시작(없으면 마감) 날짜를 KST 기준 날짜키로 집계한다.
+function registrationCountByDate() {
+  const counts = new Map();
+  getRaces().forEach((race) => {
+    const at = race.registrationOpenAt || race.registrationCloseAt;
+    if (!at) return;
+    const key = KST_DATE_KEY.format(new Date(at));
+    counts.set(key, (counts.get(key) || 0) + 1);
+  });
+  return counts;
+}
+
+const CALENDAR_WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
+
 function renderRegistrationCalendar() {
   const target = document.getElementById("registrationCalendar");
   if (!target) return;
-  const today = new Date();
-  const start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  const days = Array.from({ length: 7 }, (_, index) => new Date(start.getTime() + index * 86_400_000));
-  const races = getRaces();
-  const activeKey = state.selectedCalendarDate ?? KST_DATE_KEY.format(start);
+  const monthStart = calendarMonthStart();
+  const year = monthStart.getFullYear();
+  const month = monthStart.getMonth();
+  const firstWeekday = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const todayKey = KST_DATE_KEY.format(new Date());
+  const counts = registrationCountByDate();
+
+  const cells = [];
+  for (let i = 0; i < firstWeekday; i += 1) {
+    cells.push(`<div class="calendar-cell blank" aria-hidden="true"></div>`);
+  }
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    const dayDate = new Date(year, month, day);
+    const key = KST_DATE_KEY.format(dayDate);
+    const count = counts.get(key) || 0;
+    const dow = dayDate.getDay();
+    const classes = ["calendar-cell"];
+    if (count) classes.push("has-races");
+    if (key === todayKey) classes.push("today");
+    if (state.selectedCalendarDate === key) classes.push("active");
+    if (dow === 0) classes.push("sun");
+    if (dow === 6) classes.push("sat");
+    const aria = `${month + 1}월 ${day}일${count ? `, 접수 일정 ${count}개` : ", 접수 일정 없음"}${key === todayKey ? ", 오늘" : ""}`;
+    cells.push(
+      `<button type="button" class="${classes.join(" ")}"${count ? ` data-calendar-date="${escapeHtml(key)}"` : " disabled"}${state.selectedCalendarDate === key ? ' aria-pressed="true"' : ""} aria-label="${aria}"><strong>${day}</strong>${count ? `<span class="cal-dot">${count}</span>` : ""}</button>`
+    );
+  }
+  while (cells.length % 7 !== 0) {
+    cells.push(`<div class="calendar-cell blank" aria-hidden="true"></div>`);
+  }
+
   target.innerHTML = `
-    <div class="calendar-head"><div><span>이번 주 접수</span><h2>날짜부터 확인하세요.</h2></div><small>대회 선택</small></div>
-    <div class="calendar-days">${days.map((day) => {
-      const key = KST_DATE_KEY.format(day);
-      const dayRaces = races.filter((race) => KST_DATE_KEY.format(new Date(race.registrationOpenAt || race.registrationCloseAt || 0)) === key);
-      const hasRaces = dayRaces.length > 0;
-      const isActive = key === activeKey;
-      return `<button type="button" class="calendar-day${isActive ? " active" : ""}"${hasRaces ? ` data-calendar-date="${escapeHtml(key)}"` : ""}${state.selectedCalendarDate === key ? ' aria-pressed="true"' : ""} aria-label="${day.getMonth() + 1}월 ${day.getDate()}일${dayRaces.length ? `, 접수 일정 ${dayRaces.length}개` : ", 접수 일정 없음"}"><small>${day.toLocaleDateString("ko-KR", { weekday: "short" })}</small><strong>${day.getDate()}</strong><span>${dayRaces.length ? `접수 ${dayRaces.length}` : "·"}</span></button>`;
-    }).join("")}</div>`;
+    <div class="calendar-head">
+      <button type="button" class="calendar-nav" data-calendar-nav="prev" aria-label="이전 달">‹</button>
+      <div class="calendar-title"><span>접수 캘린더</span><h2>${year}년 ${month + 1}월</h2></div>
+      <button type="button" class="calendar-nav" data-calendar-nav="next" aria-label="다음 달">›</button>
+    </div>
+    <div class="calendar-weekdays">${CALENDAR_WEEKDAYS.map((label, index) => `<span class="${index === 0 ? "sun" : index === 6 ? "sat" : ""}">${label}</span>`).join("")}</div>
+    <div class="calendar-grid">${cells.join("")}</div>`;
 }
 
 function renderHomeHero() {
@@ -920,6 +968,16 @@ function raceCardHtml(race) {
           <h3>${escapeHtml(race.name)}</h3>
           <p class="race-location">${escapeHtml(race.region)} · ${escapeHtml(race.city)}</p>
           ${courseChipsHtml(race)}
+        </div>
+        <div class="registration-strip">
+          <div class="registration-schedule-row">
+            <span class="registration-label">접수</span>
+            ${registrationScheduleHtml(race)}
+          </div>
+          <div class="race-schedule-row">
+            <span class="registration-label">대회</span>
+            <strong>${escapeHtml(formatRegistrationDate(race.raceDate))}</strong>
+          </div>
         </div>
         <div class="list-action-wrap">
           ${registrationButtonHtml(race)}
@@ -1396,6 +1454,15 @@ function bindEvents() {
       state.selectedCalendarDate = null;
       render();
       document.querySelector(".weekly-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    const navButton = event.target.closest("[data-calendar-nav]");
+    if (navButton) {
+      const base = calendarMonthStart();
+      const step = navButton.dataset.calendarNav === "next" ? 1 : -1;
+      state.calendarMonth = new Date(base.getFullYear(), base.getMonth() + step, 1);
+      renderRegistrationCalendar();
       return;
     }
 
