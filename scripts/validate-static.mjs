@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const site = join(root, "outputs", "pushrun-site");
 const app = readFileSync(join(site, "app.js"), "utf8");
+const calendarCore = readFileSync(join(site, "race-calendar-core.js"), "utf8");
 const html = readFileSync(join(site, "index.html"), "utf8");
 const sw = readFileSync(join(site, "sw.js"), "utf8");
 const manifest = JSON.parse(readFileSync(join(site, "manifest.webmanifest"), "utf8"));
@@ -146,6 +147,7 @@ if (appVersion !== pkg.version) errors.push(`앱 버전 불일치: package=${pkg
 if (
   !assetVersion ||
   !html.includes(`app.js?v=${assetVersion}`) ||
+  !html.includes(`race-calendar-core.js?v=${assetVersion}`) ||
   !html.includes(`alerts-core.js?v=${assetVersion}`) ||
   !html.includes(`styles.css?v=${assetVersion}`)
 ) {
@@ -163,6 +165,9 @@ if (swBustVersions.length === 0 || swBustVersions.some((version) => version !== 
 }
 if (!sw.includes(`./alerts-core.js?v=${assetVersion}`)) {
   errors.push("sw.js APP_SHELL 에 alerts-core.js 가 없습니다 (오프라인 셸에서 앱이 깨집니다).");
+}
+if (!sw.includes(`./race-calendar-core.js?v=${assetVersion}`) || !calendarCore.includes("buildRaceCalendarEvents")) {
+  errors.push("대회 일정 캘린더 core가 HTML·서비스워커에 일관되게 포함되지 않았습니다.");
 }
 if (!sw.includes('request.mode === "navigate"')) {
   errors.push("sw.js의 HTML 셸 폴백이 탐색 요청으로 제한되지 않았습니다.");
