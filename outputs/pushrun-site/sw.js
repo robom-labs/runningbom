@@ -8,10 +8,11 @@ const APP_SHELL = [
   "./app.js?v=20260712-11",
   "./races.json?v=20260712-11",
   "./manifest.webmanifest",
-  "./icon.svg",
-  "./apple-touch-icon.png",
-  "./icon-192.png",
-  "./icon-512.png"
+  "./icon-v2.svg",
+  "./apple-touch-icon-v2.png",
+  "./icon-192-v2.png",
+  "./icon-512-v2.png",
+  "./maskable-512-v2.png"
 ];
 
 self.addEventListener("install", (event) => {
