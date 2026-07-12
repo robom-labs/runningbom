@@ -1,12 +1,13 @@
 // 러닝봄 앱 셸 캐시와 알림 클릭 처리를 담당하는 서비스워커. 캐시 키는 기존 설치 호환용으로 유지한다.
-const CACHE_NAME = "pushrun-v0.9.4";
+const CACHE_NAME = "pushrun-v0.9.5";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=20260712-12",
-  "./alerts-core.js?v=20260712-12",
-  "./app.js?v=20260712-12",
-  "./races.json?v=20260712-12",
+  "./styles.css?v=20260713-13",
+  "./race-calendar-core.js?v=20260713-13",
+  "./alerts-core.js?v=20260713-13",
+  "./app.js?v=20260713-13",
+  "./races.json?v=20260713-13",
   "./manifest.webmanifest",
   "./icon-v2.svg",
   "./apple-touch-icon-v2.png",
@@ -57,10 +58,15 @@ self.addEventListener("fetch", (event) => {
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
+  const targetUrl = new URL(event.notification.data?.url || "./", self.registration.scope).href;
   event.waitUntil(
-    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then(async (clients) => {
       const existing = clients.find((client) => client.url.startsWith(self.registration.scope));
-      return existing?.focus?.() || self.clients.openWindow("./");
+      if (existing) {
+        if ("navigate" in existing) await existing.navigate(targetUrl);
+        return existing.focus();
+      }
+      return self.clients.openWindow(targetUrl);
     })
   );
 });

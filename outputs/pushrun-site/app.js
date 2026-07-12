@@ -1,8 +1,14 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.9.4";
-const ASSET_VERSION = "20260712-12";
+const APP_VERSION = "0.9.5";
+const ASSET_VERSION = "20260713-13";
+const {
+  normalizeRaceName,
+  raceIdentity,
+  racesForDate: calendarRacesForDate,
+  eventCountsByDate
+} = globalThis.RunningBomRaceCore;
 const DEFAULT_OFFSETS = [20, 10, 0];
 const RACE_DATA_URL = `./races.json?v=${ASSET_VERSION}`;
 const MARATHON_ONLINE_LIST_URL = "http://www.roadrun.co.kr/schedule/list.php";
@@ -161,20 +167,6 @@ function mergeRaces(primary, secondary) {
       return true;
     })
   ];
-}
-
-function raceIdentity(race) {
-  return `${normalizeRaceName(race.name)}|${race.raceDate.slice(0, 10)}`;
-}
-
-function normalizeRaceName(name) {
-  return String(name || "")
-    .toLowerCase()
-    .replace(/제\d+회/g, "")
-    .replace(/2026/g, "")
-    .replace(/marathon|race|trail|run/g, "")
-    .replace(/마라톤대회|마라톤|트레일런|트레일|레이스/g, "")
-    .replace(/[^0-9a-z가-힣]/g, "");
 }
 
 function formatDateTime(value) {
@@ -476,10 +468,9 @@ function registrationActionAt(race) {
   return getUpcomingRegistrationAt(race) || new Date(race.raceDate).getTime();
 }
 
-// 캘린더에서 고른 날짜(KST)에 접수(시작 또는 마감) 일정이 있는 대회만 추린다.
+// 캘린더에서 고른 날짜(KST)에 접수 시작·마감 또는 대회일이 있는 대회만 추린다.
 function racesForSelectedDate(key) {
-  return getRaces()
-    .filter((race) => KST_DATE_KEY.format(new Date(race.registrationOpenAt || race.registrationCloseAt || 0)) === key)
+  return calendarRacesForDate(getRaces(), key)
     .sort((a, b) => registrationActionAt(a) - registrationActionAt(b));
 }
 
@@ -498,16 +489,9 @@ function calendarMonthStart() {
   return new Date(today.getFullYear(), today.getMonth(), 1);
 }
 
-// 접수 시작(없으면 마감) 날짜를 KST 기준 날짜키로 집계한다.
+// 접수 시작·종목별 시작·접수 마감·대회일을 각각 KST 날짜키로 집계한다.
 function registrationCountByDate() {
-  const counts = new Map();
-  getRaces().forEach((race) => {
-    const at = race.registrationOpenAt || race.registrationCloseAt;
-    if (!at) return;
-    const key = KST_DATE_KEY.format(new Date(at));
-    counts.set(key, (counts.get(key) || 0) + 1);
-  });
-  return counts;
+  return eventCountsByDate(getRaces());
 }
 
 const CALENDAR_WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
@@ -538,7 +522,7 @@ function renderRegistrationCalendar() {
     if (state.selectedCalendarDate === key) classes.push("active");
     if (dow === 0) classes.push("sun");
     if (dow === 6) classes.push("sat");
-    const aria = `${month + 1}월 ${day}일${count ? `, 접수 일정 ${count}개` : ", 접수 일정 없음"}${key === todayKey ? ", 오늘" : ""}`;
+    const aria = `${month + 1}월 ${day}일${count ? `, 대회 일정 ${count}개` : ", 대회 일정 없음"}${key === todayKey ? ", 오늘" : ""}`;
     cells.push(
       `<button type="button" class="${classes.join(" ")}"${count ? ` data-calendar-date="${escapeHtml(key)}"` : " disabled"}${state.selectedCalendarDate === key ? ' aria-pressed="true"' : ""} aria-label="${aria}"><strong>${day}</strong>${count ? `<span class="cal-dot">${count}</span>` : ""}</button>`
     );
@@ -550,7 +534,7 @@ function renderRegistrationCalendar() {
   target.innerHTML = `
     <div class="calendar-head">
       <button type="button" class="calendar-nav" data-calendar-nav="prev" aria-label="이전 달">‹</button>
-      <div class="calendar-title"><span>접수 캘린더</span><h2>${year}년 ${month + 1}월</h2></div>
+      <div class="calendar-title"><span>대회 일정 캘린더</span><h2>${year}년 ${month + 1}월</h2></div>
       <button type="button" class="calendar-nav" data-calendar-nav="next" aria-label="다음 달">›</button>
     </div>
     <div class="calendar-weekdays">${CALENDAR_WEEKDAYS.map((label, index) => `<span class="${index === 0 ? "sun" : index === 6 ? "sat" : ""}">${label}</span>`).join("")}</div>
@@ -876,13 +860,13 @@ function renderRaceList() {
   let head;
   if (dateKey) {
     const [, month, dayNum] = dateKey.split("-").map(Number);
-    head = `<div class="all-results-head"><div><span class="section-kicker">접수 캘린더</span><h2 id="allResultsTitle">${month}월 ${dayNum}일 접수 일정</h2></div><button class="text-btn calendar-filter-clear" type="button" data-clear-calendar-date>전체 보기</button></div>`;
+    head = `<div class="all-results-head"><div><span class="section-kicker">대회 일정 캘린더</span><h2 id="allResultsTitle">${month}월 ${dayNum}일 일정</h2></div><button class="text-btn calendar-filter-clear" type="button" data-clear-calendar-date>전체 보기</button></div>`;
   } else {
     head = `<div class="all-results-head"><div><span class="section-kicker">전체 대회</span><h2 id="allResultsTitle">${escapeHtml(copy.title)}</h2></div><strong>${races.length}개</strong></div>`;
   }
   if (!races.length) {
     const empty = dateKey
-      ? `<div class="focus-empty"><h3>이 날짜에는 접수 일정이 없어요.</h3><button class="text-btn calendar-filter-clear" type="button" data-clear-calendar-date>전체 보기</button></div>`
+      ? `<div class="focus-empty"><h3>이 날짜에는 대회 일정이 없어요.</h3><button class="text-btn calendar-filter-clear" type="button" data-clear-calendar-date>전체 보기</button></div>`
       : `<div class="focus-empty"><h3>${escapeHtml(copy.empty)}</h3><p>검색어를 지우거나 거리·지역 필터를 전체로 바꿔보세요.</p></div>`;
     list.innerHTML = `<section class="focus-board ${state.activeCategory}">${head}${empty}</section>`;
     return;
