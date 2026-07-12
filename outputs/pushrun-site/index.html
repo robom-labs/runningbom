@@ -2,8 +2,8 @@
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#111827" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7f8f6" />
     <meta
       name="description"
       content="러닝 대회 접수 예정과 현재 접수중인 대회를 빠르게 확인하는 러닝봄."
@@ -17,20 +17,20 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="러닝봄" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <link rel="stylesheet" href="./styles.css?v=20260712-4" />
+    <link rel="stylesheet" href="./styles.css?v=20260712-5" />
   </head>
   <body>
     <div class="app-shell">
       <header class="topbar">
         <button class="brand" type="button" data-view="home" aria-label="러닝봄 홈">
-          <span class="brand-mark">RB</span>
-          <span>
-            <strong>러닝봄</strong>
-            <small>러닝 접수 알림</small>
+          <span class="brand-mark" aria-hidden="true">⚑</span>
+          <span class="brand-copy">
+            <span class="brand-title"><strong>러닝봄</strong><i aria-hidden="true"></i></span>
+            <small>robom · 출발선에 서는 날</small>
           </span>
         </button>
         <div class="top-actions">
-          <button class="ghost-btn compact" type="button" id="syncButton">새로고침</button>
+          <button class="icon-btn" type="button" id="syncButton" aria-label="최신 대회 정보 새로고침"><span aria-hidden="true">↻</span></button>
           <nav class="topnav" aria-label="주요 화면">
             <button class="nav-pill active" type="button" data-view="home">홈</button>
             <button class="nav-pill" type="button" data-view="alerts">내 알림</button>
@@ -41,54 +41,52 @@
 
       <main>
         <section class="view active" id="view-home" aria-label="대회 탐색">
-          <section class="filters-panel" aria-label="대회 필터">
-            <div class="filter-head">
+          <section class="quick-filters" aria-label="빠른 대회 필터">
+            <div class="category-tabs" id="categoryTabs" aria-label="접수 상태"></div>
+            <div class="chip-row distance-chips" id="distanceFilters" aria-label="거리"></div>
+          </section>
+
+          <button class="permission-entry" id="permissionEntry" type="button" data-view="settings">
+            <span>알림 준비</span><strong>브라우저 권한을 확인하면 접수 시간을 놓치지 않아요.</strong><i aria-hidden="true">›</i>
+          </button>
+
+          <section class="hero-race" id="homeHero" aria-live="polite" aria-busy="true"></section>
+
+          <section class="weekly-section" aria-labelledby="weeklyTitle">
+            <div class="section-heading">
               <div>
-                <span class="section-kicker">러닝봄</span>
-                <h1>대회 신청 접수 알리미</h1>
+                <p class="section-kicker">이번 주 접수</p>
+                <h1 id="weeklyTitle">놓치기 쉬운 접수 일정</h1>
               </div>
-              <button
-                class="ghost-btn mobile-filter-toggle"
-                type="button"
-                id="mobileFilterToggleButton"
-                aria-expanded="true"
-                aria-controls="filterRow"
-              >
-                지역·검색 필터 · 전체
-              </button>
+              <button class="text-btn mobile-filter-toggle" type="button" id="mobileFilterToggleButton" aria-expanded="false" aria-controls="filtersPanel">대회 찾기</button>
             </div>
+            <div class="weekly-list" id="weeklyList" aria-live="polite"></div>
+          </section>
 
+          <section class="ad-slot" aria-label="광고 자리" aria-disabled="true">
+            <span>광고</span><p>러닝화·대회 준비 추천</p><strong>현재 비활성</strong>
+          </section>
+
+          <section class="filters-panel" id="filtersPanel" aria-label="전체 대회 찾기" hidden>
+            <div class="filter-head">
+              <div><span class="section-kicker">전체 대회</span><h2>지역과 검색어로 찾기</h2></div>
+            </div>
             <div class="filter-row" id="filterRow">
-              <label class="select-box">
-                <span>지역</span>
-                <select id="regionFilter"></select>
-              </label>
-
-              <label class="search-box">
-                <span>검색</span>
-                <input id="searchInput" type="search" placeholder="대회명, 지역" autocomplete="off" />
-              </label>
-
-              <button class="primary-btn apply-btn" type="button" id="applyFiltersButton">확인</button>
+              <label class="select-box"><span>지역</span><select id="regionFilter"></select></label>
+              <label class="search-box"><span>검색</span><input id="searchInput" type="search" placeholder="대회명, 지역" autocomplete="off" /></label>
+              <button class="primary-btn apply-btn" type="button" id="applyFiltersButton">검색하기</button>
             </div>
-
-            <div class="category-tabs" id="categoryTabs" aria-label="대회 카테고리"></div>
-
           </section>
 
-          <section class="distance-panel" aria-label="거리 필터">
-            <div class="chip-row" id="distanceFilters"></div>
-          </section>
-
-          <section class="content-grid">
+          <section class="content-grid" aria-label="전체 대회 결과">
             <div class="race-list" id="raceList" aria-live="polite" aria-busy="true"></div>
           </section>
         </section>
 
         <section class="view" id="view-alerts" aria-label="내 알림">
           <div class="page-heading">
-            <span class="section-kicker">My Alerts</span>
-            <h1>내 알림</h1>
+            <span class="section-kicker">내 알림</span>
+            <h1>접수 전에 알려드려요.</h1>
             <p>접수 시작과 대회일 기준으로 켜둔 알림을 보여줍니다.</p>
           </div>
           <div class="alert-list" id="alertList"></div>
@@ -96,9 +94,9 @@
 
         <section class="view" id="view-settings" aria-label="설정">
           <div class="page-heading">
-            <span class="section-kicker">Settings</span>
-            <h1>알림 설정</h1>
-            <p>브라우저가 열려 있을 때 접수 알림을 받을 수 있게 준비합니다.</p>
+            <span class="section-kicker">설정</span>
+            <h1>러닝봄을 내 방식대로</h1>
+            <p>알림 권한과 로봄 패밀리 앱 정보를 한곳에서 확인합니다.</p>
           </div>
           <div class="settings-grid">
             <section class="settings-panel">
@@ -126,15 +124,45 @@
               </ul>
               <p class="meta-line" id="lastSyncText">마지막 확인: 준비 중</p>
             </section>
+            <section class="settings-panel family-panel">
+              <h2>다른 로봄 앱</h2>
+              <p>같은 계열의 앱을 안정적인 robom.kr 허브에서 이용하세요.</p>
+              <div class="settings-links">
+                <a href="https://robom.kr/apps/outbom" target="_blank" rel="noopener noreferrer"><span>야외봄</span><small>웹으로 이용</small></a>
+                <a href="https://robom.kr/apps/homebom" target="_blank" rel="noopener noreferrer"><span>청약봄</span><small>웹으로 이용</small></a>
+                <a href="https://robom.kr/apps/runningbom" target="_blank" rel="noopener noreferrer"><span>러닝봄</span><small>현재 앱</small></a>
+              </div>
+            </section>
+            <section class="settings-panel contact-panel">
+              <h2>문의와 제휴</h2>
+              <div class="settings-links">
+                <a id="generalInquiryLink" href="mailto:hello.robom@gmail.com"><span>일반 문의</span><small>hello.robom@gmail.com</small></a>
+                <a id="adInquiryLink" href="mailto:hello.robom@gmail.com"><span>광고·제휴 문의</span><small>러닝 관련 제휴 제안</small></a>
+              </div>
+            </section>
+            <section class="settings-panel app-info-panel">
+              <h2>앱 정보</h2>
+              <dl class="app-info-list">
+                <div><dt>개발자</dt><dd>로봄</dd></div>
+                <div><dt>앱 버전</dt><dd id="appVersionText">확인 중</dd></div>
+                <div><dt>데이터 버전</dt><dd id="dataVersionText">확인 중</dd></div>
+              </dl>
+              <div class="legal-links">
+                <a href="https://robom.kr" target="_blank" rel="noopener noreferrer">robom.kr</a>
+                <a href="https://robom.kr/privacy" target="_blank" rel="noopener noreferrer">개인정보처리방침</a>
+                <a href="https://robom.kr/terms" target="_blank" rel="noopener noreferrer">이용약관</a>
+                <a href="https://robom.kr/licenses" target="_blank" rel="noopener noreferrer">오픈소스 라이선스</a>
+              </div>
+            </section>
           </div>
         </section>
       </main>
 
-      <footer class="mobile-tabs" aria-label="모바일 화면 이동">
-        <button class="mobile-tab active" type="button" data-view="home">홈</button>
-        <button class="mobile-tab" type="button" data-view="alerts">알림</button>
-        <button class="mobile-tab" type="button" data-view="settings">설정</button>
-      </footer>
+      <nav class="mobile-tabs" aria-label="주요 메뉴">
+        <button class="mobile-tab active" type="button" data-view="home"><span aria-hidden="true">⌂</span><strong>홈</strong></button>
+        <button class="mobile-tab" type="button" data-view="alerts"><span aria-hidden="true">♧</span><strong>알림</strong></button>
+        <button class="mobile-tab" type="button" data-view="settings"><span aria-hidden="true">⚙</span><strong>설정</strong></button>
+      </nav>
     </div>
 
     <div class="modal-backdrop" id="alertModal" hidden>
@@ -209,7 +237,7 @@
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="./alerts-core.js?v=20260712-4"></script>
-    <script src="./app.js?v=20260712-4"></script>
+    <script src="./alerts-core.js?v=20260712-5"></script>
+    <script src="./app.js?v=20260712-5"></script>
   </body>
 </html>
