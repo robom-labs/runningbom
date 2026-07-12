@@ -1,8 +1,8 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.6.16";
-const ASSET_VERSION = "20260712-3";
+const APP_VERSION = "0.6.17";
+const ASSET_VERSION = "20260712-4";
 const DEFAULT_OFFSETS = [20, 10, 0];
 const RACE_DATA_URL = `./races.json?v=${ASSET_VERSION}`;
 const MARATHON_ONLINE_LIST_URL = "http://www.roadrun.co.kr/schedule/list.php";
@@ -463,9 +463,24 @@ function filteredRaces() {
   });
 }
 
-function buildRegistrationAlerts(race, offsets = DEFAULT_OFFSETS, selectedTarget = null) {
+function buildRegistrationAlerts(race, offsets = DEFAULT_OFFSETS, selectedTarget = null, checkTimes = []) {
   const target = selectedTarget || getAlertTarget(race);
   if (!target) return [];
+  if (target.type === "registration_time_check") {
+    return window.PushRunAlertsCore
+      .computeTimeCheckTimes(target.at, checkTimes, Date.now())
+      .map(({ slot, fireAt }) => ({
+        slot,
+        fireAt,
+        title: `[${race.name}] 접수 시간 확인 ${slot}`,
+        body: `접수 시작 시각이 아직 공식 확인되지 않았어요. 지금 대회 사이트에서 접수 여부를 확인하세요.`,
+        raceId: race.id,
+        targetType: target.type,
+        targetKey: target.key,
+        targetAt: target.at,
+        targetLabel: target.label
+      }));
+  }
   const targetAt = new Date(target.at);
   // 발사 시각 계산·만료 필터는 alerts-core.js 의 순수 함수를 쓰고, 문구만 여기서 채운다.
   return window.PushRunAlertsCore
@@ -506,6 +521,27 @@ function getSelectedModalOffsets() {
   return Array.from(document.querySelectorAll("#modalPresetGrid input:checked"))
     .map((input) => Number(input.value))
     .sort((a, b) => b - a);
+}
+
+function getSelectedModalCheckTimes() {
+  return Array.from(document.querySelectorAll("#modalPresetGrid input:checked"))
+    .map((input) => input.value)
+    .sort();
+}
+
+function isTimeCheckTarget(target) {
+  return target?.type === "registration_time_check";
+}
+
+function formatAlertTargetDate(target) {
+  return isTimeCheckTarget(target)
+    ? `${formatRegistrationDate(target.at)} · 시간 미확정`
+    : formatDateTime(target.at);
+}
+
+function alertScheduleLabel(alert) {
+  if (alert.slot) return alert.slot;
+  return alert.offset === 0 ? "정각" : `${alert.offset}분 전`;
 }
 
 function selectRace(id) {
@@ -753,7 +789,7 @@ function renderModalCountdown() {
   document.getElementById("modalCountdown").innerHTML = `
     <span>${escapeHtml(target.label)}</span>
     <strong>${escapeHtml(formatDday(target.at))}</strong>
-    <small>${escapeHtml(formatDateTime(target.at))}</small>
+    <small>${escapeHtml(formatAlertTargetDate(target))}</small>
   `;
 }
 
@@ -768,32 +804,47 @@ function renderModal() {
     .map((item) => state.alerts[subscriptionKey(race.id, item)])
     .filter(Boolean);
   const subscription = selectedSubscriptions[0];
-  const selectedOffsets = subscription?.offsets || DEFAULT_OFFSETS;
+  const usesTimeCheck = targets.some(isTimeCheckTarget);
+  const selectedOffsets = subscription?.offsets?.length ? subscription.offsets : DEFAULT_OFFSETS;
+  const selectedCheckTimes = subscription?.checkTimes?.length
+    ? subscription.checkTimes
+    : window.PushRunAlertsCore.DEFAULT_TIME_CHECK_SLOTS;
   document.getElementById("modalRaceName").textContent = race.name;
   document.getElementById("modalRaceMeta").textContent = state.modalTargetKeys.length > 1
     ? `${state.modalTargetKeys.length}개 종목 접수 알림 · ${race.region} ${race.city}`
-    : `${target.label} ${formatDateTime(target.at)} · ${race.region} ${race.city}`;
+    : `${target.label} ${formatAlertTargetDate(target)} · ${race.region} ${race.city}`;
   renderModalCountdown();
   document.getElementById("modalTargetGrid").innerHTML = targets.map((item) => `
     <label>
       <input type="checkbox" value="${escapeHtml(item.key)}" ${state.modalTargetKeys.includes(item.key) ? "checked" : ""} />
       <span>
         <strong>${escapeHtml(item.ticketLabel || item.label)}</strong>
-        <small>${escapeHtml(formatDateTime(item.at))}</small>
+        <small>${escapeHtml(formatAlertTargetDate(item))}</small>
       </span>
     </label>
   `).join("");
   document.getElementById("modalTargetTitle").textContent = targets.length > 1 ? "알림 받을 종목" : "알림 대상";
-  document.getElementById("modalPresetGrid").innerHTML = DEFAULT_OFFSETS.map(
-    (offset) => `
+  document.getElementById("modalPresetTitle").textContent = usesTimeCheck ? "시간 확인 알림" : "알림 받을 시간";
+  document.getElementById("modalPresetGrid").innerHTML = (usesTimeCheck
+    ? window.PushRunAlertsCore.DEFAULT_TIME_CHECK_SLOTS.map((slot) => ({ slot }))
+    : DEFAULT_OFFSETS.map((offset) => ({ offset })))
+    .map((item) => usesTimeCheck ? `
       <label>
-        <input type="checkbox" value="${offset}" ${selectedOffsets.includes(offset) ? "checked" : ""} />
-        <span>${offset === 0 ? "정각" : `${offset}분 전`}</span>
+        <input type="checkbox" value="${item.slot}" ${selectedCheckTimes.includes(item.slot) ? "checked" : ""} />
+        <span>${item.slot}</span>
       </label>
-    `
-  ).join("");
-  const activeLabels = selectedOffsets.map((offset) => offset === 0 ? "정각" : `${offset}분 전`).join(", ");
-  document.getElementById("modalAlertHint").textContent = `${state.modalTargetKeys.length || 0}개 종목에 ${activeLabels} 알림을 함께 적용해요.`;
+    ` : `
+      <label>
+        <input type="checkbox" value="${item.offset}" ${selectedOffsets.includes(item.offset) ? "checked" : ""} />
+        <span>${item.offset === 0 ? "정각" : `${item.offset}분 전`}</span>
+      </label>
+    `).join("");
+  const activeLabels = usesTimeCheck
+    ? selectedCheckTimes.join(", ")
+    : selectedOffsets.map((offset) => offset === 0 ? "정각" : `${offset}분 전`).join(", ");
+  document.getElementById("modalAlertHint").textContent = usesTimeCheck
+    ? `${activeLabels}에 공식 접수 여부를 확인하라고 알려드려요. 정확한 시간이 등록되면 다음 새로고침에서 정각 알림으로 바뀝니다.`
+    : `${state.modalTargetKeys.length || 0}개 종목에 ${activeLabels} 알림을 함께 적용해요.`;
   const savedCount = subscriptionsForRace(race.id).length;
   const cancelButton = document.getElementById("modalCancelAlertButton");
   cancelButton.hidden = savedCount === 0;
@@ -816,22 +867,23 @@ function renderAlerts() {
       const race = racesById[subscription.raceId];
       if (!race) return "";
       const targetLabel = subscription.targetLabel || "접수 시작";
-      const targetAt = subscription.targetAt || race.registrationOpenAt || race.raceDate;
-      const visibleOffsets = [...(subscription.scheduledAlerts?.length
+      const target = { type: subscription.targetType, at: subscription.targetAt || race.registrationOpenAt || race.raceDate };
+      const targetAt = target.at;
+      const visibleAlerts = [...(subscription.scheduledAlerts?.length
         ? subscription.scheduledAlerts.map((alert) => alert.offset)
         : subscription.offsets
-      )].sort((a, b) => b - a);
+      )];
       return `
         <div class="alert-card">
           <div class="alert-head">
             <div>
               <h3>${escapeHtml(race.name)}</h3>
-              <p class="meta-line">${escapeHtml(targetLabel)} ${escapeHtml(formatDateTime(targetAt))}</p>
+              <p class="meta-line">${escapeHtml(targetLabel)} ${escapeHtml(formatAlertTargetDate(target))}</p>
             </div>
             <span class="status-pill scheduled">${escapeHtml(targetLabel)} 알림</span>
           </div>
           <div class="chips">
-            ${visibleOffsets.map((offset) => `<span class="chip highlight">${offset === 0 ? "정각" : `${offset}분 전`}</span>`).join("")}
+            ${(subscription.scheduledAlerts?.length ? subscription.scheduledAlerts : visibleAlerts.map((offset) => ({ offset }))).map((alert) => `<span class="chip highlight">${escapeHtml(alertScheduleLabel(alert))}</span>`).join("")}
           </div>
           <div class="detail-actions" style="margin-top:14px">
             <button class="ghost-btn" type="button" data-focus-race="${escapeHtml(race.id)}">상세</button>
@@ -897,7 +949,7 @@ async function fireWebAlert(alert) {
   if ("Notification" in window && Notification.permission === "granted") {
     const options = {
       body: alert.body,
-      tag: `${alert.raceId}-${alert.targetKey || alert.targetType || "alert"}-${alert.offset}`,
+      tag: `${alert.raceId}-${alert.targetKey || alert.targetType || "alert"}-${alert.slot || alert.offset}`,
       icon: "./icon.svg",
       data: { url: "./" }
     };
@@ -968,7 +1020,7 @@ function reconcileStoredAlerts() {
   if (!state.races.length) return; // 데이터 로드 실패 시에는 판단 근거가 없으므로 건드리지 않는다.
   const result = window.PushRunAlertsCore.reconcileSubscriptions(state.alerts, state.races, {
     now: Date.now(),
-    buildScheduledAlerts: (race, offsets, target) => buildRegistrationAlerts(race, offsets, target)
+    buildScheduledAlerts: (race, offsets, target, checkTimes) => buildRegistrationAlerts(race, offsets, target, checkTimes)
   });
   state.alerts = result.alerts;
   if (result.updated.length || result.dropped.length || result.expired.length) {
@@ -988,9 +1040,11 @@ async function enableAlertFromModal() {
     showToast("알림 받을 종목을 하나 이상 선택하세요.");
     return;
   }
-  const offsets = getSelectedModalOffsets();
-  if (!offsets.length) {
-    showToast("알림 시간을 하나 이상 선택하세요.");
+  const usesTimeCheck = targets.some(isTimeCheckTarget);
+  const offsets = usesTimeCheck ? [] : getSelectedModalOffsets();
+  const checkTimes = usesTimeCheck ? getSelectedModalCheckTimes() : [];
+  if ((!usesTimeCheck && !offsets.length) || (usesTimeCheck && !checkTimes.length)) {
+    showToast(usesTimeCheck ? "시간 확인 알림을 하나 이상 선택하세요." : "알림 시간을 하나 이상 선택하세요.");
     return;
   }
   let permission = "default";
@@ -1000,7 +1054,7 @@ async function enableAlertFromModal() {
     showToast("브라우저 알림 권한을 확인하지 못했어요.");
     return;
   }
-  const scheduledByTarget = targets.map((target) => ({ target, scheduledAlerts: buildRegistrationAlerts(race, offsets, target) }));
+  const scheduledByTarget = targets.map((target) => ({ target, scheduledAlerts: buildRegistrationAlerts(race, offsets, target, checkTimes) }));
   if (scheduledByTarget.some((item) => !item.scheduledAlerts.length)) {
     showToast("지금은 알림을 켤 시간이 없어요.");
     return;
@@ -1015,7 +1069,9 @@ async function enableAlertFromModal() {
       targetKey: target.key,
       targetAt: target.at,
       targetLabel: target.label,
+      upgradeTargetKey: target.upgradeTargetKey,
       offsets,
+      checkTimes,
       scheduledAlerts,
       createdAt: new Date().toISOString()
     };
