@@ -7,6 +7,7 @@
   // setTimeout 의 최대 지연은 약 24.8일(2^31-1 ms). 이보다 먼 알림을 그냥 버리면 영영 안 울린다.
   const MAX_TIMER_DELAY = 2147483647;
   const DEFAULT_OFFSETS = [20, 10, 0];
+  const DEFAULT_TIME_CHECK_SLOTS = ["00:00", "09:00", "12:00", "18:00"];
   const DAY = 24 * 60 * 60 * 1000;
   const KST_OFFSET = 9 * 60 * 60 * 1000;
 
@@ -28,11 +29,24 @@
     const windows = Array.isArray(race.registrationWindows) ? race.registrationWindows : [];
     if (windows.length) {
       return windows
-        .filter((window) => window?.opensAt && window.timeConfirmed !== false && new Date(window.opensAt).getTime() > now)
+        .filter((window) => window?.opensAt && new Date(window.opensAt).getTime() > now)
         .sort((a, b) => new Date(a.opensAt).getTime() - new Date(b.opensAt).getTime())
         .map((window) => {
           const windowId = registrationWindowId(window);
           const course = window.label ? `${window.label} ` : "";
+          if (window.timeConfirmed === false) {
+            return {
+              type: "registration_time_check",
+              key: `time-check:window:${windowId}`,
+              upgradeTargetKey: `window:${windowId}`,
+              windowId,
+              at: window.opensAt,
+              label: `${course}접수 시간 확인`,
+              ticketLabel: `${course}시간 미확정`,
+              shortLabel: `${course}시간 확인 알림`,
+              statusLabel: `${course}접수 시간 확인 알림`
+            };
+          }
           return {
             type: "registration_open",
             key: `window:${windowId}`,
@@ -47,7 +61,19 @@
     }
 
     const opensAt = race.registrationOpenAt ? new Date(race.registrationOpenAt).getTime() : null;
-    if (!opensAt || opensAt <= now || race.registrationOpenTimeConfirmed === false) return [];
+    if (!opensAt || opensAt <= now) return [];
+    if (race.registrationOpenTimeConfirmed === false) {
+      return [{
+        type: "registration_time_check",
+        key: "time-check:registration",
+        upgradeTargetKey: "registration",
+        at: race.registrationOpenAt,
+        label: "접수 시간 확인",
+        ticketLabel: "시간 미확정",
+        shortLabel: "시간 확인 알림",
+        statusLabel: "접수 시간 확인 알림"
+      }];
+    }
     return [{
       type: "registration_open",
       key: "registration",
@@ -81,7 +107,7 @@
   }
 
   function subscriptionStorageKey(raceId, target) {
-    return target?.key?.startsWith("window:") ? `${raceId}::${target.key}` : String(raceId);
+    return target?.key && target.key !== "registration" ? `${raceId}::${target.key}` : String(raceId);
   }
 
   // 한국 대회 기준 날짜로 D-day를 계산하고, 이미 지난 대상에는 D+를 노출하지 않는다.
@@ -124,6 +150,24 @@
     return (Array.isArray(offsets) ? offsets : [])
       .map((offset) => ({ offset, fireAt: computeFireAt(targetAt, offset) }))
       .filter((item) => new Date(item.fireAt).getTime() > now);
+  }
+
+  // 날짜만 확정된 접수는 추정 시각을 만들지 않고, 사용자가 고른 KST 확인 시각에만 안내한다.
+  function computeTimeCheckTimes(targetAt, slots, now) {
+    const day = String(targetAt || "").slice(0, 10);
+    const dayAt = Date.parse(`${day}T00:00:00+09:00`);
+    if (!Number.isFinite(dayAt)) return [];
+    const selectedSlots = Array.isArray(slots) && slots.length ? slots : DEFAULT_TIME_CHECK_SLOTS;
+    return [...new Set(selectedSlots)]
+      .map((slot) => {
+        const match = /^(\d{2}):(\d{2})$/.exec(String(slot));
+        if (!match) return null;
+        const hours = Number(match[1]);
+        const minutes = Number(match[2]);
+        if (hours > 23 || minutes > 59) return null;
+        return { slot: `${match[1]}:${match[2]}`, fireAt: new Date(dayAt + (hours * 60 + minutes) * 60 * 1000).toISOString() };
+      })
+      .filter((item) => item && new Date(item.fireAt).getTime() > now);
   }
 
   // 저장된 scheduledAlerts 중 아직 발사 시각이 지나지 않은 것만 남긴다(만료 정리).
@@ -183,24 +227,33 @@
       const legacyMatch = !subscription.targetKey
         ? availableTargets.find((target) => target.type === subscription.targetType && target.at === subscription.targetAt)
         : null;
-      const targetKey = subscription.targetKey || legacyMatch?.key || availableTargets[0]?.key;
-      const target = getAlertTarget(race, now, targetKey);
+      let targetKey = subscription.targetKey || legacyMatch?.key || availableTargets[0]?.key;
+      let target = getAlertTarget(race, now, targetKey);
+      if (!target && subscription.targetType === "registration_time_check") {
+        targetKey = subscription.upgradeTargetKey || "registration";
+        target = getAlertTarget(race, now, targetKey);
+      }
       if (!target) {
         result.expired.push(storedKey); // 만료: 선택한 종목의 알림 시각이 더 이상 유효하지 않음
         continue;
       }
-      if (subscription.targetType && subscription.targetType !== target.type) {
+      if (subscription.targetType && subscription.targetType !== target.type && subscription.targetType !== "registration_time_check") {
         result.expired.push(storedKey); // 원래 구독한 종류(예: 접수 시작)의 시각이 지나감
         continue;
       }
 
-      const offsets =
+      const offsets = target.type === "registration_open" && subscription.targetType === "registration_time_check"
+        ? DEFAULT_OFFSETS
+        :
         Array.isArray(subscription.offsets) && subscription.offsets.length
           ? subscription.offsets
           : DEFAULT_OFFSETS;
+      const checkTimes = target.type === "registration_time_check"
+        ? (Array.isArray(subscription.checkTimes) && subscription.checkTimes.length ? subscription.checkTimes : DEFAULT_TIME_CHECK_SLOTS)
+        : [];
       const scheduledAlerts = buildScheduledAlerts
-        ? buildScheduledAlerts(race, offsets, target) || []
-        : computeFireTimes(target.at, offsets, now).map((item) => ({
+        ? buildScheduledAlerts(race, offsets, target, checkTimes) || []
+        : (target.type === "registration_time_check" ? computeTimeCheckTimes(target.at, checkTimes, now) : computeFireTimes(target.at, offsets, now)).map((item) => ({
             ...item,
             raceId: race.id,
             targetType: target.type,
@@ -215,6 +268,7 @@
 
       const fireKey = (alerts) => alerts.map((alert) => `${alert.offset}@${alert.fireAt}`).join("|");
       const changed =
+        subscription.targetType !== target.type ||
         subscription.targetAt !== target.at ||
         fireKey(subscription.scheduledAlerts || []) !== fireKey(scheduledAlerts);
       const nextKey = subscriptionStorageKey(raceId, target);
@@ -229,6 +283,9 @@
         targetKey: target.key,
         targetAt: target.at,
         targetLabel: target.label,
+        upgradeTargetKey: target.upgradeTargetKey,
+        offsets,
+        checkTimes,
         scheduledAlerts
       };
       (changed || nextKey !== storedKey ? result.updated : result.kept).push(nextKey);
@@ -239,6 +296,7 @@
   const PushRunAlertsCore = {
     MAX_TIMER_DELAY,
     DEFAULT_OFFSETS,
+    DEFAULT_TIME_CHECK_SLOTS,
     formatDday,
     getNextRegistrationWindow,
     getRegistrationTargets,
@@ -248,6 +306,7 @@
     getAlertTarget,
     computeFireAt,
     computeFireTimes,
+    computeTimeCheckTimes,
     pruneExpiredScheduledAlerts,
     classifyTimerDelay,
     reconcileSubscriptions
