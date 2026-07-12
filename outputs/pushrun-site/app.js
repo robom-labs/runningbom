@@ -1,8 +1,8 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.6.17";
-const ASSET_VERSION = "20260712-4";
+const APP_VERSION = "0.7.0";
+const ASSET_VERSION = "20260712-5";
 const DEFAULT_OFFSETS = [20, 10, 0];
 const RACE_DATA_URL = `./races.json?v=${ASSET_VERSION}`;
 const MARATHON_ONLINE_LIST_URL = "http://www.roadrun.co.kr/schedule/list.php";
@@ -463,6 +463,130 @@ function filteredRaces() {
   });
 }
 
+function getHeroRace() {
+  const primary = state.activeCategory === "open" ? getOpenRegistrationRaces() : getConfirmedRegistrationRaces();
+  return primary[0] || getActionRaces()[0] || null;
+}
+
+function registrationActionAt(race) {
+  if (isAcceptingNow(race)) return Date.now();
+  return getUpcomingRegistrationAt(race) || new Date(race.raceDate).getTime();
+}
+
+function getWeeklyRaces() {
+  const now = Date.now();
+  const weekEnd = now + 7 * 24 * 60 * 60 * 1000;
+  const scheduledThisWeek = getRaces()
+    .filter((race) => {
+      const at = getUpcomingRegistrationAt(race);
+      return at && at <= weekEnd;
+    })
+    .sort((a, b) => getUpcomingRegistrationAt(a) - getUpcomingRegistrationAt(b));
+  const openNow = getRaces()
+    .filter(isAcceptingNow)
+    .sort((a, b) => registrationActionAt(a) - registrationActionAt(b));
+  const combined = [...scheduledThisWeek, ...openNow];
+  const seen = new Set();
+  return combined.filter((race) => !seen.has(race.id) && seen.add(race.id)).slice(0, 4);
+}
+
+function weeklyTicketInfo(race) {
+  if (isAcceptingNow(race)) {
+    return {
+      label: "접수중",
+      dday: race.registrationCloseAt ? formatDday(race.registrationCloseAt, "지금") : "지금"
+    };
+  }
+  const upcomingAt = getUpcomingRegistrationAt(race);
+  return { label: "접수", dday: upcomingAt ? formatDday(upcomingAt, "확인중") : "확인중" };
+}
+
+function heroAlertButtonHtml(race) {
+  const target = getAlertTarget(race);
+  if (!target) {
+    return `<button class="primary-btn" type="button" disabled aria-disabled="true">알림 준비중</button>`;
+  }
+  return `<button class="primary-btn" type="button" data-open-alert="${escapeHtml(race.id)}" aria-label="${escapeHtml(race.name)} 알림 설정">접수 알림 켜기</button>`;
+}
+
+function renderHomeHero() {
+  const target = document.getElementById("homeHero");
+  if (!target) return;
+  target.setAttribute("aria-busy", String(state.loadStatus === "loading"));
+  if (state.loadStatus === "loading") {
+    target.innerHTML = `<div class="hero-loading" role="status">가장 가까운 접수 일정을 찾고 있어요.</div>`;
+    return;
+  }
+  if (state.loadStatus === "error") {
+    target.innerHTML = `<div class="hero-loading" role="alert">대회 정보를 불러오지 못했어요.</div>`;
+    return;
+  }
+  const race = getHeroRace();
+  if (!race) {
+    target.innerHTML = `<div class="hero-loading">예정된 대회를 확인하고 있어요.</div>`;
+    return;
+  }
+  const ticket = ticketDdayInfo(race);
+  const targetAt = ticket.at ? new Date(ticket.at) : null;
+  const timeConfirmed = race.registrationOpenAt && hasConfirmedRegistrationOpenTime(race);
+  const status = isAcceptingNow(race) ? "현재 접수중" : "접수 예정";
+  const dday = formatDday(ticket.at, "일정 확인");
+  const distance = courseTokens(race).slice(0, 2).join(" · ") || "종목 확인";
+  const openTime = isAcceptingNow(race)
+    ? "지금"
+    : timeConfirmed && targetAt
+      ? formatRegistrationTime(targetAt)
+      : "시간 미확정";
+  target.className = `hero-race ${isAcceptingNow(race) ? "open" : "scheduled"}`;
+  target.innerHTML = `
+    <div class="hero-accent" aria-hidden="true"></div>
+    <div class="hero-topline">
+      <span class="hero-status">${escapeHtml(status)} · ${escapeHtml(dday)}</span>
+      <span class="hero-date">${escapeHtml(formatShortDate(race.raceDate))} 대회</span>
+    </div>
+    <h1>${escapeHtml(race.name)}</h1>
+    <p class="hero-location">${escapeHtml(distance)} · ${escapeHtml(race.region)} ${escapeHtml(race.city)}</p>
+    <div class="hero-metrics" aria-label="핵심 접수 정보">
+      <div><strong>${escapeHtml(dday)}</strong><span>${isAcceptingNow(race) ? "접수 마감" : "접수까지"}</span></div>
+      <div><strong>${escapeHtml(distance)}</strong><span>관심 거리</span></div>
+      <div><strong>${escapeHtml(openTime)}</strong><span>오픈 시각</span></div>
+    </div>
+    <div class="hero-actions">
+      ${registrationButtonHtml(race, "detail")}
+      ${heroAlertButtonHtml(race)}
+    </div>
+    ${subscriptionsForRace(race.id).length ? `<p class="hero-enabled">알림 ${subscriptionsForRace(race.id).length}개가 켜져 있어요.</p>` : ""}
+  `;
+}
+
+function weeklyRaceHtml(race) {
+  const ticket = weeklyTicketInfo(race);
+  const canAlert = Boolean(getAlertTarget(race));
+  return `
+    <article class="weekly-race" data-race-id="${escapeHtml(race.id)}">
+      <div class="weekly-date"><span>${escapeHtml(ticket.label)}</span><strong>${escapeHtml(ticket.dday)}</strong></div>
+      <div class="weekly-copy">
+        <h2>${escapeHtml(race.name)}</h2>
+        <p>${escapeHtml(race.region)} · ${escapeHtml(race.city)} · ${escapeHtml(courseTokens(race).slice(0, 2).join("/"))}</p>
+      </div>
+      <button type="button" class="weekly-alert"${canAlert ? ` data-open-alert="${escapeHtml(race.id)}" aria-label="${escapeHtml(race.name)} 알림 설정"` : ` disabled aria-disabled="true" aria-label="${escapeHtml(race.name)} 알림 준비중"`}>›</button>
+    </article>
+  `;
+}
+
+function renderWeeklyList() {
+  const target = document.getElementById("weeklyList");
+  if (!target) return;
+  if (state.loadStatus === "loading") {
+    target.innerHTML = `<p class="quiet-note" role="status">접수 일정을 불러오는 중이에요.</p>`;
+    return;
+  }
+  const races = getWeeklyRaces();
+  target.innerHTML = races.length
+    ? races.map(weeklyRaceHtml).join("")
+    : `<p class="quiet-note">이번 주에 확인할 접수 일정이 없어요.</p>`;
+}
+
 function buildRegistrationAlerts(race, offsets = DEFAULT_OFFSETS, selectedTarget = null, checkTimes = []) {
   const target = selectedTarget || getAlertTarget(race);
   if (!target) return [];
@@ -632,12 +756,13 @@ function registrationButtonHtml(race, variant = "mini") {
     return `<button class="${classes}" type="button" disabled aria-disabled="true" aria-label="${raceName} 접수 사이트 준비중">준비중</button>`;
   }
   const insecure = /^http:\/\//i.test(race.registrationUrl);
-  // 버튼 글자는 항상 "접수"만 — 좁은 폰 화면에서 라벨이 넘쳐 카드가 깨지지 않도록.
+  const buttonText = variant === "detail" ? "접수 페이지 보기" : "접수";
+  // 목록 버튼은 좁은 폰 화면에서 넘치지 않도록 짧게, 히어로 CTA는 목적을 분명히 쓴다.
   // HTTP 경고는 화면 폭을 차지하지 않는 툴팁/보조 라벨로만 유지한다.
   const warning = insecure
     ? ` title="보안 연결(HTTPS)을 지원하지 않는 외부 사이트입니다" aria-label="${raceName} 접수 사이트 새 창으로 열기, HTTP 연결 주의"`
     : ` aria-label="${raceName} 접수 사이트 새 창으로 열기"`;
-  return `<a class="${classes}" href="${escapeHtml(race.registrationUrl)}" target="_blank" rel="noopener noreferrer"${warning}>접수</a>`;
+  return `<a class="${classes}" href="${escapeHtml(race.registrationUrl)}" target="_blank" rel="noopener noreferrer"${warning}>${buttonText}</a>`;
 }
 
 function alertButtonHtml(race, variant = "mini") {
@@ -688,12 +813,12 @@ function mobileFilterSummary() {
 
 function setMobileFiltersExpanded(expanded) {
   state.mobileFiltersExpanded = expanded;
-  const home = document.getElementById("view-home");
+  const panel = document.getElementById("filtersPanel");
   const button = document.getElementById("mobileFilterToggleButton");
-  if (home) home.classList.toggle("mobile-filters-collapsed", !expanded);
+  if (panel) panel.hidden = !expanded;
   if (button) {
     button.setAttribute("aria-expanded", String(expanded));
-    button.textContent = expanded ? "지역·검색 필터 닫기" : `지역·검색 필터 · ${mobileFilterSummary()}`;
+    button.textContent = expanded ? "대회 찾기 닫기" : `대회 찾기 · ${mobileFilterSummary()}`;
   }
 }
 
@@ -709,6 +834,7 @@ function applyFilters() {
   if (window.matchMedia("(max-width: 520px)").matches) setMobileFiltersExpanded(false);
   renderRaceList();
   renderCategoryTabs();
+  renderHomeHero();
   showToast("선택한 조건으로 대회를 찾았어요.");
 }
 
@@ -730,7 +856,8 @@ function renderRaceList() {
     return;
   }
   list.innerHTML = `
-    <section class="focus-board ${state.activeCategory}">
+    <section class="focus-board ${state.activeCategory}" aria-labelledby="allResultsTitle">
+      <div class="all-results-head"><div><span class="section-kicker">전체 대회</span><h2 id="allResultsTitle">${escapeHtml(copy.title)}</h2></div><strong>${races.length}개</strong></div>
       <div class="race-list-list">
         ${races.map(raceCardHtml).join("")}
       </div>
@@ -743,9 +870,7 @@ function raceCardHtml(race) {
   const enabled = subscriptionsForRace(race.id).length > 0;
   const ticketInfo = ticketDdayInfo(race);
   const safeId = escapeHtml(race.id);
-  const raceDateLabel = formatShortDate(race.raceDate);
   const ticketDday = formatDday(ticketInfo.at);
-  const actionButtons = `<div class="list-action-row ticket-actions">${registrationButtonHtml(race)}${alertButtonHtml(race)}</div>`;
   return `
     <article class="race-card list-card${selected}" data-race-id="${safeId}">
       <div class="list-card-grid">
@@ -754,24 +879,12 @@ function raceCardHtml(race) {
           ${ticketDday ? `<strong>${escapeHtml(ticketDday)}</strong>` : ""}
         </div>
         <div class="list-body">
-          <div class="list-title-row">
-            <h3>${escapeHtml(race.name)}</h3>
-          </div>
-          <p class="race-location">${escapeHtml(race.region)} · ${escapeHtml(race.city)}</p>
-          ${courseChipsHtml(race)}
-        </div>
-        <div class="registration-strip">
-          <div class="registration-schedule-row">
-            <span class="registration-label">접수</span>
-            ${registrationScheduleHtml(race)}
-          </div>
-          <div class="race-schedule-row">
-            <span class="registration-label">대회</span>
-            <strong>${escapeHtml(raceDateLabel)}</strong>
-          </div>
+          <h3>${escapeHtml(race.name)}</h3>
+          <p class="race-location">${escapeHtml(race.region)} · ${escapeHtml(race.city)} · ${escapeHtml(courseTokens(race).slice(0, 2).join("/"))}</p>
         </div>
         <div class="list-action-wrap">
-          ${actionButtons}
+          ${registrationButtonHtml(race)}
+          ${alertButtonHtml(race)}
         </div>
       </div>
       ${enabled ? `<p class="focus-enabled">종목 알림 ${subscriptionsForRace(race.id).length}개가 켜져 있어요.</p>` : ""}
@@ -903,18 +1016,30 @@ function renderSyncStatus() {
   if (target) target.textContent = text;
 }
 
+function renderAppInfo() {
+  const appVersion = document.getElementById("appVersionText");
+  const dataVersion = document.getElementById("dataVersionText");
+  if (appVersion) appVersion.textContent = APP_VERSION;
+  if (dataVersion) dataVersion.textContent = state.dataVersion || "확인 전";
+  const subjectBase = `러닝봄 ${APP_VERSION}`;
+  const general = document.getElementById("generalInquiryLink");
+  const ad = document.getElementById("adInquiryLink");
+  if (general) general.href = `mailto:hello.robom@gmail.com?subject=${encodeURIComponent(`[${subjectBase}] 일반 문의`)}`;
+  if (ad) ad.href = `mailto:hello.robom@gmail.com?subject=${encodeURIComponent(`[${subjectBase}] 광고·제휴 문의`)}`;
+}
+
 function renderCategoryTabs() {
   const target = document.getElementById("categoryTabs");
   if (!target) return;
   target.innerHTML = [
-    ["confirmed", "접수 예정"],
-    ["open", "현재 접수중"]
+    ["confirmed", "접수 예정", getConfirmedRegistrationRaces().length],
+    ["open", "현재 접수중", getOpenRegistrationRaces().length]
   ]
-    .map(([value, label]) => {
+    .map(([value, label, count]) => {
       const active = state.activeCategory === value;
       return `
       <button class="category-tab ${active ? "active" : ""}" type="button" data-category="${value}" aria-pressed="${active}">
-        <span>${escapeHtml(label)}</span>
+        <span>${escapeHtml(label)} <b>${count}</b></span>
       </button>
     `;
     })
@@ -1170,6 +1295,7 @@ function showToast(message) {
 }
 
 function setView(viewName) {
+  const previousView = document.querySelector(".view.active")?.id.replace("view-", "");
   document.querySelectorAll(".view").forEach((view) => view.classList.toggle("active", view.id === `view-${viewName}`));
   document.querySelectorAll("[data-view]").forEach((button) => {
     const active = button.dataset.view === viewName;
@@ -1181,6 +1307,7 @@ function setView(viewName) {
   });
   renderAlerts();
   renderSyncStatus();
+  if (previousView && previousView !== viewName) window.scrollTo({ top: 0, behavior: "auto" });
 }
 
 function bindEvents() {
@@ -1194,6 +1321,7 @@ function bindEvents() {
       state.selectedRaceId = null;
       renderCategoryTabs();
       renderRaceList();
+      renderHomeHero();
       document.querySelector(`[data-category="${category}"]`)?.focus();
     });
   }
@@ -1257,6 +1385,7 @@ function bindEvents() {
       renderDistanceFilters();
       renderRaceList();
       renderCategoryTabs();
+      renderHomeHero();
       document.querySelector(`[data-distance-filter="${distance}"]`)?.focus();
     }
   });
@@ -1343,9 +1472,12 @@ function render() {
   const searchInput = document.getElementById("searchInput");
   if (searchInput) searchInput.value = state.draftQuery;
   renderCategoryTabs();
+  renderHomeHero();
+  renderWeeklyList();
   renderRaceList();
   renderAlerts();
   renderSyncStatus();
+  renderAppInfo();
   renderPermissionEntry();
   updatePermissionText();
   setMobileFiltersExpanded(state.mobileFiltersExpanded);
