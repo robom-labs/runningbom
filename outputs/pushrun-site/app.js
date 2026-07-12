@@ -1,8 +1,8 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.9.0";
-const ASSET_VERSION = "20260712-8";
+const APP_VERSION = "0.9.1";
+const ASSET_VERSION = "20260712-9";
 const DEFAULT_OFFSETS = [20, 10, 0];
 const RACE_DATA_URL = `./races.json?v=${ASSET_VERSION}`;
 const MARATHON_ONLINE_LIST_URL = "http://www.roadrun.co.kr/schedule/list.php";
@@ -968,15 +968,15 @@ function raceCardHtml(race) {
           <h3>${escapeHtml(race.name)}</h3>
           <p class="race-location">${escapeHtml(race.region)} · ${escapeHtml(race.city)}</p>
           ${courseChipsHtml(race)}
-        </div>
-        <div class="registration-strip">
-          <div class="registration-schedule-row">
-            <span class="registration-label">접수</span>
-            ${registrationScheduleHtml(race)}
-          </div>
-          <div class="race-schedule-row">
-            <span class="registration-label">대회</span>
-            <strong>${escapeHtml(formatRegistrationDate(race.raceDate))}</strong>
+          <div class="registration-strip">
+            <div class="registration-schedule-row">
+              <span class="registration-label">접수</span>
+              ${registrationScheduleHtml(race)}
+            </div>
+            <div class="race-schedule-row">
+              <span class="registration-label">대회</span>
+              <strong>${escapeHtml(formatRegistrationDate(race.raceDate))}</strong>
+            </div>
           </div>
         </div>
         <div class="list-action-wrap">
