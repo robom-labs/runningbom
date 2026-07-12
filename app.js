@@ -1118,7 +1118,7 @@ async function fireWebAlert(alert) {
     const options = {
       body: alert.body,
       tag: `${alert.raceId}-${alert.targetKey || alert.targetType || "alert"}-${alert.slot || alert.offset}`,
-      icon: "./icon.svg",
+      icon: "./icon-v2.svg",
       data: { url: "./" }
     };
     try {
