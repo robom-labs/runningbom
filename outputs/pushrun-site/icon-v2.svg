@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">러닝봄</title>
+  <rect x="3" y="3" width="58" height="58" rx="16" fill="#fde9de" stroke="#f2c7b0" stroke-width="2"/>
+  <path d="M22 48V18" fill="none" stroke="#1d3047" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M23 20h22l-6 8 6 8H23Z" fill="#fff8ef" stroke="#ef7a3a" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M16 48c8-5 18-5 32-1" fill="none" stroke="#1d3047" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="50" cy="14" r="3" fill="#ef7a3a"/>
+</svg>
