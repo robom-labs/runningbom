@@ -156,7 +156,6 @@ button:disabled {
 }
 
 
-.settings-panel,
 .filters-panel,
 .alert-modal {
   border: 1px solid rgba(16, 24, 32, 0.08);
@@ -448,7 +447,7 @@ p {
 .search-box input:focus,
 .select-box select:focus {
   border-color: var(--ink);
-  box-shadow: 0 0 0 3px rgba(200, 255, 46, 0.72);
+  box-shadow: 0 0 0 3px rgba(240, 90, 70, 0.35);
 }
 
 .chip-row {
@@ -781,7 +780,7 @@ p {
 
 .race-card.selected {
   border-color: var(--ink);
-  box-shadow: 0 0 0 3px rgba(200, 255, 46, 0.84);
+  box-shadow: 0 0 0 3px rgba(240, 90, 70, 0.45);
 }
 
 
@@ -875,31 +874,6 @@ p {
   gap: 16px;
 }
 
-.settings-panel {
-  padding: 20px;
-}
-
-.settings-panel h2 {
-  margin-bottom: 8px;
-}
-
-.settings-panel p {
-  color: var(--muted);
-}
-
-.settings-actions {
-  display: grid;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.check-list {
-  display: grid;
-  gap: 10px;
-  padding-left: 20px;
-  color: var(--muted);
-  line-height: 1.45;
-}
 
 .modal-backdrop {
   position: fixed;
@@ -1181,7 +1155,7 @@ fieldset.modal-section legend {
     position: fixed;
     left: 12px;
     right: 12px;
-    bottom: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
     z-index: 20;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1305,7 +1279,6 @@ fieldset.modal-section legend {
   }
 
   .alert-card,
-  .settings-panel,
   .alert-modal {
     padding: 14px;
   }
@@ -1489,7 +1462,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   vertical-align: -.2em;
 }
 .brand-copy small { color: var(--muted); font-size: 13px; }
-.icon-btn { width: 48px; height: 48px; border: 1px solid var(--line); background: var(--surface); color: var(--navy); }
+.icon-btn { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--navy); font-size: 20px; line-height: 1; }
 
 .race-finder {
   display: grid;
@@ -1843,7 +1816,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .calendar-cell { min-width: 0; min-height: 48px; border-radius: 12px; }
 
 .permission-entry, .ad-slot { margin-top: 12px; border-radius: 18px; }
-.permission-entry { background: var(--surface); }
+.permission-entry {
+  width: 100%;
+  min-height: 56px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "kicker go" "title go";
+  align-items: center;
+  row-gap: 2px;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  text-align: left;
+}
+.permission-entry span { grid-area: kicker; color: var(--coral-deep); font-size: 0.72rem; font-weight: 800; }
+.permission-entry strong { grid-area: title; font-size: 0.9rem; font-weight: 700; }
+.permission-entry i { grid-area: go; color: var(--muted); font-style: normal; font-size: 1.1rem; }
 .ad-slot { background: #f0f3f6; }
 .mobile-tabs { border-top-color: var(--line); background: rgba(255, 255, 255, .96); }
 .mobile-tab.active { background: var(--sky-soft); color: var(--navy); }
@@ -1888,98 +1877,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .mobile-tab.active { background: var(--coral-soft); color: var(--coral-deep); }
 
 /* 설정 화면의 패밀리 링크와 앱 정보를 한 행씩 읽기 쉽게 정렬한다. */
-.settings-links {
-  display: grid;
-  margin-top: 14px;
-  border-top: 1px solid var(--line);
-}
 
-.settings-links a {
-  display: flex;
-  min-width: 0;
-  min-height: 56px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  border-bottom: 1px solid var(--line);
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.settings-links span {
-  min-width: 0;
-  font-weight: 800;
-}
-
-.settings-links small {
-  min-width: 0;
-  color: var(--muted);
-  font-size: 0.82rem;
-  line-height: 1.35;
-  text-align: right;
-  overflow-wrap: anywhere;
-}
-
-.app-info-list {
-  display: grid;
-  gap: 0;
-  margin: 12px 0;
-}
-
-.app-info-list div {
-  display: flex;
-  min-width: 0;
-  min-height: 44px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  border-bottom: 1px solid var(--line);
-}
-
-.app-info-list dt {
-  color: var(--muted);
-  font-weight: 650;
-}
-
-.app-info-list dd {
-  min-width: 0;
-  margin: 0;
-  color: var(--ink);
-  font-weight: 800;
-  text-align: right;
-  overflow-wrap: anywhere;
-}
-
-.legal-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 14px;
-  margin-top: 14px;
-}
-
-.legal-links a {
-  display: inline-flex;
-  min-height: 40px;
-  align-items: center;
-  color: var(--navy);
-  font-size: 0.9rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.settings-links a:hover,
-.settings-links a:focus-visible,
-.legal-links a:hover,
-.legal-links a:focus-visible {
-  color: var(--coral-deep);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
 
 @media (max-width: 520px) {
-  .settings-links a { min-height: 60px; gap: 12px; }
-  .settings-links small { max-width: 58%; }
-  .app-info-list div { gap: 12px; }
 }
 
 /* ── 로봄 패밀리 공통 설정 UI 킷 (야외봄 정본 규격, 러닝봄 코랄 팔레트) ──

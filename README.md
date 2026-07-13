@@ -12,8 +12,8 @@
 
 ## 실행
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File outputs/serve-pushrun.ps1 -Port 4173
+```bash
+npm start
 ```
 
 브라우저에서 `http://127.0.0.1:4173/` 을 열면 됩니다.
