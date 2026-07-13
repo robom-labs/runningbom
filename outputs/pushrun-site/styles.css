@@ -20,6 +20,7 @@
   --amber: #ffc85a;
   --shadow: 0 12px 32px rgba(31, 58, 82, 0.08);
   --r: 24px;
+  --font: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
 }
 
 * {
@@ -31,7 +32,7 @@ body {
   min-height: 100vh;
   background: var(--bg);
   color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+  font-family: var(--font);
   font-size: 16px;
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
@@ -1426,7 +1427,7 @@ html {
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+  font-family: var(--font);
   line-height: 1.5;
 }
 
@@ -2514,7 +2515,7 @@ html { background: var(--bg); }
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+  font-family: var(--font);
 }
 
 button, input, select, a { font: inherit; }
@@ -2550,25 +2551,26 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .brand { min-width: 0; gap: 12px; }
 .brand-mark { width: 48px; height: 48px; }
 .brand-title { display: inline-flex; align-items: center; gap: 6px; }
-.brand-wordmark {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
+.brand-title > .brand-wordmark {
+  display: inline-block;
+  font-family: var(--font);
+  font-size: clamp(28px, 4vw, 30px);
+  font-weight: 900;
   color: var(--ink);
-  line-height: 1.05;
-}
-.brand-prefix {
-  font-size: clamp(24px, 4vw, 30px);
-  font-weight: 780;
-  letter-spacing: -.055em;
   line-height: 1;
-  transform: translateY(-1px);
+  letter-spacing: -.04em;
+  white-space: nowrap;
 }
-.brand-bom {
-  display: block;
+.brand-title > .brand-wordmark > .brand-prefix {
+  display: inline;
+  font: inherit;
+  letter-spacing: inherit;
+}
+.brand-title > .brand-wordmark > .brand-bom {
+  display: inline-block;
   width: auto;
-  height: clamp(28px, 4.6vw, 35px);
-  transform: translateY(1px);
+  height: 1.18em;
+  vertical-align: -.2em;
 }
 .brand-copy small { color: var(--muted); font-size: 13px; }
 .icon-btn { width: 48px; height: 48px; border: 1px solid var(--line); background: var(--surface); color: var(--navy); }

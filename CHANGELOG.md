@@ -2,6 +2,18 @@
 
 러닝봄(러닝 대회 접수 알림)의 주요 변경 이력. [SemVer](https://semver.org/lang/ko/).
 
+## [0.11.3] - 2026-07-13
+
+### Fixed
+
+- 앱 전체 글꼴을 로봄 패밀리 공통 Pretendard Variable 스택으로 통일했다.
+- `러닝` 접두를 브랜드 정본의 굵기 900·자간 -0.04em 규격에 맞추고 커스텀 `봄` 마크를 1.18em baseline으로 정렬했다.
+- 캐시버스트를 `20260713-20`, 서비스워커 캐시를 `pushrun-v0.11.3`으로 갱신해 설치 사용자에게 새 서체가 즉시 반영되게 했다.
+
+### Compatibility
+
+- 기존 `pushrun:alert-subscriptions:v3` 알림 구독, 안정 race ID, GitHub Pages URL과 PWA 설치 범위를 유지한다.
+
 ## [0.11.2] - 2026-07-13
 
 ### Fixed
