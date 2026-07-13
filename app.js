@@ -1,10 +1,10 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.11.0";
-const ASSET_VERSION = "20260713-17";
-const BUILD_SHA = "462e71b";
-const PWA_CACHE_VERSION = "pushrun-v0.11.0";
+const APP_VERSION = "0.11.1";
+const ASSET_VERSION = "20260713-18";
+const BUILD_SHA = "af68ccd";
+const PWA_CACHE_VERSION = "pushrun-v0.11.1";
 const {
   normalizeRaceName,
   raceIdentity,
@@ -1598,7 +1598,28 @@ function startTicker() {
 
 async function initApp() {
   if ("serviceWorker" in navigator && window.isSecureContext) {
-    void navigator.serviceWorker.register("./sw.js").catch(() => undefined);
+    const hadController = Boolean(navigator.serviceWorker.controller);
+    let refreshedForUpdate = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (!hadController || refreshedForUpdate) return;
+      refreshedForUpdate = true;
+      window.location.reload();
+    });
+    void navigator.serviceWorker
+      .register("./sw.js")
+      .then((registration) => {
+        registration.waiting?.postMessage({ type: "SKIP_WAITING" });
+        registration.addEventListener("updatefound", () => {
+          const installing = registration.installing;
+          if (!installing) return;
+          installing.addEventListener("statechange", () => {
+            if (installing.state === "installed" && navigator.serviceWorker.controller) {
+              installing.postMessage({ type: "SKIP_WAITING" });
+            }
+          });
+        });
+      })
+      .catch(() => undefined);
   }
   bindEvents();
   syncDraftFilters();

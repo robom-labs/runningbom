@@ -1,13 +1,13 @@
 // 러닝봄 앱 셸 캐시와 알림 클릭 처리를 담당하는 서비스워커. 캐시 키는 기존 설치 호환용으로 유지한다.
-const CACHE_NAME = "pushrun-v0.11.0";
+const CACHE_NAME = "pushrun-v0.11.1";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=20260713-17",
-  "./race-calendar-core.js?v=20260713-17",
-  "./alerts-core.js?v=20260713-17",
-  "./app.js?v=20260713-17",
-  "./races.json?v=20260713-17",
+  "./styles.css?v=20260713-18",
+  "./race-calendar-core.js?v=20260713-18",
+  "./alerts-core.js?v=20260713-18",
+  "./app.js?v=20260713-18",
+  "./races.json?v=20260713-18",
   "./manifest.webmanifest",
   "./icon-v2.svg",
   "./apple-touch-icon-v2.png",
@@ -26,6 +26,10 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))))
   );
   self.clients.claim();
+});
+
+self.addEventListener("message", (event) => {
+  if (event.data?.type === "SKIP_WAITING") self.skipWaiting();
 });
 
 self.addEventListener("fetch", (event) => {
