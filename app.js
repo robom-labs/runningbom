@@ -2,8 +2,8 @@ const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
 const APP_VERSION = "0.11.0";
-const ASSET_VERSION = "20260713-16";
-const BUILD_SHA = "b991502";
+const ASSET_VERSION = "20260713-17";
+const BUILD_SHA = "462e71b";
 const PWA_CACHE_VERSION = "pushrun-v0.11.0";
 const {
   normalizeRaceName,
@@ -1056,7 +1056,7 @@ function renderAppInfo() {
   const cacheVersion = document.getElementById("cacheVersionText");
   if (appVersion) appVersion.textContent = APP_VERSION;
   if (dataVersion) dataVersion.textContent = state.dataVersion || "확인 전";
-  if (buildSha) buildSha.textContent = BUILD_SHA === "b991502" ? "로컬" : BUILD_SHA;
+  if (buildSha) buildSha.textContent = BUILD_SHA.startsWith("__") ? "로컬" : BUILD_SHA;
   if (cacheVersion) cacheVersion.textContent = PWA_CACHE_VERSION;
   const subjectBase = `러닝봄 ${APP_VERSION}`;
   const general = document.getElementById("generalInquiryLink");
