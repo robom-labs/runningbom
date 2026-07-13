@@ -1,10 +1,10 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.15.0";
-const ASSET_VERSION = "20260713-25";
-const BUILD_SHA = "fcd7095";
-const PWA_CACHE_VERSION = "pushrun-v0.15.0";
+const APP_VERSION = "0.15.1";
+const ASSET_VERSION = "20260713-26";
+const BUILD_SHA = "f2e0214";
+const PWA_CACHE_VERSION = "pushrun-v0.15.1";
 const {
   normalizeRaceName,
   raceIdentity,
@@ -306,12 +306,18 @@ function isAcceptingNow(race) {
   return window.PushRunAlertsCore.isAcceptingNow(race, Date.now());
 }
 
+// 원본 status가 "open"으로 남아 있어도 마감 시각이 지났으면 접수 종료로 본다.
+function isRegistrationClosed(race) {
+  const closesAt = race.registrationCloseAt ? new Date(race.registrationCloseAt).getTime() : null;
+  return Boolean(closesAt && Date.now() > closesAt);
+}
+
 function raceSortGroup(race) {
   const now = Date.now();
   const opensAt = race.registrationOpenAt ? new Date(race.registrationOpenAt).getTime() : null;
   const closesAt = race.registrationCloseAt ? new Date(race.registrationCloseAt).getTime() : null;
   const raceAt = new Date(race.raceDate).getTime();
-  if (race.status === "open" || (opensAt && closesAt && opensAt <= now && now <= closesAt)) return 0;
+  if ((race.status === "open" && (!closesAt || now <= closesAt)) || (opensAt && closesAt && opensAt <= now && now <= closesAt)) return 0;
   if (opensAt && opensAt > now) return 1;
   if (raceAt > now) return 2;
   return 3;
@@ -891,7 +897,7 @@ function renderFilterSummary() {
   const region = state.regionFilter === "all" ? "전국" : state.regionFilter;
   const distance = state.distanceFilter === "all" ? "전체 거리" : state.distanceFilter;
   const query = state.query.trim() ? ` · “${state.query.trim()}”` : "";
-  target.textContent = `${region} · ${distance}${query} · 결과 ${getCategoryRaces().length}개`;
+  target.textContent = `${region} · ${distance}${query} · 결과 ${listRacesForCurrentContext().length}개`;
 }
 
 function raceCardHtml(race) {
@@ -899,20 +905,25 @@ function raceCardHtml(race) {
   const enabled = subscriptionsForRace(race.id).length > 0;
   const safeId = escapeHtml(race.id);
   const countdown = cardCountdown(race, Date.now());
+  const closed = isRegistrationClosed(race);
   const tone = isAcceptingNow(race)
     ? " tone-open"
-    : race.registrationStatus === "scheduled" && hasConfirmedRegistrationOpenTime(race)
-      ? " tone-scheduled"
-      : race.registrationStatus === "scheduled"
-        ? " tone-unconfirmed"
-        : " tone-neutral";
+    : closed
+      ? " tone-neutral"
+      : race.registrationStatus === "scheduled" && hasConfirmedRegistrationOpenTime(race)
+        ? " tone-scheduled"
+        : race.registrationStatus === "scheduled"
+          ? " tone-unconfirmed"
+          : " tone-neutral";
   const status = isAcceptingNow(race)
     ? "접수 중"
-    : race.registrationStatus === "scheduled" && hasConfirmedRegistrationOpenTime(race)
-      ? "접수 시각 확정"
-      : race.registrationStatus === "scheduled"
-        ? "시간 확인 필요"
-        : statusLabel(race.status);
+    : closed
+      ? "접수 마감"
+      : race.registrationStatus === "scheduled" && hasConfirmedRegistrationOpenTime(race)
+        ? "접수 시각 확정"
+        : race.registrationStatus === "scheduled"
+          ? "시간 확인 필요"
+          : statusLabel(race.status);
   const registrationAction = registrationButtonHtml(race);
   const alertAction = alertButtonHtml(race);
   const actions = [registrationAction, alertAction].filter(Boolean);
@@ -1565,11 +1576,11 @@ function bindEvents() {
   document.getElementById("modalTargetGrid").addEventListener("change", (event) => {
     const focusKey = event.target.value;
     state.modalTargetKeys = Array.from(document.querySelectorAll("#modalTargetGrid input:checked")).map((input) => input.value);
-    const selectedOffsets = getSelectedModalOffsets();
+    const selectedValues = Array.from(document.querySelectorAll("#modalPresetGrid input:checked")).map((input) => input.value);
     renderModal();
-    if (selectedOffsets.length) {
+    if (selectedValues.length) {
       document.querySelectorAll("#modalPresetGrid input").forEach((input) => {
-        input.checked = selectedOffsets.includes(Number(input.value));
+        input.checked = selectedValues.includes(input.value);
       });
     }
     Array.from(document.querySelectorAll("#modalTargetGrid input")).find((input) => input.value === focusKey)?.focus();
