@@ -1,10 +1,10 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.13.1";
-const ASSET_VERSION = "20260713-23";
-const BUILD_SHA = "3eb6866";
-const PWA_CACHE_VERSION = "pushrun-v0.13.1";
+const APP_VERSION = "0.14.0";
+const ASSET_VERSION = "20260713-24";
+const BUILD_SHA = "79e46d5";
+const PWA_CACHE_VERSION = "pushrun-v0.14.0";
 const {
   normalizeRaceName,
   raceIdentity,
@@ -1343,6 +1343,27 @@ async function refreshRaceData() {
   }
 }
 
+
+// 폰 설정 딥링크(웹 최선책): Android Chrome 계열은 intent: URI로 일부 시스템 설정을 열 수 있다.
+// 화면이 실제로 전환되지 않으면(비Android·미지원 브라우저) 안내 폴백을 연다.
+function openAndroidSetting(action, fallback) {
+  if (!/android/i.test(navigator.userAgent)) {
+    fallback();
+    return;
+  }
+  const timer = window.setTimeout(() => fallback(), 1600);
+  const cancel = () => {
+    if (document.hidden) window.clearTimeout(timer);
+  };
+  document.addEventListener("visibilitychange", cancel, { once: true });
+  window.location.href = "intent:#Intent;action=" + action + ";end";
+}
+
+function showPermissionGuideFallback() {
+  const btn = document.getElementById("openPermissionGuideButton");
+  if (btn) btn.click();
+}
+
 function showBatteryGuide() {
   openModal("batteryModal");
 }
@@ -1573,7 +1594,12 @@ function bindEvents() {
   });
 
   document.getElementById("batteryGuideButton").addEventListener("click", showBatteryGuide);
-  document.getElementById("openBatterySettingsButton").addEventListener("click", showBatteryGuide);
+  document.getElementById("openBatterySettingsButton").addEventListener("click", () => {
+    openAndroidSetting("android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS", showBatteryGuide);
+  });
+  document.getElementById("openSystemNotifButton").addEventListener("click", () => {
+    openAndroidSetting("android.settings.APP_NOTIFICATION_SETTINGS", showPermissionGuideFallback);
+  });
   document.getElementById("batterySettingsAgainButton").addEventListener("click", closeBatteryGuide);
   document.getElementById("batteryCloseButton").addEventListener("click", closeBatteryGuide);
   document.getElementById("batteryDoneButton").addEventListener("click", closeBatteryGuide);
