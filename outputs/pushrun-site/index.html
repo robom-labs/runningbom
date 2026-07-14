@@ -19,7 +19,7 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-    <link rel="stylesheet" href="./styles.css?v=20260713-27" />
+    <link rel="stylesheet" href="./styles.css?v=20260714-01" />
   </head>
   <body>
     <div class="app-shell">
@@ -30,7 +30,7 @@
             <span class="brand-title">
               <span class="brand-wordmark" aria-hidden="true">
                 <strong class="brand-prefix">러닝</strong>
-                <img class="brand-bom" src="./bom-runningbom.svg?v=20260713-27" alt="" />
+                <img class="brand-bom" src="./bom-runningbom.svg?v=20260714-01" alt="" />
               </span>
             </span>
             <small>robom · 출발선에 서는 날</small>
@@ -49,44 +49,55 @@
       <main>
         <section class="view active" id="view-home" aria-label="대회 탐색">
           <section class="race-finder" aria-label="대회 검색">
-            <label class="search-box search-box--primary" for="searchInput">
+            <label class="search-box" for="searchInput">
               <span class="visually-hidden">대회명 또는 지역 검색</span>
               <span class="search-control"><span class="search-icon" aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="대회명·지역 검색" autocomplete="off" inputmode="search" /><button type="button" id="clearSearchButton" aria-label="검색어 지우기" hidden>지우기</button></span>
             </label>
-            <button class="text-btn mobile-filter-toggle" type="button" id="mobileFilterToggleButton" aria-expanded="false" aria-controls="filtersPanel">지역 · 전체</button>
+            <label class="region-select-box">
+              <span class="visually-hidden">지역 선택</span>
+              <select id="regionFilter" aria-label="지역 선택"></select>
+            </label>
           </section>
 
-          <div class="results-toolbar search-entry">
-            <strong id="filterSummary">전국 · 전체 거리</strong>
+          <div class="distance-chips" id="distanceFilters" role="group" aria-label="거리 필터"></div>
+
+          <div class="status-segments" id="categoryTabs" role="group" aria-label="접수 상태 필터"></div>
+
+          <div class="results-summary">
+            <div class="results-summary-text">
+              <strong id="filterSummary">총 0개</strong>
+              <span id="filterSummaryContext"></span>
+            </div>
+            <label class="sort-select-box">
+              <span class="visually-hidden">정렬 기준</span>
+              <select id="sortSelect" aria-label="정렬 기준">
+                <option value="date">대회일 빠른 순</option>
+                <option value="reg">접수일 빠른 순</option>
+                <option value="region">지역순</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="reset-row" id="resetRow" hidden>
             <button class="text-btn" type="button" id="resetFiltersButton">전체 초기화</button>
           </div>
 
-          <section class="quick-filters" aria-label="빠른 대회 필터">
-            <div class="category-tabs" id="categoryTabs" aria-label="접수 상태"></div>
-            <div class="chip-row distance-chips" id="distanceFilters" aria-label="거리"></div>
-          </section>
-
-          <section class="filters-panel" id="filtersPanel" aria-label="전체 대회 찾기" hidden>
-            <div class="filter-head">
-              <div><span class="section-kicker">지역 선택</span><h2>어디에서 달릴까요?</h2></div>
-            </div>
-            <div class="filter-row" id="filterRow">
-              <label class="select-box"><span>지역</span><select id="regionFilter"></select></label>
-              <button class="primary-btn apply-btn" type="button" id="applyFiltersButton">적용</button>
-            </div>
-          </section>
+          <details class="more-conditions">
+            <summary>조건 더보기</summary>
+            <label class="switch-row" for="includeClosedToggle">
+              <span>접수 마감 포함</span>
+              <input type="checkbox" id="includeClosedToggle" />
+            </label>
+          </details>
 
           <section class="content-grid" aria-label="전체 대회 결과">
             <div class="race-list" id="raceList" aria-live="polite" aria-busy="true">
-              <section class="focus-board" role="status" aria-label="대회 정보를 불러오는 중">
-                <div class="all-results-head"><div><span class="section-kicker">전체 대회</span><h2>대회를 확인하고 있어요.</h2></div></div>
-                <div class="race-list-list race-list-skeleton" aria-hidden="true">
-                  <div class="skeleton-card"><span></span><strong></strong><i></i><i></i><b></b></div>
-                  <div class="skeleton-card"><span></span><strong></strong><i></i><i></i><b></b></div>
-                  <div class="skeleton-card"><span></span><strong></strong><i></i><i></i><b></b></div>
-                  <div class="skeleton-card"><span></span><strong></strong><i></i><i></i><b></b></div>
-                </div>
-              </section>
+              <div class="race-list-list race-list-skeleton" aria-hidden="true">
+                <div class="skeleton-card"><span></span><strong></strong><i></i><i></i><b></b></div>
+                <div class="skeleton-card"><span></span><strong></strong><i></i><i></i><b></b></div>
+                <div class="skeleton-card"><span></span><strong></strong><i></i><i></i><b></b></div>
+                <div class="skeleton-card"><span></span><strong></strong><i></i><i></i><b></b></div>
+              </div>
             </div>
           </section>
 
@@ -273,8 +284,8 @@
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="./race-calendar-core.js?v=20260713-27"></script>
-    <script src="./alerts-core.js?v=20260713-27"></script>
-    <script src="./app.js?v=20260713-27"></script>
+    <script src="./race-calendar-core.js?v=20260714-01"></script>
+    <script src="./alerts-core.js?v=20260714-01"></script>
+    <script src="./app.js?v=20260714-01"></script>
   </body>
 </html>

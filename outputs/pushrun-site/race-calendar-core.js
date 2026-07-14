@@ -230,6 +230,34 @@
     return { bucket: 2, closeTime };
   }
 
+  // ── 지도(네이버) 순수 함수 ────────────────────────────────────────
+  // 카드 상세의 "출발 장소" 지도 링크를 만드는 부수효과 없는 함수들.
+  // Node 테스트(scripts/map-links.test.mjs)에서 그대로 검증한다.
+  function compactMapText(value) {
+    return String(value || "").replace(/\s+/g, " ").trim();
+  }
+
+  function raceLocationSearchCandidates(race) {
+    const r = race || {};
+    const startVenue = r.startVenue || r.venue || "";
+    const regionCityVenue = compactMapText([r.region, r.city, startVenue].filter(Boolean).join(" "));
+    const nameVenue = compactMapText([r.name, startVenue].filter(Boolean).join(" "));
+    const nameStart = compactMapText([r.name, "출발 장소"].filter(Boolean).join(" "));
+    return [...new Set([regionCityVenue, nameVenue, nameStart].filter(Boolean))];
+  }
+
+  function naverMapSearchUrl(query) {
+    return `https://map.naver.com/p/search/${encodeURIComponent(query)}`;
+  }
+
+  // 첫 번째 유효 후보로 https 링크 생성. 출발지(venue/startVenue)가 없으면 null.
+  function raceMapLink(race) {
+    const r = race || {};
+    if (!(r.startVenue || r.venue)) return null;
+    const candidates = raceLocationSearchCandidates(r);
+    return candidates.length ? naverMapSearchUrl(candidates[0]) : null;
+  }
+
   function sortOpenRaces(races, now = Date.now()) {
     return [...races].sort((a, b) => {
       const aPriority = openRacePriority(a, now);
@@ -264,5 +292,9 @@
     cardCountdown,
     openRacePriority,
     sortOpenRaces,
+    compactMapText,
+    raceLocationSearchCandidates,
+    naverMapSearchUrl,
+    raceMapLink,
   };
 });
