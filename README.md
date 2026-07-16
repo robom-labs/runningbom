@@ -25,7 +25,7 @@ npm start
 
 ## 로봄 패밀리 정본
 
-패밀리 생성물은 로봄 중앙 정본의 immutable commit `5a63eab4f6930837f9877efd187562b85530a81a`에서 동기화합니다.
+패밀리 생성물은 로봄 중앙 정본의 immutable commit `f999781fa534183ecf15b5045df4179b020a338f`에서 동기화합니다.
 
 ```bash
 node ../robom/ops/scripts/family/sync-app.mjs \
@@ -33,7 +33,7 @@ node ../robom/ops/scripts/family/sync-app.mjs \
   --target "$PWD/generated/robom-family" \
   --lock "$PWD/family.lock.json" \
   --flavor vanilla \
-  --source-commit 5a63eab4f6930837f9877efd187562b85530a81a
+  --source-commit f999781fa534183ecf15b5045df4179b020a338f
 npm run build
 ```
 

@@ -10,7 +10,7 @@ test("activate는 이전 pushrun 캐시만 삭제한다", async () => {
   let claimed = 0;
   const context = {
     caches: {
-      keys: async () => ["pushrun-v0.16.0", "pushrun-v0.17.0", "homebom-v0.13.0", "third-party-cache"],
+      keys: async () => ["pushrun-v0.16.0", "pushrun-v0.17.0", "pushrun-v0.17.1", "homebom-v0.13.0", "third-party-cache"],
       delete: async (key) => {
         deleted.push(key);
         return true;
@@ -38,6 +38,6 @@ test("activate는 이전 pushrun 캐시만 삭제한다", async () => {
   handlers.activate({ waitUntil: (promise) => { activation = promise; } });
   await activation;
 
-  assert.deepEqual(deleted, ["pushrun-v0.16.0"]);
+  assert.deepEqual(deleted, ["pushrun-v0.16.0", "pushrun-v0.17.0"]);
   assert.equal(claimed, 1);
 });

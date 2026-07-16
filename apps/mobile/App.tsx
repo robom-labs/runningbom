@@ -213,7 +213,7 @@ function AppScreen() {
           <Text accessibilityRole="header" style={styles.wordmark}>
             러닝<Text style={styles.wordmarkAccent}>봄</Text>
           </Text>
-          <Text style={styles.version}>Native 0.17.0</Text>
+          <Text style={styles.version}>Native 0.17.1</Text>
         </View>
 
         <View style={styles.intro}>

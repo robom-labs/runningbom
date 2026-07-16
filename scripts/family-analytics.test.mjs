@@ -7,7 +7,7 @@ import vm from "node:vm";
 function createContext() {
   const storage = new Map();
   const meta = new Map([
-    ["application-version", "0.17.0"],
+    ["application-version", "0.17.1"],
     ["robom-family-spec-version", "1.0.0"]
   ]);
   const context = {
@@ -66,7 +66,7 @@ test("동의와 공급자가 있을 때 계약의 최소 필드만 비동기로 
     "surface",
     "timestamp"
   ]);
-  assert.equal(received[0].app_version, "0.17.0");
+  assert.equal(received[0].app_version, "0.17.1");
   assert.equal(received[0].detail, undefined);
 });
 

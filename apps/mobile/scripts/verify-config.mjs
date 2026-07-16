@@ -19,7 +19,7 @@ const [packageJson, appJson, easJson, raceData] = await Promise.all([
   readJson('src/data/races.json'),
 ]);
 
-assert(packageJson.version === '0.17.0', '모바일 버전은 0.17.0이어야 합니다.');
+assert(packageJson.version === '0.17.1', '모바일 버전은 0.17.1이어야 합니다.');
 assert(packageJson.dependencies.expo === '~57.0.6', 'Expo SDK 57 버전이 고정되지 않았습니다.');
 assert(packageJson.dependencies.react === '19.2.3', 'React 19.2.3이 필요합니다.');
 assert(packageJson.dependencies['react-native'] === '0.86.0', 'React Native 0.86.0이 필요합니다.');

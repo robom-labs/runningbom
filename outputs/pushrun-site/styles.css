@@ -2010,6 +2010,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: #f1f4f7; color: var(--muted); font-size: 13px; font-weight: 800;
 }
 .region-select-box { position: relative; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+.race-finder .region-select-box { width: 82px; }
 .region-select-box select {
   min-height: 52px; border: 1px solid #cbd9e4; border-radius: 16px; background: #fff;
   color: var(--ink); font-size: 16px; font-weight: 700; padding: 0 34px 0 14px; outline: none;
@@ -2024,6 +2025,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
+  min-height: 112px;
   margin-bottom: 10px;
 }
 .distance-chips .filter-chip {
@@ -2042,6 +2044,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
+  min-height: 58px;
   margin-bottom: 14px;
 }
 .status-seg {

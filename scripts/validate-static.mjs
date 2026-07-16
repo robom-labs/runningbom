@@ -20,7 +20,7 @@ const familySettings = JSON.parse(readFileSync(join(root, "generated", "robom-fa
 const familyFeatureFlags = JSON.parse(readFileSync(join(root, "generated", "robom-family", "feature-flags.json"), "utf8"));
 const familyAuth = JSON.parse(readFileSync(join(root, "generated", "robom-family", "auth-config.json"), "utf8"));
 const familyLock = JSON.parse(readFileSync(join(root, "family.lock.json"), "utf8"));
-const FAMILY_SOURCE_COMMIT = "5a63eab4f6930837f9877efd187562b85530a81a";
+const FAMILY_SOURCE_COMMIT = "f999781fa534183ecf15b5045df4179b020a338f";
 
 // ── 신선도 기준(상수) ─────────────────────────────────────────────
 // 접수 예정(오픈 시각이 미래) 대회가 이 수 미만이면 FAIL.
@@ -39,6 +39,10 @@ const all = [...featured, ...schedule];
 
 if (/cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com|unpkg\.com/.test(html)) {
   errors.push("첫 화면에 외부 CDN 글꼴 또는 설치 자산 의존이 남아 있습니다.");
+}
+
+if (!styles.includes(".race-finder .region-select-box { width: 82px; }") || !styles.includes("min-height: 112px;") || !styles.includes("min-height: 58px;")) {
+  errors.push("초기 필터 렌더링 전 모바일 레이아웃 이동 방지 공간이 없습니다.");
 }
 
 if (featured.length === 0) errors.push("featuredRaces가 비어 있습니다.");

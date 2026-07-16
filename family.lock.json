@@ -1,10 +1,10 @@
 {
   "familySpecVersion": "1.0.0",
-  "sourceCommit": "5a63eab4f6930837f9877efd187562b85530a81a",
+  "sourceCommit": "f999781fa534183ecf15b5045df4179b020a338f",
   "generatedAt": "2026-07-16T09:20:24+09:00",
   "files": {
     "tokens.css": "sha256:9064f3a1083bb0978cb154fd5c145012ff72fe3d21a775025e281b841e0aa00b",
-    "app-meta.json": "sha256:29bc601d274625d4bf3cd994200e707504dcefd524d665d12476980379d87cbe",
+    "app-meta.json": "sha256:fdb97b7db663a1930357bb4da4fbaded72e45c4e04780c0a0d4d69c8968056a0",
     "wordmark.svg": "sha256:e3e5723e982183d875f99cf562f4d32f4d77224861a1720ed0c8e325c881e1bf",
     "icons.svg": "sha256:dc9a38ef57a68e1e689b38be8630191d706dcc95ba9e50a28bfd2f78a6beae7e",
     "settings-contract.json": "sha256:cc489f425f8d5ad8810cf1be5b63e3599244321a9059eca8fffd2c639801d0a2",
