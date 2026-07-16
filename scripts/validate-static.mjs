@@ -22,6 +22,7 @@ const familyAuth = JSON.parse(readFileSync(join(root, "generated", "robom-family
 const familyLock = JSON.parse(readFileSync(join(root, "family.lock.json"), "utf8"));
 const vercelConfig = JSON.parse(readFileSync(join(root, "vercel.json"), "utf8"));
 const vercelBuild = readFileSync(join(root, "scripts", "build-vercel.mjs"), "utf8");
+const vercelIgnore = readFileSync(join(root, ".vercelignore"), "utf8");
 const FAMILY_SOURCE_COMMIT = "fe655b865edb5ad2c037e117143684c6dae9f5eb";
 
 // ── 신선도 기준(상수) ─────────────────────────────────────────────
@@ -44,6 +45,9 @@ if (vercelConfig.buildCommand !== "node scripts/build-vercel.mjs" || vercelConfi
 }
 if (!vercelBuild.includes("VERCEL_GIT_COMMIT_SHA") || !vercelBuild.includes('replaceAll("__BUILD_SHA__"')) {
   errors.push("Vercel 빌드가 운영 Git SHA를 app.js에 주입하지 않습니다.");
+}
+if (!vercelIgnore.includes("!scripts/build-vercel.mjs")) {
+  errors.push("Vercel 업로드에서 빌드 SHA 주입 스크립트가 제외됩니다.");
 }
 
 if (/cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com|unpkg\.com/.test(html)) {

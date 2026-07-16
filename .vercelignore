@@ -4,3 +4,5 @@
 !outputs
 !outputs/pushrun-site
 !outputs/pushrun-site/**
+!scripts
+!scripts/build-vercel.mjs
