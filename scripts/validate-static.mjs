@@ -20,7 +20,7 @@ const familySettings = JSON.parse(readFileSync(join(root, "generated", "robom-fa
 const familyFeatureFlags = JSON.parse(readFileSync(join(root, "generated", "robom-family", "feature-flags.json"), "utf8"));
 const familyAuth = JSON.parse(readFileSync(join(root, "generated", "robom-family", "auth-config.json"), "utf8"));
 const familyLock = JSON.parse(readFileSync(join(root, "family.lock.json"), "utf8"));
-const FAMILY_SOURCE_COMMIT = "f999781fa534183ecf15b5045df4179b020a338f";
+const FAMILY_SOURCE_COMMIT = "fe655b865edb5ad2c037e117143684c6dae9f5eb";
 
 // ── 신선도 기준(상수) ─────────────────────────────────────────────
 // 접수 예정(오픈 시각이 미래) 대회가 이 수 미만이면 FAIL.
