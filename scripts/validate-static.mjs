@@ -37,6 +37,10 @@ const featured = Array.isArray(data.featuredRaces) ? data.featuredRaces : [];
 const schedule = Array.isArray(data.scheduleFeed) ? data.scheduleFeed : [];
 const all = [...featured, ...schedule];
 
+if (/cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com|unpkg\.com/.test(html)) {
+  errors.push("첫 화면에 외부 CDN 글꼴 또는 설치 자산 의존이 남아 있습니다.");
+}
+
 if (featured.length === 0) errors.push("featuredRaces가 비어 있습니다.");
 if (schedule.length === 0) errors.push("scheduleFeed가 비어 있습니다.");
 if (!manifest.id || !manifest.start_url || !manifest.scope || !Array.isArray(manifest.icons) || manifest.icons.length === 0) {
