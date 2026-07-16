@@ -4,10 +4,13 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import vm from "node:vm";
 
+// 릴리스마다 이 테스트를 고치지 않도록 현재 버전은 package.json에서 읽는다.
+const APP_VERSION = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")).version;
+
 function createContext() {
   const storage = new Map();
   const meta = new Map([
-    ["application-version", "0.17.2"],
+    ["application-version", APP_VERSION],
     ["robom-family-spec-version", "1.0.0"]
   ]);
   const context = {
@@ -66,7 +69,7 @@ test("동의와 공급자가 있을 때 계약의 최소 필드만 비동기로 
     "surface",
     "timestamp"
   ]);
-  assert.equal(received[0].app_version, "0.17.2");
+  assert.equal(received[0].app_version, APP_VERSION);
   assert.equal(received[0].detail, undefined);
 });
 

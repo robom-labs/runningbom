@@ -23,7 +23,7 @@ const familyLock = JSON.parse(readFileSync(join(root, "family.lock.json"), "utf8
 const vercelConfig = JSON.parse(readFileSync(join(root, "vercel.json"), "utf8"));
 const vercelBuild = readFileSync(join(root, "scripts", "build-vercel.mjs"), "utf8");
 const vercelIgnore = readFileSync(join(root, ".vercelignore"), "utf8");
-const FAMILY_SOURCE_COMMIT = "fe655b865edb5ad2c037e117143684c6dae9f5eb";
+const FAMILY_SOURCE_COMMIT = "b592076e683ce3f3094b1399ceee7ca93e014eaa";
 
 // ── 신선도 기준(상수) ─────────────────────────────────────────────
 // 접수 예정(오픈 시각이 미래) 대회가 이 수 미만이면 FAIL.

@@ -4,13 +4,16 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import vm from "node:vm";
 
+// 릴리스마다 이 테스트를 고치지 않도록 현재 버전은 package.json에서 읽는다.
+const APP_VERSION = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")).version;
+
 test("activate는 이전 pushrun 캐시만 삭제한다", async () => {
   const handlers = {};
   const deleted = [];
   let claimed = 0;
   const context = {
     caches: {
-      keys: async () => ["pushrun-v0.16.0", "pushrun-v0.17.0", "pushrun-v0.17.1", "pushrun-v0.17.2", "homebom-v0.13.0", "third-party-cache"],
+      keys: async () => ["pushrun-v0.16.0", "pushrun-v0.17.0", "pushrun-v0.17.1", `pushrun-v${APP_VERSION}`, "homebom-v0.13.0", "third-party-cache"],
       delete: async (key) => {
         deleted.push(key);
         return true;
