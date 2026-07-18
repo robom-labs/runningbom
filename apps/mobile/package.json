@@ -1,6 +1,6 @@
 {
   "name": "@robom/runningbom-mobile",
-  "version": "0.17.4",
+  "version": "0.17.5",
   "main": "index.ts",
   "dependencies": {
     "expo": "~57.0.6",

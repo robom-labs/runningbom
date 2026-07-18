@@ -1,29 +1,63 @@
 :root {
   color-scheme: light;
-  --page: var(--app-page, #fff9f2);
+
+  /* ═══ 볼트 스포티 — 애플 리스킨 토큰 ═══
+     포인트색은 볼트 라임 하나. 볼트는 "채움 전용"이고,
+     밝은 배경 위 텍스트/포인트는 --volt-text(#54700a)로만 쓴다.
+     tokens.css는 절대 편집하지 않으며, 여기서 --app-brand* 를 재정의해
+     생성 토큰 위에 리스킨을 얹는다(styles.css가 tokens.css보다 뒤에 로드됨). */
+  --volt: #d8f337;
+  --volt-deep: #b8d61a;
+  --volt-soft: #f3fbd0;
+  --volt-text: #54700a;
+  --ink: #161811;
+  --ink-card: #1d2014;
+  --muted: #6f7168; /* 스펙 #83857c는 흰 배경 3.9:1로 AA 미달 → 같은 웜그레이에서 AA(≈5:1) 충족하게 한 단계 어둡게 */
+  --canvas: #fff;
+  --grouped: #f4f5f0;
+  --hairline: rgba(50, 55, 40, 0.12);
+  --go: #2f8b46;
+  --go-soft: #e2f4e7;
+  --amber: #b5851f;
+  --danger: #d1343b;
+  --shadow-card: 0 10px 30px rgba(35, 40, 20, 0.08);
+
+  /* 패밀리 브랜드 토큰을 볼트로 재정의 → var(--app-brand*) 참조가 자동 리컬러 */
+  --app-brand: var(--volt);
+  --app-brand-deep: var(--volt-text);
+  --app-brand-soft: var(--volt-soft);
+
+  /* 표면/골격 — 페이지 배경은 패밀리 --app-page를 볼트 파치먼트로 재정의해 연결 유지 */
+  --app-page: var(--grouped);
+  --page: var(--app-page);
   --bg: var(--page);
-  --surface: #ffffff;
-  --surface-2: #f3f6f8;
-  --soft: #f3f6f8;
-  --ink: var(--app-ink, #1d3047);
-  --muted: #56615b;
-  --line: var(--family-border, #dfe6e2);
-  --coral: var(--app-brand-deep, #a93725);
-  --coral-soft: var(--app-brand-soft, #ffebe6);
-  --coral-deep: var(--app-brand-deep, #a93725);
-  --coral-strong: #173f5f;
+  --surface: var(--canvas);
+  --surface-2: var(--grouped);
+  --soft: var(--grouped);
+  --line: var(--hairline);
+
+  /* 앱 팔레트 별칭 → 볼트 매핑(기존 컴포넌트 규칙 다수를 자동 리컬러).
+     볼트는 채움 전용이므로 "텍스트로 쓰이는" 별칭(coral/coral-deep/navy)은
+     밝은 배경용 --volt-text 로, "다크 채움"으로 쓰이는 coral-strong 은 --ink-card 로 맞춘다. */
+  --coral: var(--volt-text);
+  --coral-soft: var(--volt-soft);
+  --coral-deep: var(--volt-text);
+  --coral-strong: var(--ink-card);
+  --navy: var(--volt-text);
+
+  /* 상태색: 예정=볼트 소프트 톤, 중립=go(그린) */
   --sky: #5aa9e6;
-  --sky-soft: #eaf5fc;
-  --mint: #39aa8b;
-  --mint-soft: #eaf8f3;
-  --slate: #758391;
-  --uncertain: var(--slate);
-  --navy: var(--app-brand-deep);
-  --lime: #dff08b;
-  --amber: #e6a62d;
-  --shadow: var(--family-shadow-card, 0 12px 30px rgba(29, 48, 71, 0.08));
+  --sky-soft: var(--volt-soft);
+  --mint: var(--go);
+  --mint-soft: var(--go-soft);
+  --slate: var(--muted);
+  --uncertain: var(--muted);
+
+  --lime: var(--volt);
+  --shadow: var(--shadow-card);
   --r: var(--family-radius-md, 18px);
-  --font: var(--family-font, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  --font-display: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
 }
 
 * {
@@ -2203,4 +2237,306 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .distance-chips .filter-chip { font-size: 15px; }
   .status-seg-label { font-size: 13px; }
   .race-name { font-size: 19px; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   볼트 스포티 — 애플 리스킨 (컴포넌트 레벨)
+   :root 별칭 재매핑으로 커버되지 않는 구조/색을 실제 클래스에 맞춰 조정한다.
+   DOM·클래스·JS 미변경. .race-accent/.race-badge/.race-time-pill 색은 app.js
+   인라인 스타일(getTone)로 지정되므로 CSS로 덮지 않고 그대로 둔다.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── 글로벌 ── */
+body {
+  background:
+    radial-gradient(circle at 88% -6%, rgba(216, 243, 55, 0.20), transparent 30rem),
+    var(--grouped);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 17px;
+}
+a { color: var(--volt-text); }
+a:hover { color: #3c5106; }
+button:active { transform: scale(0.95); }
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 3px solid rgba(184, 214, 26, 0.7);
+  outline-offset: 2px;
+}
+h1, h2, h3 { letter-spacing: -0.02em; }
+
+/* 헤드라인은 SF Pro Display 우선 */
+.page-heading h1,
+.alert-modal h2,
+.race-name,
+.all-results-head h2,
+.calendar-title h2,
+.settings-card-head h2,
+.list-card h3 { font-family: var(--font-display); }
+
+/* weight 500 금지 → 300/400/600/700 만. 본문 500을 400으로 정리 */
+.race-location,
+.settings-note,
+.settings-row small,
+.settings-consent-row small,
+.app-meta-card small { font-weight: 400; }
+
+/* ── 상단바(헤더) ── */
+.topbar {
+  background: linear-gradient(180deg, var(--volt-soft) 0%, rgba(255, 255, 255, 0.96) 100%);
+  border-bottom: 1px solid var(--hairline);
+  box-shadow: 0 10px 26px rgba(35, 40, 20, 0.10);
+}
+.brand-mark { box-shadow: 0 10px 24px rgba(35, 40, 20, 0.14); }
+.icon-btn { color: var(--volt-text); border-color: var(--hairline); }
+
+/* ── 검색 + 지역/정렬 ── */
+.race-finder .search-control,
+.search-control {
+  border: 1px solid var(--hairline);
+  background: rgba(120, 120, 128, 0.10);
+  box-shadow: none;
+}
+.race-finder .search-control:focus-within,
+.search-control:focus-within {
+  border-color: var(--volt-deep);
+  box-shadow: 0 0 0 3px rgba(184, 214, 26, 0.25);
+}
+.search-icon { color: var(--muted); }
+.region-select-box select,
+.sort-select-box select { border-color: var(--hairline); }
+.region-select-box select:focus,
+.sort-select-box select:focus {
+  border-color: var(--volt-deep);
+  box-shadow: 0 0 0 3px rgba(184, 214, 26, 0.25);
+}
+
+/* ── 거리 칩 / 접수상태 세그먼트: 비활성 흰+헤어라인, 활성 --ink 채움+--volt 글자 ── */
+.distance-chips .filter-chip,
+.status-seg {
+  border: 1px solid var(--hairline);
+  background: #fff;
+  color: var(--ink);
+}
+.status-seg .status-seg-count { color: var(--ink); }
+.distance-chips .filter-chip.active,
+.status-seg.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--volt);
+}
+.status-seg.active .status-seg-label,
+.status-seg.active .status-seg-count { color: var(--volt); }
+
+/* 결과 요약 / 조건 더보기 토글 */
+#filterSummary { color: var(--ink); }
+.switch-row {
+  border-color: var(--hairline);
+  background: var(--grouped);
+  color: var(--ink);
+}
+.switch-row input { accent-color: var(--volt-deep); }
+
+/* ── 대회 카드 v2 ── */
+.race-card-v2 {
+  border: 1px solid var(--hairline);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card), 0 0 0 1px rgba(184, 214, 26, 0.18);
+}
+.race-name { color: var(--ink); font-weight: 700; }
+.race-when strong { color: var(--ink); font-weight: 600; }
+.race-regline { background: var(--grouped); border-radius: 12px; }
+/* 거리 칩(5K/10K/Half/Full): --ink 채움 + --volt 글자, 8px 라운드 */
+.race-tag {
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--volt);
+}
+.course-chips span {
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--volt);
+}
+/* 주요 CTA: 볼트 채움 + --ink 글자 / 켜짐: --ink 채움 + --volt 글자 */
+.race-alert-btn {
+  border: 1.5px solid var(--volt);
+  background: var(--volt);
+  color: var(--ink);
+}
+.race-alert-btn.on {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--volt);
+}
+.race-alert-btn.disabled {
+  border-color: var(--hairline);
+  background: var(--grouped);
+  color: var(--muted);
+}
+/* 보조 CTA(대회 페이지/자세히): 흰 + 헤어라인 + --ink 글자 */
+.race-expand-btn {
+  border: 1px solid var(--hairline);
+  background: #fff;
+  color: var(--ink);
+}
+.detail-window-label { background: var(--volt-soft); color: var(--volt-text); }
+.detail-official { background: var(--volt); color: var(--ink); }
+
+/* ── 월간 접수 캘린더 (따뜻한 크림 → 볼트/뉴트럴) ── */
+.registration-calendar { background: transparent; }
+.calendar-nav {
+  border-color: var(--hairline);
+  background: #fff;
+  color: var(--volt-text);
+}
+.calendar-nav:hover { background: var(--volt-soft); }
+.calendar-cell { box-shadow: 0 1px 2px rgba(35, 40, 20, 0.05); }
+.calendar-cell.has-races {
+  background: linear-gradient(180deg, #fff, var(--volt-soft));
+  box-shadow: 0 3px 9px rgba(120, 133, 90, 0.16);
+}
+.calendar-cell .cal-dot { background: var(--volt-deep); color: var(--ink); }
+.calendar-cell.today {
+  outline-color: var(--volt-deep);
+  background: var(--volt-soft);
+}
+.calendar-cell.today strong { color: var(--volt-text); }
+.calendar-cell.active {
+  background: var(--ink);
+  box-shadow: 0 6px 16px rgba(35, 40, 20, 0.28);
+}
+.calendar-cell.active .cal-dot { background: rgba(216, 243, 55, 0.30); color: var(--volt); }
+
+/* ── 마감 임박 스트립 ── */
+.closing-soon { border-color: var(--hairline); background: var(--volt-soft); }
+.closing-soon-dot { background: var(--volt-deep); }
+.closing-soon-head h3 { color: var(--ink); }
+.closing-soon-list a,
+.closing-soon-list > div { border-color: rgba(184, 214, 26, 0.28); }
+.closing-soon-list span,
+.closing-soon-list i { color: var(--volt-text); }
+
+/* 구형 리스트 카드 잔여 알림 버튼(안전 리컬러) */
+.action-alert { border-color: var(--volt); background: var(--volt); color: var(--ink); }
+
+/* ── 킥커(공통) ── */
+.section-kicker { background: var(--volt); color: var(--ink); }
+
+/* ── 내 알림 ── */
+.alert-card {
+  border: 1px solid var(--hairline);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+.status-pill.open,
+.status-pill.scheduled {
+  background: var(--volt-soft);
+  color: var(--volt-text);
+}
+.chip.highlight { background: var(--volt); color: var(--ink); }
+/* 가장 가까운(첫) 알림 = 다크 잉크 그라데이션 하이라이트 */
+.alert-list .alert-card:first-child {
+  background: linear-gradient(150deg, var(--ink-card), #262b15);
+  border-color: transparent;
+  color: #fff;
+}
+.alert-list .alert-card:first-child h3 { color: #fff; }
+.alert-list .alert-card:first-child .meta-line { color: #c9cdb8; }
+.alert-list .alert-card:first-child .status-pill {
+  background: rgba(216, 243, 55, 0.16);
+  color: var(--volt);
+}
+
+/* ── 설정(iOS 그룹 리스트) ── */
+.settings-note--warning {
+  background: #fff7e2;
+  color: #79601f;
+  box-shadow: inset 0 0 0 1px #ecdcae;
+}
+.settings-deeplinks .primary-action { background: var(--volt); color: var(--ink); }
+.settings-deeplinks .ghost-action {
+  background: #fff;
+  border-color: var(--hairline);
+  color: var(--volt-text);
+}
+.settings-consent-row input { accent-color: var(--volt-deep); }
+.app-meta-list { border-color: var(--hairline); }
+
+/* ── 프로스티드 하단 탭바: 활성=색상만(--volt-text), 배경 강조 금지 ── */
+.mobile-tabs {
+  background: rgba(245, 246, 240, 0.82);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 0.5px solid var(--hairline);
+  box-shadow: 0 -8px 24px rgba(35, 40, 20, 0.06);
+}
+.mobile-tab { color: var(--muted); }
+.mobile-tab.active { background: transparent; color: var(--volt-text); }
+
+/* ── 알림 모달(#alertModal 공통 .alert-modal) ── */
+.modal-backdrop {
+  background: rgba(18, 20, 10, 0.44);
+  backdrop-filter: blur(8px);
+}
+.alert-modal {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(216, 243, 55, 0.16), transparent 34%),
+    var(--grouped);
+  border: 1px solid var(--hairline);
+  border-radius: 26px;
+  box-shadow: 0 28px 70px rgba(18, 20, 10, 0.30);
+}
+/* 상단 드래그 핸들(바텀시트 느낌) */
+.alert-modal::before {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 5px;
+  margin: 0 auto 10px;
+  border-radius: 999px;
+  background: rgba(50, 55, 40, 0.22);
+}
+.modal-close { border-color: var(--hairline); background: #fff; }
+.modal-countdown span { color: var(--volt); }
+/* 종목 칩 선택 = --ink 채움 + --volt 글자 */
+.target-grid label:has(input:checked) {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--volt);
+  box-shadow: none;
+}
+.target-grid label:has(input:checked) small { color: rgba(216, 243, 55, 0.78); }
+.target-grid input { accent-color: var(--volt-deep); }
+/* 시간 프리셋 선택 = --volt-soft 배경 + 2px solid --volt-deep + --volt-text 글자 */
+.preset-grid label:has(input:checked) {
+  border: 2px solid var(--volt-deep);
+  background: var(--volt-soft);
+  color: var(--volt-text);
+  box-shadow: none;
+}
+.preset-grid input { accent-color: var(--volt-deep); }
+
+/* 모달/공통 버튼 */
+.primary-btn {
+  background: var(--volt);
+  color: var(--ink);
+  box-shadow: 0 10px 24px rgba(160, 190, 20, 0.35);
+}
+.danger-btn { background: #fdeef0; color: var(--danger); }
+.ghost-btn {
+  border: 1px solid var(--hairline);
+  background: #fff;
+  color: var(--ink);
+}
+.race-card .list-action-wrap .mini-btn:not(.strong) {
+  border-color: var(--hairline);
+  background: #fff;
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button:active { transform: none; }
 }

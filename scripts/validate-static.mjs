@@ -23,7 +23,7 @@ const familyLock = JSON.parse(readFileSync(join(root, "family.lock.json"), "utf8
 const vercelConfig = JSON.parse(readFileSync(join(root, "vercel.json"), "utf8"));
 const vercelBuild = readFileSync(join(root, "scripts", "build-vercel.mjs"), "utf8");
 const vercelIgnore = readFileSync(join(root, ".vercelignore"), "utf8");
-const FAMILY_SOURCE_COMMIT = "0a03e71244d59ce47a8b9c2edcf626cc2ebb5590";
+const FAMILY_SOURCE_COMMIT = "096226d3257a1c06681ea5856a3e009c033b66cf";
 
 // ── 신선도 기준(상수) ─────────────────────────────────────────────
 // 접수 예정(오픈 시각이 미래) 대회가 이 수 미만이면 FAIL.
@@ -255,7 +255,7 @@ if (!sw.includes(`./race-calendar-core.js?v=${assetVersion}`) || !calendarCore.i
 if (app.includes(".getHours()") || app.includes(".getMonth()") || app.includes(".getDate()")) {
   errors.push("화면 날짜·시각 계산에 브라우저 로컬 Date API가 남아 있습니다.");
 }
-if (!html.includes('name="theme-color" content="#34640a"') || manifest.theme_color !== "#34640a") {
+if (!html.includes('name="theme-color" content="#1d2014"') || manifest.theme_color !== "#1d2014") {
   errors.push("HTML과 manifest의 Dawn Track theme-color가 다릅니다.");
 }
 if (!sw.includes('request.mode === "navigate"')) {
