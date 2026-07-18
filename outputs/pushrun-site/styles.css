@@ -18,7 +18,7 @@
   --mint-soft: #eaf8f3;
   --slate: #758391;
   --uncertain: var(--slate);
-  --navy: var(--app-brand);
+  --navy: var(--app-brand-deep);
   --lime: #dff08b;
   --amber: #e6a62d;
   --shadow: var(--family-shadow-card, 0 12px 30px rgba(29, 48, 71, 0.08));
@@ -1527,7 +1527,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border-radius: 14px;
   padding: 0 15px;
   background: var(--surface);
-  color: var(--navy);
+  color: var(--app-brand-deep);
   font-weight: 700;
 }
 
@@ -1578,9 +1578,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 .quick-filters .category-tab.active,
 .quick-filters .filter-chip.active {
-  border-color: var(--navy);
-  background: var(--navy);
-  color: #fff;
+  border-color: var(--app-brand);
+  background: var(--app-brand);
+  color: #17250a;
 }
 .quick-filters b { color: inherit; }
 
@@ -1813,7 +1813,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border: 1px solid var(--line);
   border-radius: 16px;
   background: rgba(255, 255, 255, .9);
-  color: var(--navy);
+  color: var(--app-brand-deep);
   font-weight: 800;
 }
 .load-more-btn small { color: var(--muted); font-weight: 650; }
@@ -1833,7 +1833,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   justify-content: space-between;
   gap: 14px;
   padding: 0 18px;
-  color: var(--navy);
+  color: var(--app-brand-deep);
   font-weight: 800;
   list-style: none;
 }
@@ -2036,7 +2036,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   cursor: pointer; transition: background 0.12s, border-color 0.12s, color 0.12s;
 }
 .distance-chips .filter-chip.active {
-  background: var(--navy); border-color: var(--navy); color: #fff; font-weight: 800;
+  background: var(--app-brand); border-color: var(--app-brand); color: #17250a; font-weight: 800;
 }
 
 /* ③ 접수 상태 필터 — 3칸 동일 너비 */
@@ -2055,7 +2055,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 .status-seg-label { font-size: 14px; font-weight: 700; white-space: nowrap; }
 .status-seg-count { font-size: 19px; font-weight: 800; line-height: 1; }
-.status-seg.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+.status-seg.active { background: var(--app-brand); border-color: var(--app-brand); color: #17250a; }
 
 /* ④ 결과 요약 + 정렬 */
 .results-summary {
@@ -2169,7 +2169,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .detail-official-wrap { display: grid; gap: 10px; padding-top: 2px; }
 .detail-official {
   display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 14px;
-  background: var(--navy); color: #fff; font-size: 15px; font-weight: 800; text-decoration: none;
+  background: var(--app-brand); color: #17250a; font-size: 15px; font-weight: 800; text-decoration: none;
 }
 .detail-official.disabled { background: #f3f6f8; color: var(--slate); border: 1px dashed #c3ccd4; }
 .detail-source { color: #8a97a3; font-size: 12px; text-align: center; line-height: 1.4; }
