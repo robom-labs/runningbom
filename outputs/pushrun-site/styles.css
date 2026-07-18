@@ -18,7 +18,7 @@
   --mint-soft: #eaf8f3;
   --slate: #758391;
   --uncertain: var(--slate);
-  --navy: #173f5f;
+  --navy: var(--app-brand);
   --lime: #dff08b;
   --amber: #e6a62d;
   --shadow: var(--family-shadow-card, 0 12px 30px rgba(29, 48, 71, 0.08));

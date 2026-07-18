@@ -23,7 +23,7 @@ const familyLock = JSON.parse(readFileSync(join(root, "family.lock.json"), "utf8
 const vercelConfig = JSON.parse(readFileSync(join(root, "vercel.json"), "utf8"));
 const vercelBuild = readFileSync(join(root, "scripts", "build-vercel.mjs"), "utf8");
 const vercelIgnore = readFileSync(join(root, ".vercelignore"), "utf8");
-const FAMILY_SOURCE_COMMIT = "b592076e683ce3f3094b1399ceee7ca93e014eaa";
+const FAMILY_SOURCE_COMMIT = "009905aeb250a77c0bae2518c589f3d861e54450";
 
 // ── 신선도 기준(상수) ─────────────────────────────────────────────
 // 접수 예정(오픈 시각이 미래) 대회가 이 수 미만이면 FAIL.
@@ -213,7 +213,7 @@ if (familyAuth.namespace !== "runningbom" || familyAuth.guestFirst !== true) {
   errors.push("패밀리 auth config는 runningbom guest-first여야 합니다.");
 }
 const familyAppIds = familyMeta.familyApps?.map((item) => item.id).sort() || [];
-if (familyAppIds.join(",") !== ["calendarbom", "certbom", "homebom", "outbom", "runningbom"].join(",")) {
+if (familyAppIds.join(",") !== ["calendarbom", "certbom", "homebom", "notebom", "outbom", "runningbom"].join(",")) {
   errors.push("설정용 패밀리 메타데이터에 5개 앱 전체가 없습니다.");
 }
 
@@ -255,7 +255,7 @@ if (!sw.includes(`./race-calendar-core.js?v=${assetVersion}`) || !calendarCore.i
 if (app.includes(".getHours()") || app.includes(".getMonth()") || app.includes(".getDate()")) {
   errors.push("화면 날짜·시각 계산에 브라우저 로컬 Date API가 남아 있습니다.");
 }
-if (!html.includes('name="theme-color" content="#173f5f"') || manifest.theme_color !== "#173f5f") {
+if (!html.includes('name="theme-color" content="#f2603c"') || manifest.theme_color !== "#f2603c") {
   errors.push("HTML과 manifest의 Dawn Track theme-color가 다릅니다.");
 }
 if (!sw.includes('request.mode === "navigate"')) {
