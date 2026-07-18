@@ -1500,7 +1500,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 .brand-title > .brand-wordmark {
   display: inline-block;
-  font-family: var(--font);
+  /* 시그니처 "러닝봄" 워드마크는 앱 본문 폰트(리스킨 SF Pro)가 아니라
+     계열사 공통 정본 글자체(--family-font)를 쓴다. "봄"은 패밀리 SVG로 이미 고정. */
+  font-family: var(--family-font, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif);
   font-size: clamp(28px, 4vw, 30px);
   font-weight: 900;
   color: var(--ink);
