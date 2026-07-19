@@ -361,12 +361,12 @@ export default function App() {
 const colors = {
   background: '#FFF8F4',
   surface: '#FFFFFF',
-  surfaceSoft: '#FFF0EB',
+  surfaceSoft: '#E6F7F3',
   ink: '#172033',
   muted: '#667085',
   line: '#E7DDD8',
-  coral: '#D94F45',
-  coralDark: '#A93631',
+  coral: '#12B3A0',
+  coralDark: '#0F766E',
   navy: '#203354',
   mint: '#DDF4EC',
 };
