@@ -1,5 +1,5 @@
 // 러닝봄 번들 대회와 필터가 공유하는 타입을 정의합니다.
-export type RaceDistance = '5K' | '10K' | 'Half';
+export type RaceDistance = '5K' | '10K' | 'Half' | 'Full' | 'Trail' | string;
 
 export type Race = {
   id: string;

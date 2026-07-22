@@ -14,6 +14,15 @@
         "buildType": "apk"
       }
     },
-    "production": {}
+    "production": {
+      "autoIncrement": false,
+      "env": {
+        "EXPO_PUBLIC_SUPPORT_URL": "https://robom.kr/support",
+        "EXPO_PUBLIC_PRIVACY_URL": "https://robom.kr/privacy/runningbom"
+      },
+      "android": {
+        "buildType": "app-bundle"
+      }
+    }
   }
 }

@@ -1,0 +1,31 @@
+# 러닝봄 웹 정본과 Android·iOS 네이티브 출시 계약을 함께 검증한다.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - run: npm --prefix apps/mobile ci
+      - run: git diff --check
+      - run: npm test
+      - run: npm run build
+      - name: Android·iOS 네이티브 검증
+        run: npm --prefix apps/mobile run check
+      - name: Production dependency audit
+        run: npm run audit:prod

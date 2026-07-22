@@ -216,14 +216,14 @@ function AppScreen() {
           <Text accessibilityRole="header" style={styles.wordmark}>
             러닝<Text style={styles.wordmarkAccent}>봄</Text>
           </Text>
-          <Text style={styles.version}>Native 0.17.3</Text>
+          <Text style={styles.version}>Native 0.17.13</Text>
         </View>
 
         <View style={styles.intro}>
           <Text style={styles.eyebrow}>접수 시작을 놓치지 않게</Text>
           <Text style={styles.title}>달리고 싶은 대회를 골라보세요</Text>
           <Text style={styles.subtitle}>
-            번들 샘플을 지역과 거리로 좁히고, 공식 시각이 확인된 대회는 기기 로컬 알림으로 예약합니다.
+            검증된 대회 데이터를 지역과 거리로 좁히고, 공식 시각이 확인된 대회는 기기 로컬 알림으로 예약합니다.
           </Text>
         </View>
 
@@ -309,7 +309,7 @@ function AppScreen() {
 
         {visibleRaces.length === 0 ? (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyTitle}>조건에 맞는 샘플이 없어요</Text>
+            <Text style={styles.emptyTitle}>조건에 맞는 대회가 없어요</Text>
             <Pressable
               accessibilityRole="button"
               onPress={() => {

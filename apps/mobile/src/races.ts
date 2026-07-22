@@ -21,9 +21,10 @@ const raceDateFormatter = new Intl.DateTimeFormat('ko-KR', {
 });
 
 export const bundledRevision = bundledData.revision;
-export const races = bundledData.races as Race[];
+const todayKst = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date());
+export const races = (bundledData.races as Race[]).filter((race) => race.raceDate >= todayKst);
 export const regions = ['전체', ...new Set(races.map((race) => race.region))];
-export const distances: DistanceFilter[] = ['전체', '5K', '10K', 'Half'];
+export const distances: DistanceFilter[] = ['전체', '5K', '10K', 'Half', 'Full', 'Trail'];
 
 export function filterRaces(region: RegionFilter, distance: DistanceFilter): Race[] {
   return races.filter((race) => {
