@@ -213,8 +213,8 @@ if (familyAuth.namespace !== "runningbom" || familyAuth.guestFirst !== true) {
   errors.push("패밀리 auth config는 runningbom guest-first여야 합니다.");
 }
 const familyAppIds = familyMeta.familyApps?.map((item) => item.id).sort() || [];
-if (familyAppIds.join(",") !== ["calendarbom", "certbom", "homebom", "notebom", "outbom", "runningbom"].join(",")) {
-  errors.push("설정용 패밀리 메타데이터에 5개 앱 전체가 없습니다.");
+if (familyAppIds.join(",") !== ["certbom", "homebom", "outbom", "runningbom"].join(",")) {
+  errors.push("설정용 패밀리 메타데이터에 4개 앱 전체가 없습니다.");
 }
 
 // sw.js: CACHE_NAME(pushrun-vX.Y.Z)은 package.json 버전과, APP_SHELL 의 ?v= 는 ASSET_VERSION 과 일치해야 한다.
