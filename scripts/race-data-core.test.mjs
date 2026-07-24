@@ -35,6 +35,12 @@ test("공개 상세의 날짜 단위 접수 기간은 시각 미확정 상태로
   assert.equal(race.registrationUrl, "https://saunarun.com/apply");
 });
 
+test("공개 상세가 HTTP 신청 주소만 주면 사용자 링크로 게시하지 않는다", () => {
+  const insecureHtml = detailHtml.replace("https://saunarun.com/apply", "http://saunarun.com/apply");
+  const race = parseMarathonGoDetail(insecureHtml, "https://marathongo.co.kr/raceDetail/domestic/sauna");
+  assert.equal(race.registrationUrl, undefined);
+});
+
 test("뒤집힌 날짜 범위와 마감 상태를 안전하게 처리한다", () => {
   assert.equal(parseDateRange("2026.07.31 ~ 2026.06.12"), null);
   assert.equal(statusFromRegistrationPeriod("2026-07-01T00:00:00+09:00", "2026-07-23T23:59:00+09:00", Date.parse("2026-07-24T00:00:00+09:00")), "closed");

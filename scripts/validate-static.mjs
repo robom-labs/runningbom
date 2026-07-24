@@ -23,7 +23,7 @@ const familyLock = JSON.parse(readFileSync(join(root, "family.lock.json"), "utf8
 const vercelConfig = JSON.parse(readFileSync(join(root, "vercel.json"), "utf8"));
 const vercelBuild = readFileSync(join(root, "scripts", "build-vercel.mjs"), "utf8");
 const vercelIgnore = readFileSync(join(root, ".vercelignore"), "utf8");
-const FAMILY_SOURCE_COMMIT = "4a437d36397d34cc061cf86e7247fe1f9bbc93f8";
+const FAMILY_SOURCE_COMMIT = "de2dd07d93d031ff3871bb7a7cd56941587492f5";
 
 // ── 신선도 기준(상수) ─────────────────────────────────────────────
 // 접수 예정(오픈 시각이 미래) 대회가 이 수 미만이면 FAIL.
@@ -37,7 +37,6 @@ const MAX_DATA_REFRESH_AGE_MS = 8 * 24 * 60 * 60 * 1000;
 
 const errors = [];
 const warn = [];
-const httpLinks = [];
 const featured = Array.isArray(data.featuredRaces) ? data.featuredRaces : [];
 const schedule = Array.isArray(data.scheduleFeed) ? data.scheduleFeed : [];
 const all = [...featured, ...schedule];
@@ -146,8 +145,7 @@ for (const race of all) {
     if (!race[key]) continue;
     try {
       const url = new URL(race[key]);
-      if (!['http:', 'https:'].includes(url.protocol)) errors.push(`지원하지 않는 URL: ${race.name}`);
-      if (url.protocol === "http:") httpLinks.push(`${race.name} ${key}`);
+      if (url.protocol !== "https:") errors.push(`HTTPS가 아닌 외부 URL: ${race.name} / ${key}`);
     } catch {
       errors.push(`URL 형식 오류: ${race.name} / ${key}`);
     }
@@ -174,7 +172,6 @@ for (const race of all) {
 warn.push(
   `신선도: 총 ${all.length}개 중 대회 종료 ${endedRaces}개, 접수 마감 ${closedRegistrations}개, 접수 예정 ${upcomingRegistrations}개 (KST ${todayKst} 기준)`
 );
-if (httpLinks.length > 0) warn.push(`HTTPS 미지원 가능 외부 링크 ${httpLinks.length}개`);
 if (upcomingRegistrations < MIN_UPCOMING_REGISTRATION) {
   errors.push(`신선도 실패: 접수 예정(미래 오픈) 대회가 ${upcomingRegistrations}개입니다. 최소 ${MIN_UPCOMING_REGISTRATION}개 필요 — races.json 갱신이 필요합니다.`);
 }

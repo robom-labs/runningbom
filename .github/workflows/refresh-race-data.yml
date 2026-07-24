@@ -31,7 +31,7 @@ jobs:
       - name: 대회 데이터·모바일 계약 검증
         run: |
           node scripts/validate-static.mjs
-          node --test scripts/race-data-core.test.mjs scripts/mobile-data-contract.test.mjs
+          node --test scripts/race-data-core.test.mjs scripts/mobile-data-contract.test.mjs scripts/secure-link-core.test.mjs
       - name: 수집 리포트 보관
         uses: actions/upload-artifact@v4
         with:

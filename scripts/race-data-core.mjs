@@ -43,7 +43,9 @@ export function extractMarathonGoDetailUrls(html) {
 function validUrl(value) {
   try {
     const url = new URL(String(value));
-    return url.protocol === "http:" || url.protocol === "https:" ? url.toString() : null;
+    // 외부 접수·출처 페이지는 HTTPS가 실측된 주소만 게시한다. HTTP는 데이터 수집에는
+    // 남아 있어도 사용자 링크로 재노출하지 않아, 다음 자동 동기화가 보안 회귀를 만들지 않는다.
+    return url.protocol === "https:" ? url.toString() : null;
   } catch {
     return null;
   }

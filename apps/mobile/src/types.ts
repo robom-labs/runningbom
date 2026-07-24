@@ -24,7 +24,7 @@ export type Race = {
   capacity?: number;
   organizer?: string;
   verifiedAt?: string;
-  officialUrl: string;
+  officialUrl?: string;
   externalLinkKind?: 'official' | 'source';
   sourceName: string;
 };

@@ -38,7 +38,7 @@ function isRace(value: unknown): value is Race {
     Array.isArray(race.distances) &&
     typeof race.registrationOpensAt === 'string' &&
     typeof race.registrationTimeConfirmed === 'boolean' &&
-    typeof race.officialUrl === 'string' &&
+    (race.officialUrl === undefined || (typeof race.officialUrl === 'string' && race.officialUrl.startsWith('https://'))) &&
     typeof race.sourceName === 'string'
   );
 }

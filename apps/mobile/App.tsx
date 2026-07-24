@@ -232,7 +232,7 @@ function AppScreen() {
           <Text accessibilityRole="header" style={styles.wordmark}>
             러닝<Text style={styles.wordmarkAccent}>봄</Text>
           </Text>
-          <Text style={styles.version}>Native 0.18.1</Text>
+          <Text style={styles.version}>Native 0.18.2</Text>
         </View>
 
         <View style={styles.intro}>
@@ -281,6 +281,7 @@ function AppScreen() {
             const status = registrationStatusLabel(race);
             const canSchedule = canScheduleRegistrationAlert(race);
             const externalLinkLabel = race.externalLinkKind === 'source' ? '대회 정보 출처' : '공식 대회 페이지';
+            const hasSecureExternalLink = typeof race.officialUrl === 'string' && race.officialUrl.startsWith('https://');
             return (
               <View key={race.id} style={[styles.raceCard, isTablet && styles.raceCardTablet, focused && styles.raceCardFocused]}>
                 <View style={styles.raceTopline}>
@@ -319,10 +320,14 @@ function AppScreen() {
                   </Pressable>
                   <Pressable
                     accessibilityRole="link"
-                    onPress={() => void openExternalUrl(race.officialUrl, externalLinkLabel)}
-                    style={({ pressed }) => [styles.secondaryButton, pressed && styles.pressed]}
+                    accessibilityState={{ disabled: !hasSecureExternalLink }}
+                    disabled={!hasSecureExternalLink}
+                    onPress={() => {
+                      if (race.officialUrl) void openExternalUrl(race.officialUrl, externalLinkLabel);
+                    }}
+                    style={({ pressed }) => [styles.secondaryButton, !hasSecureExternalLink && styles.disabledButton, pressed && styles.pressed]}
                   >
-                    <Text style={styles.secondaryButtonText}>{externalLinkLabel}</Text>
+                    <Text style={styles.secondaryButtonText}>{hasSecureExternalLink ? externalLinkLabel : '공식 링크 확인 중'}</Text>
                   </Pressable>
                 </View>
 

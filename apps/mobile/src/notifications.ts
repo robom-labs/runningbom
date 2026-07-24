@@ -93,7 +93,7 @@ export async function scheduleRegistrationNotification(race: Race): Promise<Sche
       data: {
         raceId: race.id,
         deepLink: `runningbom://race/${race.id}`,
-        officialUrl: race.officialUrl,
+        ...(race.officialUrl ? { officialUrl: race.officialUrl } : {}),
       },
     },
     trigger: {

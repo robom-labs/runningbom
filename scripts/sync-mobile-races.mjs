@@ -21,6 +21,8 @@ function stableId(race, prefix) {
 }
 
 function normalizeRace(race, prefix) {
+  const officialUrl = [race.registrationUrl, race.sourceDetailUrl]
+    .find((value) => typeof value === "string" && value.startsWith("https://"));
   return {
     id: stableId(race, prefix),
     name: race.name,
@@ -48,8 +50,8 @@ function normalizeRace(race, prefix) {
     capacity: Number.isFinite(race.capacity) ? race.capacity : undefined,
     organizer: race.organizer ?? undefined,
     verifiedAt: race.registrationTimeVerifiedAt ?? race.linkVerifiedFrom ?? undefined,
-    officialUrl: race.registrationUrl ?? race.sourceDetailUrl,
-    externalLinkKind: race.registrationUrl ? "official" : "source",
+    officialUrl,
+    externalLinkKind: officialUrl ? (race.registrationUrl ? "official" : "source") : undefined,
     sourceName: race.sourceName,
   };
 }
@@ -58,7 +60,7 @@ const races = [
   ...(source.featuredRaces ?? []).map((race) => normalizeRace(race, "featured")),
   ...(source.scheduleFeed ?? []).map((race) => normalizeRace(race, "schedule")),
 ]
-  .filter((race) => race.name && race.region && race.venue && race.raceDate && race.registrationOpensAt && race.officialUrl)
+  .filter((race) => race.name && race.region && race.venue && race.raceDate && race.registrationOpensAt)
   .sort((left, right) => left.raceDate.localeCompare(right.raceDate) || left.name.localeCompare(right.name, "ko"));
 
 const output = `${JSON.stringify({

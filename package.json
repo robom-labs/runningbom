@@ -1,6 +1,6 @@
 {
   "name": "runningbom",
-  "version": "0.18.1",
+  "version": "0.18.2",
   "private": true,
   "scripts": {
     "build": "node scripts/sync-family-static.mjs && node scripts/sync-mobile-races.mjs --check && node scripts/validate-static.mjs",
@@ -10,6 +10,7 @@
     "data:refresh": "node scripts/refresh-races.mjs --write",
     "data:refresh:check": "node scripts/refresh-races.mjs",
     "audit:prod": "node scripts/audit-production.mjs --dir apps/mobile",
-    "linkcheck": "node scripts/link-healthcheck.mjs"
+    "linkcheck": "node scripts/link-healthcheck.mjs",
+    "links:secure": "node scripts/secure-race-links.mjs --write"
   }
 }

@@ -59,7 +59,7 @@ assert(raceData.races.some((race) => race.registrationTimeConfirmed), '정확한
 for (const race of raceData.races) {
   assert(race.region && race.distances.length > 0, `${race.id}의 지역 또는 거리가 없습니다.`);
   assert(Number.isFinite(Date.parse(race.registrationOpensAt)), `${race.id}의 접수 시각이 잘못됐습니다.`);
-  assert(/^https?:\/\//.test(race.officialUrl), `${race.id}의 공식 URL이 잘못됐습니다.`);
+  assert(race.officialUrl === undefined || /^https:\/\//.test(race.officialUrl), `${race.id}의 외부 URL은 HTTPS여야 합니다.`);
 }
 
 const sourceFiles = [

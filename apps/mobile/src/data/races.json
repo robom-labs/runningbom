@@ -18,7 +18,7 @@
       "registrationPeriodLabel": "07/09 - 07/17",
       "organizer": "순천만국가정원",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://projectruntrip.com/",
+      "officialUrl": "https://projectruntrip.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -44,7 +44,7 @@
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41625",
+      "id": "schedule-791b235f7817",
       "name": "사우나런 in 올림픽공원",
       "region": "서울",
       "venue": "올림픽 공원 인근",
@@ -60,8 +60,6 @@
       "registrationPeriodLabel": "6/12 - 7/31",
       "organizer": "사우나런",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.roadrun.co.kr/schedule/view.php?no=41625",
-      "externalLinkKind": "source",
       "sourceName": "마라톤온라인"
     },
     {
@@ -80,12 +78,12 @@
       "registrationStatus": "closed",
       "note": "6월 티켓 오픈 예정으로 공지된 대회입니다.",
       "capacity": 7000,
-      "officialUrl": "http://www.nightracebusan.co.kr/",
+      "officialUrl": "https://www.nightracebusan.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41504",
+      "id": "schedule-2b0bdb610bbf",
       "name": "2026 인사이더런 S",
       "region": "경기",
       "venue": "일산 킨텍스 제2전시장 7,8",
@@ -100,7 +98,7 @@
       "registrationPeriodLabel": "3/26 - 7/30",
       "organizer": "러너블",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://insiderun.me",
+      "officialUrl": "https://insiderun.me/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -125,7 +123,7 @@
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41623",
+      "id": "schedule-aabb8fced5e3",
       "name": "2026 양산 어필(up-hill) 레이스",
       "region": "경남",
       "venue": "양산 에덴밸리 리조트 루지장",
@@ -140,7 +138,7 @@
       "registrationPeriodLabel": "6/8 - 7/23",
       "organizer": "양산시, 부산MBC",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.yangsanuphillrace.kr",
+      "officialUrl": "https://www.yangsanuphillrace.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -160,12 +158,12 @@
       "registrationPeriodLabel": "06/01 - 06/30",
       "organizer": "코리안런조직위",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://korearun01.imweb.me/",
+      "officialUrl": "https://korearun01.imweb.me/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41617",
+      "id": "schedule-68f110d3bbe9",
       "name": "2026 안양천 달빛 나이트런",
       "region": "서울",
       "venue": "신정교 하부 영롱이 억새구장",
@@ -181,12 +179,12 @@
       "registrationPeriodLabel": "6/5 - 8/6",
       "organizer": "(사)대한이에스지협회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://moonnightrun.kr/",
+      "officialUrl": "https://moonnightrun.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41576",
+      "id": "schedule-28efbb7b42bc",
       "name": "2026 장수 나이트 트레일",
       "region": "전북",
       "venue": "장수종합경기장",
@@ -201,12 +199,12 @@
       "registrationPeriodLabel": "5/15 - 7/31",
       "organizer": "(주)락앤런",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://rocknrun.kr",
+      "officialUrl": "https://rocknrun.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41641",
+      "id": "schedule-51b36f3ef2a9",
       "name": "2026 전마협 광복절 무료 초청 마라톤",
       "region": "대전",
       "venue": "대전엑스포다리 밑",
@@ -222,7 +220,7 @@
       "registrationPeriodLabel": "6/15 - 6/16",
       "organizer": "전국마라톤협회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://mara1080.com/event/9e568eef-64ff-4548-881f-3a420689dece",
+      "officialUrl": "https://mara1080.com/event/9e568eef-64ff-4548-881f-3a420689dece",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -242,12 +240,12 @@
       "registrationPeriodLabel": "07/07 - 08/08",
       "organizer": "국민건강진흥원",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://icnr.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-night-race",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41508",
+      "id": "schedule-58037fa20177",
       "name": "영남알프스9봉 트레일 레이스",
       "region": "경남",
       "venue": "청운산장",
@@ -262,7 +260,7 @@
       "registrationPeriodLabel": "4/1 - 7/15",
       "organizer": "JYD자연을달린다",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://jyd.creatorlink.net",
+      "officialUrl": "https://jyd.creatorlink.net/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -283,12 +281,12 @@
       "registrationPeriodLabel": "12/05 - 07/31",
       "organizer": "(사)한국산악마라톤연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.koreatrail.net/home/main.php?link=event&einc=eapp&opp=20250820150217&csno=20191209143330#baseline",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/38th-jirisan-hwadaejongju-trail-run-2026",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41223",
+      "id": "schedule-2bc32e3b9d4c",
       "name": "제38회 지리산화대종주 UTMB",
       "region": "전남",
       "venue": "화엄사주차장",
@@ -303,12 +301,10 @@
       "registrationPeriodLabel": "25.12/5 - 26.7/31",
       "organizer": "(사)한국산악마라톤연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.koreatrail.net/home/main.php?link=event&einc=eapp&opp=20250820150217&csno=20191209143330#baseline",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41663",
+      "id": "schedule-484cbbc040de",
       "name": "2026Happy700평창대관령전국하프마라톤",
       "region": "강원",
       "venue": "2018 평창동계올림픽 기념관",
@@ -324,12 +320,10 @@
       "registrationPeriodLabel": "6/10 - 7/25",
       "organizer": "한국실업육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.ifunrunkorea.co.kr/sub0102",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41642",
+      "id": "schedule-ed613697b024",
       "name": "제2회 한양도성길 트레일런",
       "region": "서울",
       "venue": "낙산공원중앙광장(낙산길54)",
@@ -344,8 +338,6 @@
       "registrationPeriodLabel": "6/15 - 8/20",
       "organizer": "파브코리아",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.mtrailrun.kr/",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
@@ -364,7 +356,7 @@
       "registrationPeriodLabel": "04/07 - 05/31",
       "organizer": "제천시산악연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.runnerking.com/",
+      "officialUrl": "https://www.runnerking.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -384,7 +376,7 @@
       "registrationPeriodLabel": "12/23 - 06/23",
       "organizer": "대구광역시, 세계마스터즈육상연",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.wmac2026.com/",
+      "officialUrl": "https://www.wmac2026.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -406,12 +398,12 @@
       "registrationPeriodLabel": "12/23 - 06/23",
       "organizer": "대구광역시,세계마스터즈육상연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.wmac2026.com/",
+      "officialUrl": "https://www.wmac2026.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41620",
+      "id": "schedule-14c04bf06f3a",
       "name": "2026 단양달빛레이스",
       "region": "충북",
       "venue": "단양생태체육공원",
@@ -427,12 +419,10 @@
       "registrationPeriodLabel": "6/10 - 7/17",
       "organizer": "단양군육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://danyangmarathon.kr",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41624",
+      "id": "schedule-5834ae504ba8",
       "name": "2026 전마협 증평 무료 마라톤",
       "region": "충북",
       "venue": "증평군 다목적운동장 일원",
@@ -447,7 +437,7 @@
       "registrationPeriodLabel": "6/8 - 6/16",
       "organizer": "전국마라톤협회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://mara1080.com/event/48116855-ac2a-4db5-b343-593a01c5b353",
+      "officialUrl": "https://mara1080.com/event/48116855-ac2a-4db5-b343-593a01c5b353",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -467,7 +457,7 @@
       "registrationPeriodLabel": "12/23 - 06/23",
       "organizer": "대구광역시, 세계마스터즈육상연맹(WMA)",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.wmac2026.com/",
+      "officialUrl": "https://www.wmac2026.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -490,7 +480,7 @@
       "registrationPeriodLabel": "12/23 - 06/23",
       "organizer": "대구광역시, 세계마스터즈육상연맹(WMA)",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://wmac2026.com/kr/",
+      "officialUrl": "https://wmac2026.com/kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -511,12 +501,12 @@
       "registrationPeriodLabel": "07/15 - 08/10",
       "organizer": "성북구육상연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://cafe.naver.com/sblovemarathon/?viewType=pc",
+      "officialUrl": "https://cafe.naver.com/sblovemarathon/?viewType=pc",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41581",
+      "id": "schedule-90756132290a",
       "name": "제3회 한강 서울 하프 마라톤",
       "region": "서울",
       "venue": "여의도 한강공원 물빛광장",
@@ -533,12 +523,12 @@
       "registrationPeriodLabel": "5/13 - 8/23",
       "organizer": "(사)국민성공시대",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://seoulhalfrun.kr/",
+      "officialUrl": "https://seoulhalfrun.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41590",
+      "id": "schedule-8e0185d61bdf",
       "name": "제3회 GO대관령 국제 트레일런",
       "region": "강원",
       "venue": "평창동계올림픽기념공원",
@@ -554,7 +544,7 @@
       "registrationPeriodLabel": "5/22 - 7/31",
       "organizer": "국대레포츠, 대관령면체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://daegwallyeongrun.com",
+      "officialUrl": "https://daegwallyeongrun.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -597,7 +587,7 @@
       "registrationPeriodLabel": "05/11 - 05/11",
       "organizer": "태백시, 태백시 철인3종 협회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://taebaektrail.com/",
+      "officialUrl": "https://taebaektrail.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -618,12 +608,12 @@
       "registrationPeriodLabel": "07/14 - 08/18",
       "organizer": "이일선기념사업회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://forms.gle/6Y88RJqW6QCZkZoE7",
+      "officialUrl": "https://docs.google.com/forms/d/e/1FAIpQLSer842gNV8u5RtevhmDK6zGUgl-0Ccfjc2C4h_-tZ9MyYVOLg/viewform?usp=send_form",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41650",
+      "id": "schedule-1cf7cf30fbfa",
       "name": "2026 하반기 JUST RUN10 세종",
       "region": "세종",
       "venue": "세종마루공원 밑 금강변",
@@ -639,12 +629,12 @@
       "registrationPeriodLabel": "6/19 - 7/15",
       "organizer": "(주)러닝브레이커, 전국러닝협회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://runten.co.kr",
+      "officialUrl": "https://runten.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41639",
+      "id": "schedule-2f2ced549b85",
       "name": "제12회 I LOVE 방송대 마라톤",
       "region": "서울",
       "venue": "상암동 평화광장",
@@ -660,12 +650,12 @@
       "registrationPeriodLabel": "6/30 - 7/31",
       "organizer": "한국방송통신대학교 전국 총동문",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://runbs.co.kr",
+      "officialUrl": "https://runbs.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41559",
+      "id": "schedule-a698299b9c3c",
       "name": "제20회 순천만울트라마라톤대회",
       "region": "전남",
       "venue": "순천동천천변공원",
@@ -680,8 +670,6 @@
       "registrationPeriodLabel": "4/1 - 8/24",
       "organizer": "순천만울트라조직위",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.scultra100.net",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
@@ -703,12 +691,12 @@
       "registrationPeriodLabel": "02/02 - 02/27",
       "organizer": "철원군, 한국일보",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://dmzrun.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/23rd-cheorwon-dmz-international-peace-marathon-2026",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41595",
+      "id": "schedule-82a839e6ee42",
       "name": "제2회 2026 Vrun",
       "region": "서울",
       "venue": "신정교하부육상트랙구장",
@@ -724,12 +712,10 @@
       "registrationPeriodLabel": "5/26 - 8/12",
       "organizer": "(사)대한생활체육마라톤협회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://vrun.kr/index.asp",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41368",
+      "id": "schedule-43d7f278c623",
       "name": "2026 봉화송이 전국마라톤",
       "region": "경북",
       "venue": "봉화공설운동장",
@@ -746,12 +732,10 @@
       "registrationPeriodLabel": "2/3 - 7/27",
       "organizer": "봉화군체육회, 매일신문사",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://bonghwarun.kr",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41402",
+      "id": "schedule-07fb854111d0",
       "name": "2026 샌드런 IN 영덕",
       "region": "경북",
       "venue": "영덕 대진해수욕장",
@@ -766,7 +750,7 @@
       "registrationPeriodLabel": "3/16 - 7/6",
       "organizer": "(주)메이드인피플",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://sandrun.co.kr",
+      "officialUrl": "https://sandrun.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -786,7 +770,7 @@
       "registrationStatus": "open",
       "note": "10km 2,000명, 5km 1,000명 선착순 모집으로 확인됩니다.",
       "capacity": 3000,
-      "officialUrl": "http://mara1080.com/event/a9780087-8fc3-4849-a234-7659978f6792",
+      "officialUrl": "https://mara1080.com/event/a9780087-8fc3-4849-a234-7659978f6792",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -811,7 +795,7 @@
       "sourceName": "YTN 서울투어마라톤 공식"
     },
     {
-      "id": "schedule-41582",
+      "id": "schedule-ceb26bae84a1",
       "name": "제11회 김대중 평화 마라톤 대회",
       "region": "서울",
       "venue": "뚝섬 한강공원 수변무대",
@@ -828,12 +812,10 @@
       "registrationPeriodLabel": "5/13 - 8/30",
       "organizer": "김대중재단",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://kdjrun.kr/",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41254",
+      "id": "schedule-53ab39b82b81",
       "name": "제24회 청광종주TRAILRUNNING",
       "region": "서울",
       "venue": "양재동 화물",
@@ -848,12 +830,10 @@
       "registrationPeriodLabel": "25.12/18 - 26.8/30",
       "organizer": "(사)한국산악마라톤연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.koreatrail.net/home/main.php?link=event&einc=eapp&opp=20250626120820&csno=20191016122754#baseline",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41628",
+      "id": "schedule-844e99e0c0f3",
       "name": "제9회 인천 서구청장배 단축마라톤",
       "region": "인천",
       "venue": "청라호수공원 멀티프라자 트랙",
@@ -868,7 +848,7 @@
       "registrationPeriodLabel": "6/10 - 6/16",
       "organizer": "인천광역시 체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.sgicaaf.co.kr",
+      "officialUrl": "https://www.sgicaaf.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -890,7 +870,7 @@
       "registrationPeriodLabel": "05/12 - 06/30",
       "organizer": "(사)한국마라톤협회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://amarunsb.com/",
+      "officialUrl": "https://amarunsb.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -912,8 +892,8 @@
       "registrationPeriodLabel": "02/27 - 03/20",
       "organizer": "G1방송, 양양군",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://yrun.co.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yangyang-riverside-national-marathon",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
@@ -933,7 +913,7 @@
       "registrationPeriodLabel": "07/20 - 08/31",
       "organizer": "굿피플",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.herorace.kr/",
+      "officialUrl": "https://www.herorace.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -955,7 +935,7 @@
       "registrationPeriodLabel": "07/17 - 07/17",
       "organizer": "스피드에이전시",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://speedtrailrun.kr/",
+      "officialUrl": "https://speedtrailrun.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -977,12 +957,12 @@
       "registrationPeriodLabel": "07/16 - 08/31",
       "organizer": "주식회사 락앤런",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://rocknrun.kr/REDFOODRACE",
+      "officialUrl": "https://rocknrun.kr/REDFOODRACE",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41354",
+      "id": "schedule-927bdfd654e6",
       "name": "빵트레일런 2026",
       "region": "강원",
       "venue": "정선 하이원 리조트",
@@ -998,12 +978,12 @@
       "registrationPeriodLabel": "3/31 - 9/12",
       "organizer": "1986프로덕션",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://bbangtrailrun.co.kr",
+      "officialUrl": "https://2026.bbangtrailrun.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41532",
+      "id": "schedule-98f6171cc788",
       "name": "제2회 초록우산 런웨이 마라톤",
       "region": "대전",
       "venue": "대전엑스포시민광장",
@@ -1020,12 +1000,12 @@
       "registrationPeriodLabel": "4/13 - 6/16",
       "organizer": "초록우산 대전세종지역본부",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://mara1080.com/event/9443583f-6577-466c-ab2f-43d1dbd820d4",
+      "officialUrl": "https://mara1080.com/event/9443583f-6577-466c-ab2f-43d1dbd820d4",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41549",
+      "id": "schedule-09907509d61d",
       "name": "제2회 화이트런 생리대 기부마라톤",
       "region": "서울",
       "venue": "영등포구 신정교하부 육상트랙구",
@@ -1041,12 +1021,12 @@
       "registrationPeriodLabel": "4/27 - 8/14",
       "organizer": "청년일보, (주)소풍",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://whiterun.kr",
+      "officialUrl": "https://whiterun.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41643",
+      "id": "schedule-a5818d8e2731",
       "name": "2026 런서울런",
       "region": "서울",
       "venue": "서울 광장",
@@ -1062,7 +1042,7 @@
       "registrationPeriodLabel": "6/29 - 7/29",
       "organizer": "일간스포츠",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://runseoulrun.com",
+      "officialUrl": "https://runseoulrun.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -1085,8 +1065,8 @@
       "registrationPeriodLabel": "01/01 - 05/31",
       "organizer": "울진군",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.ujrun.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-uljin-geumgangsong-healing-marathon",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
@@ -1105,12 +1085,12 @@
       "registrationPeriodLabel": "07/14 - 08/14",
       "organizer": "MBN",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://web.runit.co.kr/races/1120",
+      "officialUrl": "https://web.runit.co.kr/races/1120",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41648",
+      "id": "schedule-f02b59f3c6e1",
       "name": "2026포항이차전지전국마라톤",
       "region": "경북",
       "venue": "포항운하관주차장",
@@ -1127,7 +1107,7 @@
       "registrationPeriodLabel": "6/29 - 7/20",
       "organizer": "매일신문사",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://energyrun.co.kr/",
+      "officialUrl": "https://energyrun.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -1148,12 +1128,12 @@
       "registrationPeriodLabel": "07/15 - 08/31",
       "organizer": "월드런",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://mara1080.com/event/0674df45-473c-4182-bed4-d15582fb8c73/guide/overview",
+      "officialUrl": "https://mara1080.com/event/0674df45-473c-4182-bed4-d15582fb8c73/guide/overview",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41591",
+      "id": "schedule-15e101b84778",
       "name": "제 16회 스마일 런 페스티벌",
       "region": "서울",
       "venue": "상암동 평화의공원 평화광장",
@@ -1170,7 +1150,7 @@
       "registrationPeriodLabel": "6/29 - 7/31",
       "organizer": "(사)대한치과의사협회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.smilerun.co.kr",
+      "officialUrl": "https://www.smilerun.co.kr/main/main.php",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -1190,12 +1170,12 @@
       "registrationPeriodLabel": "11/13 - 08/25",
       "organizer": "(사)한국산악마라톤연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.koreatrail.net/home/main.php?link=event&einc=eapp&opp=20250910133652&csno=20191227110239#baseline",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/14th-seoraksan-dinosaur-ridge-climbathon-2026",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41192",
+      "id": "schedule-1d3e2a7e6d7f",
       "name": "제14회설악산공룡능선UTMB",
       "region": "강원",
       "venue": "설익산한계령휴계소",
@@ -1210,12 +1190,10 @@
       "registrationPeriodLabel": "25.11/13 - 26.8/31",
       "organizer": "(사)한국산악마라톤연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.koreatrail.net/home/main.php?link=event&einc=eapp&opp=20250910133652&csno=20191227110239#baseline",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41606",
+      "id": "schedule-cc10b5942d62",
       "name": "제26회 강화해변마라톤대회",
       "region": "인천",
       "venue": "강화함상공원",
@@ -1232,12 +1210,12 @@
       "registrationPeriodLabel": "6/8 - 7/31",
       "organizer": "인천일보,(사)인천마라톤조직위",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.ganghwamarathon.co.kr/",
+      "officialUrl": "https://www.ganghwamarathon.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41541",
+      "id": "schedule-eb0a0f82d432",
       "name": "2026 금산인삼축제 마라톤",
       "region": "충남",
       "venue": "금산세계인삼엑스포주차장",
@@ -1253,7 +1231,7 @@
       "registrationPeriodLabel": "4/17 - 8/19",
       "organizer": "전마협",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://mara1080.com/event/2044eb82-fcdb-4e56-b79b-f3543a6a360d",
+      "officialUrl": "https://mara1080.com/event/2044eb82-fcdb-4e56-b79b-f3543a6a360d",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -1275,7 +1253,7 @@
       "registrationPeriodLabel": "07/06 - 09/10",
       "organizer": "(사)행복한가게",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://aychalf.kr/",
+      "officialUrl": "https://aychalf.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -1297,7 +1275,7 @@
       "registrationPeriodLabel": "02/20 - 06/10",
       "organizer": "(주)락앤런",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://rocknrun.kr/",
+      "officialUrl": "https://rocknrun.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -1318,7 +1296,7 @@
       "registrationPeriodLabel": "07/03 - 07/31",
       "organizer": "(주)러닝브레이커, 전국러닝협회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://runten.co.kr/",
+      "officialUrl": "https://runten.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -1339,12 +1317,12 @@
       "registrationPeriodLabel": "07/16 - 08/31",
       "organizer": "HLL중앙 / 코틴스포츠",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://cityforestival.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/sipore-run-fit-discovery-2026-09-19",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41629",
+      "id": "schedule-e8f43de34ee3",
       "name": "제18회 사이버 영토 수호 마라톤",
       "region": "서울",
       "venue": "여의도 물빛무대 앞 광",
@@ -1361,7 +1339,7 @@
       "registrationPeriodLabel": "6/17 - 8/12",
       "organizer": "(사)21세기경제사회연구원",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.cyber-run.com",
+      "officialUrl": "https://www.cyber-run.com/main/main.php",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -1383,7 +1361,7 @@
       "registrationPeriodLabel": "07/13 - 08/31",
       "organizer": "경기신문",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://kgseasiderun.co.kr/",
+      "officialUrl": "https://kgseasiderun.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -1404,12 +1382,12 @@
       "registrationPeriodLabel": "07/13 - 08/03",
       "organizer": "문경시, 문경시 청년센터",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.omijarun.com/",
+      "officialUrl": "https://omijarun.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41588",
+      "id": "schedule-7da72e16c401",
       "name": "2026 공주마라톤",
       "region": "충남",
       "venue": "공주시민운동장",
@@ -1426,12 +1404,12 @@
       "registrationPeriodLabel": "5/14 - 5/21",
       "organizer": "동아일보",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.gongjumarathon.com/",
+      "officialUrl": "https://www.gongjumarathon.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41605",
+      "id": "schedule-0f7b724271cd",
       "name": "2026 동대문마라톤",
       "region": "서울",
       "venue": "중랑천 제1수변공원",
@@ -1448,8 +1426,6 @@
       "registrationPeriodLabel": "6/10 - 8/10",
       "organizer": "동대문구육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.runddm.com",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1470,7 +1446,7 @@
       "registrationPeriodLabel": "07/06 - 07/20",
       "organizer": "안산시체육",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://ansanrun.com/",
+      "officialUrl": "https://ansanrun.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -1491,7 +1467,7 @@
       "registrationPeriodLabel": "07/15 - 07/30",
       "organizer": "울산광역시 남구 육상연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://modern-infinity-9e6.notion.site/2026-395918810cc28075b602c0e076d8d3ea",
+      "officialUrl": "https://modern-infinity-9e6.notion.site/2026-395918810cc28075b602c0e076d8d3ea",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -1513,12 +1489,12 @@
       "registrationPeriodLabel": "07/08 - 08/07",
       "organizer": "(주)경인일보",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://songdorun.net/",
+      "officialUrl": "https://songdorun.net/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41630",
+      "id": "schedule-8891279c7263",
       "name": "2026 한돈런",
       "region": "경기",
       "venue": "미사 조정경기장",
@@ -1534,7 +1510,7 @@
       "registrationPeriodLabel": "7/13 - 8/30",
       "organizer": "한돈자조금위원회, 런코리아",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://handonrun.com/",
+      "officialUrl": "https://handonrun.com/marathon/code/8047/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -1557,8 +1533,8 @@
       "registrationPeriodLabel": "06/08 - 06/11",
       "organizer": "강동구 육상연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.gomarathon.co.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-20th-sunsa-marathon-festival-internet-registration",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
@@ -1580,12 +1556,12 @@
       "registrationPeriodLabel": "04/01 - 05/30",
       "organizer": "가평군체육회, 세계일보",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://gprun.com/",
+      "officialUrl": "https://gprun.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41657",
+      "id": "schedule-6fc58c74f11a",
       "name": "제2회 마포구청장배 마라톤 대회",
       "region": "서울",
       "venue": "평화의 공원 평화광장",
@@ -1601,7 +1577,7 @@
       "registrationPeriodLabel": "6/23 - 8/20",
       "organizer": "마포구체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://mara1080.com/event/53b338c6-d38a-47b3-9479-080b00c6113a",
+      "officialUrl": "https://mara1080.com/event/53b338c6-d38a-47b3-9479-080b00c6113a",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -1644,12 +1620,12 @@
       "registrationPeriodLabel": "07/07 - 09/21",
       "organizer": "(사)사회안전예방중앙회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://mastershalf.kr/",
+      "officialUrl": "https://mastershalf.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41491",
+      "id": "schedule-790518ee17f2",
       "name": "2026 서산 코스모스 황금들녘 마라톤 대회",
       "region": "충남",
       "venue": "서산스포츠테마파크",
@@ -1666,12 +1642,12 @@
       "registrationPeriodLabel": "3/20 - 9/3",
       "organizer": "서산시체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://mara1080.com/event/fcaa0bc8-1489-47c3-8fec-8e5a5c17284e",
+      "officialUrl": "https://mara1080.com/event/fcaa0bc8-1489-47c3-8fec-8e5a5c17284e",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41649",
+      "id": "schedule-4a641ff8075e",
       "name": "2026 완주트레일런",
       "region": "전북",
       "venue": "완주군 고산자연휴양림",
@@ -1686,12 +1662,12 @@
       "registrationPeriodLabel": "6/19 - 8/31",
       "organizer": "완주군/삼삼이즈",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://samsamis.com",
+      "officialUrl": "https://samsamis.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41608",
+      "id": "schedule-14445cf029a2",
       "name": "2026 천사데이기념 동두천천사마라톤",
       "region": "경기",
       "venue": "경기도 동두천시 캠프보산",
@@ -1707,7 +1683,7 @@
       "registrationPeriodLabel": "6/20 - 9/30",
       "organizer": "(사)희망지킴이 천사운동본부",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://hope1004.org",
+      "officialUrl": "https://hope1004.org/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -1729,7 +1705,7 @@
       "registrationPeriodLabel": "07/16 - 08/31",
       "organizer": "연합뉴스, 춘천시육상연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.yonma.kr/",
+      "officialUrl": "https://www.yonma.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -1750,12 +1726,12 @@
       "registrationPeriodLabel": "07/14 - 08/14",
       "organizer": "(주)러닝브레이커, 전국러닝협",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://runten.co.kr/",
+      "officialUrl": "https://runten.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41316",
+      "id": "schedule-41f95972ad11",
       "name": "제 2회 아산이순신 트레일",
       "region": "충남",
       "venue": "아산 신정호 이순신장군 동상앞",
@@ -1770,8 +1746,6 @@
       "registrationPeriodLabel": "2/1 - 9/20",
       "organizer": "아산 이순신트레일 조직위원회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://isunshintrail.com",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1792,12 +1766,12 @@
       "registrationPeriodLabel": "05/20 - 06/20",
       "organizer": "김제스포츠클럽",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://gimjesm.co.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/25th-kimje-saemangeum-horizon-national-marathon-2026",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41516",
+      "id": "schedule-4b074dcf4e35",
       "name": "2026 안동마라톤",
       "region": "경북",
       "venue": "안동시민운동장",
@@ -1815,12 +1789,10 @@
       "registrationPeriodLabel": "4/13 - 7/31",
       "organizer": "안동시, 매일신문사",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.admarathon.kr",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41560",
+      "id": "schedule-64715512af85",
       "name": "2026 파주북시티마라톤",
       "region": "경기",
       "venue": "파주출판도시",
@@ -1836,12 +1808,12 @@
       "registrationPeriodLabel": "5/4 - 8/10",
       "organizer": "(사)파주출판도시입주기업체협의",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://runbookcity.com",
+      "officialUrl": "https://runbookcity.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41571",
+      "id": "schedule-1d41f8980f65",
       "name": "2026 홍천사랑마라톤",
       "region": "강원",
       "venue": "홍천종합운동장",
@@ -1858,7 +1830,7 @@
       "registrationPeriodLabel": "5/19 - 8/31",
       "organizer": "홍천시체육회, 홍천육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.hongcheonrun.net/",
+      "officialUrl": "https://www.hongcheonrun.net/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -1880,8 +1852,8 @@
       "registrationPeriodLabel": "08/01 - 08/31",
       "organizer": "더윙, S오일",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://xn--439ar1m25cg1c810a7ro.com/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-soil-gamdong-marathon",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
@@ -1901,12 +1873,12 @@
       "registrationPeriodLabel": "07/20 - 07/31",
       "organizer": "광명시육상연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://gmaf.kr/",
+      "officialUrl": "https://gmaf.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41332",
+      "id": "schedule-08ab947063c4",
       "name": "제20회 달서하프마라톤",
       "region": "대구",
       "venue": "대구 달서구 호림강나루공원",
@@ -1923,12 +1895,10 @@
       "registrationPeriodLabel": "5/20 - 6/17",
       "organizer": "달서구체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.달서하프마라톤.kr",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41660",
+      "id": "schedule-13daea11f0cf",
       "name": "제23회 경남마라톤",
       "region": "경남",
       "venue": "창원종합운동장 보조경기장",
@@ -1944,12 +1914,12 @@
       "registrationPeriodLabel": "7/13 - 8/29",
       "organizer": "(주)경남신문사",
       "verifiedAt": "2026-07-12",
-      "officialUrl": "http://www.knmarathon.co.kr",
+      "officialUrl": "https://www.knmarathon.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41551",
+      "id": "schedule-f6b181b3fe7c",
       "name": "2026 서울오픈마라톤",
       "region": "서울",
       "venue": "광화문광장(예정)",
@@ -1965,7 +1935,7 @@
       "registrationPeriodLabel": "4/26 - 5/26",
       "organizer": "(사)한국체육개발원 등",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://seoulopen.or.kr",
+      "officialUrl": "https://seoulopen.or.kr/main.php",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -1987,7 +1957,7 @@
       "registrationPeriodLabel": "07/14 - 09/14",
       "organizer": "한경닷컴/런코리아",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.hk-marathon.com/",
+      "officialUrl": "https://www.hk-marathon.com/marathon/code/8048/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -2008,7 +1978,7 @@
       "registrationPeriodLabel": "07/08 - 08/27",
       "organizer": "(주)일요신문사 (주)비즈한국",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.runsense.co.kr/",
+      "officialUrl": "https://www.runsense.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -2030,12 +2000,12 @@
       "registrationPeriodLabel": "07/22 - 07/22",
       "organizer": "경기일보, 시흥시체육회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://shmarathon.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/12th-siheung-national-half-marathon-2026-10-05",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41664",
+      "id": "schedule-7fd6ab4b1a61",
       "name": "2026 한글런",
       "region": "세종",
       "venue": "세종중앙공원 도시축제마당",
@@ -2051,7 +2021,7 @@
       "registrationPeriodLabel": "7/1 - 8/30",
       "organizer": "헤럴드경제",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://hangeulrun.com/",
+      "officialUrl": "https://hangeulrun.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -2075,12 +2045,12 @@
       "registrationPeriodLabel": "03/25 - 05/29",
       "organizer": "홍성군체육회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://amarunhs.com/",
+      "officialUrl": "https://amarunhs.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41656",
+      "id": "schedule-c3981bb3a043",
       "name": "WYD와 함께하는 생명사랑 마라톤/걷기 대회",
       "region": "경기",
       "venue": "안성 미리내 성지",
@@ -2118,7 +2088,7 @@
       "registrationPeriodLabel": "05/18 - 06/23",
       "organizer": "(주)강원도민일보",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.xn--289av7rnxbd06bmrc.com/",
+      "officialUrl": "https://www.xn--289av7rnxbd06bmrc.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -2139,7 +2109,7 @@
       "registrationPeriodLabel": "07/10 - 08/30",
       "organizer": "성동구체육회 / 성동구육상연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://samsamis.com/",
+      "officialUrl": "https://samsamis.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -2161,12 +2131,12 @@
       "registrationPeriodLabel": "07/09 - 07/17",
       "organizer": "강서구",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://xn--939aw8timh48hotq.com/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/4th-gangseo-heojun-run-2026",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41601",
+      "id": "schedule-d8fe95adf8b2",
       "name": "제5회 구미시장배 금오산트레일 레이스",
       "region": "경북",
       "venue": "금오산 공영 대주차장",
@@ -2205,12 +2175,12 @@
       "registrationPeriodLabel": "05/18 - 06/18",
       "organizer": "광주,전라남도,담양군,화순군",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://georun.kr/ko/",
+      "officialUrl": "https://georun.kr/ko/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41236",
+      "id": "schedule-2e1b7d7c6d80",
       "name": "제7회 천안삼거리 흥타령울트라마라톤",
       "region": "충남",
       "venue": "천안삼거리공원",
@@ -2225,12 +2195,10 @@
       "registrationPeriodLabel": "2/1 - 9/30",
       "organizer": "천안삼거리흥타령울트라조직위",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.chultra.kr/",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41567",
+      "id": "schedule-252bad439adb",
       "name": "제9회 거제시장배 섬꽃 전국 마라톤",
       "region": "경남",
       "venue": "거제스포츠파크",
@@ -2246,7 +2214,7 @@
       "registrationPeriodLabel": "5/8 - 9/10",
       "organizer": "거제시, 거제시체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://mara1080.com/event/b43655f0-60be-4c97-ad62-d377f6586ae0",
+      "officialUrl": "https://mara1080.com/event/b43655f0-60be-4c97-ad62-d377f6586ae0",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -2267,7 +2235,7 @@
       "registrationPeriodLabel": "07/08 - 09/04",
       "organizer": "주식회사 어디감수광, 수원리",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://jejuwindmillrun.com/",
+      "officialUrl": "https://jejuwindmillrun.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -2288,7 +2256,7 @@
       "registrationPeriodLabel": "07/15 - 09/10",
       "organizer": "앙성면체육회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://mara1080.com/event/380079d2-ab1c-4351-b1f2-d21ccaba5cdd/guide/overview",
+      "officialUrl": "https://mara1080.com/event/380079d2-ab1c-4351-b1f2-d21ccaba5cdd/guide/overview",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -2310,7 +2278,7 @@
       "registrationPeriodLabel": "07/10 - 08/28",
       "organizer": "영남일보",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://mgmarathon.kr/",
+      "officialUrl": "https://mgmarathon.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -2331,7 +2299,7 @@
       "registrationPeriodLabel": "05/11 - 05/27",
       "organizer": "동아일보",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.seoul-race.co.kr/",
+      "officialUrl": "https://www.seoul-race.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -2352,12 +2320,12 @@
       "registrationPeriodLabel": "07/27 - 08/07",
       "organizer": "한국유방건강재단",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.pinkrun.kr/",
+      "officialUrl": "https://www.pinkrun.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41434",
+      "id": "schedule-9380fdbc1788",
       "name": "2026 MBN 전국 나주 마라톤대회",
       "region": "전남",
       "venue": "나주종합스포츠파크",
@@ -2375,12 +2343,12 @@
       "registrationPeriodLabel": "5/15 - 7/19",
       "organizer": "나주시, MBN, 매일경제",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://najumarathon.com",
+      "officialUrl": "https://najumarathon.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41422",
+      "id": "schedule-32534cd14ddf",
       "name": "제10회 가을철 산불조심마라톤",
       "region": "서울",
       "venue": "광평교운동장",
@@ -2398,8 +2366,6 @@
       "registrationPeriodLabel": "2/23 - 9/10",
       "organizer": "한국트레일러너연맹 (사)한국산악마라톤연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.koreatrail.net/home/main.php?link=event&einc=eindex&csno=20190605121808&opp=20260203121910#baseline",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2419,7 +2385,7 @@
       "registrationStatus": "closed",
       "note": "풀·하프·10km 참가비와 접수 기간이 확인됩니다.",
       "capacity": 10000,
-      "officialUrl": "http://www.gyeongjumarathon.com/home",
+      "officialUrl": "https://www.gyeongjumarathon.com/home",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -2441,12 +2407,12 @@
       "registrationPeriodLabel": "07/07 - 10/07",
       "organizer": "(사)행복한동행",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://storyrun.kr/",
+      "officialUrl": "https://storyrun.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41646",
+      "id": "schedule-4f097c0f766d",
       "name": "2026 대전 Dtrail 레이스",
       "region": "대전",
       "venue": "보문산 숲속공연장, 은행동",
@@ -2461,12 +2427,12 @@
       "registrationPeriodLabel": "6/17 - 9/17",
       "organizer": "대전광역시 중구체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://dtrail.co.kr",
+      "officialUrl": "https://dtrail.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41655",
+      "id": "schedule-c992ddd49d2a",
       "name": "2026 정선동강 마라톤",
       "region": "강원",
       "venue": "정선생태체험학습장",
@@ -2483,7 +2449,7 @@
       "registrationPeriodLabel": "6/23 - 7/22",
       "organizer": "정선군",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://jsrun.kr",
+      "officialUrl": "https://jsrun.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -2504,7 +2470,7 @@
       "registrationPeriodLabel": "07/22 - 09/14",
       "organizer": "(주)엘지유플러스",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://119memorial.com/",
+      "officialUrl": "https://119memorial.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -2528,7 +2494,7 @@
       "registrationPeriodLabel": "05/04 - 06/12",
       "organizer": "청주시체육회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://race.cjsports.or.kr/",
+      "officialUrl": "https://race.cjsports.or.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -2551,12 +2517,12 @@
       "registrationPeriodLabel": "07/22 - 09/17",
       "organizer": "충청남도장애인체육회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.xn--3e0b74d44h2nczb998h9tb24ds3tnvj.kr/",
+      "officialUrl": "https://www.xn--3e0b74d44h2nczb998h9tb24ds3tnvj.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41303",
+      "id": "schedule-e27407303eb6",
       "name": "2026 아시아 오픈 마라톤",
       "region": "서울",
       "venue": "광화문 광장(예정)",
@@ -2572,12 +2538,12 @@
       "registrationPeriodLabel": "4/14 - 5/18",
       "organizer": "아시아투데이",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://asiarun.kr/",
+      "officialUrl": "https://asiarun.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41548",
+      "id": "schedule-c7f2d9f8c8a4",
       "name": "그린스텝 2026",
       "region": "전남",
       "venue": "전라남도 해남군 솔라시도",
@@ -2594,8 +2560,6 @@
       "registrationPeriodLabel": "7/1 - 7/24",
       "organizer": "목포MBC / 마라톤세상",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.greenstep.co.kr/",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2616,12 +2580,12 @@
       "registrationPeriodLabel": "07/30 - 10/11",
       "organizer": "중랑구육상연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.jnrun.co.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-jungnang-mayor-rose-marathon-2026",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41596",
+      "id": "schedule-71fe1b7a51c9",
       "name": "제22회 대구 북구사랑 마라톤",
       "region": "대구",
       "venue": "금호강 산격야영장",
@@ -2637,12 +2601,10 @@
       "registrationPeriodLabel": "8/3 - 8/24",
       "organizer": "대구광역시북구체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://maraton.dbsfa365.co.kr/",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41610",
+      "id": "schedule-699c666ab046",
       "name": "제23회 여주 세종대왕 마라톤",
       "region": "경기",
       "venue": "여주 현암지구공원",
@@ -2658,12 +2620,12 @@
       "registrationPeriodLabel": "6/2 - 6/29",
       "organizer": "여주시육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://mara1080.com/event/edaee6e1-0d92-4248-9927-06ed3b0abfd0",
+      "officialUrl": "https://mara1080.com/event/edaee6e1-0d92-4248-9927-06ed3b0abfd0",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41603",
+      "id": "schedule-3ce554297ac3",
       "name": "제25회 대청호마라톤",
       "region": "대전",
       "venue": "대청공원",
@@ -2680,7 +2642,7 @@
       "registrationPeriodLabel": "6/10 - 7/13",
       "organizer": "대덕구",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.dcmarathon.or.kr/",
+      "officialUrl": "https://www.dcmarathon.or.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -2701,7 +2663,7 @@
       "registrationPeriodLabel": "07/09 - 08/08",
       "organizer": "경기도",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://ggcrun.kr/",
+      "officialUrl": "https://ggcrun.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -2722,12 +2684,12 @@
       "registrationPeriodLabel": "07/14 - 08/31",
       "organizer": "(사)크레파스",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://iksangiverun.or.kr/",
+      "officialUrl": "https://iksangiverun.or.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41637",
+      "id": "schedule-3260d3ad1bb2",
       "name": "2026 제3회 감성런",
       "region": "서울",
       "venue": "신정교하부육상트랙구장",
@@ -2743,8 +2705,6 @@
       "registrationPeriodLabel": "6/18 - 9/7",
       "organizer": "(사)대한생활체육마라톤협회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://xn--439a68tboh.kr/index.asp",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2764,7 +2724,7 @@
       "registrationPeriodLabel": "07/07 - 10/14",
       "organizer": "청운의꿈(주)",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://hnrun.kr/",
+      "officialUrl": "https://hnrun.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -2807,12 +2767,12 @@
       "registrationPeriodLabel": "07/28 - 08/10",
       "organizer": "기후에너지환경부,안동시",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://runmusicfestival.localvibehub.com/",
+      "officialUrl": "https://runmusicfestival.localvibehub.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41661",
+      "id": "schedule-1fb6211ae2da",
       "name": "2026 광명평화마라톤",
       "region": "경기",
       "venue": "광명역 일원",
@@ -2829,7 +2789,7 @@
       "registrationPeriodLabel": "7/1 - 7/13",
       "organizer": "광명시체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://gmrun.kr",
+      "officialUrl": "https://gmrun.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -2856,7 +2816,7 @@
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41477",
+      "id": "schedule-f8c69d616324",
       "name": "2026 청송사과트레일런",
       "region": "경북",
       "venue": "청송군민운동장",
@@ -2873,8 +2833,6 @@
       "registrationPeriodLabel": "3/16 - 8/30",
       "organizer": "청송군, 매일신문",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://csmarathon.co.kr/csmarathon/",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2910,7 +2868,7 @@
       "sourceName": "공식 · 마라톤GO"
     },
     {
-      "id": "schedule-41621",
+      "id": "schedule-c25823ce5bec",
       "name": "제19회 청도반시 전국마라톤",
       "region": "경북",
       "venue": "청도공설운동장",
@@ -2927,12 +2885,12 @@
       "registrationPeriodLabel": "7/1 - 8/28",
       "organizer": "청도군체육회, 대구일보",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://청도반시마라톤.kr",
+      "officialUrl": "https://xn--hq1bo4en6bw9cp5mzkpmgi.kr/main.php",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41653",
+      "id": "schedule-91ff291800b9",
       "name": "K-RUN 챌린지",
       "region": "서울",
       "venue": "서울 뚝섬한강공원 수변광장",
@@ -2949,12 +2907,10 @@
       "registrationPeriodLabel": "6/22 - 9/30",
       "organizer": "K-RUN챌린지조직위",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.irunman.kr",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41654",
+      "id": "schedule-7dda3bb3a200",
       "name": "2026 김천전국마라톤대회",
       "region": "경북",
       "venue": "김천종합스포츠타운",
@@ -2971,12 +2927,10 @@
       "registrationPeriodLabel": "7/15 - 9/18",
       "organizer": "김천시체육회, 매일신문사",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://gcmarathon.co.kr",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41638",
+      "id": "schedule-3b818b7c7267",
       "name": "2026 무안 해안 노을길 걷기 및 마라톤",
       "region": "전남",
       "venue": "무안낙지공원",
@@ -2992,7 +2946,7 @@
       "registrationPeriodLabel": "6/15 - 10/1",
       "organizer": "무안군체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://mara1080.com/event/d596615e-cf32-4f20-bdbe-13b633f51c4e",
+      "officialUrl": "https://mara1080.com/event/d596615e-cf32-4f20-bdbe-13b633f51c4e",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -3013,8 +2967,8 @@
       "registrationPeriodLabel": "08/01 - 08/01",
       "organizer": "경기도",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://dmzopenrun.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-dmz-open-peace-marathon",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
@@ -3059,7 +3013,7 @@
       "sourceName": "러너블 · JTBC 공식"
     },
     {
-      "id": "schedule-41552",
+      "id": "schedule-fa83d642c552",
       "name": "제21회 울산인권마라톤",
       "region": "울산",
       "venue": "태화강 둔치",
@@ -3076,12 +3030,12 @@
       "registrationPeriodLabel": "8/18 - 9/18",
       "organizer": "울산인권마라톤대회 조직위원회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.humanrun.org",
+      "officialUrl": "https://www.humanrun.org/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41659",
+      "id": "schedule-b3f6efa48181",
       "name": "제2회 대전 신채호 마라톤",
       "region": "대전",
       "venue": "대전 뿌리공원 잔디광장",
@@ -3098,12 +3052,12 @@
       "registrationPeriodLabel": "7/10 - 7/31",
       "organizer": "대전시 중구 육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.djmarathon.co.kr",
+      "officialUrl": "https://www.djmarathon.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41539",
+      "id": "schedule-43b4c20e7358",
       "name": "2026 영천댐 마라톤",
       "region": "경북",
       "venue": "영천댐 하류공원",
@@ -3120,8 +3074,6 @@
       "registrationPeriodLabel": "9/1 - 9/30",
       "organizer": "영천시육상연맹, 채널경북",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.roadrun.co.kr/schedule/view.php?no=41539",
-      "externalLinkKind": "source",
       "sourceName": "마라톤온라인"
     },
     {
@@ -3140,12 +3092,12 @@
       "registrationPeriodLabel": "07/27 - 10/16",
       "organizer": "한국해운신문, 부산항발전협의회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://runfesta.co.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-maritime-run-festa",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41662",
+      "id": "schedule-8dc25f58d104",
       "name": "제15회 부여 굿뜨래 마라톤 대회",
       "region": "충남",
       "venue": "부여 구드래나루터 선착장",
@@ -3163,7 +3115,7 @@
       "registrationPeriodLabel": "6/30 - 10/7",
       "organizer": "부여군마라톤연합회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://mara1080.com/event/ffc023fc-7a54-4610-bdd6-2bb9a1028122",
+      "officialUrl": "https://mara1080.com/event/ffc023fc-7a54-4610-bdd6-2bb9a1028122",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -3185,8 +3137,8 @@
       "registrationPeriodLabel": "07/20 - 07/31",
       "organizer": "과천시체육회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://gcrun.co.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gwacheon-marathon",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
@@ -3206,8 +3158,8 @@
       "registrationPeriodLabel": "08/11 - 09/30",
       "organizer": "아시아경제",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://heritage.co.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-heritage-run",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
@@ -3226,12 +3178,12 @@
       "registrationPeriodLabel": "07/02 - 09/30",
       "organizer": "서울신문, 한국익스트림앤스포츠",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://cafe.naver.com/seoultrailrun/?viewType=pc",
+      "officialUrl": "https://cafe.naver.com/seoultrailrun/?viewType=pc",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41634",
+      "id": "schedule-80e4f49eb981",
       "name": "2026 양산 배내골 애플 런",
       "region": "경남",
       "venue": "장선마을 회관 앞 운동장",
@@ -3247,12 +3199,12 @@
       "registrationPeriodLabel": "6/15 - 7/15",
       "organizer": "배내골 주민자치위원회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://k-marathon.or.kr/main.php",
+      "officialUrl": "https://k-marathon.or.kr/main.php",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41647",
+      "id": "schedule-b8f5765d35e8",
       "name": "제11회 송파구청장배 마라톤",
       "region": "서울",
       "venue": "송파구 여성축구장",
@@ -3268,12 +3220,10 @@
       "registrationPeriodLabel": "7/1 - 10/5",
       "organizer": "송파구육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.songparunsportal.com",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
-      "id": "schedule-41658",
+      "id": "schedule-11f6d639b02d",
       "name": "제5회 거제시체육회장배 거제앵산트레일레이스",
       "region": "경남",
       "venue": "경남 거제시 하청면스포츠타운",
@@ -3288,8 +3238,6 @@
       "registrationPeriodLabel": "6/1 - 9/30",
       "organizer": "하청면체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.거제앵산트레일레이스.com",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
@@ -3309,7 +3257,7 @@
       "registrationPeriodLabel": "04/13 - 06/01",
       "organizer": "kthcn",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://pohangmarathon.com/",
+      "officialUrl": "https://pohangmarathon.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -3330,12 +3278,12 @@
       "registrationPeriodLabel": "07/08 - 10/16",
       "organizer": "서울자주통일평화연대",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://seoultongilrun.org/",
+      "officialUrl": "https://seoultongilrun.org/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41614",
+      "id": "schedule-51d8319f0085",
       "name": "2026 가민런 코리아",
       "region": "경기",
       "venue": "고양종합운동장",
@@ -3351,7 +3299,7 @@
       "registrationPeriodLabel": "7/1 - 7/3",
       "organizer": "가민,러너블",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://runable.me/product/18977?comp=18962",
+      "officialUrl": "https://runable.me/product/18977?comp=18962",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -3373,7 +3321,7 @@
       "registrationPeriodLabel": "07/06 - 09/11",
       "organizer": "한라일보",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://marathon.ihalla.com/",
+      "officialUrl": "https://marathon.ihalla.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -3393,7 +3341,7 @@
       "registrationStatus": "closed",
       "note": "HALF 6월 25일, 10km 6월 26일 접수로 확인됩니다.",
       "capacity": 12000,
-      "officialUrl": "http://mbn-seoulmarathon.com",
+      "officialUrl": "https://www.mbn-seoulmarathon.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -3413,12 +3361,12 @@
       "registrationPeriodLabel": "06/08 - 08/31",
       "organizer": "{사}소아암환우돕기 조직위",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://happytrailrun.com/",
+      "officialUrl": "https://happytrailrun.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41644",
+      "id": "schedule-c376814d0f6a",
       "name": "제24회 고창고인돌마라톤",
       "region": "전북",
       "venue": "고창공설운동장",
@@ -3435,8 +3383,6 @@
       "registrationPeriodLabel": "7/1 - 8/31",
       "organizer": "고창군체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://www.gcrun.com",
-      "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
     {
@@ -3455,8 +3401,8 @@
       "registrationPeriodLabel": "04/01 - 10/30",
       "organizer": "(사)한국산악마라톤연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://koreatrail.net/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/24th-daemosan-guryongsan-trailrun-2026-11-15",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
@@ -3479,7 +3425,7 @@
       "registrationPeriodLabel": "05/06 - 10/15",
       "organizer": "전국마라톤협회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.mara1080.com/event/c8dc2c22-a83a-4743-9e34-c884e9809dbb",
+      "officialUrl": "https://www.mara1080.com/event/c8dc2c22-a83a-4743-9e34-c884e9809dbb",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -3506,7 +3452,7 @@
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41602",
+      "id": "schedule-9f4925b1137c",
       "name": "제2회 세종특별자치시 전국 마라톤",
       "region": "세종",
       "venue": "세종시민운동장",
@@ -3522,7 +3468,7 @@
       "registrationPeriodLabel": "6/20 - 7/29",
       "organizer": "세종특별자치시육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://sjrun.com",
+      "officialUrl": "https://sjrun.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -3542,12 +3488,12 @@
       "registrationPeriodLabel": "05/04 - 10/15",
       "organizer": "한국백혈병소아암협회/시유케이컴",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.cuk-sports.com/",
+      "officialUrl": "https://www.cuk-sports.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {
-      "id": "schedule-41565",
+      "id": "schedule-ecd21c0a09f3",
       "name": "제4회 영남알프스 전국 하프마라톤",
       "region": "울산",
       "venue": "울주군 영남알프스 일원",
@@ -3564,7 +3510,7 @@
       "registrationPeriodLabel": "9/1 - 9/30",
       "organizer": "울산광역시 울주군육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "http://영남알프스마라톤.kr",
+      "officialUrl": "https://xn--q20bn3kn1bg9oekd84a785cnfg.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤온라인"
     },
@@ -3587,7 +3533,7 @@
       "registrationPeriodLabel": "07/08 - 11/07",
       "organizer": "주식회사 세정",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://urfesta.com/",
+      "officialUrl": "https://urfesta.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -3610,7 +3556,7 @@
       "registrationPeriodLabel": "07/07 - 10/28",
       "organizer": "남원시체육회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://mara1080.com/event/c2cec79b-c38a-4832-bf4f-7ecb499cdcd5/guide/overview",
+      "officialUrl": "https://mara1080.com/event/c2cec79b-c38a-4832-bf4f-7ecb499cdcd5/guide/overview",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -3631,7 +3577,7 @@
       "registrationPeriodLabel": "08/10 - 08/30",
       "organizer": "사우나 민족",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://mokyokrun.shop/",
+      "officialUrl": "https://mokyokrun.shop/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -3652,7 +3598,7 @@
       "registrationPeriodLabel": "07/02 - 09/01",
       "organizer": "전국마라톤협회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://mara1080.com/event/df4b4e7d-4fbc-4843-858c-f15c032e92cb",
+      "officialUrl": "https://mara1080.com/event/df4b4e7d-4fbc-4843-858c-f15c032e92cb",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -3674,8 +3620,8 @@
       "registrationPeriodLabel": "08/01 - 10/28",
       "organizer": "(사)대한생활체육회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.hangangmarathon.kr/",
-      "externalLinkKind": "official",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/23rd-hangang-citizen-marathon-2026",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
@@ -3695,7 +3641,7 @@
       "registrationPeriodLabel": "08/01 - 08/16",
       "organizer": "KNN,부산시",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.busanmarathon.com/",
+      "officialUrl": "https://www.busanmarathon.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -3718,7 +3664,7 @@
       "registrationPeriodLabel": "10/12 - 01/10",
       "organizer": "(사)한국마라톤연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://dkrun.co.kr/",
+      "officialUrl": "https://dkrun.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -3739,7 +3685,7 @@
       "registrationPeriodLabel": "06/08 - 06/18",
       "organizer": "동아일보,서울시",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://seoul-marathon.com/",
+      "officialUrl": "https://seoul-marathon.com/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
@@ -3761,7 +3707,7 @@
       "registrationPeriodLabel": "11/01 - 12/31",
       "organizer": "기장바다마라톤조직위",
       "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "http://www.badarun.co.kr/",
+      "officialUrl": "https://www.badarun.co.kr/",
       "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     }
