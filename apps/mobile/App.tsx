@@ -2,13 +2,14 @@
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
 import { StatusBar } from 'expo-status-bar';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Alert,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   useWindowDimensions,
   View,
 } from 'react-native';
@@ -18,10 +19,13 @@ import {
   bundledRevision,
   distances,
   fetchLatestRaces,
+  filterByRegistrationStatus,
   filterRaces,
   formatRaceDate,
   formatRegistrationTime,
   registrationStatusLabel,
+  registrationFilters,
+  shouldReplaceRaceFeed,
   canScheduleRegistrationAlert,
   raceIdFromDeepLink,
   races,
@@ -29,9 +33,13 @@ import {
 } from './src/races';
 import {
   configureNotificationChannel,
+  cancelRegistrationNotification,
+  getScheduledRegistrationAlerts,
+  reconcileRegistrationNotifications,
   scheduleRegistrationNotification,
 } from './src/notifications';
 import type { DistanceFilter, Race, RegionFilter } from './src/types';
+import type { RegistrationFilter } from './src/races';
 
 const SUPPORT_URL = process.env.EXPO_PUBLIC_SUPPORT_URL ?? 'https://robom.kr/support';
 const PRIVACY_URL =
@@ -87,6 +95,8 @@ function AppScreen() {
   const deepLinkUrl = Linking.useLinkingURL();
   const [region, setRegion] = useState<RegionFilter>('전체');
   const [distance, setDistance] = useState<DistanceFilter>('전체');
+  const [registrationFilter, setRegistrationFilter] = useState<RegistrationFilter>('전체');
+  const [query, setQuery] = useState('');
   const [raceFeed, setRaceFeed] = useState({ revision: bundledRevision, races });
   const [focusedRaceId, setFocusedRaceId] = useState<string | null>(null);
   const [busyRaceId, setBusyRaceId] = useState<string | null>(null);
@@ -94,9 +104,10 @@ function AppScreen() {
   const [notice, setNotice] = useState(
     '알림 권한이 없어도 지역·거리 선택과 공식 대회 링크는 계속 사용할 수 있어요.',
   );
+  const raceIdsRef = useRef(new Set(races.map((race) => race.id)));
 
   const revealRace = useCallback((raceId: string) => {
-    if (!raceFeed.races.some((race) => race.id === raceId)) {
+    if (!raceIdsRef.current.has(raceId)) {
       return;
     }
 
@@ -104,38 +115,41 @@ function AppScreen() {
     setDistance('전체');
     setFocusedRaceId(raceId);
     setNotice('딥 링크로 선택한 대회를 목록 맨 위에 표시했어요.');
-  }, [raceFeed.races]);
+  }, []);
 
   useEffect(() => {
-    void configureNotificationChannel().catch(() => {
-      setNotice('알림 채널을 준비하지 못했지만 대회 탐색과 공식 링크는 계속 사용할 수 있어요.');
-    });
-
-    let active = true;
-    void fetchLatestRaces()
+    const controller = new AbortController();
+    void fetchLatestRaces(controller.signal)
       .then((latest) => {
-        if (!active) return;
-        setRaceFeed(latest);
+        if (controller.signal.aborted) return;
+        raceIdsRef.current = new Set(latest.races.map((race) => race.id));
+        setRaceFeed((current) => shouldReplaceRaceFeed(current, latest) ? latest : current);
+        return reconcileRegistrationNotifications(latest.races)
+          .then((scheduled) => {
+            if (controller.signal.aborted) return;
+            setScheduledRaceIds(Object.fromEntries(scheduled.map((notification) => [notification.raceId, notification.identifier])));
+          });
+      })
+      .then(() => {
+        if (controller.signal.aborted) return;
         setNotice('운영 데이터로 최신 접수 상태를 확인했어요. 네트워크가 없으면 번들 데이터를 사용합니다.');
       })
       .catch(() => {
-        if (!active) return;
+        if (controller.signal.aborted) return;
         setNotice('최신 데이터를 불러오지 못해 설치된 검증 데이터로 표시하고 있어요. 네트워크를 확인해 주세요.');
       });
-    void Notifications.getAllScheduledNotificationsAsync()
-      .then((scheduled) => {
-        if (!active) {
-          return;
-        }
 
-        const next: Record<string, string> = {};
-        for (const notification of scheduled) {
-          const raceId = notification.content.data?.raceId;
-          if (typeof raceId === 'string') {
-            next[raceId] = notification.identifier;
-          }
-        }
-        setScheduledRaceIds(next);
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    void configureNotificationChannel().catch(() => {
+      if (active) setNotice('알림 채널을 준비하지 못했지만 대회 탐색과 공식 링크는 계속 사용할 수 있어요.');
+    });
+    void getScheduledRegistrationAlerts()
+      .then((scheduled) => {
+        if (active) setScheduledRaceIds(Object.fromEntries(scheduled.map((notification) => [notification.raceId, notification.identifier])));
       })
       .catch(() => undefined);
 
@@ -173,7 +187,12 @@ function AppScreen() {
   }, [deepLinkUrl, revealRace]);
 
   const visibleRaces = useMemo(() => {
-    const filtered = filterRaces(region, distance, raceFeed.races);
+    const filtered = filterByRegistrationStatus(
+      registrationFilter,
+      filterRaces(region, distance, raceFeed.races).filter((race) =>
+        !query.trim() || `${race.name} ${race.region} ${race.venue} ${race.distances.join(' ')}`.toLocaleLowerCase('ko-KR').includes(query.trim().toLocaleLowerCase('ko-KR')),
+      ),
+    );
     if (!focusedRaceId) {
       return filtered;
     }
@@ -183,7 +202,7 @@ function AppScreen() {
       if (right.id === focusedRaceId) return 1;
       return 0;
     });
-  }, [distance, focusedRaceId, raceFeed.races, region]);
+  }, [distance, focusedRaceId, query, raceFeed.races, region, registrationFilter]);
 
   const availableRegions = useMemo(() => regionsFor(raceFeed.races), [raceFeed.races]);
 
@@ -224,6 +243,23 @@ function AppScreen() {
     }
   }, []);
 
+  const cancelAlert = useCallback(async (race: Race) => {
+    setBusyRaceId(race.id);
+    try {
+      const cancelled = await cancelRegistrationNotification(race.id);
+      setScheduledRaceIds((current) => {
+        const next = { ...current };
+        delete next[race.id];
+        return next;
+      });
+      setNotice(cancelled ? `${race.name} 접수 알림을 취소했어요.` : '취소할 접수 알림이 없어요.');
+    } catch {
+      setNotice('알림 취소 중 오류가 발생했어요. 다시 시도해 주세요.');
+    } finally {
+      setBusyRaceId(null);
+    }
+  }, []);
+
   return (
     <SafeAreaView edges={['top', 'right', 'bottom', 'left']} style={styles.safeArea}>
       <StatusBar style="dark" />
@@ -232,14 +268,14 @@ function AppScreen() {
           <Text accessibilityRole="header" style={styles.wordmark}>
             러닝<Text style={styles.wordmarkAccent}>봄</Text>
           </Text>
-          <Text style={styles.version}>Native 0.18.2</Text>
+          <Text style={styles.version}>Native 0.18.3</Text>
         </View>
 
         <View style={styles.intro}>
           <Text style={styles.eyebrow}>접수 시작을 놓치지 않게</Text>
           <Text style={styles.title}>달리고 싶은 대회를 골라보세요</Text>
           <Text style={styles.subtitle}>
-            검증된 대회 데이터를 지역과 거리로 좁히고, 공식 시각이 확인된 대회는 기기 로컬 알림으로 예약합니다.
+            검증된 대회 데이터를 지역·거리·접수 상태로 좁히고, 공식 시각이 확인된 대회는 기기 로컬 알림으로 예약합니다.
           </Text>
         </View>
 
@@ -262,7 +298,28 @@ function AppScreen() {
               setDistance(choice);
             }}
           />
+          <ChoiceRow
+            label="접수 상태"
+            choices={registrationFilters}
+            selected={registrationFilter}
+            onSelect={(choice) => {
+              setFocusedRaceId(null);
+              setRegistrationFilter(choice);
+            }}
+          />
         </View>
+
+        <TextInput
+          accessibilityLabel="대회 검색"
+          autoCapitalize="none"
+          autoCorrect={false}
+          clearButtonMode="while-editing"
+          onChangeText={setQuery}
+          placeholder="대회명, 지역 또는 장소 검색"
+          placeholderTextColor={colors.muted}
+          style={styles.searchInput}
+          value={query}
+        />
 
         <View accessibilityLiveRegion="polite" style={styles.notice}>
           <Text style={styles.noticeText}>{notice}</Text>
@@ -305,8 +362,8 @@ function AppScreen() {
                 <View style={styles.actions}>
                   <Pressable
                     accessibilityRole="button"
-                    disabled={busy || !canSchedule}
-                    onPress={() => void scheduleAlert(race)}
+                    disabled={busy || (!scheduled && !canSchedule)}
+                    onPress={() => void (scheduled ? cancelAlert(race) : scheduleAlert(race))}
                     style={({ pressed }) => [
                       styles.primaryButton,
                       scheduled && styles.scheduledButton,
@@ -315,7 +372,7 @@ function AppScreen() {
                     ]}
                   >
                     <Text style={styles.primaryButtonText}>
-                      {busy ? '예약 중' : scheduled ? '알림 예약됨' : canSchedule ? '접수 알림 예약' : status === '접수 중' ? '접수 진행 중' : status === '접수 예정' ? '시각 확인 후 예약' : '알림 대상 아님'}
+                      {busy ? '처리 중' : scheduled ? '알림 취소' : canSchedule ? '접수 알림 예약' : status === '접수 중' ? '접수 진행 중' : status === '접수 예정' ? '시각 확인 후 예약' : '알림 대상 아님'}
                     </Text>
                   </Pressable>
                   <Pressable
@@ -345,6 +402,8 @@ function AppScreen() {
               onPress={() => {
                 setRegion('전체');
                 setDistance('전체');
+                setRegistrationFilter('전체');
+                setQuery('');
               }}
               style={({ pressed }) => [styles.resetButton, pressed && styles.pressed]}
             >
@@ -467,6 +526,17 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     paddingVertical: 16,
     gap: 16,
+  },
+  searchInput: {
+    minHeight: 50,
+    marginTop: 12,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: 16,
+    backgroundColor: colors.surface,
+    color: colors.ink,
+    fontSize: 15,
+    paddingHorizontal: 16,
   },
   filterGroup: {
     gap: 9,

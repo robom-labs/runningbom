@@ -81,9 +81,28 @@ export type RaceFeed = {
   races: Race[];
 };
 
+export type RegistrationFilter = '전체' | '접수 예정' | '접수 중';
+export const registrationFilters: RegistrationFilter[] = ['전체', '접수 예정', '접수 중'];
+
+export function filterByRegistrationStatus(
+  statusFilter: RegistrationFilter,
+  values: Race[],
+  now = Date.now(),
+): Race[] {
+  if (statusFilter === '전체') return values;
+  return values.filter((race) => registrationStatusLabel(race, now) === statusFilter);
+}
+
+export function shouldReplaceRaceFeed(current: RaceFeed, next: RaceFeed): boolean {
+  return current.revision !== next.revision;
+}
+
 // 운영 Pages의 검증된 JSON을 읽되 실패하면 번들 데이터를 그대로 사용합니다.
-export async function fetchLatestRaces(): Promise<RaceFeed> {
-  const response = await fetch(REMOTE_RACES_URL, { headers: { Accept: 'application/json' } });
+export async function fetchLatestRaces(signal?: AbortSignal): Promise<RaceFeed> {
+  const response = await fetch(REMOTE_RACES_URL, {
+    headers: { Accept: 'application/json' },
+    signal,
+  });
   if (!response.ok) throw new Error(`race feed HTTP ${response.status}`);
   const payload = (await response.json()) as { revision?: unknown; races?: unknown };
   if (typeof payload.revision !== 'string' || !Array.isArray(payload.races)) {

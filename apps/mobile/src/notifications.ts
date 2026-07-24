@@ -5,12 +5,44 @@ import { Platform } from 'react-native';
 import type { Race } from './types';
 
 const CHANNEL_ID = 'registration-start';
+const NOTIFICATION_FAMILY = 'runningbom-registration';
 
 export type ScheduleResult =
   | { kind: 'scheduled'; identifier: string }
   | { kind: 'denied' }
   | { kind: 'past' }
   | { kind: 'time-unconfirmed' };
+
+export type ScheduledRegistration = {
+  raceId: string;
+  alertKey: string;
+  identifier: string;
+};
+
+function registrationAlertKey(race: Race): string {
+  const windows = (race.registrationWindows ?? [])
+    .map((window) => `${window.distance ?? 'all'}:${window.opensAt}:${window.closesAt ?? ''}`)
+    .sort()
+    .join('|');
+  return `${race.id}:${race.registrationOpensAt}:${windows}`;
+}
+
+function isOwnedRegistration(notification: Notifications.NotificationRequest): boolean {
+  const data = notification.content.data;
+  return data?.notificationFamily === NOTIFICATION_FAMILY || typeof data?.raceId === 'string';
+}
+
+function canKeepRegistrationAlert(race: Race, now = Date.now()): boolean {
+  const opensAt = new Date(race.registrationOpensAt).getTime();
+  const closesAt = race.registrationClosesAt ? new Date(race.registrationClosesAt).getTime() : Number.NaN;
+  return (
+    race.registrationTimeConfirmed &&
+    Number.isFinite(opensAt) &&
+    opensAt > now &&
+    !['cancelled', 'postponed', 'sold_out', 'closed', 'open'].includes(race.registrationStatus ?? '') &&
+    (!Number.isFinite(closesAt) || closesAt > now)
+  );
+}
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -77,7 +109,7 @@ export async function scheduleRegistrationNotification(race: Race): Promise<Sche
   await configureNotificationChannel();
   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
   const duplicates = scheduled.filter(
-    (notification) => notification.content.data?.raceId === race.id,
+    (notification) => isOwnedRegistration(notification) && notification.content.data?.raceId === race.id,
   );
   await Promise.all(
     duplicates.map((notification) =>
@@ -92,6 +124,8 @@ export async function scheduleRegistrationNotification(race: Race): Promise<Sche
       sound: 'default',
       data: {
         raceId: race.id,
+        alertKey: registrationAlertKey(race),
+        notificationFamily: NOTIFICATION_FAMILY,
         deepLink: `runningbom://race/${race.id}`,
         ...(race.officialUrl ? { officialUrl: race.officialUrl } : {}),
       },
@@ -104,4 +138,45 @@ export async function scheduleRegistrationNotification(race: Race): Promise<Sche
   });
 
   return { kind: 'scheduled', identifier };
+}
+
+export async function getScheduledRegistrationAlerts(): Promise<ScheduledRegistration[]> {
+  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+  return scheduled.flatMap((notification) => {
+    if (!isOwnedRegistration(notification)) return [];
+    const raceId = notification.content.data?.raceId;
+    if (typeof raceId !== 'string') return [];
+    const alertKey = typeof notification.content.data?.alertKey === 'string'
+      ? notification.content.data.alertKey
+      : `${raceId}:legacy`;
+    return [{ raceId, alertKey, identifier: notification.identifier }];
+  });
+}
+
+export async function cancelRegistrationNotification(raceId: string): Promise<number> {
+  const scheduled = await getScheduledRegistrationAlerts();
+  const targets = scheduled.filter((notification) => notification.raceId === raceId);
+  await Promise.all(targets.map((notification) => Notifications.cancelScheduledNotificationAsync(notification.identifier)));
+  return targets.length;
+}
+
+// 원격 데이터 변경 뒤 사용자가 예약한 항목만 유지·재무장하고 고아 알림은 제거합니다.
+export async function reconcileRegistrationNotifications(races: Race[]): Promise<ScheduledRegistration[]> {
+  const scheduled = await getScheduledRegistrationAlerts();
+  const byRaceId = new Map(races.map((race) => [race.id, race]));
+  const rearm = new Map<string, Race>();
+
+  await Promise.all(scheduled.map(async (notification) => {
+    const race = byRaceId.get(notification.raceId);
+    if (!race || !canKeepRegistrationAlert(race) || notification.alertKey !== registrationAlertKey(race)) {
+      await Notifications.cancelScheduledNotificationAsync(notification.identifier);
+      if (race && canKeepRegistrationAlert(race)) rearm.set(race.id, race);
+    }
+  }));
+
+  for (const race of rearm.values()) {
+    await scheduleRegistrationNotification(race);
+  }
+
+  return getScheduledRegistrationAlerts();
 }
