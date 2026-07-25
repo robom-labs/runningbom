@@ -1,5 +1,5 @@
 {
-  "version": "2026.07.25-race-data-13",
+  "version": "2026.07.26-race-data-14",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -172,29 +172,6 @@
     }
   ],
   "scheduleFeed": [
-    {
-      "name": "순천만국가정원 챌린지가든런",
-      "date": "2026-07-25",
-      "time": "07:30 집결",
-      "region": "전남",
-      "venue": "순천만국가정원 동문",
-      "distances": [
-        "10K"
-      ],
-      "registrationOpenAt": "2026-07-09T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-17T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "07/09 - 07/17",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "registrationUrl": "https://projectruntrip.com/",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/suncheonman-national-garden-challenge-garden-run-2026-07-25",
-      "sourceName": "마라톤GO",
-      "organizer": "순천만국가정원",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "closed",
-      "courseLabel": "10K",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
     {
       "name": "사우나런 in 석촌호수",
       "date": "2026-07-31",
@@ -473,7 +450,7 @@
     },
     {
       "date": "2026-08-16",
-      "status": "open",
+      "status": "closed",
       "name": "2026Happy700평창대관령전국하프마라톤",
       "region": "강원",
       "venue": "2018 평창동계올림픽 기념관",
@@ -4206,7 +4183,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-07-24T17:59:02.557Z",
+  "lastSuccessfulRefreshAt": "2026-07-25T15:52:29.628Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
