@@ -77,4 +77,3 @@ Read at `2026-07-26` without saving or publishing changes.
 - Google/Kakao/Naver/Apple production OAuth credentials: none in repository
 - Real-device long-session matrix: `NOT_RUN`
 - Release stage: `CODE_ONLY`
-

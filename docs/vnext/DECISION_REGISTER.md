@@ -15,4 +15,3 @@
 | D-011 | Preview APK는 production 앱과 분리된 package가 안전하게 구성될 때만 만든다. | 기존 Play 설치와 동시 설치하고 production write를 막는다. | accepted |
 | D-012 | main push가 Play 업로드를 실행하지 못하도록 Release Guard를 fail-closed로 추가한다. | 코드·웹 배포와 Play 제출을 분리한다. | accepted |
 | D-013 | 현재 web PWA는 네이티브 vNext와 별도 회귀 대상으로 유지한다. | 기존 PWA 사용자를 보호하고 대규모 동시 재작성 위험을 피한다. | accepted |
-

@@ -105,4 +105,3 @@
 - 개인정보·운영·보안·Release Guard 문서와 자동 검사
 - Preview APK·candidate AAB 생성 시도와 정적 검증
 - Git·CI·웹 smoke와 Claude Code 인계 자료
-
