@@ -17,7 +17,16 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Wordmark } from '../design-system/components';
-import { palette, radius, spacing, typeScale } from '../design-system/theme';
+import {
+  fontWeight,
+  layout,
+  lineHeight,
+  motion,
+  palette,
+  radius,
+  spacing,
+  typeScale,
+} from '../design-system/theme';
 import { menuGroups } from './routes';
 import type { RouteKey } from './types';
 
@@ -51,13 +60,13 @@ export function DrawerMenu({
     Animated.parallel([
       Animated.timing(translate, {
         toValue: visible ? 0 : -panelWidth,
-        duration: visible ? 220 : 160,
+        duration: visible ? motion.slow : motion.fast,
         easing: visible ? Easing.out(Easing.cubic) : Easing.in(Easing.cubic),
         useNativeDriver: true,
       }),
       Animated.timing(fade, {
         toValue: visible ? 1 : 0,
-        duration: visible ? 200 : 140,
+        duration: visible ? motion.base : motion.fast,
         easing: Easing.linear,
         useNativeDriver: true,
       }),
@@ -79,7 +88,7 @@ export function DrawerMenu({
         }
         Animated.timing(translate, {
           toValue: 0,
-          duration: 140,
+          duration: motion.fast,
           easing: Easing.out(Easing.cubic),
           useNativeDriver: true,
         }).start();
@@ -113,6 +122,7 @@ export function DrawerMenu({
           <SafeAreaView edges={['top', 'bottom']} style={styles.panelSafe}>
             <Pressable
               accessibilityHint="프로필을 편집해요"
+              accessibilityLabel={`${nickname} 프로필. ${summary}. 등급 ${tier}`}
               accessibilityRole="button"
               onPress={() => onSelect('profile')}
               style={({ pressed }) => [styles.profile, pressed && styles.pressed]}
@@ -191,7 +201,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     left: 0,
-    backgroundColor: 'rgba(17, 17, 17, 0.42)',
+    backgroundColor: palette.scrim,
   },
   panel: {
     position: 'absolute',
@@ -213,36 +223,58 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   avatar: {
-    width: 48,
-    height: 48,
+    minWidth: layout.touchTarget,
+    minHeight: layout.touchTarget,
+    paddingHorizontal: spacing.xs,
     borderRadius: radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: palette.accentSoft,
   },
-  avatarText: { color: palette.accentDark, fontSize: typeScale.titleSmall, fontWeight: '900' },
+  avatarText: {
+    color: palette.accentDark,
+    fontSize: typeScale.titleSmall,
+    lineHeight: lineHeight.titleSmall,
+    fontWeight: fontWeight.heavy,
+  },
   profileCopy: { flex: 1, minWidth: 0 },
-  nickname: { color: palette.ink, fontSize: typeScale.body, fontWeight: '900' },
-  summary: { color: palette.muted, fontSize: typeScale.caption, lineHeight: 17, marginTop: 2 },
+  nickname: {
+    color: palette.ink,
+    fontSize: typeScale.body,
+    lineHeight: lineHeight.body,
+    fontWeight: fontWeight.heavy,
+  },
+  summary: {
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    marginTop: spacing.xxs / 2,
+  },
   tier: {
     borderRadius: radius.pill,
     backgroundColor: palette.surfaceMuted,
     paddingHorizontal: spacing.xs,
     paddingVertical: 4,
   },
-  tierText: { color: palette.inkSoft, fontSize: 11, fontWeight: '900' },
+  tierText: {
+    color: palette.inkSoft,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+    fontWeight: fontWeight.heavy,
+  },
   menu: { paddingBottom: spacing.xl },
   group: { paddingTop: spacing.md },
   groupTitle: {
     color: palette.muted,
-    fontSize: 11,
-    fontWeight: '900',
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+    fontWeight: fontWeight.heavy,
     letterSpacing: 0.6,
     paddingHorizontal: spacing.md,
     paddingBottom: spacing.xs,
   },
   item: {
-    minHeight: 52,
+    minHeight: 56,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
@@ -250,14 +282,28 @@ const styles = StyleSheet.create({
   },
   itemActive: { backgroundColor: palette.surfaceWarm },
   itemCopy: { flex: 1, minWidth: 0 },
-  itemLabel: { color: palette.ink, fontSize: typeScale.bodySmall, fontWeight: '800' },
+  itemLabel: {
+    color: palette.ink,
+    fontSize: typeScale.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+    fontWeight: fontWeight.bold,
+  },
   itemLabelActive: { color: palette.accentDark },
-  itemHint: { color: palette.muted, fontSize: 11, marginTop: 1 },
+  itemHint: {
+    color: palette.muted,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+    marginTop: spacing.xxs / 4,
+  },
   footer: {
     paddingHorizontal: spacing.md,
     paddingTop: spacing.lg,
     gap: spacing.xs,
   },
-  footerText: { color: palette.muted, fontSize: 11, lineHeight: 16 },
+  footerText: {
+    color: palette.muted,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+  },
   pressed: { opacity: 0.7 },
 });

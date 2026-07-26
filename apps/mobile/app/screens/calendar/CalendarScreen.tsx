@@ -15,8 +15,27 @@ import {
 import { activitySourceLabels } from '../../../domains/activities/types';
 import { goalRaceCountdown, goalRacePhaseLabels } from '../../../domains/races/goalRace';
 import { useGoalRace } from '../../../domains/races/useGoalRace';
-import { Banner, Button, Card, Chip, Metric, SectionHeader } from '../../design-system/components';
-import { palette, radius, spacing, typeScale } from '../../design-system/theme';
+import {
+  Banner,
+  Button,
+  Card,
+  Chip,
+  EmptyState,
+  Metric,
+  SectionHeader,
+  screenStyles,
+} from '../../design-system/components';
+import {
+  borderWidth,
+  fontWeight,
+  layout,
+  lineHeight,
+  palette,
+  pressedOpacity,
+  radius,
+  spacing,
+  typeScale,
+} from '../../design-system/theme';
 import { useAppState } from '../../state/AppStateProvider';
 import { ManualActivityCard } from '../my/ManualActivityCard';
 import { calendarLegend, intensityColors, MonthGrid } from './MonthGrid';
@@ -80,10 +99,10 @@ export function CalendarScreen() {
 
   return (
     <ScrollView
-      contentContainerStyle={styles.content}
+      contentContainerStyle={screenStyles.content}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
-      style={styles.root}
+      style={screenStyles.root}
     >
       {goalRace && goalCountdown ? (
         <Card style={styles.goalCard}>
@@ -198,6 +217,15 @@ export function CalendarScreen() {
         title={selected ? `${selected.key} 상세` : '날짜를 선택해 주세요'}
         subtitle="그날의 기록과 예정된 러닝을 함께 볼 수 있어요."
       />
+      {selected && selected.activities.length === 0 && selected.plans.length === 0 ? (
+        <EmptyState
+          title="이 날 저장된 활동이 없어요"
+          body="아래 러닝 일정 등록으로 계획을 적어 두거나, 기록 추가에서 이미 달린 기록을 이 날짜로 남길 수 있어요."
+          hint="지난 날짜를 골라도 그 날짜로 기록이 저장돼요."
+          tone="muted"
+        />
+      ) : null}
+
       <Card style={styles.detailCard}>
         {selected && selected.activities.length > 0 ? (
           selected.activities.map((activity) => (
@@ -279,81 +307,120 @@ export function CalendarScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: palette.canvas },
-  content: {
-    width: '100%',
-    maxWidth: 960,
-    alignSelf: 'center',
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.xxl,
-    gap: spacing.sm,
-  },
   goalCard: {
     gap: spacing.xxs,
     backgroundColor: palette.surfaceWarm,
     borderColor: palette.accent,
-    borderWidth: 1,
+    borderWidth: borderWidth.thin,
   },
   goalTop: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
   goalDDay: {
     minHeight: 30,
     justifyContent: 'center',
     borderRadius: radius.pill,
-    backgroundColor: palette.accent,
+    backgroundColor: palette.accentStrong,
     paddingHorizontal: spacing.sm,
   },
-  goalDDayText: { color: palette.white, fontSize: typeScale.caption, fontWeight: '900' },
+  goalDDayText: {
+    color: palette.white,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    fontWeight: fontWeight.heavy,
+  },
   goalName: {
     color: palette.ink,
     fontSize: typeScale.titleSmall,
-    fontWeight: '900',
+    lineHeight: lineHeight.titleSmall,
+    fontWeight: fontWeight.heavy,
     marginTop: spacing.xs,
   },
-  goalMeta: { color: palette.inkSoft, fontSize: typeScale.caption, lineHeight: 18 },
+  goalMeta: {
+    color: palette.inkSoft,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+  },
   summaryCard: { gap: spacing.sm },
-  summaryTitle: { color: palette.ink, fontSize: typeScale.body, fontWeight: '900' },
+  summaryTitle: {
+    color: palette.ink,
+    fontSize: typeScale.body,
+    lineHeight: lineHeight.body,
+    fontWeight: fontWeight.heavy,
+  },
   metrics: { flexDirection: 'row', justifyContent: 'space-between', gap: spacing.sm },
   metric: { flex: 1, minWidth: 0 },
   calendarCard: { gap: spacing.sm },
   monthHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  monthTitle: { color: palette.ink, fontSize: typeScale.titleSmall, fontWeight: '900' },
+  monthTitle: {
+    color: palette.ink,
+    fontSize: typeScale.titleSmall,
+    lineHeight: lineHeight.titleSmall,
+    fontWeight: fontWeight.heavy,
+  },
   monthButton: {
-    width: 44,
-    height: 44,
+    minWidth: layout.touchTarget,
+    minHeight: layout.touchTarget,
+    paddingHorizontal: spacing.xs,
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: palette.line,
-    borderWidth: 1,
+    borderWidth: borderWidth.thin,
     borderRadius: radius.sm,
   },
-  monthButtonText: { color: palette.ink, fontSize: 24, fontWeight: '700' },
+  monthButtonText: {
+    color: palette.ink,
+    fontSize: typeScale.title,
+    lineHeight: lineHeight.title,
+    fontWeight: fontWeight.semibold,
+  },
   todayButton: { alignSelf: 'flex-start', minWidth: 110 },
   legend: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm, paddingTop: spacing.xs },
-  legendItem: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  legendDot: { width: 8, height: 8, borderRadius: 4 },
-  legendDotEmpty: { borderColor: palette.line, borderWidth: 1 },
+  legendItem: { flexDirection: 'row', alignItems: 'center', gap: spacing.xxs },
+  legendDot: { width: spacing.xs, height: spacing.xs, borderRadius: spacing.xxs },
+  legendDotEmpty: { borderColor: palette.line, borderWidth: borderWidth.thin },
   legendPlanned: {
-    width: 12,
-    height: 12,
-    borderRadius: 4,
+    width: spacing.sm,
+    height: spacing.sm,
+    borderRadius: spacing.xxs,
     borderColor: palette.accent,
     borderStyle: 'dashed',
-    borderWidth: 1,
+    borderWidth: borderWidth.thin,
   },
-  legendLabel: { color: palette.muted, fontSize: 11, fontWeight: '700' },
+  legendLabel: {
+    color: palette.muted,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+    fontWeight: fontWeight.semibold,
+  },
   detailCard: { gap: spacing.sm },
-  detailRow: { gap: 2 },
-  detailTitle: { color: palette.ink, fontSize: typeScale.bodySmall, fontWeight: '800' },
-  detailMeta: { color: palette.muted, fontSize: typeScale.caption, lineHeight: 18 },
-  emptyText: { color: palette.muted, fontSize: typeScale.bodySmall },
+  detailRow: { gap: spacing.xxs / 2 },
+  detailTitle: {
+    color: palette.ink,
+    fontSize: typeScale.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+    fontWeight: fontWeight.bold,
+  },
+  detailMeta: {
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+  },
+  emptyText: {
+    color: palette.muted,
+    fontSize: typeScale.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+  },
   planList: {
     gap: spacing.xs,
     borderTopColor: palette.line,
     borderTopWidth: StyleSheet.hairlineWidth,
     paddingTop: spacing.sm,
   },
-  planHeading: { color: palette.accentDark, fontSize: typeScale.caption, fontWeight: '900' },
+  planHeading: {
+    color: palette.accentDark,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    fontWeight: fontWeight.heavy,
+  },
   planRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   planCopy: { flex: 1, minWidth: 0 },
   integrationCard: { gap: spacing.sm },
@@ -363,8 +430,13 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     backgroundColor: palette.surfaceMuted,
     paddingHorizontal: spacing.sm,
-    paddingVertical: 6,
+    paddingVertical: spacing.xxs,
   },
-  integrationBadgeText: { color: palette.inkSoft, fontSize: 11, fontWeight: '900' },
-  pressed: { opacity: 0.7 },
+  integrationBadgeText: {
+    color: palette.inkSoft,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+    fontWeight: fontWeight.heavy,
+  },
+  pressed: { opacity: pressedOpacity },
 });

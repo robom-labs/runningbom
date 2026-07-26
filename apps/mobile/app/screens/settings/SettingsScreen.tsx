@@ -1,14 +1,35 @@
-// 설정 화면입니다. 음성·알림·외부 연동·계정과 앱 정보를 모으고, 로그인 비활성 사유를 그대로 알립니다.
+// 설정 화면입니다. 코치·음성 / 알림 / 연동 / 계정·데이터 / 앱 정보 다섯 묶음으로 나누고,
+// 각 항목에 한 줄 설명을 붙여 무엇을 바꾸는 값인지 바로 알 수 있게 합니다.
 import * as Application from 'expo-application';
 import Constants from 'expo-constants';
 import type { Session, UserIdentity } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 import { Alert, Linking, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
 
-import { Banner, Button, Card, Chip, SectionHeader } from '../../design-system/components';
-import { palette, spacing, typeScale } from '../../design-system/theme';
+import {
+  Banner,
+  Button,
+  Card,
+  Chip,
+  SectionHeader,
+  screenStyles,
+} from '../../design-system/components';
+import {
+  fontWeight,
+  layout,
+  lineHeight,
+  palette,
+  spacing,
+  typeScale,
+} from '../../design-system/theme';
 import { BADGE_RULE_VERSION } from '../../../domains/badges/rules';
 import { COACH_CONTENT_VERSION } from '../../../domains/coaching/model';
+import { voiceGenderLabels, type VoiceGender } from '../../../domains/coaching/voice';
+import {
+  defaultCoachVoicePreference,
+  loadCoachVoicePreference,
+  saveCoachVoicePreference,
+} from '../../../domains/coaching/voicePreference';
 import { SHOE_DATA_VERSION } from '../../../domains/shoes/catalog';
 import {
   currentIdentities,
@@ -48,6 +69,8 @@ const guidanceLevels: Array<[string, string]> = [
   ['detailed', '자세히'],
 ];
 
+const voiceGenders: VoiceGender[] = ['female', 'male'];
+
 const integrations = [
   { id: 'samsung-health', name: '삼성 헬스', requirement: 'Samsung Health Data SDK 파트너 승인 필요' },
   { id: 'garmin', name: 'Garmin Connect', requirement: 'Garmin Developer Program 승인과 OAuth 키 필요' },
@@ -61,6 +84,23 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
   const [identities, setIdentities] = useState<UserIdentity[]>([]);
   const [pendingSyncCount, setPendingSyncCount] = useState(0);
   const [accountMessage, setAccountMessage] = useState('');
+  const [voiceGender, setVoiceGender] = useState<VoiceGender>(defaultCoachVoicePreference.gender);
+
+  // 코치 음성 성별은 coaching 도메인의 기존 키에 그대로 저장합니다(새 키를 만들지 않습니다).
+  useEffect(() => {
+    let active = true;
+    void loadCoachVoicePreference().then((value) => {
+      if (active) setVoiceGender(value.gender);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  function chooseVoiceGender(gender: VoiceGender) {
+    setVoiceGender(gender);
+    void saveCoachVoicePreference({ gender });
+  }
 
   const providers = providerMatrix();
   const enabledProviders = providers.filter((provider) => provider.enabled);
@@ -245,14 +285,32 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
 
   return (
     <ScrollView
-      contentContainerStyle={styles.content}
+      contentContainerStyle={screenStyles.content}
       showsVerticalScrollIndicator={false}
-      style={styles.root}
+      style={screenStyles.root}
     >
-      <SectionHeader title="음성 코칭" subtitle="말하기 속도와 안내 자세히 정도를 고를 수 있어요." />
+      <SectionHeader
+        title="코치·음성"
+        subtitle="러닝 중 코치가 어떤 목소리로, 얼마나 자주 말할지 정해요."
+      />
       <Card style={styles.card}>
-        <Text style={styles.rowTitle}>말하기 속도</Text>
-        <View style={styles.chips}>
+        <SettingLabel title="코치 목소리" description="기기에 설치된 한국어 음성 중에서 골라요." />
+        <View accessibilityRole="radiogroup" style={styles.chips}>
+          {voiceGenders.map((gender) => (
+            <Chip
+              key={gender}
+              label={`${voiceGenderLabels[gender]} 음성`}
+              onPress={() => chooseVoiceGender(gender)}
+              selected={voiceGender === gender}
+              tone="accent"
+            />
+          ))}
+        </View>
+        <SettingLabel
+          title="말하기 속도"
+          description="음성이 문장을 읽는 속도예요. 러닝 시작 화면에서 미리 들어 볼 수 있어요."
+        />
+        <View accessibilityRole="radiogroup" style={styles.chips}>
           {speechRates.map(([value, label]) => (
             <Chip
               key={label}
@@ -263,8 +321,11 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
             />
           ))}
         </View>
-        <Text style={styles.rowTitle}>안내 정도</Text>
-        <View style={styles.chips}>
+        <SettingLabel
+          title="안내 정도"
+          description="문장을 얼마나 자주 들려줄지예요. 최소는 꼭 필요한 안내만 말해요."
+        />
+        <View accessibilityRole="radiogroup" style={styles.chips}>
           {guidanceLevels.map(([value, label]) => (
             <Chip
               key={value}
@@ -283,13 +344,17 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
 
       <SectionHeader title="알림" subtitle="대회 접수 알림은 대회 화면에서 대회별로 예약해요." />
       <Card style={styles.card}>
+        <SettingLabel
+          title="대회 접수 알림"
+          description="대회 화면에서 원하는 대회마다 켤 수 있어요. 여기서는 따로 켤 값이 없어요."
+        />
         <Text style={styles.rowMeta}>
           알림 권한을 거부해도 대회 탐색과 공식 링크는 그대로 사용할 수 있어요. 러닝봄은 마케팅
           알림을 보내지 않습니다.
         </Text>
       </Card>
 
-      <SectionHeader title="외부 기록 연동" subtitle="연결되지 않은 것은 연결되지 않았다고 적어요." />
+      <SectionHeader title="연동" subtitle="연결되지 않은 것은 연결되지 않았다고 적어요." />
       <Card style={styles.card}>
         <Banner
           title="연동 준비 중"
@@ -307,8 +372,15 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
         ))}
       </Card>
 
-      <SectionHeader title="연결된 로그인" subtitle="핵심 기능은 로그인 없이 사용할 수 있어요." />
+      <SectionHeader
+        title="계정·데이터"
+        subtitle="핵심 기능은 로그인 없이 쓸 수 있어요. 계정은 선택입니다."
+      />
       <Card style={styles.card}>
+        <SettingLabel
+          title="로그인 수단"
+          description="지금 이 빌드에서 쓸 수 있는 로그인 수단과 그 이유를 그대로 보여 줘요."
+        />
         <Banner
           title="지금 소셜 로그인이 꺼져 있는 이유"
           body="구글·카카오·네이버·애플 로그인은 운영 인증 정보(OAuth 자격증명)가 아직 연결되지 않아 이 빌드에서 꺼져 있어요. 그래서 현재는 로그인 없이 기기 저장 방식으로 기록을 보관합니다. 자격증명이 연결되고 검증이 끝나면 이 화면에서 바로 켜집니다."
@@ -390,10 +462,21 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
         ) : null}
       </Card>
 
-      <SectionHeader title="프로필과 데이터" />
       <Card style={styles.card}>
+        <SettingLabel
+          title="프로필 편집"
+          description="닉네임·소개·보유 러닝화·표시할 동네를 바꿔요."
+        />
         <Button label="프로필 편집" onPress={onOpenProfile} tone="secondary" />
+        <SettingLabel
+          title="기기 데이터 내보내기"
+          description="이 기기에 저장된 활동을 JSON으로 공유해 백업해 둬요."
+        />
         <Button label="기기 데이터 내보내기" onPress={() => void shareExport()} tone="secondary" />
+        <SettingLabel
+          title="기기 활동 기록 삭제"
+          description="이 기기의 활동·스트릭·배지 진행을 지워요. 되돌릴 수 없어요."
+        />
         <Button label="기기 활동 기록 삭제" onPress={confirmLocalDelete} tone="danger" />
         <Button
           label="개인정보처리방침"
@@ -403,7 +486,7 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
         <Button label="문의하기" onPress={() => void Linking.openURL(SUPPORT_URL)} tone="quiet" />
       </Card>
 
-      <SectionHeader title="앱 정보" />
+      <SectionHeader title="앱 정보" subtitle="문의할 때 아래 값을 함께 알려 주시면 빨라요." />
       <Card style={styles.info}>
         <InfoRow label="설치 채널" value={releaseChannel} />
         <InfoRow label="앱 버전" value={appVersion} />
@@ -419,9 +502,19 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
   );
 }
 
+// 설정 항목마다 "무엇을 바꾸는 값인지" 한 줄 설명을 함께 보여 줍니다.
+function SettingLabel({ title, description }: { title: string; description: string }) {
+  return (
+    <View style={styles.settingLabel}>
+      <Text style={styles.rowTitle}>{title}</Text>
+      <Text style={styles.rowMeta}>{description}</Text>
+    </View>
+  );
+}
+
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
-    <View style={styles.infoRow}>
+    <View accessibilityLabel={`${label} ${value}`} style={styles.infoRow}>
       <Text style={styles.infoLabel}>{label}</Text>
       <Text selectable style={styles.infoValue}>
         {value}
@@ -431,39 +524,51 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: palette.canvas },
-  content: {
-    width: '100%',
-    maxWidth: 960,
-    alignSelf: 'center',
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.xxl,
-    gap: spacing.sm,
-  },
   card: { gap: spacing.sm },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   row: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, minHeight: 52 },
   rowCopy: { flex: 1, minWidth: 0 },
-  rowTitle: { color: palette.ink, fontSize: typeScale.bodySmall, fontWeight: '800' },
-  rowMeta: { color: palette.muted, fontSize: typeScale.caption, lineHeight: 18 },
+  settingLabel: { gap: spacing.xxs / 2 },
+  rowTitle: {
+    color: palette.ink,
+    fontSize: typeScale.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+    fontWeight: fontWeight.bold,
+  },
+  rowMeta: {
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+  },
   actions: { gap: spacing.sm },
-  statusText: { color: palette.accentDark, fontSize: typeScale.caption, lineHeight: 18 },
+  statusText: {
+    color: palette.accentDark,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+  },
   info: { paddingVertical: spacing.xs },
   infoRow: {
-    minHeight: 54,
+    minHeight: layout.touchTarget,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
+    paddingVertical: spacing.xs,
     borderBottomColor: palette.line,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  infoLabel: { width: 112, color: palette.muted, fontSize: typeScale.caption, fontWeight: '700' },
+  infoLabel: {
+    width: 112,
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    fontWeight: fontWeight.semibold,
+  },
   infoValue: {
     flex: 1,
     minWidth: 0,
     color: palette.ink,
     fontSize: typeScale.bodySmall,
-    fontWeight: '700',
+    lineHeight: lineHeight.bodySmall,
+    fontWeight: fontWeight.semibold,
   },
 });

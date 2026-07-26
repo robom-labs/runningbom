@@ -1,8 +1,18 @@
 // 월간 달력 격자입니다. 활동 강도는 도트 색, 예정 일정은 테두리로 표시합니다.
+import { memo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { ActivityCalendarDay } from '../../../domains/activities/calendar';
-import { palette, radius, spacing, typeScale } from '../../design-system/theme';
+import {
+  borderWidth,
+  fontWeight,
+  lineHeight,
+  palette,
+  pressedOpacity,
+  radius,
+  spacing,
+  typeScale,
+} from '../../design-system/theme';
 
 const weekLabels = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -20,7 +30,8 @@ type Props = {
   onSelect: (key: string) => void;
 };
 
-export function MonthGrid({ days, selectedKey, todayKey, onSelect }: Props) {
+// 42칸을 매번 다시 그리지 않도록 memo 합니다(같은 달을 다시 보면 렌더를 건너뜁니다).
+export const MonthGrid = memo(function MonthGrid({ days, selectedKey, todayKey, onSelect }: Props) {
   return (
     <View style={styles.grid}>
       {weekLabels.map((label) => (
@@ -58,9 +69,13 @@ export function MonthGrid({ days, selectedKey, todayKey, onSelect }: Props) {
               ]}
             />
             {day.distanceKm > 0 ? (
-              <Text style={styles.dayMeta}>{Math.round(day.distanceKm)}km</Text>
+              <Text numberOfLines={1} style={styles.dayMeta}>
+                {Math.round(day.distanceKm)}km
+              </Text>
             ) : day.totalMinutes > 0 ? (
-              <Text style={styles.dayMeta}>{day.totalMinutes}분</Text>
+              <Text numberOfLines={1} style={styles.dayMeta}>
+                {day.totalMinutes}분
+              </Text>
             ) : (
               <Text style={styles.dayMeta}> </Text>
             )}
@@ -69,7 +84,7 @@ export function MonthGrid({ days, selectedKey, todayKey, onSelect }: Props) {
       })}
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   grid: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'stretch' },
@@ -77,35 +92,42 @@ const styles = StyleSheet.create({
     width: '14.285%',
     textAlign: 'center',
     color: palette.muted,
-    fontSize: 11,
-    fontWeight: '800',
-    paddingBottom: 6,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+    fontWeight: fontWeight.bold,
+    paddingBottom: spacing.xxs,
   },
   day: {
     width: '14.285%',
-    minHeight: 58,
+    minHeight: 60,
     alignItems: 'center',
-    paddingTop: 6,
+    paddingTop: spacing.xxs,
+    paddingBottom: spacing.xxs / 2,
     borderRadius: radius.sm,
-    borderWidth: 1,
+    borderWidth: borderWidth.thin,
     borderColor: 'transparent',
   },
-  dayOutside: { opacity: 0.32 },
+  dayOutside: { opacity: 0.4 },
   dayToday: { backgroundColor: palette.surfaceMuted },
   dayPlanned: { borderColor: palette.accent, borderStyle: 'dashed' },
   daySelected: { backgroundColor: palette.surfaceWarm, borderColor: palette.accentDark },
-  dayNumber: { color: palette.ink, fontSize: typeScale.caption, fontWeight: '800' },
+  dayNumber: {
+    color: palette.ink,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    fontWeight: fontWeight.bold,
+  },
   dayNumberOutside: { color: palette.muted },
-  dot: { width: 8, height: 8, borderRadius: 4, marginTop: 5 },
-  dotEmpty: { borderColor: palette.line, borderWidth: 1 },
+  dot: { width: spacing.xs, height: spacing.xs, borderRadius: spacing.xxs, marginTop: spacing.xxs },
+  dotEmpty: { borderColor: palette.line, borderWidth: borderWidth.thin },
   dayMeta: {
     color: palette.accentDark,
-    fontSize: 9,
-    fontWeight: '900',
-    marginTop: 3,
-    minHeight: 12,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+    fontWeight: fontWeight.heavy,
+    marginTop: spacing.xxs / 2,
   },
-  pressed: { opacity: 0.7 },
+  pressed: { opacity: pressedOpacity },
 });
 
 export const calendarLegend = [

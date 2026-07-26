@@ -14,6 +14,7 @@ import { ProfileScreen } from '../screens/profile/ProfileScreen';
 import { RacesScreen } from '../screens/explore/RacesScreen';
 import { SettingsScreen } from '../screens/settings/SettingsScreen';
 import { ShoesScreen } from '../screens/explore/ShoesScreen';
+import { OnboardingScreen } from '../screens/onboarding';
 import { StartScreen } from '../screens/start/StartScreen';
 import { palette } from '../design-system/theme';
 import { useAppState } from '../state/AppStateProvider';
@@ -25,7 +26,8 @@ import { routeFromStoredValue, routeTitles } from './routes';
 import type { RouteKey } from './types';
 
 export function AppNavigator() {
-  const { preferences, updatePreferences, activities, streak, ready } = useAppState();
+  const { preferences, updatePreferences, activities, streak, ready, onboardingRequired } =
+    useAppState();
   const [route, setRoute] = useState<RouteKey>(() => routeFromStoredValue(preferences.lastTab));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [focusedRaceId, setFocusedRaceId] = useState<string>();
@@ -138,6 +140,9 @@ export function AppNavigator() {
         );
     }
   }, [focusedRaceId, focusedShoeId, navigate, openRace, openShoe, route]);
+
+  // 앱을 처음 연 사람은 드로어 셸 대신 온보딩 3화면을 먼저 봅니다.
+  if (onboardingRequired) return <OnboardingScreen />;
 
   return (
     <SafeAreaView edges={['top']} style={styles.root}>

@@ -6,7 +6,15 @@ import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Button, Card, Chip, SectionHeader } from '../../design-system/components';
-import { palette, radius, spacing, typeScale } from '../../design-system/theme';
+import {
+  borderWidth,
+  fontWeight,
+  lineHeight,
+  palette,
+  radius,
+  spacing,
+  typeScale,
+} from '../../design-system/theme';
 import type { KnowledgeTopic } from './knowledge';
 import {
   COMMUNITY_DRAFT_KEY,
@@ -141,22 +149,49 @@ const styles = StyleSheet.create({
     minHeight: 96,
     backgroundColor: palette.canvas,
     borderColor: palette.line,
-    borderWidth: 1,
+    borderWidth: borderWidth.thin,
     borderRadius: radius.md,
     color: palette.ink,
     fontSize: typeScale.bodySmall,
-    lineHeight: 21,
+    lineHeight: lineHeight.bodySmall,
     padding: spacing.sm,
     textAlignVertical: 'top',
   },
   actionRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  counter: { flex: 1, minWidth: 0, color: palette.muted, fontSize: typeScale.caption, fontWeight: '700' },
+  counter: {
+    flex: 1,
+    minWidth: 0,
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    fontWeight: fontWeight.semibold,
+  },
   saveButton: { minWidth: 120 },
-  status: { color: palette.inkSoft, fontSize: typeScale.caption, lineHeight: 18, fontWeight: '700' },
-  note: { color: palette.muted, fontSize: 11, lineHeight: 16 },
+  status: {
+    color: palette.inkSoft,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    fontWeight: fontWeight.semibold,
+  },
+  note: {
+    color: palette.muted,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+  },
   list: { gap: spacing.xs },
   draftCard: { gap: spacing.xs },
   draftHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  draftDate: { flex: 1, minWidth: 0, color: palette.muted, fontSize: typeScale.caption, textAlign: 'right' },
-  draftBody: { color: palette.inkSoft, fontSize: typeScale.bodySmall, lineHeight: 22 },
+  draftDate: {
+    flex: 1,
+    minWidth: 0,
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    textAlign: 'right',
+  },
+  draftBody: {
+    color: palette.inkSoft,
+    fontSize: typeScale.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+  },
 });

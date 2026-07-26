@@ -2,8 +2,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { Banner, Button, Card, Chip, SectionHeader } from '../../design-system/components';
-import { palette, spacing, typeScale } from '../../design-system/theme';
+import {
+  Banner,
+  Button,
+  Card,
+  Chip,
+  EmptyState,
+  SectionHeader,
+  SkeletonCard,
+  screenStyles,
+} from '../../design-system/components';
+import { fontWeight, lineHeight, palette, spacing, typeScale } from '../../design-system/theme';
 import { reactionKinds, reactionLabels, type PublicPost } from '../../../domains/social/types';
 import { featureFlags } from '../../../services/feature-flags/flags';
 import { loadPublicFeed } from '../../../services/supabase/community';
@@ -44,11 +53,13 @@ export function CommunityScreen({ onNavigate }: { onNavigate?: (route: RouteKey)
   const [posts, setPosts] = useState<PublicPost[]>([]);
   const [mode, setMode] = useState<CommunityMode>(communityMode());
   const [message, setMessage] = useState('공개 피드를 확인하고 있어요.');
+  const [feedLoading, setFeedLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
     void loadPublicFeed().then((result) => {
       if (!active) return;
+      setFeedLoading(false);
       setPosts(result.posts);
       setMode(result.mode);
       setMessage(
@@ -71,9 +82,9 @@ export function CommunityScreen({ onNavigate }: { onNavigate?: (route: RouteKey)
 
   return (
     <ScrollView
-      contentContainerStyle={styles.content}
+      contentContainerStyle={screenStyles.content}
       showsVerticalScrollIndicator={false}
-      style={styles.root}
+      style={screenStyles.root}
     >
       <ScrollView
         horizontal
@@ -144,7 +155,9 @@ export function CommunityScreen({ onNavigate }: { onNavigate?: (route: RouteKey)
             ))}
           </View>
 
-          {visiblePosts.length > 0 ? (
+          {feedLoading ? (
+            <SkeletonCard accessibilityLabel="공개 피드를 불러오는 중이에요" lines={3} />
+          ) : visiblePosts.length > 0 ? (
             <View style={styles.list}>
               {visiblePosts.map((post) => (
                 <Card key={post.id} style={styles.post}>
@@ -168,16 +181,21 @@ export function CommunityScreen({ onNavigate }: { onNavigate?: (route: RouteKey)
                 </Card>
               ))}
             </View>
+          ) : posts.length > 0 ? (
+            <EmptyState
+              title="이 카테고리에는 글이 없어요"
+              body="다른 카테고리를 골라 보세요. 코칭을 마친 뒤에도 자동 게시하지 않으며, 사용자가 본문과 공개 범위를 확인해야 게시됩니다."
+              actionLabel="전체 카테고리 보기"
+              onAction={() => setCategory('전체')}
+              tone="muted"
+            />
           ) : (
-            <Card style={styles.empty}>
-              <Text style={styles.emptyTitle}>
-                {posts.length > 0 ? '이 카테고리에는 글이 없어요' : '첫 공개 글을 기다리고 있어요'}
-              </Text>
-              <Text style={styles.emptyBody}>
-                코칭을 마친 뒤에도 자동 게시하지 않으며, 사용자가 본문과 공개 범위를 확인해야
-                게시됩니다.
-              </Text>
-            </Card>
+            <EmptyState
+              title="첫 공개 글을 기다리고 있어요"
+              body="가짜 사용자나 자동 게시물은 만들지 않아요. 그동안 Q&A 탭에서 러닝 질문의 답을 먼저 읽어 보실 수 있어요."
+              actionLabel="Q&A 읽기"
+              onAction={() => setSection('Q&A')}
+            />
           )}
         </>
       ) : null}
@@ -231,40 +249,56 @@ export function CommunityScreen({ onNavigate }: { onNavigate?: (route: RouteKey)
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: palette.canvas },
-  content: {
-    width: '100%',
-    maxWidth: 960,
-    alignSelf: 'center',
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.xxl,
-    gap: spacing.sm,
-  },
-  tabs: { flexDirection: 'row', gap: spacing.xs, paddingVertical: 2 },
+  tabs: { flexDirection: 'row', gap: spacing.xs, paddingVertical: spacing.xxs / 2 },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   modeRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  modeText: { flex: 1, minWidth: 0, color: palette.muted, fontSize: typeScale.caption, lineHeight: 18 },
+  modeText: {
+    flex: 1,
+    minWidth: 0,
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+  },
   list: { gap: spacing.md },
   post: { gap: spacing.sm },
   postHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  author: { flex: 1, minWidth: 0, color: palette.ink, fontSize: typeScale.body, fontWeight: '900' },
-  postBody: { color: palette.inkSoft, fontSize: typeScale.body, lineHeight: 24 },
+  author: {
+    flex: 1,
+    minWidth: 0,
+    color: palette.ink,
+    fontSize: typeScale.body,
+    lineHeight: lineHeight.body,
+    fontWeight: fontWeight.heavy,
+  },
+  postBody: {
+    color: palette.inkSoft,
+    fontSize: typeScale.body,
+    lineHeight: lineHeight.body,
+  },
   reactions: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
-  meta: { color: palette.muted, fontSize: typeScale.caption },
+  meta: {
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+  },
   empty: { backgroundColor: palette.surfaceWarm },
-  emptyTitle: { color: palette.ink, fontSize: typeScale.titleSmall, fontWeight: '900' },
+  emptyTitle: {
+    color: palette.ink,
+    fontSize: typeScale.titleSmall,
+    lineHeight: lineHeight.titleSmall,
+    fontWeight: fontWeight.heavy,
+  },
   emptyBody: {
     color: palette.inkSoft,
     fontSize: typeScale.bodySmall,
-    lineHeight: 21,
+    lineHeight: lineHeight.bodySmall,
     marginTop: spacing.sm,
   },
   button: { marginTop: spacing.lg },
   statusNote: {
     color: palette.muted,
     fontSize: typeScale.caption,
-    lineHeight: 18,
+    lineHeight: lineHeight.caption,
     marginTop: spacing.sm,
   },
 });

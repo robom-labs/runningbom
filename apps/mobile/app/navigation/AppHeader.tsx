@@ -3,7 +3,15 @@ import { Ionicons } from '@expo/vector-icons';
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { palette, radius, spacing, typeScale } from '../design-system/theme';
+import {
+  fontWeight,
+  layout,
+  lineHeight,
+  palette,
+  radius,
+  spacing,
+  typeScale,
+} from '../design-system/theme';
 
 type Props = {
   title: string;
@@ -15,6 +23,7 @@ export function AppHeader({ title, onMenu, action }: Props) {
   return (
     <View style={styles.header}>
       <Pressable
+        accessibilityHint="화면을 옮길 수 있는 메뉴를 열어요"
         accessibilityLabel="메뉴 열기"
         accessibilityRole="button"
         hitSlop={8}
@@ -44,8 +53,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   iconButton: {
-    width: 48,
-    height: 48,
+    width: layout.touchTarget,
+    height: layout.touchTarget,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: radius.md,
@@ -56,11 +65,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: palette.ink,
     fontSize: typeScale.titleSmall,
-    fontWeight: '900',
+    lineHeight: lineHeight.titleSmall,
+    fontWeight: fontWeight.heavy,
     letterSpacing: -0.4,
   },
   actionSlot: {
-    minWidth: 48,
+    minWidth: layout.touchTarget,
     alignItems: 'flex-end',
     justifyContent: 'center',
   },

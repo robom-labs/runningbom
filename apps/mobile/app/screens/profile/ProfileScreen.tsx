@@ -2,8 +2,17 @@
 import { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { Button, Card, Chip, SectionHeader } from '../../design-system/components';
-import { palette, radius, spacing, typeScale } from '../../design-system/theme';
+import { Button, Card, Chip, SectionHeader, screenStyles } from '../../design-system/components';
+import {
+  borderWidth,
+  fontWeight,
+  layout,
+  lineHeight,
+  palette,
+  radius,
+  spacing,
+  typeScale,
+} from '../../design-system/theme';
 import { shoes } from '../../../domains/shoes/catalog';
 import {
   currentWeekProgress,
@@ -59,10 +68,10 @@ export function ProfileScreen({ onOpenSettings }: { onOpenSettings: () => void }
 
   return (
     <ScrollView
-      contentContainerStyle={styles.content}
+      contentContainerStyle={screenStyles.content}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
-      style={styles.root}
+      style={screenStyles.root}
     >
       <Card style={styles.header}>
         <View style={styles.avatar}>
@@ -127,7 +136,10 @@ export function ProfileScreen({ onOpenSettings }: { onOpenSettings: () => void }
         ) : null}
       </Card>
 
-      <SectionHeader title="보유 러닝화" subtitle="지금 신는 러닝화를 하나 골라 둘 수 있어요." />
+      <SectionHeader
+        title="보유 러닝화"
+        subtitle="지금 신는 러닝화를 하나 골라 둘 수 있어요. 여기에는 대표 모델만 보여요."
+      />
       <Card style={styles.card}>
         <Text style={styles.rowTitle}>
           {currentShoe ? `${currentShoe.brand} ${currentShoe.model}` : '선택한 러닝화 없음'}
@@ -181,44 +193,68 @@ export function ProfileScreen({ onOpenSettings }: { onOpenSettings: () => void }
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: palette.canvas },
-  content: {
-    width: '100%',
-    maxWidth: 960,
-    alignSelf: 'center',
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.xxl,
-    gap: spacing.sm,
-  },
   header: { flexDirection: 'row', gap: spacing.md },
   avatar: {
-    width: 64,
-    height: 64,
-    borderRadius: 24,
+    minWidth: 64,
+    minHeight: 64,
+    padding: spacing.xs,
+    borderRadius: radius.lg,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: palette.navy,
   },
-  avatarText: { color: palette.white, fontSize: 26, fontWeight: '900' },
+  avatarText: {
+    color: palette.onNavy,
+    fontSize: typeScale.headline,
+    lineHeight: lineHeight.headline,
+    fontWeight: fontWeight.heavy,
+  },
   headerCopy: { flex: 1, minWidth: 0 },
-  nickname: { color: palette.ink, fontSize: typeScale.title, fontWeight: '900' },
-  bio: { color: palette.muted, fontSize: typeScale.bodySmall, marginTop: 4 },
-  summary: { color: palette.inkSoft, fontSize: typeScale.caption, marginTop: spacing.xs },
+  nickname: {
+    color: palette.ink,
+    fontSize: typeScale.title,
+    lineHeight: lineHeight.title,
+    fontWeight: fontWeight.heavy,
+  },
+  bio: {
+    color: palette.muted,
+    fontSize: typeScale.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+    marginTop: spacing.xxs,
+  },
+  summary: {
+    color: palette.inkSoft,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    marginTop: spacing.xs,
+  },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs, marginTop: spacing.xs },
   card: { gap: spacing.sm },
-  rowTitle: { color: palette.ink, fontSize: typeScale.bodySmall, fontWeight: '800' },
-  rowMeta: { color: palette.muted, fontSize: typeScale.caption, lineHeight: 18 },
+  rowTitle: {
+    color: palette.ink,
+    fontSize: typeScale.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+    fontWeight: fontWeight.bold,
+  },
+  rowMeta: {
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+  },
   input: {
-    minHeight: 48,
+    minHeight: layout.touchTarget,
     borderColor: palette.line,
-    borderWidth: 1,
+    borderWidth: borderWidth.thin,
     borderRadius: radius.md,
     backgroundColor: palette.surface,
     color: palette.ink,
-    fontSize: 16,
+    fontSize: typeScale.body,
     paddingHorizontal: spacing.md,
   },
   bioInput: { minHeight: 84, paddingTop: spacing.sm, textAlignVertical: 'top' },
-  message: { color: palette.accentDark, fontSize: typeScale.caption, lineHeight: 18 },
+  message: {
+    color: palette.accentDark,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+  },
 });

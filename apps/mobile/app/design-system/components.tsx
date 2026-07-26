@@ -1,7 +1,10 @@
 // 러닝봄 vNext 화면에서 반복 사용하는 버튼, 카드, 제목 컴포넌트를 제공합니다.
-import type { PropsWithChildren, ReactNode } from 'react';
+// 시각 문법: 면은 Card, 상태 꼬리표는 Chip, 행동은 Button, 안내는 Banner, 비어 있음은 EmptyState.
+import { memo, useEffect, useRef, type PropsWithChildren, type ReactNode } from 'react';
 import Constants from 'expo-constants';
 import {
+  Animated,
+  Easing,
   Pressable,
   StyleSheet,
   type StyleProp,
@@ -12,7 +15,19 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { palette, radius, spacing, typeScale } from './theme';
+import {
+  borderWidth,
+  elevation,
+  fontWeight,
+  layout,
+  lineHeight,
+  motion,
+  palette,
+  pressedOpacity,
+  radius,
+  spacing,
+  typeScale,
+} from './theme';
 
 const isPreviewBuild = Constants.expoConfig?.extra?.preview?.enabled === true;
 
@@ -21,6 +36,9 @@ type ButtonProps = {
   onPress: () => void;
   disabled?: boolean;
   tone?: 'primary' | 'secondary' | 'quiet' | 'danger';
+  /** 화면의 대표 행동에만 씁니다. */
+  size?: 'md' | 'lg';
+  accessibilityLabel?: string;
   accessibilityHint?: string;
   testID?: string;
   style?: StyleProp<ViewStyle>;
@@ -31,6 +49,8 @@ export function Button({
   onPress,
   disabled = false,
   tone = 'primary',
+  size = 'md',
+  accessibilityLabel,
   accessibilityHint,
   testID,
   style,
@@ -38,6 +58,7 @@ export function Button({
   return (
     <Pressable
       accessibilityHint={accessibilityHint}
+      accessibilityLabel={accessibilityLabel ?? label}
       accessibilityRole="button"
       accessibilityState={{ disabled }}
       disabled={disabled}
@@ -45,13 +66,22 @@ export function Button({
       testID={testID}
       style={({ pressed }) => [
         styles.button,
+        size === 'lg' && styles.buttonLarge,
         buttonTone[tone],
         disabled && styles.disabled,
         pressed && !disabled && styles.pressed,
         style,
       ]}
     >
-      <Text style={[styles.buttonLabel, buttonLabelTone[tone]]}>{label}</Text>
+      <Text
+        style={[
+          styles.buttonLabel,
+          size === 'lg' && styles.buttonLabelLarge,
+          buttonLabelTone[tone],
+        ]}
+      >
+        {label}
+      </Text>
     </Pressable>
   );
 }
@@ -59,11 +89,24 @@ export function Button({
 type CardProps = PropsWithChildren<{
   style?: StyleProp<ViewStyle>;
   accessibilityLabel?: string;
+  /** default = 흰 면, warm = 강조 면, muted = 조용한 면, navy = 대표 행동 면 */
+  tone?: 'default' | 'warm' | 'muted' | 'navy';
+  /** 떠 있는 느낌이 필요한 카드에만 그림자를 씁니다. */
+  elevated?: boolean;
 }>;
 
-export function Card({ children, style, accessibilityLabel }: CardProps) {
+export function Card({
+  children,
+  style,
+  accessibilityLabel,
+  tone = 'default',
+  elevated = false,
+}: CardProps) {
   return (
-    <View accessibilityLabel={accessibilityLabel} style={[styles.card, style]}>
+    <View
+      accessibilityLabel={accessibilityLabel}
+      style={[styles.card, cardTone[tone], elevated && elevation.card, style]}
+    >
       {children}
     </View>
   );
@@ -96,6 +139,7 @@ type ChipProps = {
   onPress?: () => void;
   tone?: 'neutral' | 'accent' | 'positive' | 'warning';
   accessibilityRole?: 'button' | 'tab';
+  accessibilityLabel?: string;
 };
 
 export function Chip({
@@ -104,20 +148,32 @@ export function Chip({
   onPress,
   tone = 'neutral',
   accessibilityRole = 'button',
+  accessibilityLabel,
 }: ChipProps) {
   const content = (
-    <Text style={[styles.chipLabel, selected && styles.chipLabelSelected, chipLabelTone[tone]]}>
+    <Text style={[styles.chipLabel, chipLabelTone[tone], selected && styles.chipLabelSelected]}>
       {label}
     </Text>
   );
-  const baseStyle = [styles.chip, chipTone[tone], selected && styles.chipSelected];
+  // 누를 수 있는 칩만 48px 터치 높이를 강제하고, 상태 표시용 칩은 촘촘하게 둡니다.
+  const baseStyle = [
+    styles.chip,
+    onPress ? styles.chipTouchable : null,
+    chipTone[tone],
+    selected && styles.chipSelected,
+  ];
 
   if (!onPress) {
-    return <View style={baseStyle}>{content}</View>;
+    return (
+      <View accessibilityLabel={accessibilityLabel ?? label} style={baseStyle}>
+        {content}
+      </View>
+    );
   }
 
   return (
     <Pressable
+      accessibilityLabel={accessibilityLabel ?? label}
       accessibilityRole={accessibilityRole}
       accessibilityState={{ selected }}
       onPress={onPress}
@@ -136,14 +192,22 @@ type MetricProps = {
   valueStyle?: TextStyle;
 };
 
-export function Metric({ label, value, accent = false, style, valueStyle }: MetricProps) {
+export const Metric = memo(function Metric({
+  label,
+  value,
+  accent = false,
+  style,
+  valueStyle,
+}: MetricProps) {
   return (
-    <View style={[styles.metric, style]}>
-      <Text style={[styles.metricValue, accent && styles.metricValueAccent, valueStyle]}>{value}</Text>
+    <View accessibilityLabel={`${label} ${value}`} style={[styles.metric, style]}>
+      <Text style={[styles.metricValue, accent && styles.metricValueAccent, valueStyle]}>
+        {value}
+      </Text>
       <Text style={styles.metricLabel}>{label}</Text>
     </View>
   );
-}
+});
 
 type ProgressBarProps = {
   ratio: number;
@@ -151,7 +215,11 @@ type ProgressBarProps = {
   tone?: 'accent' | 'positive';
 };
 
-export function ProgressBar({ ratio, label, tone = 'accent' }: ProgressBarProps) {
+export const ProgressBar = memo(function ProgressBar({
+  ratio,
+  label,
+  tone = 'accent',
+}: ProgressBarProps) {
   const clamped = Math.max(0, Math.min(1, Number.isFinite(ratio) ? ratio : 0));
   return (
     <View style={styles.progressWrap}>
@@ -171,7 +239,7 @@ export function ProgressBar({ ratio, label, tone = 'accent' }: ProgressBarProps)
       {label ? <Text style={styles.progressLabel}>{label}</Text> : null}
     </View>
   );
-}
+});
 
 type BannerProps = {
   title: string;
@@ -180,14 +248,132 @@ type BannerProps = {
 };
 
 // 준비 중·읽기 전용처럼 지금 상태를 있는 그대로 알리는 안내 배너입니다.
-export function Banner({ title, body, tone = 'info' }: BannerProps) {
+export const Banner = memo(function Banner({ title, body, tone = 'info' }: BannerProps) {
   return (
     <View accessibilityLiveRegion="polite" style={[styles.banner, bannerTone[tone]]}>
       <Text style={[styles.bannerTitle, bannerLabelTone[tone]]}>{title}</Text>
       {body ? <Text style={styles.bannerBody}>{body}</Text> : null}
     </View>
   );
+});
+
+type EmptyStateProps = {
+  title: string;
+  body: string;
+  actionLabel?: string;
+  onAction?: () => void;
+  secondaryActionLabel?: string;
+  onSecondaryAction?: () => void;
+  /** 행동 버튼 아래에 덧붙이는 한 줄 안내입니다. */
+  hint?: string;
+  tone?: 'warm' | 'muted';
+};
+
+// 비어 있는 화면에서 "무엇을 하면 되는지"를 한 카드에 담습니다. 없는 데이터를 지어내지 않습니다.
+export function EmptyState({
+  title,
+  body,
+  actionLabel,
+  onAction,
+  secondaryActionLabel,
+  onSecondaryAction,
+  hint,
+  tone = 'warm',
+}: EmptyStateProps) {
+  return (
+    <Card accessibilityLabel={`${title}. ${body}`} style={styles.emptyState} tone={tone}>
+      <Text accessibilityRole="header" style={styles.emptyStateTitle}>
+        {title}
+      </Text>
+      <Text style={styles.emptyStateBody}>{body}</Text>
+      {actionLabel && onAction ? (
+        <Button label={actionLabel} onPress={onAction} style={styles.emptyStateAction} />
+      ) : null}
+      {secondaryActionLabel && onSecondaryAction ? (
+        <Button label={secondaryActionLabel} onPress={onSecondaryAction} tone="secondary" />
+      ) : null}
+      {hint ? <Text style={styles.emptyStateHint}>{hint}</Text> : null}
+    </Card>
+  );
 }
+
+type SkeletonProps = {
+  height?: number;
+  width?: number | `${number}%`;
+  rounded?: 'sm' | 'md' | 'pill';
+};
+
+// 새 의존성 없이 Animated만으로 만드는 로딩 자리표시자입니다.
+export const Skeleton = memo(function Skeleton({
+  height = 16,
+  width = '100%',
+  rounded = 'sm',
+}: SkeletonProps) {
+  const pulse = useRef(new Animated.Value(0.45)).current;
+
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulse, {
+          toValue: 1,
+          duration: motion.slow * 2,
+          easing: Easing.inOut(Easing.quad),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulse, {
+          toValue: 0.45,
+          duration: motion.slow * 2,
+          easing: Easing.inOut(Easing.quad),
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+    animation.start();
+    return () => animation.stop();
+  }, [pulse]);
+
+  return (
+    <Animated.View
+      style={[styles.skeleton, { height, width, borderRadius: radius[rounded], opacity: pulse }]}
+    />
+  );
+});
+
+type SkeletonCardProps = {
+  lines?: number;
+  accessibilityLabel?: string;
+};
+
+export function SkeletonCard({
+  lines = 3,
+  accessibilityLabel = '불러오는 중이에요',
+}: SkeletonCardProps) {
+  const count = Math.max(1, lines);
+  return (
+    <Card accessibilityLabel={accessibilityLabel} style={styles.skeletonCard}>
+      <Skeleton height={20} width="52%" />
+      {Array.from({ length: count }, (_, index) => (
+        <Skeleton key={index} height={12} width={index === count - 1 ? '64%' : '100%'} />
+      ))}
+    </Card>
+  );
+}
+
+type StepDotsProps = {
+  total: number;
+  index: number;
+};
+
+// 온보딩처럼 단계가 정해진 흐름에서 지금 위치를 알려 줍니다.
+export const StepDots = memo(function StepDots({ total, index }: StepDotsProps) {
+  return (
+    <View accessibilityLabel={`${total}단계 중 ${index + 1}단계`} style={styles.stepDots}>
+      {Array.from({ length: Math.max(1, total) }, (_, dot) => (
+        <View key={dot} style={[styles.stepDot, dot === index && styles.stepDotActive]} />
+      ))}
+    </View>
+  );
+});
 
 type SearchFieldProps = {
   value: string;
@@ -245,7 +431,11 @@ type MiniBarChartProps = {
 };
 
 // 외부 차트 라이브러리 없이 View 높이만으로 그리는 막대 그래프입니다.
-export function MiniBarChart({ data, accessibilityLabel, height = 96 }: MiniBarChartProps) {
+export const MiniBarChart = memo(function MiniBarChart({
+  data,
+  accessibilityLabel,
+  height = 96,
+}: MiniBarChartProps) {
   const hasValue = data.some((item) => item.ratio > 0);
   return (
     <View accessibilityLabel={accessibilityLabel} style={styles.chartWrap}>
@@ -286,7 +476,7 @@ export function MiniBarChart({ data, accessibilityLabel, height = 96 }: MiniBarC
       {!hasValue ? <Text style={styles.chartEmpty}>아직 표시할 기록이 없어요.</Text> : null}
     </View>
   );
-}
+});
 
 type DisclosureProps = PropsWithChildren<{
   title: string;
@@ -330,8 +520,22 @@ export function Wordmark({ compact = false }: { compact?: boolean }) {
   );
 }
 
+// 모든 화면이 같은 폭·여백·배경을 쓰도록 모아 둔 공통 스크롤 레이아웃입니다.
+export const screenStyles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: palette.canvas },
+  content: {
+    width: '100%',
+    maxWidth: layout.screenMaxWidth,
+    alignSelf: 'center',
+    paddingHorizontal: layout.gutter,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.xxl,
+    gap: spacing.sm,
+  },
+});
+
 const buttonTone = StyleSheet.create({
-  primary: { backgroundColor: palette.accent, borderColor: palette.accent },
+  primary: { backgroundColor: palette.accentStrong, borderColor: palette.accentStrong },
   secondary: { backgroundColor: palette.surface, borderColor: palette.line },
   quiet: { backgroundColor: palette.surfaceMuted, borderColor: palette.surfaceMuted },
   danger: { backgroundColor: palette.dangerSoft, borderColor: palette.dangerSoft },
@@ -342,6 +546,13 @@ const buttonLabelTone = StyleSheet.create({
   secondary: { color: palette.ink },
   quiet: { color: palette.inkSoft },
   danger: { color: palette.danger },
+});
+
+const cardTone = StyleSheet.create({
+  default: { backgroundColor: palette.surface, borderColor: palette.line },
+  warm: { backgroundColor: palette.surfaceWarm, borderColor: palette.accentSoft },
+  muted: { backgroundColor: palette.surfaceMuted, borderColor: palette.surfaceMuted },
+  navy: { backgroundColor: palette.navy, borderColor: palette.navy },
 });
 
 const chipTone = StyleSheet.create({
@@ -372,22 +583,35 @@ const chipLabelTone = StyleSheet.create({
 
 const styles = StyleSheet.create({
   button: {
-    minHeight: 48,
+    minHeight: layout.touchTarget,
     borderRadius: radius.md,
-    borderWidth: 1,
+    borderWidth: borderWidth.thin,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+  },
+  buttonLarge: {
+    minHeight: 56,
+    borderRadius: radius.lg,
+    paddingHorizontal: spacing.lg,
   },
   buttonLabel: {
     fontSize: typeScale.bodySmall,
-    fontWeight: '800',
+    lineHeight: lineHeight.bodySmall,
+    fontWeight: fontWeight.bold,
+    textAlign: 'center',
+  },
+  buttonLabelLarge: {
+    fontSize: typeScale.body,
+    lineHeight: lineHeight.body,
+    fontWeight: fontWeight.heavy,
   },
   disabled: {
     opacity: 0.45,
   },
   pressed: {
-    opacity: 0.72,
+    opacity: pressedOpacity,
   },
   card: {
     backgroundColor: palette.surface,
@@ -414,41 +638,47 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: palette.ink,
     fontSize: typeScale.title,
-    lineHeight: 29,
-    fontWeight: '900',
+    lineHeight: lineHeight.title,
+    fontWeight: fontWeight.heavy,
     letterSpacing: -0.6,
   },
   sectionSubtitle: {
     color: palette.muted,
     fontSize: typeScale.bodySmall,
-    lineHeight: 20,
+    lineHeight: lineHeight.bodySmall,
     marginTop: spacing.xs,
   },
   chip: {
-    minHeight: 48,
     borderRadius: radius.pill,
-    paddingHorizontal: 14,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  chipTouchable: {
+    minHeight: layout.touchTarget,
+    paddingHorizontal: spacing.md,
   },
   chipSelected: {
     backgroundColor: palette.ink,
   },
   chipLabel: {
-    fontSize: 13,
-    fontWeight: '800',
+    fontSize: typeScale.label,
+    lineHeight: lineHeight.label,
+    fontWeight: fontWeight.bold,
   },
   chipLabelSelected: {
     color: palette.white,
   },
   metric: {
     minWidth: 0,
-    gap: 4,
+    gap: spacing.xxs,
   },
   metricValue: {
     color: palette.ink,
     fontSize: typeScale.titleSmall,
-    fontWeight: '900',
+    lineHeight: lineHeight.titleSmall,
+    fontWeight: fontWeight.heavy,
   },
   metricValueAccent: {
     color: palette.accentDark,
@@ -456,10 +686,11 @@ const styles = StyleSheet.create({
   metricLabel: {
     color: palette.muted,
     fontSize: typeScale.caption,
-    fontWeight: '600',
+    lineHeight: lineHeight.caption,
+    fontWeight: fontWeight.medium,
   },
   progressWrap: {
-    gap: 6,
+    gap: spacing.xxs,
   },
   progressTrack: {
     height: 10,
@@ -468,9 +699,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   progressFill: {
+    // 진행률 막대는 의미 있는 그래픽이라 배경과 3:1 이상 구분되는 진한 주황을 씁니다.
     height: '100%',
     borderRadius: radius.pill,
-    backgroundColor: palette.accent,
+    backgroundColor: palette.accentStrong,
   },
   progressFillPositive: {
     backgroundColor: palette.positive,
@@ -478,22 +710,52 @@ const styles = StyleSheet.create({
   progressLabel: {
     color: palette.inkSoft,
     fontSize: typeScale.caption,
-    fontWeight: '800',
+    lineHeight: lineHeight.caption,
+    fontWeight: fontWeight.bold,
   },
   banner: {
     borderRadius: radius.md,
     padding: spacing.sm,
-    gap: 4,
+    gap: spacing.xxs,
   },
   bannerTitle: {
     fontSize: typeScale.bodySmall,
-    fontWeight: '900',
+    lineHeight: lineHeight.bodySmall,
+    fontWeight: fontWeight.heavy,
   },
   bannerBody: {
     color: palette.inkSoft,
     fontSize: typeScale.caption,
-    lineHeight: 18,
+    lineHeight: lineHeight.caption,
   },
+  emptyState: { gap: spacing.xs },
+  emptyStateTitle: {
+    color: palette.ink,
+    fontSize: typeScale.titleSmall,
+    lineHeight: lineHeight.titleSmall,
+    fontWeight: fontWeight.heavy,
+  },
+  emptyStateBody: {
+    color: palette.inkSoft,
+    fontSize: typeScale.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+  },
+  emptyStateAction: { marginTop: spacing.xs },
+  emptyStateHint: {
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+  },
+  skeleton: { backgroundColor: palette.skeleton },
+  skeletonCard: { gap: spacing.sm },
+  stepDots: { flexDirection: 'row', gap: spacing.xs, alignItems: 'center' },
+  stepDot: {
+    width: spacing.xs,
+    height: spacing.xs,
+    borderRadius: radius.pill,
+    backgroundColor: palette.line,
+  },
+  stepDotActive: { width: spacing.xl, backgroundColor: palette.accentStrong },
   searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -502,17 +764,17 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     minWidth: 0,
-    minHeight: 48,
+    minHeight: layout.touchTarget,
     backgroundColor: palette.surface,
     borderColor: palette.line,
-    borderWidth: 1,
+    borderWidth: borderWidth.thin,
     borderRadius: radius.md,
     color: palette.ink,
     fontSize: typeScale.body,
     paddingHorizontal: spacing.md,
   },
   searchClear: {
-    minHeight: 48,
+    minHeight: layout.touchTarget,
     minWidth: 64,
     alignItems: 'center',
     justifyContent: 'center',
@@ -520,7 +782,12 @@ const styles = StyleSheet.create({
     backgroundColor: palette.surfaceMuted,
     paddingHorizontal: spacing.sm,
   },
-  searchClearText: { color: palette.inkSoft, fontSize: typeScale.caption, fontWeight: '800' },
+  searchClearText: {
+    color: palette.inkSoft,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    fontWeight: fontWeight.bold,
+  },
   chartWrap: { gap: spacing.xs },
   chartPlot: {
     flexDirection: 'row',
@@ -536,11 +803,25 @@ const styles = StyleSheet.create({
     backgroundColor: palette.accentSoft,
   },
   chartBarEmpty: { backgroundColor: palette.line },
-  chartBarHighlight: { backgroundColor: palette.accent },
-  chartLabel: { color: palette.muted, fontSize: 11, fontWeight: '800' },
+  chartBarHighlight: { backgroundColor: palette.accentStrong },
+  chartLabel: {
+    color: palette.muted,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+    fontWeight: fontWeight.bold,
+  },
   chartLabelHighlight: { color: palette.accentDark },
-  chartValue: { color: palette.inkSoft, fontSize: 10, fontWeight: '700', marginTop: 2 },
-  chartEmpty: { color: palette.muted, fontSize: typeScale.caption, lineHeight: 18 },
+  chartValue: {
+    color: palette.inkSoft,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+    fontWeight: fontWeight.semibold,
+  },
+  chartEmpty: {
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+  },
   disclosure: {
     backgroundColor: palette.surface,
     borderColor: palette.line,
@@ -560,11 +841,23 @@ const styles = StyleSheet.create({
   disclosureTitle: {
     color: palette.ink,
     fontSize: typeScale.bodySmall,
-    lineHeight: 21,
-    fontWeight: '800',
+    lineHeight: lineHeight.bodySmall,
+    fontWeight: fontWeight.bold,
   },
-  disclosureMeta: { color: palette.muted, fontSize: 11, fontWeight: '700', marginTop: 2 },
-  disclosureCaret: { color: palette.muted, fontSize: 20, fontWeight: '900', width: 20, textAlign: 'center' },
+  disclosureMeta: {
+    color: palette.muted,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+    fontWeight: fontWeight.semibold,
+    marginTop: spacing.xxs / 2,
+  },
+  disclosureCaret: {
+    color: palette.inkSoft,
+    fontSize: typeScale.titleSmall,
+    fontWeight: fontWeight.heavy,
+    width: spacing.lg,
+    textAlign: 'center',
+  },
   disclosureBody: {
     gap: spacing.xs,
     borderTopColor: palette.line,
@@ -574,20 +867,22 @@ const styles = StyleSheet.create({
   },
   wordmark: {
     color: palette.ink,
-    fontSize: 27,
-    fontWeight: '900',
+    fontSize: typeScale.headline,
+    lineHeight: lineHeight.headline,
+    fontWeight: fontWeight.heavy,
     letterSpacing: -1.2,
   },
   wordmarkCompact: {
-    fontSize: 22,
+    fontSize: typeScale.title,
+    lineHeight: lineHeight.title,
   },
   wordmarkAccent: {
     color: palette.accent,
   },
   wordmarkPreview: {
     color: palette.accentDark,
-    fontSize: 12,
-    fontWeight: '900',
+    fontSize: typeScale.caption,
+    fontWeight: fontWeight.heavy,
     letterSpacing: 0,
   },
 });

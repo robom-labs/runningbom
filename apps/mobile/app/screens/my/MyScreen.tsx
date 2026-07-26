@@ -1,5 +1,5 @@
 // 기록·통계 화면입니다. 주간·월간 요약, 주간 목표, 배지, 활동 목록을 한곳에 모읍니다.
-import { useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import {
@@ -7,14 +7,26 @@ import {
   Button,
   Card,
   Chip,
+  EmptyState,
   Metric,
   MiniBarChart,
   ProgressBar,
   SectionHeader,
+  screenStyles,
   type BarDatum,
 } from '../../design-system/components';
-import { palette, radius, spacing, typeScale } from '../../design-system/theme';
-import { activitySourceLabels } from '../../../domains/activities/types';
+import {
+  borderWidth,
+  fontWeight,
+  layout,
+  lineHeight,
+  palette,
+  pressedOpacity,
+  radius,
+  spacing,
+  typeScale,
+} from '../../design-system/theme';
+import { activitySourceLabels, type ActivityRecord } from '../../../domains/activities/types';
 import {
   currentMonth,
   currentWeekStart,
@@ -49,6 +61,7 @@ import {
   badgeCategoryLabels,
   badgeCategoryOrder,
   type BadgeCategory,
+  type BadgeProgress,
 } from '../../../domains/badges/rules';
 import { useAppState } from '../../state/AppStateProvider';
 import { ManualActivityCard } from './ManualActivityCard';
@@ -56,6 +69,9 @@ import { ManualActivityCard } from './ManualActivityCard';
 const kindLabels: Record<string, string> = { run: '러닝', walk: '걷기', recovery: '회복' };
 const metricChoices: GoalMetric[] = ['sessions', 'minutes', 'distance'];
 const metricSteps: Record<GoalMetric, number> = { sessions: 1, minutes: 10, distance: 1 };
+
+/** 배지 44종을 한 번에 그리지 않도록 카테고리별 기본 노출 개수를 둡니다. */
+const collapsedBadgesPerCategory = 3;
 
 export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
   const {
@@ -72,6 +88,7 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
   } = useAppState();
   const [openCategory, setOpenCategory] = useState<BadgeCategory | 'all'>('all');
   const [showAllActivities, setShowAllActivities] = useState(false);
+  const [showAllBadges, setShowAllBadges] = useState(false);
   const [trendMetric, setTrendMetric] = useState<TrendMetric>('distance');
   const [listFilter, setListFilter] = useState<ActivityListFilter>(defaultActivityListFilter);
 
@@ -140,22 +157,41 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
         .filter((entry) => entry.total > 0),
     [badgeProgress],
   );
+  // 전체 보기에서는 카테고리마다 앞의 몇 개만 그려 첫 렌더 비용을 줄입니다("배지 전체 보기"로 펼침).
   const groupedBadges = useMemo(() => {
     const visible =
       openCategory === 'all'
         ? badgeProgress
         : badgeProgress.filter((entry) => entry.badge.category === openCategory);
+    const limit = openCategory === 'all' && !showAllBadges ? collapsedBadgesPerCategory : undefined;
     return badgeCategoryOrder
-      .map((category) => ({
-        category,
-        entries: visible.filter((entry) => entry.badge.category === category),
-      }))
+      .map((category) => {
+        const entries = visible.filter((entry) => entry.badge.category === category);
+        return {
+          category,
+          entries: limit ? entries.slice(0, limit) : entries,
+          hidden: limit ? Math.max(0, entries.length - limit) : 0,
+        };
+      })
       .filter((group) => group.entries.length > 0);
-  }, [badgeProgress, openCategory]);
+  }, [badgeProgress, openCategory, showAllBadges]);
 
-  const latestActivities = showAllActivities
-    ? filteredActivities.slice(0, 40)
-    : filteredActivities.slice(0, 5);
+  const hiddenBadgeCount = useMemo(
+    () => groupedBadges.reduce((total, group) => total + group.hidden, 0),
+    [groupedBadges],
+  );
+
+  const latestActivities = useMemo(
+    () => (showAllActivities ? filteredActivities.slice(0, 40) : filteredActivities.slice(0, 5)),
+    [filteredActivities, showAllActivities],
+  );
+
+  const featureBadge = useCallback(
+    (badgeId: string) => {
+      void updatePreferences({ featuredBadgeId: badgeId });
+    },
+    [updatePreferences],
+  );
 
   function adjustTarget(direction: 1 | -1) {
     const step = metricSteps[weeklyGoal.metric] * direction;
@@ -174,12 +210,22 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
 
   return (
     <ScrollView
-      contentContainerStyle={styles.content}
+      contentContainerStyle={screenStyles.content}
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
-      style={styles.root}
+      style={screenStyles.root}
     >
       {storageError ? <Banner title="저장 상태 안내" body={storageError} tone="warning" /> : null}
+
+      {activities.length === 0 ? (
+        <EmptyState
+          title="아직 통계로 보여 드릴 기록이 없어요"
+          body="러닝을 한 번 마치거나 아래 기록 추가에서 이미 달린 기록을 적으면 주간·월간 요약과 배지 진행이 바로 채워져요."
+          actionLabel="캘린더에서 기록 적기"
+          onAction={onOpenCalendar}
+          hint="기록은 이 기기에 저장되고, 목표는 참고 기준일 뿐 건강 판단이 아니에요."
+        />
+      ) : null}
 
       <Card style={styles.card}>
         <Text style={styles.cardTitle}>이번 주</Text>
@@ -303,6 +349,8 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
       <View accessibilityLabel="카테고리별 배지 진행률" style={styles.badgeGrid}>
         {categoryProgress.map((entry) => (
           <Pressable
+            accessibilityHint="이 카테고리의 배지만 봐요"
+            accessibilityLabel={`${badgeCategoryLabels[entry.category]} ${entry.unlocked}/${entry.total} 획득`}
             accessibilityRole="button"
             accessibilityState={{ selected: openCategory === entry.category }}
             key={entry.category}
@@ -349,47 +397,25 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
         <View key={group.category} style={styles.badgeGroup}>
           <Text style={styles.badgeGroupTitle}>{badgeCategoryLabels[group.category]}</Text>
           {group.entries.map((entry) => (
-            <Pressable
-              accessibilityHint={entry.unlocked ? '대표 배지로 설정해요' : undefined}
-              accessibilityRole="button"
-              disabled={!entry.unlocked}
+            <BadgeRow
+              entry={entry}
+              featured={preferences.featuredBadgeId === entry.badge.id}
               key={entry.badge.id}
-              onPress={() => void updatePreferences({ featuredBadgeId: entry.badge.id })}
-              style={({ pressed }) => [
-                styles.badgeRow,
-                !entry.unlocked && styles.badgeLocked,
-                preferences.featuredBadgeId === entry.badge.id && styles.badgeFeatured,
-                pressed && styles.pressed,
-              ]}
-            >
-              <View style={styles.badgeCopy}>
-                <Text style={styles.badgeTitle}>{entry.badge.title}</Text>
-                <Text style={styles.badgeBody}>{entry.badge.description}</Text>
-                {!entry.unlocked ? (
-                  <ProgressBar
-                    label={
-                      entry.badge.authority === 'server'
-                        ? '서버 연결 뒤에 확인할 수 있어요'
-                        : `${Math.round(entry.value * 10) / 10} / ${entry.target}`
-                    }
-                    ratio={entry.ratio}
-                  />
-                ) : null}
-              </View>
-              <Chip
-                label={
-                  preferences.featuredBadgeId === entry.badge.id
-                    ? '대표'
-                    : entry.unlocked
-                      ? '획득'
-                      : '진행 중'
-                }
-                tone={entry.unlocked ? 'positive' : 'neutral'}
-              />
-            </Pressable>
+              onFeature={featureBadge}
+            />
           ))}
         </View>
       ))}
+      {hiddenBadgeCount > 0 ? (
+        <Button
+          label={`배지 ${hiddenBadgeCount}개 더 보기`}
+          onPress={() => setShowAllBadges(true)}
+          tone="quiet"
+        />
+      ) : null}
+      {showAllBadges && openCategory === 'all' ? (
+        <Button label="배지 접기" onPress={() => setShowAllBadges(false)} tone="quiet" />
+      ) : null}
 
       <SectionHeader title="활동 목록" subtitle="이 기기에 저장된 기록이에요." />
       <ManualActivityCard
@@ -429,49 +455,118 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
           조건에 맞는 기록 {filteredActivities.length}건 · 전체 {activities.length}건
         </Text>
       </View>
-      <Card style={styles.listCard}>
-        {latestActivities.length > 0 ? (
-          latestActivities.map((activity) => (
-            <View key={activity.id} style={styles.listRow}>
-              <Text style={styles.rowTitle}>
-                {kindLabels[activity.kind] ?? activity.kind} · {activity.durationMinutes}분
-                {activity.distanceKm ? ` · ${formatDistance(activity.distanceKm)}` : ''}
-              </Text>
-              <Text style={styles.rowMeta}>
-                {activitySourceLabels[activity.source]} · {activity.completedAt.slice(0, 10)}
-              </Text>
-            </View>
-          ))
-        ) : (
-          <Text style={styles.rowMeta}>아직 완료한 활동이 없어요.</Text>
-        )}
-        {activities.length > 5 ? (
-          <Button
-            label={showAllActivities ? '최근 5건만 보기' : `전체 ${activities.length}건 보기`}
-            onPress={() => setShowAllActivities((current) => !current)}
-            tone="quiet"
-          />
-        ) : null}
-      </Card>
+      {latestActivities.length > 0 ? (
+        <Card style={styles.listCard}>
+          {latestActivities.map((activity) => (
+            <ActivityRow activity={activity} key={activity.id} />
+          ))}
+          {activities.length > 5 ? (
+            <Button
+              label={showAllActivities ? '최근 5건만 보기' : `전체 ${activities.length}건 보기`}
+              onPress={() => setShowAllActivities((current) => !current)}
+              tone="quiet"
+            />
+          ) : null}
+        </Card>
+      ) : activities.length > 0 ? (
+        <EmptyState
+          title="이 조건에 맞는 기록이 없어요"
+          body="유형이나 기간 필터를 바꾸면 저장된 다른 기록을 볼 수 있어요."
+          actionLabel="필터 초기화"
+          onAction={() => {
+            setListFilter(defaultActivityListFilter);
+            setShowAllActivities(false);
+          }}
+          tone="muted"
+        />
+      ) : (
+        <EmptyState
+          title="아직 완료한 활동이 없어요"
+          body="위의 기록 추가에서 오늘 달린 시간을 적거나, 홈에서 러닝을 시작하면 여기에 쌓여요."
+          actionLabel="캘린더 열기"
+          onAction={onOpenCalendar}
+          tone="muted"
+        />
+      )}
     </ScrollView>
   );
 }
 
+// 목록·배지 행은 memo 해 두어 필터나 목표를 바꿔도 바뀐 행만 다시 그립니다.
+const ActivityRow = memo(function ActivityRow({ activity }: { activity: ActivityRecord }) {
+  return (
+    <View style={styles.listRow}>
+      <Text style={styles.rowTitle}>
+        {kindLabels[activity.kind] ?? activity.kind} · {activity.durationMinutes}분
+        {activity.distanceKm ? ` · ${formatDistance(activity.distanceKm)}` : ''}
+      </Text>
+      <Text style={styles.rowMeta}>
+        {activitySourceLabels[activity.source]} · {activity.completedAt.slice(0, 10)}
+      </Text>
+    </View>
+  );
+});
+
+type BadgeRowProps = {
+  entry: BadgeProgress;
+  featured: boolean;
+  onFeature: (badgeId: string) => void;
+};
+
+const BadgeRow = memo(function BadgeRow({ entry, featured, onFeature }: BadgeRowProps) {
+  const status = featured ? '대표' : entry.unlocked ? '획득' : '진행 중';
+  return (
+    <Pressable
+      accessibilityHint={entry.unlocked ? '대표 배지로 설정해요' : undefined}
+      accessibilityLabel={`${entry.badge.title} ${status}. ${entry.badge.description}`}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: !entry.unlocked, selected: featured }}
+      disabled={!entry.unlocked}
+      onPress={() => onFeature(entry.badge.id)}
+      style={({ pressed }) => [
+        styles.badgeRow,
+        !entry.unlocked && styles.badgeLocked,
+        featured && styles.badgeFeatured,
+        pressed && styles.pressed,
+      ]}
+    >
+      <View style={styles.badgeCopy}>
+        <Text style={styles.badgeTitle}>{entry.badge.title}</Text>
+        <Text style={styles.badgeBody}>{entry.badge.description}</Text>
+        {!entry.unlocked ? (
+          <ProgressBar
+            label={
+              entry.badge.authority === 'server'
+                ? '서버 연결 뒤에 확인할 수 있어요'
+                : `${Math.round(entry.value * 10) / 10} / ${entry.target}`
+            }
+            ratio={entry.ratio}
+          />
+        ) : null}
+      </View>
+      <Chip label={status} tone={entry.unlocked ? 'positive' : 'neutral'} />
+    </Pressable>
+  );
+});
+
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: palette.canvas },
-  content: {
-    width: '100%',
-    maxWidth: 960,
-    alignSelf: 'center',
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.xxl,
-    gap: spacing.sm,
-  },
   card: { gap: spacing.sm },
-  cardTitle: { color: palette.ink, fontSize: typeScale.body, fontWeight: '900' },
-  cardMeta: { color: palette.muted, fontSize: typeScale.caption, lineHeight: 18 },
-  disclaimer: { color: palette.muted, fontSize: 11, lineHeight: 16 },
+  cardTitle: {
+    color: palette.ink,
+    fontSize: typeScale.body,
+    lineHeight: lineHeight.body,
+    fontWeight: fontWeight.heavy,
+  },
+  cardMeta: {
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+  },
+  disclaimer: {
+    color: palette.muted,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+  },
   metrics: { flexDirection: 'row', justifyContent: 'space-between', gap: spacing.sm },
   metricsRow: {
     flexDirection: 'row',
@@ -487,13 +582,14 @@ const styles = StyleSheet.create({
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   filterBlock: { gap: spacing.xs },
   targetRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
-  stepButton: { minWidth: 52 },
+  stepButton: { minWidth: layout.touchTarget },
   targetValue: {
     minWidth: 64,
     textAlign: 'center',
     color: palette.ink,
     fontSize: typeScale.titleSmall,
-    fontWeight: '900',
+    lineHeight: lineHeight.titleSmall,
+    fontWeight: fontWeight.heavy,
   },
   recommendButton: { flex: 1 },
   badgeGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
@@ -503,19 +599,36 @@ const styles = StyleSheet.create({
     minWidth: 104,
     minHeight: 88,
     justifyContent: 'center',
-    gap: 4,
+    gap: spacing.xxs,
     backgroundColor: palette.surface,
     borderColor: palette.line,
     borderWidth: StyleSheet.hairlineWidth,
     borderRadius: radius.md,
     padding: spacing.sm,
   },
-  badgeTileSelected: { borderColor: palette.accent, borderWidth: 1.5 },
-  badgeTileTitle: { color: palette.inkSoft, fontSize: 11, fontWeight: '900' },
-  badgeTileCount: { color: palette.ink, fontSize: typeScale.body, fontWeight: '900' },
+  badgeTileSelected: { borderColor: palette.accentStrong, borderWidth: borderWidth.emphasis },
+  badgeTileTitle: {
+    color: palette.inkSoft,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+    fontWeight: fontWeight.heavy,
+  },
+  badgeTileCount: {
+    color: palette.ink,
+    fontSize: typeScale.body,
+    lineHeight: lineHeight.body,
+    fontWeight: fontWeight.heavy,
+  },
   badgeGroup: { gap: spacing.xs, paddingTop: spacing.sm },
-  badgeGroupTitle: { color: palette.muted, fontSize: 11, fontWeight: '900', letterSpacing: 0.6 },
+  badgeGroupTitle: {
+    color: palette.muted,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+    fontWeight: fontWeight.heavy,
+    letterSpacing: 0.6,
+  },
   badgeRow: {
+    minHeight: layout.touchTarget,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
@@ -526,17 +639,36 @@ const styles = StyleSheet.create({
     padding: spacing.sm,
   },
   badgeLocked: { opacity: 0.72 },
-  badgeFeatured: { borderColor: palette.accent, borderWidth: 1.5 },
-  badgeCopy: { flex: 1, minWidth: 0, gap: 4 },
-  badgeTitle: { color: palette.ink, fontSize: typeScale.bodySmall, fontWeight: '900' },
-  badgeBody: { color: palette.muted, fontSize: typeScale.caption, lineHeight: 17 },
+  badgeFeatured: { borderColor: palette.accentStrong, borderWidth: borderWidth.emphasis },
+  badgeCopy: { flex: 1, minWidth: 0, gap: spacing.xxs },
+  badgeTitle: {
+    color: palette.ink,
+    fontSize: typeScale.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+    fontWeight: fontWeight.heavy,
+  },
+  badgeBody: {
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+  },
   listCard: { gap: spacing.sm },
   listRow: {
     borderBottomColor: palette.line,
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingBottom: spacing.xs,
   },
-  rowTitle: { color: palette.ink, fontSize: typeScale.bodySmall, fontWeight: '800' },
-  rowMeta: { color: palette.muted, fontSize: typeScale.caption, lineHeight: 18, marginTop: 2 },
-  pressed: { opacity: 0.72 },
+  rowTitle: {
+    color: palette.ink,
+    fontSize: typeScale.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+    fontWeight: fontWeight.bold,
+  },
+  rowMeta: {
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    marginTop: spacing.xxs / 2,
+  },
+  pressed: { opacity: pressedOpacity },
 });

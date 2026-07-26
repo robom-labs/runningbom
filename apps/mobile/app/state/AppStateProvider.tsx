@@ -38,6 +38,13 @@ import {
   loadPreferences,
   savePreferences,
 } from '../../services/storage/preferences';
+import { saveCoachVoicePreference } from '../../domains/coaching/voicePreference';
+import { goalFromPreset, type OnboardingResult } from '../screens/onboarding/steps';
+import { loadOnboardingStatus, saveOnboardingStatus } from '../screens/onboarding/storage';
+import {
+  looksLikeExistingUser,
+  resolveOnboardingStatus,
+} from '../screens/onboarding/status';
 
 const LOCAL_UUID_KEY = 'runningbom:vnext:local-uuid';
 const RUN_PLAN_KEY = 'runningbom:vnext:run-plans:v1';
@@ -69,6 +76,12 @@ type AppStateValue = {
   removePlan: (planId: string) => Promise<void>;
   setWeeklyGoal: (goal: WeeklyGoal) => Promise<void>;
   applyRecommendedGoal: () => Promise<WeeklyGoal>;
+  /**
+   * 첫 실행 온보딩을 보여 줘야 하는지 알려 주는 플래그입니다.
+   * 실제 화면 분기는 AppNavigator가 합니다(이 파일은 상태만 노출합니다).
+   */
+  onboardingRequired: boolean;
+  completeOnboarding: (result: OnboardingResult) => Promise<void>;
 };
 
 const emptyStreak = calculateStreak([]);
@@ -92,6 +105,8 @@ const AppStateContext = createContext<AppStateValue>({
   removePlan: async () => undefined,
   setWeeklyGoal: async () => undefined,
   applyRecommendedGoal: async () => defaultWeeklyGoal,
+  onboardingRequired: false,
+  completeOnboarding: async () => undefined,
 });
 
 async function loadRunPlans(): Promise<RunPlan[]> {
@@ -131,6 +146,7 @@ export function AppStateProvider({ children }: PropsWithChildren) {
   const [activities, setActivities] = useState<ActivityRecord[]>([]);
   const [plans, setPlans] = useState<RunPlan[]>([]);
   const [weeklyGoal, setWeeklyGoalState] = useState<WeeklyGoal>(defaultWeeklyGoal);
+  const [onboardingRequired, setOnboardingRequired] = useState(false);
   const activityStorageAvailableRef = useRef(true);
   const memoryLocalUuidRef = useRef<string | undefined>(undefined);
 
@@ -151,12 +167,26 @@ export function AppStateProvider({ children }: PropsWithChildren) {
     void Promise.all([initializeLocalDatabase(), loadPreferences()])
       .then(async ([, loadedPreferences]) => {
         const loadedActivities = await listActivities();
-        const [loadedPlans, loadedGoal] = await Promise.all([loadRunPlans(), loadWeeklyGoal()]);
+        const [loadedPlans, loadedGoal, savedOnboarding] = await Promise.all([
+          loadRunPlans(),
+          loadWeeklyGoal(),
+          loadOnboardingStatus(),
+        ]);
         if (!active) return;
         setPreferences(loadedPreferences);
         setActivities(loadedActivities);
         setPlans(loadedPlans);
         setWeeklyGoalState(loadedGoal ?? recommendWeeklyGoal(loadedActivities));
+        const onboarding = resolveOnboardingStatus(
+          savedOnboarding,
+          looksLikeExistingUser({
+            activities: loadedActivities,
+            plans: loadedPlans,
+            ...(loadedGoal ? { storedGoal: loadedGoal } : {}),
+          }),
+        );
+        setOnboardingRequired(onboarding.required);
+        if (onboarding.nextStatus) void saveOnboardingStatus(onboarding.nextStatus);
         setReady(true);
       })
       .catch(() => {
@@ -290,6 +320,30 @@ export function AppStateProvider({ children }: PropsWithChildren) {
     return recommended;
   }, [activities, setWeeklyGoal]);
 
+  // 온보딩에서 고른 값을 각자의 기존 저장소에 넘겨주고 완료 여부만 새 키에 남깁니다.
+  const completeOnboarding = useCallback(
+    async (result: OnboardingResult) => {
+      setOnboardingRequired(false);
+      if (!result.skipped) {
+        if (result.goalPresetId) {
+          await setWeeklyGoal(goalFromPreset(result.goalPresetId, activities));
+        }
+        if (result.nickname) {
+          await updatePreferences({ nickname: result.nickname });
+        }
+        if (result.voiceGender) {
+          await saveCoachVoicePreference({ gender: result.voiceGender });
+        }
+      }
+      await saveOnboardingStatus({
+        completed: true,
+        reason: result.skipped ? 'skipped' : 'finished',
+        completedAt: new Date().toISOString(),
+      });
+    },
+    [activities, setWeeklyGoal, updatePreferences],
+  );
+
   const value = useMemo<AppStateValue>(
     () => ({
       ready,
@@ -308,6 +362,8 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       removePlan,
       setWeeklyGoal,
       applyRecommendedGoal,
+      onboardingRequired,
+      completeOnboarding,
     }),
     [
       activities,
@@ -316,6 +372,8 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       badgeProgress,
       badges,
       completeActivity,
+      completeOnboarding,
+      onboardingRequired,
       plans,
       preferences,
       ready,

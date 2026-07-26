@@ -5,7 +5,16 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { parseManualActivity } from '../../../domains/activities/manual';
 import type { ActivityKind } from '../../../domains/activities/types';
 import { Button, Card, Chip } from '../../design-system/components';
-import { palette, spacing, typeScale } from '../../design-system/theme';
+import {
+  borderWidth,
+  fontWeight,
+  layout,
+  lineHeight,
+  palette,
+  radius,
+  spacing,
+  typeScale,
+} from '../../design-system/theme';
 
 type ManualActivityCardProps = {
   onSave: (input: {
@@ -130,28 +139,33 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   copy: { flex: 1, minWidth: 0 },
-  title: { color: palette.ink, fontSize: typeScale.body, fontWeight: '900' },
+  title: {
+    color: palette.ink,
+    fontSize: typeScale.body,
+    lineHeight: lineHeight.body,
+    fontWeight: fontWeight.heavy,
+  },
   caption: {
     color: palette.muted,
     fontSize: typeScale.caption,
-    lineHeight: 18,
-    marginTop: 4,
+    lineHeight: lineHeight.caption,
+    marginTop: spacing.xxs,
   },
   form: { gap: spacing.sm },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   input: {
-    minHeight: 48,
+    minHeight: layout.touchTarget,
     borderColor: palette.line,
-    borderWidth: 1,
-    borderRadius: 16,
+    borderWidth: borderWidth.thin,
+    borderRadius: radius.md,
     color: palette.ink,
     backgroundColor: palette.surface,
-    fontSize: 16,
+    fontSize: typeScale.body,
     paddingHorizontal: spacing.md,
   },
   message: {
     color: palette.accentDark,
     fontSize: typeScale.caption,
-    lineHeight: 18,
+    lineHeight: lineHeight.caption,
   },
 });

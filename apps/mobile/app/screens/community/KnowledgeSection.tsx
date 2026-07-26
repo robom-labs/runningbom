@@ -3,7 +3,14 @@ import { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Card, Chip, Disclosure, SearchField } from '../../design-system/components';
-import { palette, radius, spacing, typeScale } from '../../design-system/theme';
+import {
+  fontWeight,
+  lineHeight,
+  palette,
+  radius,
+  spacing,
+  typeScale,
+} from '../../design-system/theme';
 import type { RouteKey } from '../../navigation/types';
 import {
   findKnowledgeCards,
@@ -123,24 +130,39 @@ export function KnowledgeSection({ onNavigate }: Props) {
 const styles = StyleSheet.create({
   wrap: { gap: spacing.sm },
   introCard: { backgroundColor: palette.surfaceWarm },
-  introTitle: { color: palette.ink, fontSize: typeScale.titleSmall, fontWeight: '900' },
+  introTitle: {
+    color: palette.ink,
+    fontSize: typeScale.titleSmall,
+    lineHeight: lineHeight.titleSmall,
+    fontWeight: fontWeight.heavy,
+  },
   introBody: {
     color: palette.inkSoft,
     fontSize: typeScale.bodySmall,
-    lineHeight: 21,
+    lineHeight: lineHeight.bodySmall,
     marginTop: spacing.xs,
   },
-  chipRow: { flexDirection: 'row', gap: spacing.xs, paddingVertical: 2 },
-  resultCount: { color: palette.muted, fontSize: typeScale.caption, fontWeight: '800' },
+  chipRow: { flexDirection: 'row', gap: spacing.xs, paddingVertical: spacing.xxs / 2 },
+  resultCount: {
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    fontWeight: fontWeight.bold,
+  },
   list: { gap: spacing.xs },
   answerRow: { flexDirection: 'row', gap: spacing.xs },
-  answerDot: { color: palette.accent, fontSize: typeScale.bodySmall, fontWeight: '900' },
+  answerDot: {
+    color: palette.accentDark,
+    fontSize: typeScale.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+    fontWeight: fontWeight.heavy,
+  },
   answerText: {
     flex: 1,
     minWidth: 0,
     color: palette.inkSoft,
     fontSize: typeScale.bodySmall,
-    lineHeight: 22,
+    lineHeight: lineHeight.bodySmall,
   },
   linkBox: {
     gap: spacing.xxs,
@@ -150,15 +172,33 @@ const styles = StyleSheet.create({
     padding: spacing.sm,
     marginTop: spacing.xs,
   },
-  linkLabel: { color: palette.accentDark, fontSize: typeScale.caption, fontWeight: '900' },
-  linkHint: { color: palette.inkSoft, fontSize: typeScale.caption, lineHeight: 18 },
-  linkHintQuiet: { color: palette.muted, fontSize: 11, lineHeight: 16 },
+  linkLabel: {
+    color: palette.accentDark,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    fontWeight: fontWeight.heavy,
+  },
+  linkHint: {
+    color: palette.inkSoft,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+  },
+  linkHintQuiet: {
+    color: palette.muted,
+    fontSize: typeScale.micro,
+    lineHeight: lineHeight.micro,
+  },
   emptyCard: { backgroundColor: palette.surfaceWarm },
-  emptyTitle: { color: palette.ink, fontSize: typeScale.body, fontWeight: '900' },
+  emptyTitle: {
+    color: palette.ink,
+    fontSize: typeScale.body,
+    lineHeight: lineHeight.body,
+    fontWeight: fontWeight.heavy,
+  },
   emptyBody: {
     color: palette.inkSoft,
     fontSize: typeScale.bodySmall,
-    lineHeight: 21,
+    lineHeight: lineHeight.bodySmall,
     marginTop: spacing.xs,
   },
 });
