@@ -12,8 +12,20 @@ import {
   useState,
 } from 'react';
 
+import { isRunPlan, type RunPlan, type RunPlanValue } from '../../domains/activities/plans';
 import type { ActivityKind, ActivityRecord } from '../../domains/activities/types';
-import { calculateStreak, unlockedBadges } from '../../domains/badges/rules';
+import {
+  badgeProgressList,
+  calculateStreak,
+  unlockedBadges,
+  type BadgeProgress,
+} from '../../domains/badges/rules';
+import {
+  defaultWeeklyGoal,
+  isWeeklyGoal,
+  recommendWeeklyGoal,
+  type WeeklyGoal,
+} from '../../domains/badges/goals';
 import {
   initializeLocalDatabase,
   insertActivity,
@@ -28,6 +40,8 @@ import {
 } from '../../services/storage/preferences';
 
 const LOCAL_UUID_KEY = 'runningbom:vnext:local-uuid';
+const RUN_PLAN_KEY = 'runningbom:vnext:run-plans:v1';
+const WEEKLY_GOAL_KEY = 'runningbom:vnext:weekly-goal:v1';
 
 type CompleteActivityInput = {
   id?: string;
@@ -43,11 +57,18 @@ type AppStateValue = {
   storageError?: string;
   preferences: AppPreferences;
   activities: ActivityRecord[];
+  plans: RunPlan[];
+  weeklyGoal: WeeklyGoal;
   streak: ReturnType<typeof calculateStreak>;
   badges: ReturnType<typeof unlockedBadges>;
+  badgeProgress: BadgeProgress[];
   updatePreferences: (next: Partial<AppPreferences>) => Promise<void>;
   completeActivity: (input: CompleteActivityInput) => Promise<ActivityRecord>;
   refreshActivities: () => Promise<void>;
+  addPlan: (value: RunPlanValue) => Promise<RunPlan>;
+  removePlan: (planId: string) => Promise<void>;
+  setWeeklyGoal: (goal: WeeklyGoal) => Promise<void>;
+  applyRecommendedGoal: () => Promise<WeeklyGoal>;
 };
 
 const emptyStreak = calculateStreak([]);
@@ -55,14 +76,45 @@ const AppStateContext = createContext<AppStateValue>({
   ready: false,
   preferences: defaultPreferences,
   activities: [],
+  plans: [],
+  weeklyGoal: defaultWeeklyGoal,
   streak: emptyStreak,
   badges: [],
+  badgeProgress: [],
   updatePreferences: async () => undefined,
   completeActivity: async () => {
     throw new Error('app state unavailable');
   },
   refreshActivities: async () => undefined,
+  addPlan: async () => {
+    throw new Error('app state unavailable');
+  },
+  removePlan: async () => undefined,
+  setWeeklyGoal: async () => undefined,
+  applyRecommendedGoal: async () => defaultWeeklyGoal,
 });
+
+async function loadRunPlans(): Promise<RunPlan[]> {
+  try {
+    const raw = await AsyncStorage.getItem(RUN_PLAN_KEY);
+    if (!raw) return [];
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter(isRunPlan) : [];
+  } catch {
+    return [];
+  }
+}
+
+async function loadWeeklyGoal(): Promise<WeeklyGoal | undefined> {
+  try {
+    const raw = await AsyncStorage.getItem(WEEKLY_GOAL_KEY);
+    if (!raw) return undefined;
+    const parsed: unknown = JSON.parse(raw);
+    return isWeeklyGoal(parsed) ? parsed : undefined;
+  } catch {
+    return undefined;
+  }
+}
 
 async function getOrCreateLocalUuid(): Promise<string> {
   const existing = await AsyncStorage.getItem(LOCAL_UUID_KEY);
@@ -77,6 +129,8 @@ export function AppStateProvider({ children }: PropsWithChildren) {
   const [storageError, setStorageError] = useState<string>();
   const [preferences, setPreferences] = useState<AppPreferences>(defaultPreferences);
   const [activities, setActivities] = useState<ActivityRecord[]>([]);
+  const [plans, setPlans] = useState<RunPlan[]>([]);
+  const [weeklyGoal, setWeeklyGoalState] = useState<WeeklyGoal>(defaultWeeklyGoal);
   const activityStorageAvailableRef = useRef(true);
   const memoryLocalUuidRef = useRef<string | undefined>(undefined);
 
@@ -97,9 +151,12 @@ export function AppStateProvider({ children }: PropsWithChildren) {
     void Promise.all([initializeLocalDatabase(), loadPreferences()])
       .then(async ([, loadedPreferences]) => {
         const loadedActivities = await listActivities();
+        const [loadedPlans, loadedGoal] = await Promise.all([loadRunPlans(), loadWeeklyGoal()]);
         if (!active) return;
         setPreferences(loadedPreferences);
         setActivities(loadedActivities);
+        setPlans(loadedPlans);
+        setWeeklyGoalState(loadedGoal ?? recommendWeeklyGoal(loadedActivities));
         setReady(true);
       })
       .catch(() => {
@@ -166,8 +223,72 @@ export function AppStateProvider({ children }: PropsWithChildren) {
     return record;
   }, []);
 
+  const addPlan = useCallback(
+    async (value: RunPlanValue) => {
+      const plan: RunPlan = {
+        ...value,
+        id: Crypto.randomUUID(),
+        createdAt: new Date().toISOString(),
+      };
+      let next: RunPlan[] = [];
+      setPlans((current) => {
+        next = [...current, plan].sort((left, right) => left.date.localeCompare(right.date));
+        return next;
+      });
+      try {
+        await AsyncStorage.setItem(RUN_PLAN_KEY, JSON.stringify(next));
+      } catch {
+        setStorageError('러닝 일정을 저장하지 못했어요. 이번 실행 중에만 유지됩니다.');
+      }
+      return plan;
+    },
+    [],
+  );
+
+  const removePlan = useCallback(
+    async (planId: string) => {
+      let next: RunPlan[] = [];
+      setPlans((current) => {
+        next = current.filter((plan) => plan.id !== planId);
+        return next;
+      });
+      try {
+        await AsyncStorage.setItem(RUN_PLAN_KEY, JSON.stringify(next));
+      } catch {
+        setStorageError('러닝 일정을 저장하지 못했어요. 이번 실행 중에만 유지됩니다.');
+      }
+    },
+    [],
+  );
+
+  const setWeeklyGoal = useCallback(async (goal: WeeklyGoal) => {
+    setWeeklyGoalState(goal);
+    try {
+      await AsyncStorage.setItem(WEEKLY_GOAL_KEY, JSON.stringify(goal));
+    } catch {
+      setStorageError('주간 목표를 저장하지 못했어요.');
+    }
+  }, []);
+
   const streak = useMemo(() => calculateStreak(activities), [activities]);
-  const badges = useMemo(() => unlockedBadges(activities, streak), [activities, streak]);
+  const badgeContext = useMemo(
+    () => ({ interestedRaceCount: preferences.interestedRaceIds.length }),
+    [preferences.interestedRaceIds],
+  );
+  const badgeProgress = useMemo(
+    () => badgeProgressList(activities, streak, badgeContext),
+    [activities, badgeContext, streak],
+  );
+  const badges = useMemo(
+    () => badgeProgress.filter((entry) => entry.unlocked).map((entry) => entry.badge),
+    [badgeProgress],
+  );
+
+  const applyRecommendedGoal = useCallback(async () => {
+    const recommended = recommendWeeklyGoal(activities);
+    await setWeeklyGoal(recommended);
+    return recommended;
+  }, [activities, setWeeklyGoal]);
 
   const value = useMemo<AppStateValue>(
     () => ({
@@ -175,22 +296,36 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       ...(storageError ? { storageError } : {}),
       preferences,
       activities,
+      plans,
+      weeklyGoal,
       streak,
       badges,
+      badgeProgress,
       updatePreferences,
       completeActivity,
       refreshActivities,
+      addPlan,
+      removePlan,
+      setWeeklyGoal,
+      applyRecommendedGoal,
     }),
     [
       activities,
+      addPlan,
+      applyRecommendedGoal,
+      badgeProgress,
       badges,
       completeActivity,
+      plans,
       preferences,
       ready,
       refreshActivities,
+      removePlan,
+      setWeeklyGoal,
       storageError,
       streak,
       updatePreferences,
+      weeklyGoal,
     ],
   );
 

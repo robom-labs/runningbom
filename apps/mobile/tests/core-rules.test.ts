@@ -11,8 +11,10 @@ import { activityCalendarMonth } from '../domains/activities/calendar';
 import { calculateStreak, streakInternals, unlockedBadges } from '../domains/badges/rules';
 import {
   createCoachSession,
+  cueDensityPerMinute,
   cueSilenceRatio,
   cueScheduleForNative,
+  minimumCueDensityPerMinute,
 } from '../domains/coaching/model';
 import {
   coachActivityId,
@@ -100,24 +102,19 @@ describe('04시 기준 스트릭', () => {
 });
 
 describe('기기 음성 코칭 큐', () => {
-  it('일반 코칭 큐는 충분한 간격과 침묵 비율을 지킨다', () => {
+  it('코치는 쉬지 않고 말하되 발화가 세션을 가득 채우지는 않는다', () => {
     const session = createCoachSession('기본 지속주', 60, 'detailed');
-    const regularCues = session.cues.filter(
-      (cue) => cue.kind === 'instruction' || cue.kind === 'encouragement',
-    );
-    for (let index = 1; index < regularCues.length; index += 1) {
-      assert.ok(
-        regularCues[index].offsetSeconds - regularCues[index - 1].offsetSeconds >= 90,
-      );
-    }
-    assert.ok(cueSilenceRatio(session) >= 0.75);
+    assert.ok(cueDensityPerMinute(session) >= minimumCueDensityPerMinute);
+    const silence = cueSilenceRatio(session);
+    assert.ok(silence > 0.3 && silence < 0.9);
   });
 
-  it('인터벌은 빠른 구간, 전환 10초 전, 회복 구간을 실제 큐로 만든다', () => {
+  it('인터벌은 빠른 구간, 전환 10초 전 예고, 회복 구간을 실제 큐로 만든다', () => {
     const session = createCoachSession('인터벌', 30, 'detailed');
-    assert.ok(session.cues.some((cue) => cue.text.includes('10초 뒤 회복 구간')));
-    assert.ok(session.cues.some((cue) => cue.text.includes('이제 회복하며 걸어요')));
-    assert.ok(session.cues.some((cue) => cue.text.includes('다시 달려요')));
+    const phaseCues = session.cues.filter((cue) => cue.kind === 'phase');
+    assert.ok(phaseCues.some((cue) => /10초 뒤|곧/.test(cue.text)));
+    assert.ok(phaseCues.some((cue) => cue.text.includes('회복')));
+    assert.ok(phaseCues.some((cue) => cue.text.includes('빠른 구간')));
   });
 
   it('최근 네 문장 안에서 동일 일반 문장을 반복하지 않는다', () => {

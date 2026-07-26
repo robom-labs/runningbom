@@ -1,4 +1,4 @@
-// 홈과 외부 링크가 탐색 탭의 정확한 콘텐츠를 열도록 요청 형식을 정의합니다.
+// 드로어 메뉴, 화면 라우팅, 딥링크 요청이 공유하는 타입을 정의합니다.
 export type ExploreSection = '대회' | '러닝화';
 
 export type ExploreRequest = {
@@ -6,4 +6,29 @@ export type ExploreRequest = {
   raceId?: string;
   shoeId?: string;
   nonce: number;
+};
+
+export type RouteKey =
+  | 'home'
+  | 'start'
+  | 'calendar'
+  | 'races'
+  | 'shoes'
+  | 'community'
+  | 'stats'
+  | 'profile'
+  | 'settings'
+  | 'help';
+
+export type MenuItem = {
+  key: RouteKey;
+  label: string;
+  icon: string;
+  hint: string;
+};
+
+export type MenuGroup = {
+  id: 'main' | 'system';
+  title: string;
+  items: MenuItem[];
 };

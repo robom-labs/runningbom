@@ -8,6 +8,17 @@ import type { ActivityKind } from '../../domains/activities/types';
 import type { CoachSession } from '../../domains/coaching/model';
 import { cueScheduleForNative } from '../../domains/coaching/model';
 import {
+  koreanVoiceAvailability,
+  rankKoreanVoices,
+  selectVoiceIdentifier,
+  voicePreviewText,
+  voiceTuning,
+  type RankedVoice,
+  type SpeechVoiceLike,
+  type VoiceAvailability,
+  type VoiceGender,
+} from '../../domains/coaching/voice';
+import {
   idleFallbackClock,
   pauseFallbackClock,
   resumeFallbackClock,
@@ -30,12 +41,105 @@ export type CoachRuntimeState = {
   native: boolean;
 };
 
+export type CoachVoiceStatus = {
+  availability: VoiceAvailability;
+  selectedIdentifier?: string;
+  candidates: RankedVoice[];
+};
+
 let fallbackState: FallbackCoachClock = idleFallbackClock;
 let fallbackInUse = false;
 let fallbackSession: CoachSession | undefined;
 let fallbackCueIndex = 0;
 let fallbackCueTimer: ReturnType<typeof setTimeout> | undefined;
 let fallbackSpeechRate = 1;
+let fallbackSpeechPitch = 1;
+let fallbackVoiceIdentifier: string | undefined;
+
+let cachedVoices: SpeechVoiceLike[] | undefined;
+
+async function availableVoices(): Promise<SpeechVoiceLike[]> {
+  if (cachedVoices) return cachedVoices;
+  try {
+    const voices = await Speech.getAvailableVoicesAsync();
+    cachedVoices = voices.map((voice) => ({
+      identifier: voice.identifier,
+      name: voice.name,
+      language: voice.language,
+      quality: String(voice.quality ?? ''),
+    }));
+  } catch {
+    cachedVoices = [];
+  }
+  return cachedVoices;
+}
+
+/** 기기 음성 목록을 다시 읽습니다(사용자가 음성을 새로 설치한 경우). */
+export function resetVoiceCache(): void {
+  cachedVoices = undefined;
+}
+
+export async function coachVoiceStatus(gender: VoiceGender): Promise<CoachVoiceStatus> {
+  const voices = await availableVoices();
+  const candidates = rankKoreanVoices(voices, gender);
+  const selectedIdentifier = selectVoiceIdentifier(voices, gender);
+  return {
+    availability: koreanVoiceAvailability(voices),
+    candidates,
+    ...(selectedIdentifier ? { selectedIdentifier } : {}),
+  };
+}
+
+// 발화가 겹치지 않도록 한 번에 하나씩만 말하고, 밀린 큐는 최신 것만 남깁니다.
+type SpeechJob = { text: string; options: Speech.SpeechOptions };
+let speechQueue: SpeechJob[] = [];
+let speaking = false;
+
+function drainSpeechQueue() {
+  if (speaking) return;
+  const job = speechQueue.shift();
+  if (!job) return;
+  speaking = true;
+  const finish = () => {
+    speaking = false;
+    drainSpeechQueue();
+  };
+  Speech.speak(job.text, {
+    ...job.options,
+    onDone: finish,
+    onStopped: finish,
+    onError: finish,
+  });
+}
+
+function enqueueSpeech(text: string, options: Speech.SpeechOptions) {
+  speechQueue.push({ text, options });
+  // 코치는 지난 이야기를 되풀이하지 않습니다. 밀린 큐는 최신 하나만 유지합니다.
+  if (speechQueue.length > 1) speechQueue = speechQueue.slice(-1);
+  drainSpeechQueue();
+}
+
+function clearSpeechQueue() {
+  speechQueue = [];
+  speaking = false;
+  void Speech.stop();
+}
+
+export async function previewCoachVoice(
+  gender: VoiceGender,
+  speechRate = 1,
+): Promise<void> {
+  const voices = await availableVoices();
+  const identifier = selectVoiceIdentifier(voices, gender);
+  const tuning = voiceTuning('easy', gender, 'standard', speechRate);
+  clearSpeechQueue();
+  enqueueSpeech(voicePreviewText[gender], {
+    language: 'ko-KR',
+    rate: tuning.rate,
+    pitch: tuning.pitch,
+    ...(identifier ? { voice: identifier } : {}),
+  });
+}
 
 function clearFallbackCueTimer() {
   if (fallbackCueTimer) clearTimeout(fallbackCueTimer);
@@ -57,10 +161,14 @@ function scheduleFallbackCuePump() {
     }
     if (dueIndex >= 0) {
       const cue = fallbackSession.cues[dueIndex];
-      Speech.stop();
-      Speech.speak(cue.text, { language: 'ko-KR', rate: fallbackSpeechRate });
+      enqueueSpeech(cue.text, {
+        language: 'ko-KR',
+        rate: fallbackSpeechRate,
+        pitch: fallbackSpeechPitch,
+        ...(fallbackVoiceIdentifier ? { voice: fallbackVoiceIdentifier } : {}),
+      });
     }
-    fallbackCueTimer = setTimeout(pump, 750);
+    fallbackCueTimer = setTimeout(pump, 500);
   };
   pump();
 }
@@ -91,9 +199,13 @@ export function nativeCoachAvailable(): boolean {
 export async function startCoachSession(
   session: CoachSession,
   speechRate = 1,
+  gender: VoiceGender = 'female',
 ): Promise<CoachRuntimeState> {
   const sessionId = Crypto.randomUUID();
   const startedAtEpochMillis = Date.now();
+  const voices = await availableVoices();
+  const voiceIdentifier = selectVoiceIdentifier(voices, gender);
+  const tuning = voiceTuning(session.typeId, gender, session.guidance, speechRate);
 
   if (nativeCoachAvailable()) {
     try {
@@ -104,7 +216,9 @@ export async function startCoachSession(
         session.countsAs,
         session.durationMinutes * 60,
         cueScheduleForNative(session),
-        speechRate,
+        tuning.rate,
+        voiceIdentifier ?? '',
+        tuning.pitch,
       );
       fallbackInUse = false;
       fallbackState = idleFallbackClock;
@@ -118,7 +232,7 @@ export async function startCoachSession(
     fallbackInUse = true;
   }
 
-  Speech.stop();
+  clearSpeechQueue();
   fallbackState = startFallbackClock({
     sessionId,
     definitionId: session.id,
@@ -128,7 +242,9 @@ export async function startCoachSession(
   }, startedAtEpochMillis);
   fallbackSession = session;
   fallbackCueIndex = 0;
-  fallbackSpeechRate = Math.min(1.1, Math.max(0.8, speechRate));
+  fallbackSpeechRate = tuning.rate;
+  fallbackSpeechPitch = tuning.pitch;
+  fallbackVoiceIdentifier = voiceIdentifier;
   scheduleFallbackCuePump();
   return runtimeFromFallback(fallbackState);
 }
@@ -138,7 +254,7 @@ export async function pauseCoachSession(): Promise<CoachRuntimeState> {
     await RunningbomCoachModule.pauseSession();
     return getCoachState();
   }
-  Speech.stop();
+  clearSpeechQueue();
   clearFallbackCueTimer();
   fallbackState = pauseFallbackClock(fallbackState, Date.now());
   return runtimeFromFallback(fallbackState);
@@ -159,7 +275,7 @@ export async function stopCoachSession(): Promise<CoachRuntimeState> {
     await RunningbomCoachModule.stopSession();
     return getCoachState();
   }
-  Speech.stop();
+  clearSpeechQueue();
   clearFallbackCueTimer();
   fallbackSession = undefined;
   fallbackState = stopFallbackClock(fallbackState, Date.now());

@@ -1,207 +1,317 @@
-// 러닝 방식별 전환 멘트와 기기 TTS 큐를 만드는 코칭 도메인 정본입니다.
+// 옆에서 쉴 새 없이 말해 주는 코치처럼, 촘촘하고 반복되지 않는 TTS 큐를 만드는 코칭 도메인 정본입니다.
 import type { ActivityKind } from '../activities/types';
+import {
+  buildPhases,
+  resolveRunningType,
+  runningTypes,
+  type CoachSessionKind,
+  type RunningTypeId,
+  type SessionPhase,
+} from './sessionTypes';
+import {
+  categoryRotation,
+  closingCues,
+  cuePoolFor,
+  openingCues,
+  phaseScripts,
+  progressLine,
+  type CueCategory,
+} from './cueLibrary';
 
-export const COACH_CONTENT_VERSION = '2026.07-v2';
+export const COACH_CONTENT_VERSION = '2026.07-v3-continuous';
+
+export type { CoachSessionKind, RunningTypeId, SessionPhase };
+export {
+  buildPhases,
+  legacyKindMap,
+  resolveRunningType,
+  runningTypeById,
+  runningTypes,
+  runningTypeCategories,
+  runningTypesByCategory,
+  type RunningTypeCategory,
+  type RunningTypeDefinition,
+  type PhaseKind,
+} from './sessionTypes';
+export type { CueCategory } from './cueLibrary';
 
 export type GuidanceLevel = 'minimal' | 'standard' | 'detailed';
-export type CoachSessionKind =
-  | '기본 지속주'
-  | '인터벌'
-  | '템포런'
-  | '롱런'
-  | '회복 걷기'
-  | '편안한 지속주'
-  | '걷고 달리기'
-  | '회복하며'
-  | '계속 달리기'
-  | '조금 빠르게'
-  | '러닝머신'
-  | '대회 전'
-  | '회복 루틴'
-  | '아침 깨우기'
-  | '걷기';
 
 export type CoachCue = {
   offsetSeconds: number;
   text: string;
-  kind: 'safety' | 'instruction' | 'phase' | 'encouragement' | 'completion';
+  kind: 'safety' | 'instruction' | 'phase' | 'encouragement' | 'completion' | 'progress';
+  category?: CueCategory;
+  phaseIndex?: number;
 };
 
 export type CoachSession = {
   id: string;
   title: CoachSessionKind;
+  typeId: RunningTypeId;
   durationMinutes: number;
   guidance: GuidanceLevel;
   countsAs: ActivityKind;
   summary: string;
+  phases: SessionPhase[];
   cues: CoachCue[];
 };
 
 export const recommendedSessionKinds: CoachSessionKind[] = [
-  '기본 지속주',
+  '이지런',
   '인터벌',
   '템포런',
   '롱런',
-  '회복 걷기',
+  '리커버리 워크',
 ];
 
-export const sessionSummaries: Record<CoachSessionKind, string> = {
+/** 안내 밀도별 평시 큐 간격(초)입니다. 평시 15~25초를 기준으로 촘촘하게 유지합니다. */
+export const guidanceIntervalSeconds: Record<GuidanceLevel, number> = {
+  minimal: 34,
+  standard: 20,
+  detailed: 12,
+};
+
+export const guidanceLabels: Record<GuidanceLevel, string> = {
+  minimal: '간단',
+  standard: '보통',
+  detailed: '자세히',
+};
+
+export const guidanceDescriptions: Record<GuidanceLevel, string> = {
+  minimal: '약 30~40초마다 한 마디',
+  standard: '약 18~25초마다 한 마디',
+  detailed: '약 10~15초마다 한 마디',
+};
+
+const legacySummaries: Partial<Record<CoachSessionKind, string>> = {
   '기본 지속주': '말은 할 수 있는 편안한 속도로 리듬을 쌓아요.',
+  '편안한 지속주': '이지런과 같은 편안한 지속주로 이어집니다.',
+  '계속 달리기': '이지런과 같은 편안한 지속주로 이어집니다.',
+  '조금 빠르게': '템포런으로 이어집니다.',
+  '걷고 달리기': '워크런으로 이어집니다.',
+  '회복하며': '리커버리 워크로 이어집니다.',
+  '회복 걷기': '가볍게 걸으며 다리의 긴장을 풀어 줘요.',
+  '대회 전': '피로를 남기지 않는 짧은 준비 러닝이에요.',
+};
+
+export const sessionSummaries: Record<CoachSessionKind, string> = {
+  '기본 지속주': legacySummaries['기본 지속주'] as string,
   인터벌: '빠르게 달리는 구간과 회복 구간을 번갈아 진행해요.',
   템포런: '조금 숨차지만 유지 가능한 집중 구간을 경험해요.',
   롱런: '속도를 욕심내지 않고 긴 시간을 안정적으로 가요.',
-  '회복 걷기': '가볍게 걸으며 다리의 긴장을 풀어 줘요.',
-  '편안한 지속주': '기본 지속주로 이어집니다.',
-  '걷고 달리기': '인터벌의 부드러운 입문 버전입니다.',
-  '회복하며': '회복 걷기로 이어집니다.',
-  '계속 달리기': '기본 지속주로 이어집니다.',
-  '조금 빠르게': '템포런으로 이어집니다.',
+  '회복 걷기': legacySummaries['회복 걷기'] as string,
+  '편안한 지속주': legacySummaries['편안한 지속주'] as string,
+  '걷고 달리기': legacySummaries['걷고 달리기'] as string,
+  '회복하며': legacySummaries['회복하며'] as string,
+  '계속 달리기': legacySummaries['계속 달리기'] as string,
+  '조금 빠르게': legacySummaries['조금 빠르게'] as string,
   러닝머신: '러닝머신에서 속도를 안전하게 조절해요.',
-  '대회 전': '피로를 남기지 않는 짧은 준비 러닝이에요.',
+  '대회 전': legacySummaries['대회 전'] as string,
   '회복 루틴': '관절과 호흡을 부드럽게 정리해요.',
   '아침 깨우기': '작은 움직임으로 몸을 천천히 깨워요.',
   걷기: '시선과 호흡을 편안하게 두고 걸어요.',
+  이지런: '말은 할 수 있는 편안한 속도로 리듬을 쌓아요.',
+  파틀렉: '자유롭게 빠르기를 바꾸며 달리는 변화 있는 러닝이에요.',
+  빌드업: '뒤로 갈수록 조금씩 속도를 올리며 마무리해요.',
+  '힐 리핏': '짧은 언덕을 반복하며 밀어내는 힘을 익혀요.',
+  스트라이드: '짧고 빠른 질주와 충분한 회복을 반복해요.',
+  '리커버리 워크': '가볍게 걸으며 다리의 긴장을 풀어 줘요.',
+  워크런: '달리기와 걷기를 번갈아 하며 부담 없이 이어가요.',
+  '대회 전 세이버': '피로를 남기지 않는 짧은 준비 러닝이에요.',
 };
 
-const cuePools: Record<CoachSessionKind, string[]> = {
-  '기본 지속주': [
-    '시선은 멀리 두고, 어깨 힘은 살짝 내려요.',
-    '발이 몸보다 너무 앞에 닿지 않게 가볍게 디뎌요.',
-    '팔은 앞뒤로 편하게 흔들고 손은 가볍게 쥐어요.',
-    '호흡이 거칠어지면 속도를 조금 낮춰도 충분해요.',
-    '골반을 세우고 상체는 길게 유지해 볼게요.',
-  ],
-  인터벌: [
-    '빠른 구간도 어깨를 올리지 말고 팔 리듬으로 이끌어요.',
-    '회복 구간에서는 숨을 고르고 보폭을 편하게 줄여요.',
-    '다음 빠른 구간을 위해 힘을 모두 쓰지 않고 남겨요.',
-    '발걸음은 짧고 가볍게, 상체는 앞으로 무너지지 않게 해요.',
-  ],
-  템포런: [
-    '조금 힘들어도 턱과 어깨에 힘이 들어가지 않게 해요.',
-    '발걸음을 세게 밀기보다 리듬을 일정하게 유지해요.',
-    '호흡이 무너지면 오늘은 편안한 속도로 돌아와도 괜찮아요.',
-    '팔꿈치를 뒤로 보내며 상체의 균형을 잡아 볼게요.',
-  ],
-  롱런: [
-    '긴 러닝일수록 처음 속도를 아껴 두는 것이 좋아요.',
-    '어깨와 손에 힘이 들어갔는지 가볍게 확인해요.',
-    '보폭을 무리하게 늘리지 말고 일정한 리듬을 지켜요.',
-    '물과 주변 상황을 확인하며 편안하게 이어가요.',
-  ],
-  '회복 걷기': [
-    '시선은 편안히 앞을 보고 팔을 자연스럽게 흔들어요.',
-    '발뒤꿈치부터 부드럽게 닿고 발끝으로 가볍게 밀어요.',
-    '숨을 길게 내쉬며 몸의 긴장을 조금 내려놔요.',
-  ],
-  '편안한 지속주': ['말할 수 있는 힘으로 가요.', '어깨 힘을 내려요.', '발걸음을 가볍게 이어가요.'],
-  '걷고 달리기': ['지금은 편하게 달려요.', '회복하며 걸어요.', '다시 움직일 준비를 해요.'],
-  '회복하며': ['속도보다 몸의 느낌을 살펴요.', '무리하지 말고 여유를 남겨요.'],
-  '계속 달리기': ['리듬을 유지해요.', '호흡과 움직임을 편하게 맞춰요.'],
-  '조금 빠르게': ['자세가 편한 선에서만 올려요.', '짧고 가벼운 발걸음을 유지해요.'],
-  러닝머신: ['벨트 중앙을 편안하게 유지해요.', '속도 변경 전 주변을 확인해요.'],
-  '대회 전': ['오늘은 여유를 남기는 러닝이에요.', '익숙한 장비로 가볍게 마쳐요.'],
-  '회복 루틴': ['통증이 느껴지면 바로 멈춰요.', '반동 없이 부드럽게 움직여요.'],
-  '아침 깨우기': ['작은 움직임부터 시작해요.', '목과 어깨를 부드럽게 풀어요.'],
-  걷기: ['시선은 편안하게 앞을 봐요.', '팔을 자연스럽게 흔들어요.'],
-};
+const knownKinds = new Set<string>(Object.keys(sessionSummaries));
 
-function countsAsFor(title: CoachSessionKind): ActivityKind {
-  if (title === '회복 루틴' || title === '아침 깨우기') return 'recovery';
-  if (title === '회복 걷기' || title === '걷기') return 'walk';
-  return 'run';
+export function isCoachSessionKind(value: string): value is CoachSessionKind {
+  return knownKinds.has(value);
 }
 
-function detailInterval(guidance: GuidanceLevel): number {
-  if (guidance === 'minimal') return 300;
-  if (guidance === 'detailed') return 110;
-  return 160;
-}
-
-function addIntervalPhases(cues: CoachCue[], durationSeconds: number) {
-  const work = 300;
-  const recovery = 60;
-  let startsWithWork = true;
-  for (let offset = 0; offset < durationSeconds - 30; offset += startsWithWork ? work : recovery) {
-    const isWork = startsWithWork;
-    if (offset > 0) {
-      cues.push({
-        offsetSeconds: offset,
-        text: isWork ? '빠른 구간을 시작해요. 팔 리듬을 유지해 볼게요.' : '이제 회복하며 걸어요. 호흡을 고르세요.',
-        kind: 'phase',
-      });
-    }
-    const next = offset + (isWork ? work : recovery);
-    if (isWork && next + 10 < durationSeconds) {
-      cues.push({
-        offsetSeconds: next - 10,
-        text: '10초 뒤 회복 구간이에요. 속도를 부드럽게 낮출 준비를 해요.',
-        kind: 'phase',
-      });
-    }
-    if (!isWork && next + 10 < durationSeconds) {
-      cues.push({
-        offsetSeconds: next - 10,
-        text: '10초 뒤 다시 달려요. 상체를 세우고 가볍게 출발해요.',
-        kind: 'phase',
-      });
-    }
-    startsWithWork = !startsWithWork;
+function hashSeed(value: string): number {
+  let hash = 2_166_136_261;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16_777_619);
   }
+  return hash >>> 0;
+}
+
+function createRandom(seed: number): () => number {
+  let state = seed || 1;
+  return () => {
+    state |= 0;
+    state = (state + 0x6d2b79f5) | 0;
+    let result = Math.imul(state ^ (state >>> 15), 1 | state);
+    result = (result + Math.imul(result ^ (result >>> 7), 61 | result)) ^ result;
+    return ((result ^ (result >>> 14)) >>> 0) / 4_294_967_296;
+  };
+}
+
+const MAX_COOLDOWN = 12;
+
+/** 최근에 쓴 문장을 피해 가며 큐를 고릅니다. 연속·근접 반복을 막습니다. */
+function pickWithCooldown(
+  pool: string[],
+  recent: string[],
+  random: () => number,
+): string {
+  if (pool.length === 0) return '';
+  for (
+    let window = Math.min(MAX_COOLDOWN, pool.length - 1);
+    window >= 0;
+    window -= 1
+  ) {
+    const blocked = new Set(recent.slice(-window));
+    const candidates = pool.filter((text) => !blocked.has(text));
+    if (candidates.length > 0) {
+      return candidates[Math.floor(random() * candidates.length) % candidates.length];
+    }
+  }
+  return pool[Math.floor(random() * pool.length) % pool.length];
+}
+
+type CueSlot = {
+  offsetSeconds: number;
+  priority: number;
+  build: (recent: string[], random: () => number) => CoachCue;
+};
+
+function phaseSlot(
+  offsetSeconds: number,
+  phase: SessionPhase,
+  step: keyof typeof phaseScripts.warmup,
+  priority: number,
+): CueSlot {
+  return {
+    offsetSeconds,
+    priority,
+    build: (recent, random) => ({
+      offsetSeconds,
+      text: pickWithCooldown(phaseScripts[phase.kind][step], recent, random),
+      kind: 'phase',
+      phaseIndex: phase.index,
+    }),
+  };
 }
 
 export function createCoachSession(
-  title: CoachSessionKind,
+  kind: CoachSessionKind | RunningTypeId | string,
   durationMinutes: number,
   guidance: GuidanceLevel = 'standard',
 ): CoachSession {
+  const type = resolveRunningType(kind);
+  const title: CoachSessionKind = isCoachSessionKind(kind) ? kind : type.title;
   const safeDuration = Math.min(120, Math.max(10, Math.round(durationMinutes)));
   const durationSeconds = safeDuration * 60;
-  const cues: CoachCue[] = [{
+  const phases = buildPhases(type.id, durationSeconds);
+  const interval = guidanceIntervalSeconds[guidance];
+  const minGap = Math.max(5, Math.min(7, Math.floor(interval / 2)));
+  const random = createRandom(hashSeed(`${type.id}:${safeDuration}:${guidance}:${COACH_CONTENT_VERSION}`));
+
+  const slots: CueSlot[] = [];
+
+  slots.push({
     offsetSeconds: 0,
-    text: '주변을 확인하고 시작해요. 불편하거나 아프면 바로 속도를 낮추거나 멈춰요.',
-    kind: 'safety',
-  }];
-  const pool = cuePools[title];
-
-  if (title === '인터벌' || title === '걷고 달리기') addIntervalPhases(cues, durationSeconds);
-
-  let poolIndex = 0;
-  const interval = detailInterval(guidance);
-  for (let offset = Math.max(95, interval); offset < durationSeconds - 45; offset += interval) {
-    if (cues.some((cue) => Math.abs(cue.offsetSeconds - offset) < 25)) continue;
-    cues.push({
-      offsetSeconds: offset,
-      text: pool[poolIndex % pool.length],
-      kind: poolIndex % 3 === 2 ? 'encouragement' : 'instruction',
-    });
-    poolIndex += 1;
-  }
-
-  if (durationSeconds >= 600) {
-    cues.push({
-      offsetSeconds: Math.floor(durationSeconds / 2),
-      text: '지금까지 잘 이어왔어요. 몸이 불편하면 속도를 낮추고, 괜찮다면 같은 리듬을 유지해요.',
-      kind: 'safety',
-    });
-  }
-  cues.push({
-    offsetSeconds: Math.max(1, durationSeconds - 5),
-    text: '오늘의 움직임을 마쳤어요. 바로 멈추지 말고 천천히 걸으며 호흡을 정리해요.',
-    kind: 'completion',
+    priority: 100,
+    build: () => ({ offsetSeconds: 0, text: openingCues[0], kind: 'safety' }),
   });
-  const deduped = cues
-    .sort((left, right) => left.offsetSeconds - right.offsetSeconds)
-    .filter((cue, index, values) => index === 0 || cue.offsetSeconds !== values[index - 1].offsetSeconds);
+
+  // 1) 구간 전환 3단 안내: 10초 전 예고 → 전환 시점 → 전환 직후 자리잡기
+  for (const phase of phases) {
+    const length = phase.endSeconds - phase.startSeconds;
+    const startAt = phase.index === 0 ? Math.min(6, Math.max(4, length - 2)) : phase.startSeconds;
+    if (phase.index > 0 && phase.startSeconds >= 20) {
+      slots.push(phaseSlot(phase.startSeconds - 10, phase, 'pre', 90));
+    }
+    slots.push(phaseSlot(startAt, phase, 'start', 95));
+    if (length >= 30 && startAt + 10 < phase.endSeconds - 5) {
+      slots.push(phaseSlot(startAt + 10, phase, 'settle', 80));
+    }
+  }
+
+  // 2) 경과·남은 시간 진행 안내
+  const progressOffsets = new Set<number>();
+  for (let offset = 300; offset < durationSeconds - 60; offset += 300) {
+    progressOffsets.add(offset);
+  }
+  for (const ratio of [0.25, 0.5, 0.75]) {
+    const offset = Math.round(durationSeconds * ratio);
+    if (offset > 60 && offset < durationSeconds - 60) progressOffsets.add(offset);
+  }
+  for (const offset of progressOffsets) {
+    slots.push({
+      offsetSeconds: offset,
+      priority: 70,
+      build: () => ({
+        offsetSeconds: offset,
+        text: progressLine(offset, durationSeconds),
+        kind: 'progress',
+      }),
+    });
+  }
+
+  // 3) 평시 큐: 카테고리를 로테이션하며 촘촘하게 채웁니다.
+  const rotation = categoryRotation[type.id];
+  let rotationIndex = 0;
+  for (let offset = interval; offset < durationSeconds - 20; offset += interval) {
+    const category: CueCategory = rotation[rotationIndex % rotation.length];
+    rotationIndex += 1;
+    const pool = cuePoolFor(type.id, category);
+    const at = offset;
+    slots.push({
+      offsetSeconds: at,
+      priority: 10,
+      build: (recent, rng) => ({
+        offsetSeconds: at,
+        text: pickWithCooldown(pool, recent, rng),
+        kind:
+          category === 'safety'
+            ? 'safety'
+            : category === 'encouragement'
+              ? 'encouragement'
+              : 'instruction',
+        category,
+      }),
+    });
+  }
+
+  const closingOffset = Math.max(1, durationSeconds - 6);
+  slots.push({
+    offsetSeconds: closingOffset,
+    priority: 100,
+    build: () => ({ offsetSeconds: closingOffset, text: closingCues[0], kind: 'completion' }),
+  });
+
+  // 우선순위가 높은 큐를 먼저 확보하고, 너무 가까운 낮은 우선순위 큐는 버립니다.
+  const kept: CueSlot[] = [];
+  const ordered = [...slots].sort(
+    (left, right) => right.priority - left.priority || left.offsetSeconds - right.offsetSeconds,
+  );
+  for (const slot of ordered) {
+    const gap = slot.priority >= 70 ? 5 : minGap;
+    if (kept.some((other) => Math.abs(other.offsetSeconds - slot.offsetSeconds) < gap)) continue;
+    kept.push(slot);
+  }
+
+  const recent: string[] = [];
+  const cues: CoachCue[] = [];
+  for (const slot of kept.sort((left, right) => left.offsetSeconds - right.offsetSeconds)) {
+    const cue = slot.build(recent, random);
+    if (!cue.text) continue;
+    cues.push(cue);
+    recent.push(cue.text);
+  }
 
   return {
     id: `${title}:${safeDuration}:${guidance}:${COACH_CONTENT_VERSION}`,
     title,
+    typeId: type.id,
     durationMinutes: safeDuration,
     guidance,
-    countsAs: countsAsFor(title),
+    countsAs: type.countsAs,
     summary: sessionSummaries[title],
-    cues: deduped,
+    phases,
+    cues,
   };
 }
 
@@ -211,10 +321,67 @@ export function cueScheduleForNative(session: CoachSession): string {
     .join('\n');
 }
 
+/** 분당 몇 개의 코치 멘트가 나오는지입니다. 연속 코칭의 핵심 지표예요. */
+export function cueDensityPerMinute(session: CoachSession): number {
+  if (session.durationMinutes <= 0) return 0;
+  return session.cues.length / session.durationMinutes;
+}
+
+/** 말하기에 쓰일 것으로 추정되는 총 시간(초)입니다. */
+export function estimatedSpokenSeconds(session: CoachSession): number {
+  return session.cues.reduce((total, cue) => total + Math.max(2, cue.text.length / 5.5), 0);
+}
+
+/**
+ * 세션에서 말이 없는 시간의 비율입니다.
+ * 연속 코칭 기준에서는 0.35~0.85 사이가 정상 범위로, 완전한 침묵도 쉼 없는 소음도 아닙니다.
+ */
 export function cueSilenceRatio(session: CoachSession): number {
-  const estimatedSpokenSeconds = session.cues.reduce(
-    (total, cue) => total + Math.max(2, cue.text.length / 4.5),
-    0,
+  return Math.max(0, 1 - estimatedSpokenSeconds(session) / (session.durationMinutes * 60));
+}
+
+/** 모든 유형이 최소 밀도 기준을 만족하는지 확인할 때 쓰는 임계값입니다. */
+export const minimumCueDensityPerMinute = 2.5;
+
+export function currentPhase(
+  session: CoachSession,
+  elapsedSeconds: number,
+): SessionPhase | undefined {
+  return (
+    session.phases.find(
+      (phase) => elapsedSeconds >= phase.startSeconds && elapsedSeconds < phase.endSeconds,
+    ) ?? session.phases[session.phases.length - 1]
   );
-  return Math.max(0, 1 - estimatedSpokenSeconds / (session.durationMinutes * 60));
+}
+
+export function nextPhase(
+  session: CoachSession,
+  elapsedSeconds: number,
+): SessionPhase | undefined {
+  return session.phases.find((phase) => phase.startSeconds > elapsedSeconds);
+}
+
+export function recentCues(
+  session: CoachSession,
+  elapsedSeconds: number,
+  limit = 3,
+): CoachCue[] {
+  const spoken = session.cues.filter((cue) => cue.offsetSeconds <= elapsedSeconds);
+  return spoken.slice(Math.max(0, spoken.length - limit)).reverse();
+}
+
+/** 유형 목록을 밀도와 함께 요약합니다(검증·문서용). */
+export function cueDensityReport(
+  durationMinutes = 30,
+  guidance: GuidanceLevel = 'standard',
+): { id: RunningTypeId; title: CoachSessionKind; density: number; cues: number }[] {
+  return runningTypes.map((type) => {
+    const session = createCoachSession(type.id, Math.min(type.maxMinutes, durationMinutes), guidance);
+    return {
+      id: type.id,
+      title: session.title,
+      density: Number(cueDensityPerMinute(session).toFixed(2)),
+      cues: session.cues.length,
+    };
+  });
 }

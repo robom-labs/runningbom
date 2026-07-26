@@ -46,6 +46,8 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
     const val EXTRA_DURATION_SECONDS = "durationSeconds"
     const val EXTRA_CUE_SCHEDULE = "cueSchedule"
     const val EXTRA_SPEECH_RATE = "speechRate"
+    const val EXTRA_VOICE_ID = "voiceId"
+    const val EXTRA_PITCH = "pitch"
 
     const val PREFERENCES = "runningbom-coach-state"
     private const val CHANNEL_ID = "runningbom-coach"
@@ -66,6 +68,8 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
   private var countsAs = "run"
   private var durationSeconds = 0
   private var speechRate = 1f
+  private var speechPitch = 1f
+  private var preferredVoiceId = ""
   private var cues: List<CoachCue> = emptyList()
   private var nextCueIndex = 0
   private var elapsedBeforeRunMillis = 0L
@@ -172,7 +176,9 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
       ?.takeIf { it == "run" || it == "walk" || it == "recovery" }
       ?: "run"
     durationSeconds = intent.getIntExtra(EXTRA_DURATION_SECONDS, 0).coerceAtLeast(1)
-    speechRate = intent.getFloatExtra(EXTRA_SPEECH_RATE, 1f).coerceIn(0.7f, 1.2f)
+    speechRate = intent.getFloatExtra(EXTRA_SPEECH_RATE, 1f).coerceIn(0.7f, 1.3f)
+    speechPitch = intent.getFloatExtra(EXTRA_PITCH, 1f).coerceIn(0.8f, 1.3f)
+    preferredVoiceId = intent.getStringExtra(EXTRA_VOICE_ID).orEmpty()
     cues = parseCueSchedule(intent.getStringExtra(EXTRA_CUE_SCHEDULE).orEmpty())
     nextCueIndex = 0
     elapsedBeforeRunMillis = 0L
@@ -184,7 +190,9 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
     pausedByAudioFocus = false
 
     requestAudioFocus()
+    selectBestInstalledKoreanVoice()
     textToSpeech?.setSpeechRate(speechRate)
+    textToSpeech?.setPitch(speechPitch)
     textToSpeech?.playSilentUtterance(150L, TextToSpeech.QUEUE_FLUSH, "runningbom-prime")
     persistState("running", 0)
     updateMediaSession(0)
@@ -279,6 +287,7 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
       result != TextToSpeech.LANG_NOT_SUPPORTED
     selectBestInstalledKoreanVoice()
     textToSpeech?.setSpeechRate(speechRate)
+    textToSpeech?.setPitch(speechPitch)
     textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
       override fun onStart(utteranceId: String?) {
         persistCheckpoint(utteranceId, "speaking")
@@ -298,16 +307,27 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
 
   private fun selectBestInstalledKoreanVoice() {
     val engine = textToSpeech ?: return
-    val candidate = engine.voices
-      ?.asSequence()
+    val korean = engine.voices
       ?.filter { voice -> voice.locale.language == Locale.KOREAN.language }
-      ?.filter { voice -> !voice.isNetworkConnectionRequired }
-      ?.sortedWith(
+      ?: return
+    if (korean.isEmpty()) return
+
+    // JavaScript에서 고른 성별 음성이 실제로 설치되어 있으면 그것을 우선합니다.
+    val requested = korean.firstOrNull { voice -> voice.name == preferredVoiceId }
+    if (requested != null) {
+      engine.voice = requested
+      return
+    }
+
+    val candidate = korean
+      .asSequence()
+      .filter { voice -> !voice.isNetworkConnectionRequired }
+      .sortedWith(
         compareByDescending<Voice> { voice -> voice.quality }
           .thenBy { voice -> voice.latency },
       )
-      ?.firstOrNull()
-    if (candidate != null) engine.voice = candidate
+      .firstOrNull() ?: korean.first()
+    engine.voice = candidate
   }
 
   private fun requestAudioFocus() {

@@ -144,6 +144,50 @@ export function Metric({ label, value, accent = false, style, valueStyle }: Metr
   );
 }
 
+type ProgressBarProps = {
+  ratio: number;
+  label?: string;
+  tone?: 'accent' | 'positive';
+};
+
+export function ProgressBar({ ratio, label, tone = 'accent' }: ProgressBarProps) {
+  const clamped = Math.max(0, Math.min(1, Number.isFinite(ratio) ? ratio : 0));
+  return (
+    <View style={styles.progressWrap}>
+      <View
+        accessibilityLabel={label ?? `진행률 ${Math.round(clamped * 100)}퍼센트`}
+        accessibilityRole="progressbar"
+        style={styles.progressTrack}
+      >
+        <View
+          style={[
+            styles.progressFill,
+            { width: `${Math.round(clamped * 100)}%` },
+            tone === 'positive' && styles.progressFillPositive,
+          ]}
+        />
+      </View>
+      {label ? <Text style={styles.progressLabel}>{label}</Text> : null}
+    </View>
+  );
+}
+
+type BannerProps = {
+  title: string;
+  body?: string;
+  tone?: 'info' | 'warning' | 'positive';
+};
+
+// 준비 중·읽기 전용처럼 지금 상태를 있는 그대로 알리는 안내 배너입니다.
+export function Banner({ title, body, tone = 'info' }: BannerProps) {
+  return (
+    <View accessibilityLiveRegion="polite" style={[styles.banner, bannerTone[tone]]}>
+      <Text style={[styles.bannerTitle, bannerLabelTone[tone]]}>{title}</Text>
+      {body ? <Text style={styles.bannerBody}>{body}</Text> : null}
+    </View>
+  );
+}
+
 export function Wordmark({ compact = false }: { compact?: boolean }) {
   return (
     <Text
@@ -175,6 +219,18 @@ const chipTone = StyleSheet.create({
   accent: { backgroundColor: palette.accentSoft },
   positive: { backgroundColor: palette.positiveSoft },
   warning: { backgroundColor: palette.warningSoft },
+});
+
+const bannerTone = StyleSheet.create({
+  info: { backgroundColor: palette.surfaceMuted },
+  warning: { backgroundColor: palette.warningSoft },
+  positive: { backgroundColor: palette.positiveSoft },
+});
+
+const bannerLabelTone = StyleSheet.create({
+  info: { color: palette.ink },
+  warning: { color: palette.warning },
+  positive: { color: palette.positive },
 });
 
 const chipLabelTone = StyleSheet.create({
@@ -271,6 +327,42 @@ const styles = StyleSheet.create({
     color: palette.muted,
     fontSize: typeScale.caption,
     fontWeight: '600',
+  },
+  progressWrap: {
+    gap: 6,
+  },
+  progressTrack: {
+    height: 10,
+    borderRadius: radius.pill,
+    backgroundColor: palette.surfaceMuted,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: radius.pill,
+    backgroundColor: palette.accent,
+  },
+  progressFillPositive: {
+    backgroundColor: palette.positive,
+  },
+  progressLabel: {
+    color: palette.inkSoft,
+    fontSize: typeScale.caption,
+    fontWeight: '800',
+  },
+  banner: {
+    borderRadius: radius.md,
+    padding: spacing.sm,
+    gap: 4,
+  },
+  bannerTitle: {
+    fontSize: typeScale.bodySmall,
+    fontWeight: '900',
+  },
+  bannerBody: {
+    color: palette.inkSoft,
+    fontSize: typeScale.caption,
+    lineHeight: 18,
   },
   wordmark: {
     color: palette.ink,

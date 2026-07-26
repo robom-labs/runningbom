@@ -23,7 +23,9 @@ class RunningbomCoachModule : Module() {
       countsAs: String,
       durationSeconds: Int,
       cueSchedule: String,
-      speechRate: Double ->
+      speechRate: Double,
+      voiceId: String,
+      pitch: Double ->
       val context = requireContext()
       val intent = Intent(context, RunningbomCoachService::class.java).apply {
         action = RunningbomCoachService.ACTION_START
@@ -34,6 +36,8 @@ class RunningbomCoachModule : Module() {
         putExtra(RunningbomCoachService.EXTRA_DURATION_SECONDS, durationSeconds)
         putExtra(RunningbomCoachService.EXTRA_CUE_SCHEDULE, cueSchedule)
         putExtra(RunningbomCoachService.EXTRA_SPEECH_RATE, speechRate.toFloat())
+        putExtra(RunningbomCoachService.EXTRA_VOICE_ID, voiceId)
+        putExtra(RunningbomCoachService.EXTRA_PITCH, pitch.toFloat())
       }
       ContextCompat.startForegroundService(context, intent)
     }

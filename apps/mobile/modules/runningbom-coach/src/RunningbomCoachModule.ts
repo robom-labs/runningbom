@@ -13,6 +13,8 @@ declare class RunningbomCoachModule extends NativeModule {
     durationSeconds: number,
     cueSchedule: string,
     speechRate: number,
+    voiceId: string,
+    pitch: number,
   ): Promise<void>;
   pauseSession(): Promise<void>;
   resumeSession(): Promise<void>;

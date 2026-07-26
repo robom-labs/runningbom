@@ -1,145 +1,161 @@
-// 다섯 핵심 탭을 휴대전화 하단과 태블릿 왼쪽 레일로 전환합니다.
-import { Ionicons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {
-  createNavigationContainerRef,
-  NavigationContainer,
-} from '@react-navigation/native';
+// 하단 탭 대신 좌상단 드로어로 화면을 전환하는 러닝봄의 단일 셸입니다.
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useWindowDimensions } from 'react-native';
+import { BackHandler, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { CalendarScreen } from '../screens/calendar/CalendarScreen';
 import { CommunityScreen } from '../screens/community/CommunityScreen';
-import { ExploreScreen } from '../screens/explore/ExploreScreen';
+import { HelpScreen } from '../screens/help/HelpScreen';
 import { HomeScreen } from '../screens/home/HomeScreen';
 import { MyScreen } from '../screens/my/MyScreen';
+import { ProfileScreen } from '../screens/profile/ProfileScreen';
+import { RacesScreen } from '../screens/explore/RacesScreen';
+import { SettingsScreen } from '../screens/settings/SettingsScreen';
+import { ShoesScreen } from '../screens/explore/ShoesScreen';
 import { StartScreen } from '../screens/start/StartScreen';
-import { appTheme, palette } from '../design-system/theme';
+import { palette } from '../design-system/theme';
 import { useAppState } from '../state/AppStateProvider';
+import { currentWeekStart, formatDistance, totalsForWeek } from '../../domains/activities/summary';
 import { raceIdFromDeepLink } from '../../src/races';
-import type { ExploreRequest, ExploreSection } from './types';
-
-export type MainTabParamList = {
-  홈: undefined;
-  탐색: undefined;
-  시작: undefined;
-  커뮤니티: undefined;
-  마이: undefined;
-};
-
-const Tab = createBottomTabNavigator<MainTabParamList>();
-const navigationRef = createNavigationContainerRef<MainTabParamList>();
-
-const iconNames: Record<keyof MainTabParamList, { active: keyof typeof Ionicons.glyphMap; inactive: keyof typeof Ionicons.glyphMap }> = {
-  홈: { active: 'home', inactive: 'home-outline' },
-  탐색: { active: 'compass', inactive: 'compass-outline' },
-  시작: { active: 'play-circle', inactive: 'play-circle-outline' },
-  커뮤니티: { active: 'people', inactive: 'people-outline' },
-  마이: { active: 'person', inactive: 'person-outline' },
-};
+import { AppHeader } from './AppHeader';
+import { DrawerMenu } from './DrawerMenu';
+import { routeFromStoredValue, routeTitles } from './routes';
+import type { RouteKey } from './types';
 
 export function AppNavigator() {
-  const { width } = useWindowDimensions();
-  const { preferences, updatePreferences } = useAppState();
-  const [exploreRequest, setExploreRequest] = useState<ExploreRequest>();
-  const pendingExploreRef = useRef<ExploreRequest | undefined>(undefined);
-  const requestNonceRef = useRef(0);
-  const initialUrl = Linking.useLinkingURL();
-  const isTablet = width >= 768;
+  const { preferences, updatePreferences, activities, streak, ready } = useAppState();
+  const [route, setRoute] = useState<RouteKey>(() => routeFromStoredValue(preferences.lastTab));
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [focusedRaceId, setFocusedRaceId] = useState<string>();
+  const [focusedShoeId, setFocusedShoeId] = useState<string>();
+  const restoredRef = useRef(false);
 
-  const openExplore = useCallback(
-    (section: ExploreSection, options: { raceId?: string; shoeId?: string } = {}) => {
-      requestNonceRef.current += 1;
-      const request: ExploreRequest = {
-        section,
-        ...options,
-        nonce: requestNonceRef.current,
-      };
-      pendingExploreRef.current = request;
-      setExploreRequest(request);
-      if (navigationRef.isReady()) navigationRef.navigate('탐색');
+  // 첫 로딩이 끝나면 마지막으로 보던 화면을 복원합니다.
+  useEffect(() => {
+    if (!ready || restoredRef.current) return;
+    restoredRef.current = true;
+    setRoute(routeFromStoredValue(preferences.lastTab));
+  }, [preferences.lastTab, ready]);
+
+  const navigate = useCallback(
+    (next: RouteKey) => {
+      setRoute(next);
+      setDrawerOpen(false);
+      restoredRef.current = true;
+      void updatePreferences({ lastTab: next });
     },
-    [],
+    [updatePreferences],
   );
 
+  const openRace = useCallback(
+    (raceId?: string) => {
+      setFocusedRaceId(raceId);
+      navigate('races');
+    },
+    [navigate],
+  );
+
+  const openShoe = useCallback(
+    (shoeId?: string) => {
+      setFocusedShoeId(shoeId);
+      navigate('shoes');
+    },
+    [navigate],
+  );
+
+  const initialUrl = Linking.useLinkingURL();
   useEffect(() => {
     if (!initialUrl) return;
     const raceId = raceIdFromDeepLink(initialUrl);
-    if (raceId) openExplore('대회', { raceId });
-  }, [initialUrl, openExplore]);
+    if (raceId) openRace(raceId);
+  }, [initialUrl, openRace]);
 
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener((response) => {
       const raceId = response.notification.request.content.data?.raceId;
-      if (typeof raceId === 'string') openExplore('대회', { raceId });
+      if (typeof raceId === 'string') openRace(raceId);
     });
     void Notifications.getLastNotificationResponseAsync().then((response) => {
       const raceId = response?.notification.request.content.data?.raceId;
-      if (typeof raceId === 'string') openExplore('대회', { raceId });
+      if (typeof raceId === 'string') openRace(raceId);
     });
     return () => subscription.remove();
-  }, [openExplore]);
+  }, [openRace]);
 
-  const initialRoute = useMemo<keyof MainTabParamList>(() => {
-    return preferences.lastTab in iconNames
-      ? (preferences.lastTab as keyof MainTabParamList)
-      : '홈';
-  }, [preferences.lastTab]);
+  // 안드로이드 백버튼: 드로어가 열려 있으면 닫고, 홈이 아니면 홈으로 돌아갑니다.
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (drawerOpen) {
+        setDrawerOpen(false);
+        return true;
+      }
+      if (route !== 'home') {
+        navigate('home');
+        return true;
+      }
+      return false;
+    });
+    return () => subscription.remove();
+  }, [drawerOpen, navigate, route]);
+
+  const weekSummary = useMemo(() => {
+    const totals = totalsForWeek(activities, currentWeekStart());
+    if (totals.sessions === 0) return '이번 주 기록이 아직 없어요';
+    const distance = totals.distanceKm > 0 ? ` · ${formatDistance(totals.distanceKm)}` : '';
+    return `이번 주 ${totals.sessions}회 · ${totals.minutes}분${distance}`;
+  }, [activities]);
+
+  const screen = useMemo(() => {
+    switch (route) {
+      case 'start':
+        return <StartScreen />;
+      case 'calendar':
+        return <CalendarScreen />;
+      case 'races':
+        return <RacesScreen focusedRaceId={focusedRaceId} />;
+      case 'shoes':
+        return <ShoesScreen focusedShoeId={focusedShoeId} />;
+      case 'community':
+        return <CommunityScreen />;
+      case 'stats':
+        return <MyScreen onOpenCalendar={() => navigate('calendar')} />;
+      case 'profile':
+        return <ProfileScreen onOpenSettings={() => navigate('settings')} />;
+      case 'settings':
+        return <SettingsScreen onOpenProfile={() => navigate('profile')} />;
+      case 'help':
+        return <HelpScreen />;
+      default:
+        return (
+          <HomeScreen
+            onNavigate={navigate}
+            onOpenRace={(raceId) => openRace(raceId)}
+            onOpenShoe={(shoeId) => openShoe(shoeId)}
+          />
+        );
+    }
+  }, [focusedRaceId, focusedShoeId, navigate, openRace, openShoe, route]);
 
   return (
-    <NavigationContainer
-      ref={navigationRef}
-      onReady={() => {
-        if (pendingExploreRef.current) navigationRef.navigate('탐색');
-      }}
-      theme={appTheme}
-    >
-      <Tab.Navigator
-        initialRouteName={initialRoute}
-        screenListeners={{
-          state: (event) => {
-            const state = event.data.state;
-            const route = state.routes[state.index];
-            if (route?.name) void updatePreferences({ lastTab: route.name });
-          },
-        }}
-        screenOptions={({ route }) => ({
-          headerShown: false,
-          tabBarActiveTintColor: palette.accentDark,
-          tabBarInactiveTintColor: palette.muted,
-          tabBarLabelStyle: { fontSize: 12, fontWeight: '800' },
-          tabBarStyle: isTablet
-            ? { width: 112, backgroundColor: palette.surface, borderRightColor: palette.line }
-            : { minHeight: 72, paddingTop: 8, paddingBottom: 10, backgroundColor: palette.surface, borderTopColor: palette.line },
-          tabBarItemStyle: route.name === '시작' ? { backgroundColor: palette.accentSoft, borderRadius: 18, margin: 4 } : undefined,
-          tabBarPosition: isTablet ? 'left' : 'bottom',
-          tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons
-              color={color}
-              name={focused ? iconNames[route.name].active : iconNames[route.name].inactive}
-              size={route.name === '시작' ? size + 2 : size}
-            />
-          ),
-        })}
-      >
-        <Tab.Screen name="홈">
-          {({ navigation }) => (
-            <HomeScreen
-              onCommunity={() => navigation.navigate('커뮤니티')}
-              onExplore={(section, options) => openExplore(section, options)}
-              onProgress={() => navigation.navigate('마이')}
-              onStart={() => navigation.navigate('시작')}
-            />
-          )}
-        </Tab.Screen>
-        <Tab.Screen name="탐색">
-          {() => <ExploreScreen request={exploreRequest} />}
-        </Tab.Screen>
-        <Tab.Screen name="시작" component={StartScreen} />
-        <Tab.Screen name="커뮤니티" component={CommunityScreen} />
-        <Tab.Screen name="마이" component={MyScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <SafeAreaView edges={['top']} style={styles.root}>
+      <AppHeader onMenu={() => setDrawerOpen(true)} title={routeTitles[route]} />
+      <View style={styles.body}>{screen}</View>
+      <DrawerMenu
+        activeRoute={route}
+        nickname={preferences.nickname}
+        onClose={() => setDrawerOpen(false)}
+        onSelect={navigate}
+        summary={weekSummary}
+        tier={streak.tier}
+        visible={drawerOpen}
+      />
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: palette.canvas },
+  body: { flex: 1 },
+});

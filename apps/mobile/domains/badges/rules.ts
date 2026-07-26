@@ -2,34 +2,80 @@
 import type { ActivityRecord } from '../activities/types';
 import { activityCountsAsMovement } from '../activities/types';
 
-export const BADGE_RULE_VERSION = '2026.07-v1';
+export const BADGE_RULE_VERSION = '2026.07-v2';
+
+export type BadgeCategory =
+  | 'first'
+  | 'streak'
+  | 'consistency'
+  | 'distance'
+  | 'duration'
+  | 'timeOfDay'
+  | 'recovery'
+  | 'race'
+  | 'community';
+
+export const badgeCategoryOrder: BadgeCategory[] = [
+  'first',
+  'streak',
+  'consistency',
+  'distance',
+  'duration',
+  'timeOfDay',
+  'recovery',
+  'race',
+  'community',
+];
+
+export const badgeCategoryLabels: Record<BadgeCategory, string> = {
+  first: '첫 경험',
+  streak: '연속성',
+  consistency: '꾸준함',
+  distance: '거리',
+  duration: '시간',
+  timeOfDay: '시간대',
+  recovery: '회복',
+  race: '대회',
+  community: '커뮤니티',
+};
+
+export type BadgeMetric =
+  | 'coach_count'
+  | 'movement_streak'
+  | 'weekly_run_weeks'
+  | 'run_count'
+  | 'run_distance'
+  | 'ten_k_count'
+  | 'total_distance'
+  | 'total_minutes'
+  | 'morning_run_count'
+  | 'night_run_count'
+  | 'recovery_count'
+  | 'interval_count'
+  | 'race_interest'
+  | 'server_event';
 
 export type BadgeDefinition = {
   id: string;
   title: string;
   description: string;
   threshold: number;
-  metric:
-    | 'coach_count'
-    | 'movement_streak'
-    | 'weekly_run_weeks'
-    | 'run_count'
-    | 'run_distance'
-    | 'ten_k_count'
-    | 'server_event';
+  metric: BadgeMetric;
   authority: 'local' | 'server';
+  category: BadgeCategory;
 };
 
 export const badgeDefinitions: BadgeDefinition[] = [
-  { id: 'first-coach', title: '첫 코칭', description: '첫 코칭 세션을 마쳤어요.', threshold: 1, metric: 'coach_count', authority: 'local' },
-  { id: 'first-run', title: '첫 러닝', description: '첫 러닝을 기록했어요.', threshold: 1, metric: 'run_count', authority: 'local' },
-  { id: 'distance-3k', title: '첫 3K', description: '한 번에 3km를 기록했어요.', threshold: 3, metric: 'run_distance', authority: 'local' },
-  { id: 'distance-5k', title: '첫 5K', description: '한 번에 5km를 기록했어요.', threshold: 5, metric: 'run_distance', authority: 'local' },
-  { id: 'distance-10k', title: '첫 10K', description: '한 번에 10km를 기록했어요.', threshold: 10, metric: 'run_distance', authority: 'local' },
-  { id: 'first-race-goal', title: '첫 대회 목표', description: '첫 대회 목표를 공개했어요.', threshold: 1, metric: 'server_event', authority: 'server' },
-  { id: 'first-crew', title: '첫 크루', description: '첫 크루 활동을 시작했어요.', threshold: 1, metric: 'server_event', authority: 'server' },
-  { id: 'first-post', title: '첫 글', description: '첫 활동글을 직접 게시했어요.', threshold: 1, metric: 'server_event', authority: 'server' },
-  { id: 'first-cheer', title: '첫 응원', description: '처음으로 다른 러너를 응원했어요.', threshold: 1, metric: 'server_event', authority: 'server' },
+  { id: 'first-coach', title: '첫 코칭', description: '첫 코칭 세션을 마쳤어요.', threshold: 1, metric: 'coach_count', authority: 'local', category: 'first' },
+  { id: 'first-run', title: '첫 러닝', description: '첫 러닝을 기록했어요.', threshold: 1, metric: 'run_count', authority: 'local', category: 'first' },
+  { id: 'first-interval', title: '첫 인터벌', description: '인터벌 코칭을 한 번 마쳤어요.', threshold: 1, metric: 'interval_count', authority: 'local', category: 'first' },
+  { id: 'distance-3k', title: '첫 3K', description: '한 번에 3km를 기록했어요.', threshold: 3, metric: 'run_distance', authority: 'local', category: 'first' },
+  { id: 'distance-5k', title: '첫 5K', description: '한 번에 5km를 기록했어요.', threshold: 5, metric: 'run_distance', authority: 'local', category: 'first' },
+  { id: 'distance-10k', title: '첫 10K', description: '한 번에 10km를 기록했어요.', threshold: 10, metric: 'run_distance', authority: 'local', category: 'first' },
+  { id: 'first-race-goal', title: '첫 대회 목표', description: '첫 대회 목표를 공개했어요.', threshold: 1, metric: 'server_event', authority: 'server', category: 'race' },
+  { id: 'first-crew', title: '첫 크루', description: '첫 크루 활동을 시작했어요.', threshold: 1, metric: 'server_event', authority: 'server', category: 'community' },
+  { id: 'first-post', title: '첫 글', description: '첫 활동글을 직접 게시했어요.', threshold: 1, metric: 'server_event', authority: 'server', category: 'community' },
+  { id: 'first-cheer', title: '첫 응원', description: '처음으로 다른 러너를 응원했어요.', threshold: 1, metric: 'server_event', authority: 'server', category: 'community' },
   ...[3, 7, 14, 30, 60, 100, 200, 365].map((days) => ({
     id: `streak-${days}`,
     title: `${days}일의 리듬`,
@@ -37,6 +83,7 @@ export const badgeDefinitions: BadgeDefinition[] = [
     threshold: days,
     metric: 'movement_streak' as const,
     authority: 'local' as const,
+    category: 'streak' as const,
   })),
   ...[1, 4, 12, 26, 52].map((weeks) => ({
     id: `weekly-${weeks}`,
@@ -45,6 +92,7 @@ export const badgeDefinitions: BadgeDefinition[] = [
     threshold: weeks,
     metric: 'weekly_run_weeks' as const,
     authority: 'local' as const,
+    category: 'consistency' as const,
   })),
   ...[10, 50, 100].map((count) => ({
     id: `run-${count}`,
@@ -53,6 +101,7 @@ export const badgeDefinitions: BadgeDefinition[] = [
     threshold: count,
     metric: 'run_count' as const,
     authority: 'local' as const,
+    category: 'consistency' as const,
   })),
   {
     id: 'ten-k-ten-times',
@@ -61,7 +110,62 @@ export const badgeDefinitions: BadgeDefinition[] = [
     threshold: 10,
     metric: 'ten_k_count',
     authority: 'local',
+    category: 'distance',
   },
+  ...[10, 50, 100, 250, 500, 1_000].map((km) => ({
+    id: `total-distance-${km}`,
+    title: `누적 ${km}km`,
+    description: `기록한 거리의 합이 ${km}km를 넘었어요.`,
+    threshold: km,
+    metric: 'total_distance' as const,
+    authority: 'local' as const,
+    category: 'distance' as const,
+  })),
+  ...[300, 600, 1_800, 3_600].map((minutes) => ({
+    id: `total-minutes-${minutes}`,
+    title: `누적 ${Math.round(minutes / 60)}시간`,
+    description: `활동 시간의 합이 ${Math.round(minutes / 60)}시간을 넘었어요.`,
+    threshold: minutes,
+    metric: 'total_minutes' as const,
+    authority: 'local' as const,
+    category: 'duration' as const,
+  })),
+  ...[1, 10, 30].map((count) => ({
+    id: `morning-run-${count}`,
+    title: count === 1 ? '첫 아침런' : `아침런 ${count}회`,
+    description: `한국 시간 새벽 4시부터 오전 9시 사이에 마친 활동이 ${count}회예요.`,
+    threshold: count,
+    metric: 'morning_run_count' as const,
+    authority: 'local' as const,
+    category: 'timeOfDay' as const,
+  })),
+  ...[1, 10, 30].map((count) => ({
+    id: `night-run-${count}`,
+    title: count === 1 ? '첫 야간런' : `야간런 ${count}회`,
+    description: `한국 시간 저녁 8시부터 새벽 3시 사이에 마친 활동이 ${count}회예요.`,
+    threshold: count,
+    metric: 'night_run_count' as const,
+    authority: 'local' as const,
+    category: 'timeOfDay' as const,
+  })),
+  ...[1, 5, 20].map((count) => ({
+    id: `recovery-${count}`,
+    title: count === 1 ? '첫 회복 루틴' : `회복 루틴 ${count}회`,
+    description: `회복 활동을 ${count}회 기록했어요.`,
+    threshold: count,
+    metric: 'recovery_count' as const,
+    authority: 'local' as const,
+    category: 'recovery' as const,
+  })),
+  ...[1, 5].map((count) => ({
+    id: `race-interest-${count}`,
+    title: count === 1 ? '첫 대회 관심' : `대회 관심 ${count}개`,
+    description: `참가를 살펴본 대회를 ${count}개 저장했어요.`,
+    threshold: count,
+    metric: 'race_interest' as const,
+    authority: 'local' as const,
+    category: 'race' as const,
+  })),
 ];
 
 export type StreakSummary = {
@@ -203,21 +307,90 @@ export function calculateStreak(
   };
 }
 
-export function unlockedBadges(activities: ActivityRecord[], streak: StreakSummary): BadgeDefinition[] {
-  const runCount = activities.filter((activity) => activity.kind === 'run').length;
-  const coachCount = activities.filter((activity) => activity.source === 'COACH_COMPLETED').length;
-  const maxDistance = Math.max(0, ...activities.map((activity) => activity.distanceKm ?? 0));
-  const tenKCount = activities.filter((activity) => (activity.distanceKm ?? 0) >= 10).length;
-  return badgeDefinitions.filter((badge) => {
-    if (badge.authority === 'server') return false;
-    if (badge.metric === 'coach_count') return coachCount >= badge.threshold;
-    if (badge.metric === 'movement_streak') return streak.best >= badge.threshold;
-    if (badge.metric === 'weekly_run_weeks') return streak.totalRunWeeks >= badge.threshold;
-    if (badge.metric === 'run_count') return runCount >= badge.threshold;
-    if (badge.metric === 'run_distance') return maxDistance >= badge.threshold;
-    if (badge.metric === 'ten_k_count') return tenKCount >= badge.threshold;
-    return false;
+export type BadgeContext = {
+  interestedRaceCount?: number;
+};
+
+function hourInKst(value: string, timezoneId = 'Asia/Seoul'): number {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.valueOf())) return -1;
+  const formatted = new Intl.DateTimeFormat('en-GB', {
+    timeZone: timezoneId,
+    hour: '2-digit',
+    hour12: false,
+  }).format(parsed);
+  const hour = Number(formatted);
+  return Number.isFinite(hour) ? hour % 24 : -1;
+}
+
+// 배지 지표를 한 번만 계산해 획득 여부와 진행률에 함께 씁니다.
+export function badgeMetricValues(
+  activities: ActivityRecord[],
+  streak: StreakSummary,
+  context: BadgeContext = {},
+): Record<BadgeMetric, number> {
+  let morning = 0;
+  let night = 0;
+  for (const activity of activities) {
+    const hour = hourInKst(activity.completedAt, activity.timezoneId || 'Asia/Seoul');
+    if (hour >= 4 && hour < 9) morning += 1;
+    if (hour >= 20 || (hour >= 0 && hour < 4)) night += 1;
+  }
+  return {
+    coach_count: activities.filter((activity) => activity.source === 'COACH_COMPLETED').length,
+    movement_streak: streak.best,
+    weekly_run_weeks: streak.totalRunWeeks,
+    run_count: activities.filter((activity) => activity.kind === 'run').length,
+    run_distance: Math.max(0, ...activities.map((activity) => activity.distanceKm ?? 0)),
+    ten_k_count: activities.filter((activity) => (activity.distanceKm ?? 0) >= 10).length,
+    total_distance:
+      Math.round(activities.reduce((total, activity) => total + (activity.distanceKm ?? 0), 0) * 100) /
+      100,
+    total_minutes: activities.reduce((total, activity) => total + activity.durationMinutes, 0),
+    morning_run_count: morning,
+    night_run_count: night,
+    recovery_count: activities.filter((activity) => activity.kind === 'recovery').length,
+    interval_count: activities.filter((activity) => activity.id.startsWith('coach:인터벌')).length,
+    race_interest: Math.max(0, context.interestedRaceCount ?? 0),
+    server_event: 0,
+  };
+}
+
+export type BadgeProgress = {
+  badge: BadgeDefinition;
+  unlocked: boolean;
+  value: number;
+  target: number;
+  ratio: number;
+};
+
+export function badgeProgressList(
+  activities: ActivityRecord[],
+  streak: StreakSummary,
+  context: BadgeContext = {},
+): BadgeProgress[] {
+  const metrics = badgeMetricValues(activities, streak, context);
+  return badgeDefinitions.map((badge) => {
+    const value = badge.authority === 'server' ? 0 : metrics[badge.metric];
+    const target = badge.threshold;
+    return {
+      badge,
+      unlocked: badge.authority !== 'server' && value >= target,
+      value,
+      target,
+      ratio: target > 0 ? Math.min(1, value / target) : 0,
+    };
   });
+}
+
+export function unlockedBadges(
+  activities: ActivityRecord[],
+  streak: StreakSummary,
+  context: BadgeContext = {},
+): BadgeDefinition[] {
+  return badgeProgressList(activities, streak, context)
+    .filter((entry) => entry.unlocked)
+    .map((entry) => entry.badge);
 }
 
 export const streakInternals = {

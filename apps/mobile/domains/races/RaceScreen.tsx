@@ -1,4 +1,4 @@
-// 기존 대회 검색, 필터, 공식 링크, 접수 알림 기능을 vNext 탐색 화면으로 보존합니다.
+// 대회를 카드형으로 보여줍니다. 같은 대회의 여러 종목은 카드 하나에 칩으로 묶입니다.
 import * as Linking from 'expo-linking';
 import { useEffect, useMemo, useState } from 'react';
 import {
@@ -18,32 +18,28 @@ import { useAppState } from '../../app/state/AppStateProvider';
 import { useRaceState } from '../../app/state/RaceStateProvider';
 import {
   canScheduleRegistrationAlert,
-  filterByRegistrationStatus,
-  filterRaces,
   formatRaceDate,
   formatRegistrationTime,
   registrationFilters,
-  registrationStatusLabel,
   regionsFor,
   type RegistrationFilter,
 } from '../../src/races';
 import type { DistanceFilter, Race, RegionFilter } from '../../src/types';
+import {
+  filterRaceGroups,
+  findGroupByRaceId,
+  formatDDay,
+  groupRaces,
+  racePeriodFilters,
+  type RaceGroup,
+  type RacePeriodFilter,
+} from './aggregate';
 
 type Props = {
   focusedRaceId?: string;
 };
 
-type ChoiceRowProps<T extends string> = {
-  label: string;
-  choices: readonly T[];
-  selected: T;
-  onSelect: (choice: T) => void;
-};
-
-const distanceRows: ReadonlyArray<ReadonlyArray<DistanceFilter>> = [
-  ['전체', 'Full', 'Half'],
-  ['10K', '5K', 'Trail'],
-];
+const distanceChoices: DistanceFilter[] = ['전체', 'Full', 'Half', '10K', '5K', 'Trail'];
 
 const distanceLabels: Record<string, string> = {
   전체: '전체',
@@ -54,26 +50,10 @@ const distanceLabels: Record<string, string> = {
   Trail: '트레일',
 };
 
-function ChoiceRow<T extends string>({ label, choices, selected, onSelect }: ChoiceRowProps<T>) {
-  return (
-    <View style={styles.filterGroup}>
-      <Text style={styles.filterLabel}>{label}</Text>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.choiceRow}
-      >
-        {choices.map((choice) => (
-          <Chip
-            key={choice}
-            label={choice}
-            selected={choice === selected}
-            onPress={() => onSelect(choice)}
-          />
-        ))}
-      </ScrollView>
-    </View>
-  );
+function statusTone(status: string): 'positive' | 'warning' | 'neutral' {
+  if (status === '접수 중') return 'positive';
+  if (status === '접수 예정') return 'warning';
+  return 'neutral';
 }
 
 export function RaceScreen({ focusedRaceId }: Props) {
@@ -91,44 +71,42 @@ export function RaceScreen({ focusedRaceId }: Props) {
   } = useRaceState();
   const [region, setRegion] = useState<RegionFilter>('전체');
   const [distance, setDistance] = useState<DistanceFilter>('전체');
-  const [registrationFilter, setRegistrationFilter] = useState<RegistrationFilter>('전체');
+  const [registration, setRegistration] = useState<RegistrationFilter>('전체');
+  const [period, setPeriod] = useState<RacePeriodFilter>('전체');
   const [query, setQuery] = useState('');
   const [showRegionFilters, setShowRegionFilters] = useState(false);
-  const [activeRaceId, setActiveRaceId] = useState<string | undefined>(focusedRaceId);
-  const [expandedRaceId, setExpandedRaceId] = useState<string | undefined>();
+  const [activeGroupId, setActiveGroupId] = useState<string | undefined>();
+  const [expandedGroupId, setExpandedGroupId] = useState<string | undefined>();
   const [visibleCount, setVisibleCount] = useState(20);
 
+  const groups = useMemo(() => groupRaces(feed.races), [feed.races]);
+
   useEffect(() => {
-    if (!focusedRaceId || !feed.races.some((race) => race.id === focusedRaceId)) return;
+    const focused = findGroupByRaceId(groups, focusedRaceId);
+    if (!focused) return;
     setRegion('전체');
     setDistance('전체');
-    setRegistrationFilter('전체');
+    setRegistration('전체');
+    setPeriod('전체');
     setQuery('');
-    setActiveRaceId(focusedRaceId);
-    setExpandedRaceId(undefined);
+    setActiveGroupId(focused.id);
+    setExpandedGroupId(undefined);
     setVisibleCount(20);
-  }, [feed.races, focusedRaceId]);
+  }, [focusedRaceId, groups]);
 
   const availableRegions = useMemo(() => regionsFor(feed.races), [feed.races]);
-  const visibleRaces = useMemo(() => {
-    const normalizedQuery = query.trim().toLocaleLowerCase('ko-KR');
-    const values = filterByRegistrationStatus(
-      registrationFilter,
-      filterRaces(region, distance, feed.races).filter((race) => {
-        if (!normalizedQuery) return true;
-        return `${race.name} ${race.region} ${race.venue} ${race.distances.join(' ')}`
-          .toLocaleLowerCase('ko-KR')
-          .includes(normalizedQuery);
-      }),
-    );
-    if (!activeRaceId) return values;
+
+  const visibleGroups = useMemo(() => {
+    const values = filterRaceGroups(groups, { region, distance, registration, period, query });
+    if (!activeGroupId) return values;
     return [...values].sort((left, right) => {
-      if (left.id === activeRaceId) return -1;
-      if (right.id === activeRaceId) return 1;
+      if (left.id === activeGroupId) return -1;
+      if (right.id === activeGroupId) return 1;
       return 0;
     });
-  }, [activeRaceId, distance, feed.races, query, region, registrationFilter]);
-  const renderedRaces = visibleRaces.slice(0, visibleCount);
+  }, [activeGroupId, distance, groups, period, query, region, registration]);
+
+  const renderedGroups = visibleGroups.slice(0, visibleCount);
 
   async function openExternalUrl(race: Race) {
     if (!race.officialUrl?.startsWith('https://')) return;
@@ -143,18 +121,20 @@ export function RaceScreen({ focusedRaceId }: Props) {
   function resetFilters() {
     setRegion('전체');
     setDistance('전체');
-    setRegistrationFilter('전체');
+    setRegistration('전체');
+    setPeriod('전체');
     setQuery('');
-    setActiveRaceId(undefined);
-    setExpandedRaceId(undefined);
+    setActiveGroupId(undefined);
+    setExpandedGroupId(undefined);
     setShowRegionFilters(false);
     setVisibleCount(20);
   }
 
-  function toggleInterest(raceId: string) {
-    const next = preferences.interestedRaceIds.includes(raceId)
-      ? preferences.interestedRaceIds.filter((id) => id !== raceId)
-      : [...preferences.interestedRaceIds, raceId];
+  function toggleInterest(group: RaceGroup) {
+    const saved = group.raceIds.some((id) => preferences.interestedRaceIds.includes(id));
+    const next = saved
+      ? preferences.interestedRaceIds.filter((id) => !group.raceIds.includes(id))
+      : [...preferences.interestedRaceIds, group.id];
     void updatePreferences({ interestedRaceIds: next });
   }
 
@@ -167,7 +147,11 @@ export function RaceScreen({ focusedRaceId }: Props) {
           accessibilityLabel="대회 검색"
           autoCapitalize="none"
           autoCorrect={false}
-          onChangeText={setQuery}
+          onChangeText={(value) => {
+            setQuery(value);
+            setActiveGroupId(undefined);
+            setVisibleCount(20);
+          }}
           placeholder="대회명, 지역 또는 장소"
           placeholderTextColor={palette.muted}
           returnKeyType="search"
@@ -199,47 +183,82 @@ export function RaceScreen({ focusedRaceId }: Props) {
       </View>
 
       <View style={styles.filters}>
-        <View accessibilityLabel="거리 필터" style={styles.distanceFilterGrid}>
-          {distanceRows.flat().map((choice) => (
+        <View accessibilityLabel="거리 필터" style={styles.filterGrid}>
+          {distanceChoices.map((choice) => (
             <Pressable
               accessibilityRole="button"
               accessibilityState={{ selected: choice === distance }}
               key={choice}
               onPress={() => {
-                setActiveRaceId(undefined);
+                setActiveGroupId(undefined);
                 setDistance(choice);
                 setVisibleCount(20);
               }}
               style={({ pressed }) => [
-                styles.distanceFilter,
-                choice === distance && styles.distanceFilterSelected,
+                styles.filterCell,
+                choice === distance && styles.filterCellSelected,
                 pressed && styles.pressed,
               ]}
             >
-              <Text style={[styles.distanceFilterLabel, choice === distance && styles.distanceFilterLabelSelected]}>
-                {distanceLabels[choice]}
+              <Text
+                style={[
+                  styles.filterCellLabel,
+                  choice === distance && styles.filterCellLabelSelected,
+                ]}
+              >
+                {distanceLabels[choice] ?? choice}
               </Text>
             </Pressable>
           ))}
         </View>
-        <View accessibilityLabel="접수 상태 필터" style={styles.registrationFilterRow}>
+        <View accessibilityLabel="접수 상태 필터" style={styles.filterRow}>
           {registrationFilters.map((choice) => (
             <Pressable
               accessibilityRole="button"
-              accessibilityState={{ selected: choice === registrationFilter }}
+              accessibilityState={{ selected: choice === registration }}
               key={choice}
               onPress={() => {
-                setActiveRaceId(undefined);
-                setRegistrationFilter(choice);
+                setActiveGroupId(undefined);
+                setRegistration(choice);
                 setVisibleCount(20);
               }}
               style={({ pressed }) => [
-                styles.registrationFilter,
-                choice === registrationFilter && styles.registrationFilterSelected,
+                styles.filterFlexCell,
+                choice === registration && styles.filterAccentSelected,
                 pressed && styles.pressed,
               ]}
             >
-              <Text style={[styles.registrationFilterLabel, choice === registrationFilter && styles.registrationFilterLabelSelected]}>
+              <Text
+                style={[
+                  styles.filterCellLabel,
+                  choice === registration && styles.filterCellLabelSelected,
+                ]}
+              >
+                {choice}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+        <View accessibilityLabel="시기 필터" style={styles.filterRow}>
+          {racePeriodFilters.map((choice) => (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ selected: choice === period }}
+              key={choice}
+              onPress={() => {
+                setActiveGroupId(undefined);
+                setPeriod(choice);
+                setVisibleCount(20);
+              }}
+              style={({ pressed }) => [
+                styles.filterFlexCell,
+                choice === period && styles.filterCellSelected,
+                pressed && styles.pressed,
+              ]}
+            >
+              <Text
+                style={[styles.filterCellLabel, choice === period && styles.filterCellLabelSelected]}
+              >
                 {choice}
               </Text>
             </Pressable>
@@ -248,16 +267,27 @@ export function RaceScreen({ focusedRaceId }: Props) {
       </View>
 
       {showRegionFilters ? (
-        <ChoiceRow
-          label="지역"
-          choices={availableRegions}
-          selected={region}
-          onSelect={(choice) => {
-            setActiveRaceId(undefined);
-            setRegion(choice);
-            setVisibleCount(20);
-          }}
-        />
+        <View style={styles.filterGroup}>
+          <Text style={styles.filterLabel}>지역</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.choiceRow}
+          >
+            {availableRegions.map((choice) => (
+              <Chip
+                key={choice}
+                label={choice}
+                selected={choice === region}
+                onPress={() => {
+                  setActiveGroupId(undefined);
+                  setRegion(choice);
+                  setVisibleCount(20);
+                }}
+              />
+            ))}
+          </ScrollView>
+        </View>
       ) : null}
 
       <View accessibilityLiveRegion="polite" style={styles.notice}>
@@ -265,22 +295,24 @@ export function RaceScreen({ focusedRaceId }: Props) {
       </View>
 
       <View style={styles.resultHeader}>
-        <Text style={styles.resultTitle}>대회 {new Set(visibleRaces.map((race) => race.id)).size}개</Text>
+        <Text style={styles.resultTitle}>대회 {visibleGroups.length}개</Text>
         <Text style={styles.revision}>데이터 {feed.revision}</Text>
       </View>
 
       <View style={[styles.list, twoColumns && styles.listWide]}>
-        {renderedRaces.map((race) => {
-          const status = registrationStatusLabel(race);
-          const scheduled = Boolean(scheduledRaceIds[race.id]);
-          const canSchedule = canScheduleRegistrationAlert(race);
-          const busy = busyRaceId === race.id;
-          const focused = activeRaceId === race.id;
-          const expanded = expandedRaceId === race.id;
-          const interested = preferences.interestedRaceIds.includes(race.id);
+        {renderedGroups.map((group) => {
+          const primary = group.primary;
+          const scheduled = group.raceIds.some((id) => Boolean(scheduledRaceIds[id]));
+          const canSchedule = canScheduleRegistrationAlert(primary);
+          const busy = busyRaceId !== null && group.raceIds.includes(busyRaceId);
+          const focused = activeGroupId === group.id;
+          const expanded = expandedGroupId === group.id;
+          const interested = group.raceIds.some((id) =>
+            preferences.interestedRaceIds.includes(id),
+          );
           return (
             <Card
-              key={race.id}
+              key={group.key}
               style={[
                 styles.raceCard,
                 twoColumns && styles.raceCardWide,
@@ -288,30 +320,38 @@ export function RaceScreen({ focusedRaceId }: Props) {
               ]}
             >
               <View style={styles.raceTopline}>
-                <View style={styles.toplineChips}>
-                  <Chip
-                    label={status}
-                    tone={status === '접수 중' ? 'positive' : status === '접수 예정' ? 'warning' : 'neutral'}
-                  />
-                  <Chip
-                    label={interested ? '관심 저장됨' : '관심'}
-                    selected={interested}
-                    onPress={() => toggleInterest(race.id)}
-                    tone="accent"
-                  />
+                <View style={styles.dDay}>
+                  <Text style={styles.dDayText}>{formatDDay(group.raceDate)}</Text>
                 </View>
-                <Text style={styles.distance}>{race.distances.join(' · ')}</Text>
+                <Chip label={group.status} tone={statusTone(group.status)} />
+                <Chip
+                  label={interested ? '관심 저장됨' : '관심'}
+                  onPress={() => toggleInterest(group)}
+                  selected={interested}
+                  tone="accent"
+                />
               </View>
-              <Text style={styles.raceName}>{race.name}</Text>
+
+              <Text style={styles.raceName}>{group.name}</Text>
               <Text style={styles.raceMeta}>
-                {race.region} · {race.venue}
+                {group.region} · {group.venue}
               </Text>
-              <Text style={styles.raceMeta}>{formatRaceDate(race)}</Text>
+              <Text style={styles.raceMeta}>{formatRaceDate(primary)}</Text>
+
+              <View accessibilityLabel="거리 종목" style={styles.distanceChips}>
+                {group.distances.map((value) => (
+                  <View key={value} style={styles.distanceChip}>
+                    <Text style={styles.distanceChipText}>{distanceLabels[value] ?? value}</Text>
+                  </View>
+                ))}
+              </View>
+
               <View style={styles.registration}>
                 <Text style={styles.registrationLabel}>접수 일정</Text>
-                <Text style={styles.registrationValue}>{formatRegistrationTime(race)}</Text>
+                <Text style={styles.registrationValue}>{formatRegistrationTime(primary)}</Text>
               </View>
-              {race.note ? <Text style={styles.note}>{race.note}</Text> : null}
+              {primary.note ? <Text style={styles.note}>{primary.note}</Text> : null}
+
               <View style={styles.actions}>
                 <Button
                   disabled={busy || (!scheduled && !canSchedule)}
@@ -322,55 +362,79 @@ export function RaceScreen({ focusedRaceId }: Props) {
                         ? '알림 취소'
                         : canSchedule
                           ? '접수 알림 예약'
-                          : status === '접수 중'
+                          : group.status === '접수 중'
                             ? '접수 진행 중'
                             : '시각 확인 후 예약'
                   }
-                  onPress={() => void (scheduled ? cancelAlert(race) : scheduleAlert(race))}
-                  tone={scheduled ? 'quiet' : 'primary'}
+                  onPress={() => void (scheduled ? cancelAlert(primary) : scheduleAlert(primary))}
                   style={styles.action}
+                  tone={scheduled ? 'quiet' : 'primary'}
                 />
                 <Button
-                  disabled={!race.officialUrl?.startsWith('https://')}
-                  label={race.externalLinkKind === 'source' ? '정보 출처' : '공식 페이지'}
-                  onPress={() => void openExternalUrl(race)}
-                  tone="secondary"
+                  disabled={!primary.officialUrl?.startsWith('https://')}
+                  label={primary.externalLinkKind === 'source' ? '정보 출처' : '접수·공식'}
+                  onPress={() => void openExternalUrl(primary)}
                   style={styles.action}
+                  tone="secondary"
                 />
               </View>
+
               <Pressable
                 accessibilityRole="button"
                 accessibilityState={{ expanded }}
-                onPress={() => setExpandedRaceId((current) => (current === race.id ? undefined : race.id))}
+                onPress={() =>
+                  setExpandedGroupId((current) => (current === group.id ? undefined : group.id))
+                }
                 style={({ pressed }) => [styles.detailToggle, pressed && styles.pressed]}
               >
-                <Text style={styles.detailToggleText}>{expanded ? '간단히 보기' : '자세히 보기'}</Text>
+                <Text style={styles.detailToggleText}>
+                  {expanded ? '간단히 보기' : '자세히 보기'}
+                </Text>
               </Pressable>
               {expanded ? (
                 <View style={styles.details}>
                   <Text style={styles.detailLabel}>대회 장소</Text>
-                  <Text style={styles.detailValue}>{race.venue}</Text>
-                  {race.organizer ? <Text style={styles.detailValue}>주최 {race.organizer}</Text> : null}
-                  {race.capacity ? <Text style={styles.detailValue}>모집 규모 {race.capacity.toLocaleString('ko-KR')}명</Text> : null}
-                  <Text style={styles.detailSource}>데이터 확인 {race.verifiedAt ?? '확인 시각 준비 중'} · {race.sourceName}</Text>
+                  <Text style={styles.detailValue}>{group.venue}</Text>
+                  {primary.organizer ? (
+                    <Text style={styles.detailValue}>주최 {primary.organizer}</Text>
+                  ) : null}
+                  {primary.capacity ? (
+                    <Text style={styles.detailValue}>
+                      모집 규모 {primary.capacity.toLocaleString('ko-KR')}명
+                    </Text>
+                  ) : null}
+                  {group.entries.length > 1 ? (
+                    <>
+                      <Text style={styles.detailLabel}>종목별 접수</Text>
+                      {group.entries.map((entry) => (
+                        <Text key={entry.id} style={styles.detailValue}>
+                          {entry.distances.join(' · ')} · {formatRegistrationTime(entry)}
+                        </Text>
+                      ))}
+                    </>
+                  ) : null}
+                  <Text style={styles.detailSource}>
+                    데이터 확인 {primary.verifiedAt ?? '확인 시각 준비 중'} ·{' '}
+                    {group.sourceNames.join(', ')}
+                  </Text>
                 </View>
               ) : null}
-              <Text style={styles.source}>출처 {race.sourceName}</Text>
+              <Text style={styles.source}>출처 {group.sourceNames.join(', ')}</Text>
             </Card>
           );
         })}
       </View>
 
-      {renderedRaces.length < visibleRaces.length ? (
+      {renderedGroups.length < visibleGroups.length ? (
         <Button
-          label={`${Math.min(20, visibleRaces.length - renderedRaces.length)}개 더 보기`}
+          label={`${Math.min(20, visibleGroups.length - renderedGroups.length)}개 더 보기`}
           onPress={() => setVisibleCount((current) => current + 20)}
-          tone="secondary"
           style={styles.moreButton}
+          tone="secondary"
         />
       ) : null}
 
-      {visibleRaces.length === 0 ? (
+      {visibleGroups.length === 0 ? (
         <Card style={styles.empty}>
           <Text style={styles.emptyTitle}>조건에 맞는 대회가 없어요</Text>
           <Button label="전체 대회 보기" onPress={resetFilters} style={styles.emptyButton} />
@@ -381,13 +445,8 @@ export function RaceScreen({ focusedRaceId }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingBottom: spacing.xxl,
-  },
-  searchRow: {
-    flexDirection: 'row',
-    gap: spacing.xs,
-  },
+  container: { paddingBottom: spacing.xxl },
+  searchRow: { flexDirection: 'row', gap: spacing.xs },
   search: {
     flex: 1,
     minHeight: 48,
@@ -409,6 +468,7 @@ const styles = StyleSheet.create({
     backgroundColor: palette.surfaceMuted,
     paddingHorizontal: spacing.sm,
   },
+  refreshText: { color: palette.inkSoft, fontSize: typeScale.caption, fontWeight: '800' },
   regionToggle: {
     minHeight: 48,
     maxWidth: 116,
@@ -420,16 +480,7 @@ const styles = StyleSheet.create({
     backgroundColor: palette.surface,
     paddingHorizontal: spacing.sm,
   },
-  regionToggleText: {
-    color: palette.inkSoft,
-    fontSize: typeScale.caption,
-    fontWeight: '800',
-  },
-  refreshText: {
-    color: palette.inkSoft,
-    fontSize: typeScale.caption,
-    fontWeight: '800',
-  },
+  regionToggleText: { color: palette.inkSoft, fontSize: typeScale.caption, fontWeight: '800' },
   filters: {
     gap: spacing.sm,
     backgroundColor: palette.surface,
@@ -439,12 +490,9 @@ const styles = StyleSheet.create({
     padding: spacing.sm,
     marginTop: spacing.sm,
   },
-  distanceFilterGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.xs,
-  },
-  distanceFilter: {
+  filterGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
+  filterRow: { flexDirection: 'row', gap: spacing.xs },
+  filterCell: {
     flexBasis: '31%',
     flexGrow: 1,
     minHeight: 44,
@@ -455,11 +503,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     backgroundColor: palette.surfaceMuted,
   },
-  distanceFilterSelected: { backgroundColor: palette.ink, borderColor: palette.ink },
-  distanceFilterLabel: { color: palette.inkSoft, fontSize: typeScale.caption, fontWeight: '900' },
-  distanceFilterLabelSelected: { color: palette.white },
-  registrationFilterRow: { flexDirection: 'row', gap: spacing.xs },
-  registrationFilter: {
+  filterFlexCell: {
     flex: 1,
     minHeight: 44,
     alignItems: 'center',
@@ -469,22 +513,18 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     backgroundColor: palette.surfaceMuted,
   },
-  registrationFilterSelected: { backgroundColor: palette.accent, borderColor: palette.accent },
-  registrationFilterLabel: { color: palette.inkSoft, fontSize: typeScale.caption, fontWeight: '900' },
-  registrationFilterLabelSelected: { color: palette.white },
-  filterGroup: {
-    gap: spacing.xs,
-  },
+  filterCellSelected: { backgroundColor: palette.ink, borderColor: palette.ink },
+  filterAccentSelected: { backgroundColor: palette.accent, borderColor: palette.accent },
+  filterCellLabel: { color: palette.inkSoft, fontSize: typeScale.caption, fontWeight: '900' },
+  filterCellLabelSelected: { color: palette.white },
+  filterGroup: { gap: spacing.xs, marginTop: spacing.sm },
   filterLabel: {
     color: palette.ink,
     fontSize: typeScale.bodySmall,
     fontWeight: '800',
-    paddingHorizontal: spacing.md,
+    paddingHorizontal: spacing.xs,
   },
-  choiceRow: {
-    gap: spacing.xs,
-    paddingHorizontal: spacing.md,
-  },
+  choiceRow: { gap: spacing.xs, paddingHorizontal: spacing.xxs },
   notice: {
     backgroundColor: palette.warningSoft,
     borderRadius: radius.md,
@@ -503,52 +543,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  resultTitle: {
-    color: palette.ink,
-    fontSize: typeScale.titleSmall,
-    fontWeight: '900',
-  },
-  revision: {
-    color: palette.muted,
-    fontSize: 11,
-    fontWeight: '600',
-  },
-  list: {
-    gap: spacing.sm,
-  },
-  listWide: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  raceCard: {
-    gap: spacing.xs,
-  },
-  raceCardWide: {
-    flexGrow: 1,
-    flexBasis: '48%',
-  },
-  raceCardFocused: {
-    borderColor: palette.accent,
-    borderWidth: 2,
-  },
+  resultTitle: { color: palette.ink, fontSize: typeScale.titleSmall, fontWeight: '900' },
+  revision: { color: palette.muted, fontSize: 11, fontWeight: '600' },
+  list: { gap: spacing.sm },
+  listWide: { flexDirection: 'row', flexWrap: 'wrap' },
+  raceCard: { gap: spacing.xxs },
+  raceCardWide: { flexGrow: 1, flexBasis: '48%' },
+  raceCardFocused: { borderColor: palette.accent, borderWidth: 2 },
   raceTopline: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: spacing.sm,
-  },
-  toplineChips: {
-    flexDirection: 'row',
     flexWrap: 'wrap',
     gap: spacing.xs,
-    flex: 1,
-    minWidth: 0,
   },
-  distance: {
-    color: palette.inkSoft,
-    fontSize: typeScale.caption,
-    fontWeight: '800',
+  dDay: {
+    minHeight: 30,
+    justifyContent: 'center',
+    borderRadius: radius.pill,
+    backgroundColor: palette.navy,
+    paddingHorizontal: spacing.sm,
   },
+  dDayText: { color: palette.white, fontSize: typeScale.caption, fontWeight: '900' },
   raceName: {
     color: palette.ink,
     fontSize: 20,
@@ -557,22 +572,27 @@ const styles = StyleSheet.create({
     letterSpacing: -0.4,
     marginTop: spacing.xs,
   },
-  raceMeta: {
-    color: palette.muted,
-    fontSize: typeScale.bodySmall,
-    lineHeight: 20,
+  raceMeta: { color: palette.muted, fontSize: typeScale.bodySmall, lineHeight: 20 },
+  distanceChips: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.xxs,
+    marginTop: spacing.xs,
   },
+  distanceChip: {
+    borderRadius: radius.pill,
+    backgroundColor: palette.accentSoft,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 6,
+  },
+  distanceChipText: { color: palette.accentDark, fontSize: typeScale.caption, fontWeight: '900' },
   registration: {
     backgroundColor: palette.surfaceWarm,
     borderRadius: radius.md,
     padding: spacing.sm,
     marginTop: spacing.xs,
   },
-  registrationLabel: {
-    color: palette.accentDark,
-    fontSize: typeScale.caption,
-    fontWeight: '900',
-  },
+  registrationLabel: { color: palette.accentDark, fontSize: typeScale.caption, fontWeight: '900' },
   registrationValue: {
     color: palette.ink,
     fontSize: typeScale.bodySmall,
@@ -580,16 +600,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginTop: 4,
   },
-  note: {
-    color: palette.inkSoft,
-    fontSize: typeScale.caption,
-    lineHeight: 18,
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: spacing.xs,
-    marginTop: spacing.xs,
-  },
+  note: { color: palette.inkSoft, fontSize: typeScale.caption, lineHeight: 18 },
+  actions: { flexDirection: 'row', gap: spacing.xs, marginTop: spacing.xs },
+  action: { flex: 1 },
   detailToggle: {
     alignSelf: 'flex-start',
     minHeight: 36,
@@ -605,36 +618,18 @@ const styles = StyleSheet.create({
     paddingTop: spacing.sm,
   },
   detailLabel: { color: palette.muted, fontSize: 11, fontWeight: '800' },
-  detailValue: { color: palette.inkSoft, fontSize: typeScale.caption, lineHeight: 19, fontWeight: '700' },
+  detailValue: {
+    color: palette.inkSoft,
+    fontSize: typeScale.caption,
+    lineHeight: 19,
+    fontWeight: '700',
+  },
   detailSource: { color: palette.muted, fontSize: 11, lineHeight: 16, marginTop: spacing.xs },
-  action: {
-    flex: 1,
-  },
-  source: {
-    color: palette.muted,
-    fontSize: 11,
-    marginTop: 2,
-  },
-  moreButton: {
-    marginTop: spacing.md,
-  },
-  empty: {
-    alignItems: 'center',
-    marginTop: spacing.sm,
-  },
-  emptyTitle: {
-    color: palette.ink,
-    fontSize: typeScale.body,
-    fontWeight: '800',
-  },
-  emptyButton: {
-    marginTop: spacing.md,
-    minWidth: 160,
-  },
-  disabled: {
-    opacity: 0.45,
-  },
-  pressed: {
-    opacity: 0.72,
-  },
+  source: { color: palette.muted, fontSize: 11, marginTop: 2 },
+  moreButton: { marginTop: spacing.md },
+  empty: { alignItems: 'center', marginTop: spacing.sm },
+  emptyTitle: { color: palette.ink, fontSize: typeScale.body, fontWeight: '800' },
+  emptyButton: { marginTop: spacing.md, minWidth: 160 },
+  disabled: { opacity: 0.45 },
+  pressed: { opacity: 0.72 },
 });
