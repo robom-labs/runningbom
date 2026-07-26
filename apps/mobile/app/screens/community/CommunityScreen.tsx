@@ -19,8 +19,14 @@ import {
   type FeedCategory,
   type FeedSort,
 } from './categories';
+import type { RouteKey } from '../../navigation/types';
+import { DraftBox } from './DraftBox';
+import { knowledgeCards } from './knowledge';
+import { KnowledgeSection } from './KnowledgeSection';
 
-type Section = '피드' | '크루' | '리그';
+type Section = 'Q&A' | '피드' | '크루' | '리그';
+
+const sections: Section[] = ['Q&A', '피드', '크루', '리그'];
 
 const modeLabels: Record<CommunityMode, string> = {
   NORMAL: '커뮤니티 연결됨',
@@ -29,9 +35,10 @@ const modeLabels: Record<CommunityMode, string> = {
   CORE_ONLY: '코어 전용 모드',
 };
 
-export function CommunityScreen() {
+// onNavigate가 연결되면 Q&A 카드에서 관련 기능으로 바로 이동합니다. 없으면 안내만 보여줍니다.
+export function CommunityScreen({ onNavigate }: { onNavigate?: (route: RouteKey) => void } = {}) {
   const { preferences, updatePreferences } = useAppState();
-  const [section, setSection] = useState<Section>('피드');
+  const [section, setSection] = useState<Section>('Q&A');
   const [category, setCategory] = useState<FeedCategory>('전체');
   const [sort, setSort] = useState<FeedSort>('최신순');
   const [posts, setPosts] = useState<PublicPost[]>([]);
@@ -68,8 +75,12 @@ export function CommunityScreen() {
       showsVerticalScrollIndicator={false}
       style={styles.root}
     >
-      <View accessibilityRole="tablist" style={styles.tabs}>
-        {(['피드', '크루', '리그'] as Section[]).map((value) => (
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.tabs}
+      >
+        {sections.map((value) => (
           <Chip
             accessibilityRole="tab"
             key={value}
@@ -79,22 +90,31 @@ export function CommunityScreen() {
             tone="accent"
           />
         ))}
-      </View>
+      </ScrollView>
 
       <Banner
         title={writeEnabled ? '커뮤니티 연결됨' : '읽기 전용 · 글쓰기 준비 중'}
         body={
           writeEnabled
             ? '공개 글은 로그인 없이 읽고, 참여 기능은 로그인 후 사용해요.'
-            : '운영 서버 쓰기가 연결되기 전이라 글쓰기·좋아요·댓글은 아직 열리지 않았어요. 지금은 공개 글 읽기만 가능합니다.'
+            : `운영 서버 쓰기가 연결되기 전이라 글쓰기·좋아요·댓글은 아직 열리지 않았어요. 그동안 러닝 Q&A ${knowledgeCards.length}개는 로그인 없이 바로 읽을 수 있고, 쓰고 싶은 질문은 임시 보관함에 저장해 둘 수 있어요.`
         }
         tone={writeEnabled ? 'positive' : 'warning'}
       />
 
-      <View style={styles.modeRow}>
-        <Chip label={modeLabels[mode]} tone={mode === 'NORMAL' ? 'positive' : 'warning'} />
-        <Text style={styles.modeText}>{message}</Text>
-      </View>
+      {section === 'Q&A' ? (
+        <>
+          <KnowledgeSection {...(onNavigate ? { onNavigate } : {})} />
+          <DraftBox />
+        </>
+      ) : null}
+
+      {section !== 'Q&A' ? (
+        <View style={styles.modeRow}>
+          <Chip label={modeLabels[mode]} tone={mode === 'NORMAL' ? 'positive' : 'warning'} />
+          <Text style={styles.modeText}>{message}</Text>
+        </View>
+      ) : null}
 
       {section === '피드' ? (
         <>
@@ -203,7 +223,7 @@ export function CommunityScreen() {
       <Card style={styles.empty}>
         <Text style={styles.emptyBody}>
           가짜 사용자·자동 게시물을 만들지 않고, 기록을 자동으로 공개하지 않아요. 신고와 차단은 서버
-          연결과 함께 열립니다.
+          연결과 함께 열립니다. Q&A는 앱에 내장된 참고 정보이며 의료적 진단이 아니에요.
         </Text>
       </Card>
     </ScrollView>
@@ -221,7 +241,7 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.xxl,
     gap: spacing.sm,
   },
-  tabs: { flexDirection: 'row', gap: spacing.xs },
+  tabs: { flexDirection: 'row', gap: spacing.xs, paddingVertical: 2 },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   modeRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   modeText: { flex: 1, minWidth: 0, color: palette.muted, fontSize: typeScale.caption, lineHeight: 18 },

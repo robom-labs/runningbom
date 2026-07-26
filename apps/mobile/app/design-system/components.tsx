@@ -6,6 +6,7 @@ import {
   StyleSheet,
   type StyleProp,
   Text,
+  TextInput,
   type TextStyle,
   View,
   type ViewStyle,
@@ -188,6 +189,135 @@ export function Banner({ title, body, tone = 'info' }: BannerProps) {
   );
 }
 
+type SearchFieldProps = {
+  value: string;
+  onChangeText: (value: string) => void;
+  placeholder: string;
+  accessibilityLabel: string;
+};
+
+// 검색 입력과 지우기 버튼을 한 줄로 묶습니다. 터치 영역은 48px 이상입니다.
+export function SearchField({
+  value,
+  onChangeText,
+  placeholder,
+  accessibilityLabel,
+}: SearchFieldProps) {
+  return (
+    <View style={styles.searchRow}>
+      <TextInput
+        accessibilityLabel={accessibilityLabel}
+        autoCapitalize="none"
+        autoCorrect={false}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        placeholderTextColor={palette.muted}
+        returnKeyType="search"
+        style={styles.searchInput}
+        value={value}
+      />
+      {value.length > 0 ? (
+        <Pressable
+          accessibilityLabel="검색어 지우기"
+          accessibilityRole="button"
+          onPress={() => onChangeText('')}
+          style={({ pressed }) => [styles.searchClear, pressed && styles.pressed]}
+        >
+          <Text style={styles.searchClearText}>지우기</Text>
+        </Pressable>
+      ) : null}
+    </View>
+  );
+}
+
+export type BarDatum = {
+  key: string;
+  label: string;
+  ratio: number;
+  valueLabel: string;
+  highlight?: boolean;
+};
+
+type MiniBarChartProps = {
+  data: BarDatum[];
+  accessibilityLabel: string;
+  height?: number;
+};
+
+// 외부 차트 라이브러리 없이 View 높이만으로 그리는 막대 그래프입니다.
+export function MiniBarChart({ data, accessibilityLabel, height = 96 }: MiniBarChartProps) {
+  const hasValue = data.some((item) => item.ratio > 0);
+  return (
+    <View accessibilityLabel={accessibilityLabel} style={styles.chartWrap}>
+      <View style={[styles.chartPlot, { height }]}>
+        {data.map((item) => {
+          const clamped = Math.max(0, Math.min(1, Number.isFinite(item.ratio) ? item.ratio : 0));
+          // 값이 0보다 크면 최소 4px는 보이게 해 존재를 알립니다.
+          const barHeight = clamped > 0 ? Math.max(4, Math.round(clamped * height)) : 2;
+          return (
+            <View key={item.key} style={styles.chartColumn}>
+              <View
+                style={[
+                  styles.chartBar,
+                  { height: barHeight },
+                  clamped === 0 && styles.chartBarEmpty,
+                  item.highlight ? styles.chartBarHighlight : null,
+                ]}
+              />
+            </View>
+          );
+        })}
+      </View>
+      <View style={styles.chartAxis}>
+        {data.map((item) => (
+          <View key={item.key} style={styles.chartColumn}>
+            <Text
+              numberOfLines={1}
+              style={[styles.chartLabel, item.highlight ? styles.chartLabelHighlight : null]}
+            >
+              {item.label}
+            </Text>
+            <Text numberOfLines={1} style={styles.chartValue}>
+              {item.valueLabel}
+            </Text>
+          </View>
+        ))}
+      </View>
+      {!hasValue ? <Text style={styles.chartEmpty}>아직 표시할 기록이 없어요.</Text> : null}
+    </View>
+  );
+}
+
+type DisclosureProps = PropsWithChildren<{
+  title: string;
+  meta?: string;
+  expanded: boolean;
+  onToggle: () => void;
+  badge?: ReactNode;
+}>;
+
+// 질문을 눌러 답변을 펼치는 아코디언 행입니다.
+export function Disclosure({ title, meta, expanded, onToggle, badge, children }: DisclosureProps) {
+  return (
+    <View style={styles.disclosure}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ expanded }}
+        onPress={onToggle}
+        style={({ pressed }) => [styles.disclosureHeader, pressed && styles.pressed]}
+      >
+        <View style={styles.disclosureCopy}>
+          <Text style={styles.disclosureTitle}>{title}</Text>
+          {meta ? <Text style={styles.disclosureMeta}>{meta}</Text> : null}
+        </View>
+        {badge}
+        <Text style={styles.disclosureCaret}>{expanded ? '−' : '+'}</Text>
+      </Pressable>
+      {expanded ? <View style={styles.disclosureBody}>{children}</View> : null}
+    </View>
+  );
+}
+
 export function Wordmark({ compact = false }: { compact?: boolean }) {
   return (
     <Text
@@ -363,6 +493,84 @@ const styles = StyleSheet.create({
     color: palette.inkSoft,
     fontSize: typeScale.caption,
     lineHeight: 18,
+  },
+  searchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  searchInput: {
+    flex: 1,
+    minWidth: 0,
+    minHeight: 48,
+    backgroundColor: palette.surface,
+    borderColor: palette.line,
+    borderWidth: 1,
+    borderRadius: radius.md,
+    color: palette.ink,
+    fontSize: typeScale.body,
+    paddingHorizontal: spacing.md,
+  },
+  searchClear: {
+    minHeight: 48,
+    minWidth: 64,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: radius.md,
+    backgroundColor: palette.surfaceMuted,
+    paddingHorizontal: spacing.sm,
+  },
+  searchClearText: { color: palette.inkSoft, fontSize: typeScale.caption, fontWeight: '800' },
+  chartWrap: { gap: spacing.xs },
+  chartPlot: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: spacing.xxs,
+  },
+  chartAxis: { flexDirection: 'row', gap: spacing.xxs },
+  chartColumn: { flex: 1, minWidth: 0, alignItems: 'center' },
+  chartBar: {
+    width: '82%',
+    borderTopLeftRadius: radius.sm,
+    borderTopRightRadius: radius.sm,
+    backgroundColor: palette.accentSoft,
+  },
+  chartBarEmpty: { backgroundColor: palette.line },
+  chartBarHighlight: { backgroundColor: palette.accent },
+  chartLabel: { color: palette.muted, fontSize: 11, fontWeight: '800' },
+  chartLabelHighlight: { color: palette.accentDark },
+  chartValue: { color: palette.inkSoft, fontSize: 10, fontWeight: '700', marginTop: 2 },
+  chartEmpty: { color: palette.muted, fontSize: typeScale.caption, lineHeight: 18 },
+  disclosure: {
+    backgroundColor: palette.surface,
+    borderColor: palette.line,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: radius.md,
+    overflow: 'hidden',
+  },
+  disclosureHeader: {
+    minHeight: 56,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  disclosureCopy: { flex: 1, minWidth: 0 },
+  disclosureTitle: {
+    color: palette.ink,
+    fontSize: typeScale.bodySmall,
+    lineHeight: 21,
+    fontWeight: '800',
+  },
+  disclosureMeta: { color: palette.muted, fontSize: 11, fontWeight: '700', marginTop: 2 },
+  disclosureCaret: { color: palette.muted, fontSize: 20, fontWeight: '900', width: 20, textAlign: 'center' },
+  disclosureBody: {
+    gap: spacing.xs,
+    borderTopColor: palette.line,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
   },
   wordmark: {
     color: palette.ink,

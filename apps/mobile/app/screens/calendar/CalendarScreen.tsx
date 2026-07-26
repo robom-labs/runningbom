@@ -13,7 +13,9 @@ import {
   totalsForWeek,
 } from '../../../domains/activities/summary';
 import { activitySourceLabels } from '../../../domains/activities/types';
-import { Banner, Button, Card, Metric, SectionHeader } from '../../design-system/components';
+import { goalRaceCountdown, goalRacePhaseLabels } from '../../../domains/races/goalRace';
+import { useGoalRace } from '../../../domains/races/useGoalRace';
+import { Banner, Button, Card, Chip, Metric, SectionHeader } from '../../design-system/components';
 import { palette, radius, spacing, typeScale } from '../../design-system/theme';
 import { useAppState } from '../../state/AppStateProvider';
 import { ManualActivityCard } from '../my/ManualActivityCard';
@@ -51,6 +53,7 @@ function monthKeyOf(value: Date): string {
 
 export function CalendarScreen() {
   const { activities, plans, addPlan, removePlan, completeActivity } = useAppState();
+  const { goalRace } = useGoalRace();
   const [month, setMonth] = useState(() => new Date());
   const todayKey = kstDayKey(new Date());
   const [selectedKey, setSelectedKey] = useState<string>(todayKey);
@@ -70,6 +73,10 @@ export function CalendarScreen() {
     [activities, month],
   );
   const viewingCurrentMonth = monthKeyOf(month) === currentMonth();
+  const goalCountdown = useMemo(
+    () => (goalRace ? goalRaceCountdown(goalRace.raceDate) : undefined),
+    [goalRace],
+  );
 
   return (
     <ScrollView
@@ -78,6 +85,26 @@ export function CalendarScreen() {
       showsVerticalScrollIndicator={false}
       style={styles.root}
     >
+      {goalRace && goalCountdown ? (
+        <Card style={styles.goalCard}>
+          <View style={styles.goalTop}>
+            <View style={styles.goalDDay}>
+              <Text style={styles.goalDDayText}>{goalCountdown.dDayLabel}</Text>
+            </View>
+            <Chip label={goalRacePhaseLabels[goalCountdown.phase]} tone="accent" />
+          </View>
+          <Text style={styles.goalName}>목표 대회 · {goalRace.name}</Text>
+          <Text style={styles.goalMeta}>
+            {goalRace.raceDate} · {goalRace.region} · {goalCountdown.remainingLabel}
+          </Text>
+          {goalCountdown.weeks > 0 ? (
+            <Text style={styles.goalMeta}>
+              남은 {goalCountdown.weeks}주 동안의 러닝 일정을 아래 달력에 등록해 둘 수 있어요.
+            </Text>
+          ) : null}
+        </Card>
+      ) : null}
+
       <Card style={styles.summaryCard}>
         <Text style={styles.summaryTitle}>이번 주 · {monthTitle(month)} 요약</Text>
         <View style={styles.metrics}>
@@ -262,6 +289,28 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.xxl,
     gap: spacing.sm,
   },
+  goalCard: {
+    gap: spacing.xxs,
+    backgroundColor: palette.surfaceWarm,
+    borderColor: palette.accent,
+    borderWidth: 1,
+  },
+  goalTop: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
+  goalDDay: {
+    minHeight: 30,
+    justifyContent: 'center',
+    borderRadius: radius.pill,
+    backgroundColor: palette.accent,
+    paddingHorizontal: spacing.sm,
+  },
+  goalDDayText: { color: palette.white, fontSize: typeScale.caption, fontWeight: '900' },
+  goalName: {
+    color: palette.ink,
+    fontSize: typeScale.titleSmall,
+    fontWeight: '900',
+    marginTop: spacing.xs,
+  },
+  goalMeta: { color: palette.inkSoft, fontSize: typeScale.caption, lineHeight: 18 },
   summaryCard: { gap: spacing.sm },
   summaryTitle: { color: palette.ink, fontSize: typeScale.body, fontWeight: '900' },
   metrics: { flexDirection: 'row', justifyContent: 'space-between', gap: spacing.sm },

@@ -170,3 +170,112 @@ export function filterRaceGroups(
       .includes(normalizedQuery);
   });
 }
+
+// ── 빠른 칩 · 정렬 · 달력 뷰 ──────────────────────────────────────────────
+// 대회 수가 많아도 원하는 것을 빨리 찾도록 돕는 순수 규칙입니다.
+
+export type RaceQuickFilter = '접수 중만' | '이번 주말' | '내 지역';
+export const raceQuickFilters: RaceQuickFilter[] = ['접수 중만', '이번 주말', '내 지역'];
+
+/** 이번 주 토·일의 날짜 키입니다. 토요일이 지났으면 그 주의 일요일까지만 남습니다. */
+export function weekendRange(now = Date.now()): { start: string; end: string } {
+  const today = kstDateFormatter.format(new Date(now));
+  const date = new Date(`${today}T00:00:00Z`);
+  const weekday = date.getUTCDay(); // 0=일 … 6=토
+  const daysUntilSaturday = weekday === 0 ? 6 : 6 - weekday;
+  const saturday = new Date(date);
+  saturday.setUTCDate(saturday.getUTCDate() + daysUntilSaturday);
+  const sunday = new Date(saturday);
+  sunday.setUTCDate(sunday.getUTCDate() + 1);
+  return { start: saturday.toISOString().slice(0, 10), end: sunday.toISOString().slice(0, 10) };
+}
+
+export function applyQuickFilters(
+  groups: RaceGroup[],
+  active: RaceQuickFilter[],
+  options: { myRegion?: string } = {},
+  now = Date.now(),
+): RaceGroup[] {
+  if (active.length === 0) return groups;
+  const weekend = weekendRange(now);
+  const myRegion = options.myRegion?.trim();
+  return groups.filter((group) => {
+    if (active.includes('접수 중만') && group.status !== '접수 중') return false;
+    if (active.includes('이번 주말')) {
+      if (group.raceDate < weekend.start || group.raceDate > weekend.end) return false;
+    }
+    if (active.includes('내 지역')) {
+      if (!myRegion || group.region !== myRegion) return false;
+    }
+    return true;
+  });
+}
+
+export type RaceSort = '가까운 날짜순' | '거리순' | '지역순';
+export const raceSorts: RaceSort[] = ['가까운 날짜순', '거리순', '지역순'];
+
+/** 짧은 종목이 먼저 오도록 대표 거리 순번을 구합니다. */
+function shortestDistanceRank(group: RaceGroup): number {
+  const ranks = group.distances.map((value) => {
+    const index = distanceOrder.indexOf(value);
+    return index === -1 ? distanceOrder.length : index;
+  });
+  return ranks.length > 0 ? Math.min(...ranks) : distanceOrder.length;
+}
+
+export function sortRaceGroups(groups: RaceGroup[], sort: RaceSort): RaceGroup[] {
+  const byDateThenName = (left: RaceGroup, right: RaceGroup) => {
+    if (left.raceDate !== right.raceDate) return left.raceDate.localeCompare(right.raceDate);
+    return left.name.localeCompare(right.name, 'ko-KR');
+  };
+  const values = [...groups];
+  if (sort === '거리순') {
+    return values.sort((left, right) => {
+      const diff = shortestDistanceRank(left) - shortestDistanceRank(right);
+      return diff !== 0 ? diff : byDateThenName(left, right);
+    });
+  }
+  if (sort === '지역순') {
+    return values.sort((left, right) => {
+      const diff = left.region.localeCompare(right.region, 'ko-KR');
+      return diff !== 0 ? diff : byDateThenName(left, right);
+    });
+  }
+  return values.sort(byDateThenName);
+}
+
+export type RaceMonthBucket = {
+  /** 'YYYY-MM' 형식입니다. */
+  month: string;
+  label: string;
+  count: number;
+  groups: RaceGroup[];
+};
+
+/** 달력 뷰용으로 대회를 월별로 묶습니다. 대회가 없는 달은 만들지 않습니다. */
+export function raceMonthBuckets(groups: RaceGroup[]): RaceMonthBucket[] {
+  const buckets = new Map<string, RaceGroup[]>();
+  for (const group of groups) {
+    const month = group.raceDate.slice(0, 7);
+    if (!/^\d{4}-\d{2}$/.test(month)) continue;
+    buckets.set(month, [...(buckets.get(month) ?? []), group]);
+  }
+  return [...buckets.entries()]
+    .map(([month, values]) => ({
+      month,
+      label: `${month.slice(0, 4)}년 ${Number(month.slice(5, 7))}월`,
+      count: values.length,
+      groups: sortRaceGroups(values, '가까운 날짜순'),
+    }))
+    .sort((left, right) => left.month.localeCompare(right.month));
+}
+
+/** 특정 달의 날짜별 대회 수입니다. 달력 격자 표시에 씁니다. */
+export function raceCountsByDay(groups: RaceGroup[], month: string): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const group of groups) {
+    if (!group.raceDate.startsWith(month)) continue;
+    counts[group.raceDate] = (counts[group.raceDate] ?? 0) + 1;
+  }
+  return counts;
+}

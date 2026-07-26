@@ -8,8 +8,10 @@ import {
   Card,
   Chip,
   Metric,
+  MiniBarChart,
   ProgressBar,
   SectionHeader,
+  type BarDatum,
 } from '../../design-system/components';
 import { palette, radius, spacing, typeScale } from '../../design-system/theme';
 import { activitySourceLabels } from '../../../domains/activities/types';
@@ -22,6 +24,19 @@ import {
   totalsForMonth,
   totalsForWeek,
 } from '../../../domains/activities/summary';
+import {
+  activityKindFilterLabels,
+  activityKindFilters,
+  activityPeriodFilters,
+  averagePaceMinutesPerKm,
+  defaultActivityListFilter,
+  filterActivities,
+  formatPace,
+  monthlyTrend,
+  trendMetricLabels,
+  type ActivityListFilter,
+  type TrendMetric,
+} from '../../../domains/activities/trend';
 import {
   currentWeekProgress,
   goalMetricLabels,
@@ -57,9 +72,50 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
   } = useAppState();
   const [openCategory, setOpenCategory] = useState<BadgeCategory | 'all'>('all');
   const [showAllActivities, setShowAllActivities] = useState(false);
+  const [trendMetric, setTrendMetric] = useState<TrendMetric>('distance');
+  const [listFilter, setListFilter] = useState<ActivityListFilter>(defaultActivityListFilter);
 
   const weekTotals = useMemo(() => totalsForWeek(activities, currentWeekStart()), [activities]);
   const monthTotals = useMemo(() => totalsForMonth(activities, currentMonth()), [activities]);
+
+  const trend = useMemo(
+    () => monthlyTrend(activities, trendMetric, 6),
+    [activities, trendMetric],
+  );
+  const trendBars = useMemo<BarDatum[]>(
+    () =>
+      trend.map((point) => ({
+        key: point.month,
+        label: point.label,
+        ratio: point.ratio,
+        valueLabel:
+          trendMetric === 'distance'
+            ? `${Math.round(point.value * 10) / 10}`
+            : `${Math.round(point.value)}`,
+        highlight: point.isCurrent,
+      })),
+    [trend, trendMetric],
+  );
+
+  const weekPace = useMemo(
+    () =>
+      averagePaceMinutesPerKm(
+        filterActivities(activities, { kind: '전체', period: '최근 7일' }),
+      ),
+    [activities],
+  );
+  const monthPace = useMemo(
+    () =>
+      averagePaceMinutesPerKm(
+        filterActivities(activities, { kind: '전체', period: '이번 달' }),
+      ),
+    [activities],
+  );
+
+  const filteredActivities = useMemo(
+    () => filterActivities(activities, listFilter),
+    [activities, listFilter],
+  );
   const average = useMemo(() => recentWeeklyAverage(activities), [activities]);
   const progress = useMemo(
     () => currentWeekProgress(activities, weeklyGoal),
@@ -68,6 +124,22 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
   const recommended = useMemo(() => recommendWeeklyGoal(activities), [activities]);
 
   const unlockedCount = badgeProgress.filter((entry) => entry.unlocked).length;
+  const categoryProgress = useMemo(
+    () =>
+      badgeCategoryOrder
+        .map((category) => {
+          const entries = badgeProgress.filter((entry) => entry.badge.category === category);
+          const unlocked = entries.filter((entry) => entry.unlocked).length;
+          return {
+            category,
+            unlocked,
+            total: entries.length,
+            ratio: entries.length > 0 ? unlocked / entries.length : 0,
+          };
+        })
+        .filter((entry) => entry.total > 0),
+    [badgeProgress],
+  );
   const groupedBadges = useMemo(() => {
     const visible =
       openCategory === 'all'
@@ -81,7 +153,9 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
       .filter((group) => group.entries.length > 0);
   }, [badgeProgress, openCategory]);
 
-  const latestActivities = showAllActivities ? activities.slice(0, 40) : activities.slice(0, 5);
+  const latestActivities = showAllActivities
+    ? filteredActivities.slice(0, 40)
+    : filteredActivities.slice(0, 5);
 
   function adjustTarget(direction: 1 | -1) {
     const step = metricSteps[weeklyGoal.metric] * direction;
@@ -119,6 +193,10 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
             style={styles.metric}
           />
         </View>
+        <View style={styles.metrics}>
+          <Metric label="이번 주 운동일" value={`${weekTotals.activeDays}일`} style={styles.metric} />
+          <Metric label="이번 주 평균 페이스" value={formatPace(weekPace)} style={styles.metric} />
+        </View>
         <Text style={styles.cardTitle}>이번 달</Text>
         <View style={styles.metrics}>
           <Metric label="횟수" value={`${monthTotals.sessions}회`} style={styles.metric} />
@@ -129,7 +207,39 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
             style={styles.metric}
           />
         </View>
+        <View style={styles.metrics}>
+          <Metric label="이번 달 운동일" value={`${monthTotals.activeDays}일`} style={styles.metric} />
+          <Metric label="이번 달 평균 페이스" value={formatPace(monthPace)} style={styles.metric} />
+        </View>
+        <Text style={styles.cardMeta}>
+          평균 페이스는 거리와 시간이 모두 저장된 기록만으로 계산해요. 거리 기록이 없으면 "기록
+          부족"으로 표시합니다.
+        </Text>
         <Button label="캘린더에서 보기" onPress={onOpenCalendar} tone="secondary" />
+      </Card>
+
+      <SectionHeader title="월별 추이" subtitle="최근 6개월 흐름이에요. 이번 달은 진한 막대예요." />
+      <Card style={styles.card}>
+        <View accessibilityRole="tablist" style={styles.chipRow}>
+          {(Object.keys(trendMetricLabels) as TrendMetric[]).map((metric) => (
+            <Chip
+              accessibilityRole="tab"
+              key={metric}
+              label={trendMetricLabels[metric]}
+              onPress={() => setTrendMetric(metric)}
+              selected={trendMetric === metric}
+              tone="accent"
+            />
+          ))}
+        </View>
+        <MiniBarChart
+          accessibilityLabel={`최근 6개월 ${trendMetricLabels[trendMetric]} 추이`}
+          data={trendBars}
+        />
+        <Text style={styles.cardMeta}>
+          단위는 {trendMetric === 'sessions' ? '회' : trendMetric === 'minutes' ? '분' : 'km'}
+          이고, 기록이 없는 달은 0으로 표시해요.
+        </Text>
       </Card>
 
       <SectionHeader
@@ -190,6 +300,30 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
         title={`배지 ${unlockedCount}/${badgeProgress.length}`}
         subtitle={`규칙 ${BADGE_RULE_VERSION} · 카테고리별 진행률을 볼 수 있어요.`}
       />
+      <View accessibilityLabel="카테고리별 배지 진행률" style={styles.badgeGrid}>
+        {categoryProgress.map((entry) => (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityState={{ selected: openCategory === entry.category }}
+            key={entry.category}
+            onPress={() =>
+              setOpenCategory((current) => (current === entry.category ? 'all' : entry.category))
+            }
+            style={({ pressed }) => [
+              styles.badgeTile,
+              openCategory === entry.category && styles.badgeTileSelected,
+              pressed && styles.pressed,
+            ]}
+          >
+            <Text style={styles.badgeTileTitle}>{badgeCategoryLabels[entry.category]}</Text>
+            <Text style={styles.badgeTileCount}>
+              {entry.unlocked}/{entry.total}
+            </Text>
+            <ProgressBar ratio={entry.ratio} tone={entry.ratio >= 1 ? 'positive' : 'accent'} />
+          </Pressable>
+        ))}
+      </View>
+
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -263,6 +397,38 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
           await completeActivity({ ...input, source: 'SELF_LOGGED' });
         }}
       />
+      <View style={styles.filterBlock}>
+        <View accessibilityLabel="유형 필터" style={styles.chipRow}>
+          {activityKindFilters.map((kind) => (
+            <Chip
+              key={kind}
+              label={activityKindFilterLabels[kind]}
+              onPress={() => {
+                setListFilter((current) => ({ ...current, kind }));
+                setShowAllActivities(false);
+              }}
+              selected={listFilter.kind === kind}
+            />
+          ))}
+        </View>
+        <View accessibilityLabel="기간 필터" style={styles.chipRow}>
+          {activityPeriodFilters.map((period) => (
+            <Chip
+              key={period}
+              label={period}
+              onPress={() => {
+                setListFilter((current) => ({ ...current, period }));
+                setShowAllActivities(false);
+              }}
+              selected={listFilter.period === period}
+              tone="accent"
+            />
+          ))}
+        </View>
+        <Text accessibilityLiveRegion="polite" style={styles.cardMeta}>
+          조건에 맞는 기록 {filteredActivities.length}건 · 전체 {activities.length}건
+        </Text>
+      </View>
       <Card style={styles.listCard}>
         {latestActivities.length > 0 ? (
           latestActivities.map((activity) => (
@@ -319,6 +485,7 @@ const styles = StyleSheet.create({
   },
   metric: { flex: 1, minWidth: 0 },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
+  filterBlock: { gap: spacing.xs },
   targetRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
   stepButton: { minWidth: 52 },
   targetValue: {
@@ -329,6 +496,23 @@ const styles = StyleSheet.create({
     fontWeight: '900',
   },
   recommendButton: { flex: 1 },
+  badgeGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
+  badgeTile: {
+    flexGrow: 1,
+    flexBasis: '30%',
+    minWidth: 104,
+    minHeight: 88,
+    justifyContent: 'center',
+    gap: 4,
+    backgroundColor: palette.surface,
+    borderColor: palette.line,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: radius.md,
+    padding: spacing.sm,
+  },
+  badgeTileSelected: { borderColor: palette.accent, borderWidth: 1.5 },
+  badgeTileTitle: { color: palette.inkSoft, fontSize: 11, fontWeight: '900' },
+  badgeTileCount: { color: palette.ink, fontSize: typeScale.body, fontWeight: '900' },
   badgeGroup: { gap: spacing.xs, paddingTop: spacing.sm },
   badgeGroupTitle: { color: palette.muted, fontSize: 11, fontWeight: '900', letterSpacing: 0.6 },
   badgeRow: {

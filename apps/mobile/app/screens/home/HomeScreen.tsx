@@ -14,8 +14,12 @@ import { palette, radius, spacing, typeScale } from '../../design-system/theme';
 import { useAppState } from '../../state/AppStateProvider';
 import { useRaceState } from '../../state/RaceStateProvider';
 import { formatDDay, groupRaces } from '../../../domains/races/aggregate';
+import { goalRaceCountdown, goalRacePhaseLabels } from '../../../domains/races/goalRace';
+import { useGoalRace } from '../../../domains/races/useGoalRace';
 import { currentWeekProgress, goalMetricLabels } from '../../../domains/badges/goals';
-import { kstDayKey } from '../../../domains/activities/summary';
+import { formatDistance, kstDayKey } from '../../../domains/activities/summary';
+import { suggestTodayRun } from '../../../domains/activities/trend';
+import { activitySourceLabels } from '../../../domains/activities/types';
 import { upcomingPlans } from '../../../domains/activities/plans';
 import { shoes } from '../../../domains/shoes/catalog';
 import type { RouteKey } from '../../navigation/types';
@@ -26,13 +30,26 @@ type Props = {
   onOpenShoe: (shoeId?: string) => void;
 };
 
+const kindLabels: Record<string, string> = { run: '러닝', walk: '걷기', recovery: '회복' };
+
 export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe }: Props) {
-  const { preferences, streak, storageError, activities, weeklyGoal, plans } = useAppState();
+  const { preferences, streak, storageError, activities, weeklyGoal, plans, badges } = useAppState();
   const { feed } = useRaceState();
+  const { goalRace } = useGoalRace();
 
   const progress = useMemo(
     () => currentWeekProgress(activities, weeklyGoal),
     [activities, weeklyGoal],
+  );
+
+  const suggestion = useMemo(
+    () => suggestTodayRun(activities, preferences.coachMinutes),
+    [activities, preferences.coachMinutes],
+  );
+
+  const goalCountdown = useMemo(
+    () => (goalRace ? goalRaceCountdown(goalRace.raceDate) : undefined),
+    [goalRace],
   );
 
   const nextRaces = useMemo(
@@ -44,6 +61,8 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe }: Props) {
   );
 
   const nextPlans = useMemo(() => upcomingPlans(plans, kstDayKey(new Date()), 2), [plans]);
+  const recentActivities = useMemo(() => activities.slice(0, 3), [activities]);
+  const recentBadges = useMemo(() => badges.slice(0, 3), [badges]);
 
   return (
     <ScrollView
@@ -55,12 +74,13 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe }: Props) {
 
       <Card style={styles.todayCard} accessibilityLabel="오늘의 러닝 추천">
         <Text style={styles.eyebrow}>TODAY RUN</Text>
-        <Text style={styles.todayTitle}>오늘의 러닝</Text>
+        <Text style={styles.todayTitle}>{suggestion.title}</Text>
         <Text style={styles.todayPlan}>
-          {preferences.coachMinutes}분 · {preferences.coachType}
+          {suggestion.minutes}분 · {preferences.coachType}
         </Text>
-        <Text style={styles.todayDescription}>
-          지난 선택을 기억했어요. 세부 시간과 유형은 러닝 시작 화면에서 바꿀 수 있어요.
+        <Text style={styles.todayDescription}>{suggestion.body}</Text>
+        <Text style={styles.todayNote}>
+          세부 시간과 유형은 러닝 시작 화면에서 바꿀 수 있어요. 몸 상태가 우선이에요.
         </Text>
         <View style={styles.todayActions}>
           <Button
@@ -72,6 +92,27 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe }: Props) {
           <Button label="러닝 시작" onPress={() => onNavigate('start')} style={styles.action} />
         </View>
       </Card>
+
+      {goalRace && goalCountdown ? (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => onOpenRace(goalRace.raceId)}
+          style={({ pressed }) => [pressed && styles.pressed]}
+        >
+          <Card style={styles.goalRaceCard}>
+            <View style={styles.goalRaceTop}>
+              <View style={styles.goalRaceDDay}>
+                <Text style={styles.goalRaceDDayText}>{goalCountdown.dDayLabel}</Text>
+              </View>
+              <Chip label={goalRacePhaseLabels[goalCountdown.phase]} tone="accent" />
+            </View>
+            <Text style={styles.goalRaceName}>{goalRace.name}</Text>
+            <Text style={styles.goalRaceMeta}>
+              {goalRace.raceDate} · {goalRace.region} · {goalCountdown.remainingLabel}
+            </Text>
+          </Card>
+        </Pressable>
+      ) : null}
 
       <Card style={styles.goalCard}>
         <View style={styles.goalHeader}>
@@ -116,6 +157,45 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe }: Props) {
         </Card>
       ) : null}
 
+      {recentActivities.length > 0 ? (
+        <>
+          <SectionHeader
+            title="최근 활동"
+            subtitle="이 기기에 저장된 기록이에요."
+            action={<Button label="전체" onPress={() => onNavigate('stats')} tone="quiet" />}
+          />
+          <Card style={styles.recentCard}>
+            {recentActivities.map((activity) => (
+              <View key={activity.id} style={styles.recentRow}>
+                <Text style={styles.recentTitle}>
+                  {kindLabels[activity.kind] ?? activity.kind} · {activity.durationMinutes}분
+                  {activity.distanceKm ? ` · ${formatDistance(activity.distanceKm)}` : ''}
+                </Text>
+                <Text style={styles.recentMeta}>
+                  {activitySourceLabels[activity.source]} · {activity.completedAt.slice(0, 10)}
+                </Text>
+              </View>
+            ))}
+          </Card>
+        </>
+      ) : null}
+
+      {recentBadges.length > 0 ? (
+        <>
+          <SectionHeader
+            title="새로 얻은 배지"
+            subtitle="가장 최근에 열린 배지예요."
+            action={<Button label="전체" onPress={() => onNavigate('stats')} tone="quiet" />}
+            compact
+          />
+          <View style={styles.badgeRow}>
+            {recentBadges.map((badge) => (
+              <Chip key={badge.id} label={badge.title} tone="positive" />
+            ))}
+          </View>
+        </>
+      ) : null}
+
       <SectionHeader
         title="다가오는 대회"
         subtitle={`검증 데이터 ${feed.revision}`}
@@ -142,14 +222,15 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe }: Props) {
 
       <SectionHeader
         title="커뮤니티"
-        subtitle="로그인하지 않아도 공개 글을 읽을 수 있어요."
+        subtitle="러닝 질문에 답하는 Q&A를 로그인 없이 읽을 수 있어요."
         action={<Button label="보기" onPress={() => onNavigate('community')} tone="quiet" />}
       />
       <Card style={styles.emptyCommunity}>
-        <Text style={styles.emptyTitle}>지금은 읽기 전용이에요</Text>
+        <Text style={styles.emptyTitle}>러닝 Q&A로 먼저 도움받기</Text>
         <Text style={styles.emptyBody}>
-          운영 서버 쓰기가 연결되기 전까지 글쓰기·좋아요는 열리지 않아요. 가짜 사용자나 자동
-          게시물은 만들지 않습니다.
+          무릎 통증, 러닝화 교체 시기, 인터벌 시작 시점처럼 자주 묻는 질문의 답을 앱 안에 담았어요.
+          글쓰기·좋아요는 운영 서버가 연결되기 전까지 열리지 않고, 가짜 사용자나 자동 게시물은
+          만들지 않습니다.
         </Text>
       </Card>
 
@@ -212,7 +293,40 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     marginTop: spacing.md,
   },
+  todayNote: {
+    color: '#A9B5C6',
+    fontSize: typeScale.caption,
+    lineHeight: 18,
+    marginTop: spacing.xs,
+  },
   todayActions: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.xl },
+  goalRaceCard: {
+    gap: spacing.xxs,
+    backgroundColor: palette.surfaceWarm,
+    borderColor: palette.accent,
+    borderWidth: 1,
+  },
+  goalRaceTop: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
+  goalRaceDDay: {
+    minHeight: 30,
+    justifyContent: 'center',
+    borderRadius: radius.pill,
+    backgroundColor: palette.accent,
+    paddingHorizontal: spacing.sm,
+  },
+  goalRaceDDayText: { color: palette.white, fontSize: typeScale.caption, fontWeight: '900' },
+  goalRaceName: {
+    color: palette.ink,
+    fontSize: typeScale.titleSmall,
+    fontWeight: '900',
+    marginTop: spacing.xs,
+  },
+  goalRaceMeta: { color: palette.inkSoft, fontSize: typeScale.caption, lineHeight: 18 },
+  recentCard: { gap: spacing.sm },
+  recentRow: { gap: 2 },
+  recentTitle: { color: palette.ink, fontSize: typeScale.bodySmall, fontWeight: '800' },
+  recentMeta: { color: palette.muted, fontSize: typeScale.caption },
+  badgeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   action: { flex: 1 },
   goalCard: { gap: spacing.sm },
   goalHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
