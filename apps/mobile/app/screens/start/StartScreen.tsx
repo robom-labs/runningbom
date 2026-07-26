@@ -56,6 +56,15 @@ import {
   type CoachRuntimeState,
 } from '../../../services/audio/coachService';
 import { coachCompletionRecord } from '../../../domains/coaching/runtime';
+import { withTrackedDistance } from '../../../domains/activities/pace';
+import {
+  formatDistanceKm,
+  formatPace,
+  gpsUnavailableNotice,
+  spokenDistanceKm,
+  spokenPace,
+  useRunTracking,
+} from '../../../domains/tracking';
 
 const guidanceOptions: GuidanceLevel[] = ['minimal', 'standard', 'detailed'];
 const voiceGenders: VoiceGender[] = ['female', 'male'];
@@ -109,6 +118,13 @@ export function StartScreen() {
     [kind, minutes, preferences.coachGuidance],
   );
   const active = runtime.state === 'running' || runtime.state === 'paused';
+
+  // GPS 추적은 Preview 빌드에서만 켜지며, 권한을 거부해도 코칭은 그대로 진행됩니다.
+  const tracking = useRunTracking(active);
+  const trackedDistanceRef = useRef<() => number | undefined>(() => undefined);
+  useEffect(() => {
+    trackedDistanceRef.current = tracking.distanceKmForActivity;
+  }, [tracking.distanceKmForActivity]);
 
   const phase = active ? currentPhase(session, runtime.elapsedSeconds) : undefined;
   const upcoming = active ? nextPhase(session, runtime.elapsedSeconds) : undefined;
@@ -171,10 +187,16 @@ export function StartScreen() {
         if (!completion) return;
         completionInFlightRef.current = next.sessionId;
         try {
-          await completeActivity({
-            ...completion,
-            source: next.native ? 'COACH_COMPLETED' : 'SELF_LOGGED',
-          });
+          // 측정된 거리가 있을 때만 기존 distanceKm 키에 덧붙입니다(스키마 변경 없음).
+          await completeActivity(
+            withTrackedDistance(
+              {
+                ...completion,
+                source: next.native ? 'COACH_COMPLETED' : 'SELF_LOGGED',
+              },
+              trackedDistanceRef.current(),
+            ),
+          );
           setCompletionSaved(true);
         } catch {
           completionInFlightRef.current = null;
@@ -214,6 +236,7 @@ export function StartScreen() {
   async function begin() {
     setCompletionSaved(false);
     completionInFlightRef.current = null;
+    tracking.reset();
     await updatePreferences({ coachMinutes: minutes, coachType: kind });
     try {
       setRuntime(await startCoachSession(session, preferences.speechRate, voiceGender));
@@ -386,6 +409,60 @@ export function StartScreen() {
               </View>
               <Text style={styles.progressCaption}>{progressPercent}% 진행</Text>
 
+              {tracking.supported ? (
+                <View accessibilityLabel="GPS 거리와 페이스" style={styles.trackingBox}>
+                  <View style={styles.trackingHeader}>
+                    <Text style={styles.phaseLabel}>GPS 거리·페이스</Text>
+                    <Text style={styles.trackingSignal}>{tracking.snapshot.statusLabel}</Text>
+                  </View>
+                  <View style={styles.trackingRow}>
+                    <View style={styles.trackingMetric}>
+                      <Text style={styles.trackingLabel}>거리</Text>
+                      <Text
+                        accessibilityLabel={
+                          tracking.snapshot.measuring
+                            ? `거리 ${spokenDistanceKm(tracking.snapshot.distanceMeters)}`
+                            : '거리 측정 안 함'
+                        }
+                        style={styles.trackingValue}
+                      >
+                        {tracking.snapshot.measuring
+                          ? formatDistanceKm(tracking.snapshot.distanceMeters)
+                          : '--'}
+                      </Text>
+                      <Text style={styles.trackingUnit}>km</Text>
+                    </View>
+                    <View style={styles.trackingMetric}>
+                      <Text style={styles.trackingLabel}>현재 페이스</Text>
+                      <Text
+                        accessibilityLabel={`현재 페이스 ${spokenPace(tracking.snapshot.currentPaceSecondsPerKm)}`}
+                        style={styles.trackingValue}
+                      >
+                        {tracking.snapshot.measuring
+                          ? formatPace(tracking.snapshot.currentPaceSecondsPerKm)
+                          : `--'--"`}
+                      </Text>
+                      <Text style={styles.trackingUnit}>/km</Text>
+                    </View>
+                    <View style={styles.trackingMetric}>
+                      <Text style={styles.trackingLabel}>평균 페이스</Text>
+                      <Text
+                        accessibilityLabel={`평균 페이스 ${spokenPace(tracking.snapshot.averagePaceSecondsPerKm)}`}
+                        style={styles.trackingValue}
+                      >
+                        {tracking.snapshot.measuring
+                          ? formatPace(tracking.snapshot.averagePaceSecondsPerKm)
+                          : `--'--"`}
+                      </Text>
+                      <Text style={styles.trackingUnit}>/km</Text>
+                    </View>
+                  </View>
+                  <Text style={styles.trackingNote}>{tracking.snapshot.statusDetail}</Text>
+                </View>
+              ) : (
+                <Text style={styles.trackingNote}>{gpsUnavailableNotice}</Text>
+              )}
+
               {phase ? (
                 <View style={styles.phaseBox}>
                   <Text style={styles.phaseLabel}>현재 구간</Text>
@@ -405,6 +482,9 @@ export function StartScreen() {
                 <Text style={styles.cueNow}>
                   {latestCue ? latestCue.text : '곧 첫 안내가 나와요.'}
                 </Text>
+                {tracking.distanceCueText ? (
+                  <Text style={styles.cueDistance}>{tracking.distanceCueText}</Text>
+                ) : null}
               </View>
 
               {cueHistory.length > 0 ? (
@@ -684,7 +764,43 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     lineHeight: 32,
   },
+  cueDistance: { color: '#FFD9C6', fontSize: typeScale.bodySmall, fontWeight: '800', lineHeight: 20 },
   cueLine: { color: '#CCD5E3', fontSize: typeScale.bodySmall, lineHeight: 20 },
+  trackingBox: {
+    gap: spacing.xs,
+    borderRadius: radius.md,
+    padding: spacing.sm,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+  },
+  trackingHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing.xs,
+  },
+  trackingSignal: {
+    color: palette.navy,
+    backgroundColor: '#FFD9C6',
+    fontSize: typeScale.caption,
+    fontWeight: '900',
+    overflow: 'hidden',
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+  },
+  trackingRow: { flexDirection: 'row', gap: spacing.xs },
+  trackingMetric: { flex: 1, minWidth: 0 },
+  trackingLabel: { color: '#CCD5E3', fontSize: typeScale.caption, fontWeight: '700' },
+  trackingValue: {
+    color: palette.white,
+    fontSize: 32,
+    lineHeight: 38,
+    fontWeight: '900',
+    letterSpacing: -1,
+    fontVariant: ['tabular-nums'],
+  },
+  trackingUnit: { color: '#CCD5E3', fontSize: typeScale.caption, fontWeight: '700' },
+  trackingNote: { color: '#CCD5E3', fontSize: typeScale.bodySmall, lineHeight: 20 },
   runtimeActions: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.xs },
   action: { flex: 1, minHeight: 56 },
   advanced: { gap: spacing.md },
