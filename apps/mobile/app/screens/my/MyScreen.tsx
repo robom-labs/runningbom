@@ -1,6 +1,13 @@
 // 기록·통계 화면입니다. 주간·월간 요약, 주간 목표, 배지, 활동 목록을 한곳에 모읍니다.
-import { memo, useCallback, useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  type LayoutChangeEvent,
+} from 'react-native';
 
 import {
   Banner,
@@ -57,12 +64,18 @@ import {
   type GoalMetric,
 } from '../../../domains/badges/goals';
 import {
+  personalBestSummary,
+  type PersonalBest,
+  type PersonalRecord,
+} from '../../../domains/activities/personalBests';
+import {
   BADGE_RULE_VERSION,
   badgeCategoryLabels,
   badgeCategoryOrder,
   type BadgeCategory,
   type BadgeProgress,
 } from '../../../domains/badges/rules';
+import type { StatsFocus } from '../../navigation/types';
 import { useAppState } from '../../state/AppStateProvider';
 import { ManualActivityCard } from './ManualActivityCard';
 
@@ -73,7 +86,13 @@ const metricSteps: Record<GoalMetric, number> = { sessions: 1, minutes: 10, dist
 /** 배지 44종을 한 번에 그리지 않도록 카테고리별 기본 노출 개수를 둡니다. */
 const collapsedBadgesPerCategory = 3;
 
-export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
+type MyScreenProps = {
+  onOpenCalendar: () => void;
+  /** 드로어 하위 메뉴("주간 요약·배지·최고기록")에서 넘어온 구획입니다. */
+  focus?: { section: StatsFocus; nonce: number };
+};
+
+export function MyScreen({ onOpenCalendar, focus }: MyScreenProps) {
   const {
     activities,
     streak,
@@ -91,6 +110,23 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
   const [showAllBadges, setShowAllBadges] = useState(false);
   const [trendMetric, setTrendMetric] = useState<TrendMetric>('distance');
   const [listFilter, setListFilter] = useState<ActivityListFilter>(defaultActivityListFilter);
+
+  // 하위 메뉴에서 고른 구획으로 스크롤합니다. 구획 위치는 onLayout으로만 기록합니다.
+  const scrollRef = useRef<ScrollView>(null);
+  const sectionOffsets = useRef<Record<StatsFocus, number>>({ week: 0, badges: 0, records: 0 });
+  const rememberOffset = useCallback(
+    (section: StatsFocus) => (event: LayoutChangeEvent) => {
+      sectionOffsets.current[section] = event.nativeEvent.layout.y;
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (!focus) return;
+    if (focus.section === 'badges') setShowAllBadges(true);
+    const offset = sectionOffsets.current[focus.section];
+    scrollRef.current?.scrollTo({ y: Math.max(0, offset - 8), animated: true });
+  }, [focus]);
 
   const weekTotals = useMemo(() => totalsForWeek(activities, currentWeekStart()), [activities]);
   const monthTotals = useMemo(() => totalsForMonth(activities, currentMonth()), [activities]);
@@ -138,7 +174,11 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
     () => currentWeekProgress(activities, weeklyGoal),
     [activities, weeklyGoal],
   );
-  const recommended = useMemo(() => recommendWeeklyGoal(activities), [activities]);
+  const recommended = useMemo(
+    () => recommendWeeklyGoal(activities, Date.now(), preferences.experienceLevel),
+    [activities, preferences.experienceLevel],
+  );
+  const bestSummary = useMemo(() => personalBestSummary(activities), [activities]);
 
   const unlockedCount = badgeProgress.filter((entry) => entry.unlocked).length;
   const categoryProgress = useMemo(
@@ -212,6 +252,7 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
     <ScrollView
       contentContainerStyle={screenStyles.content}
       keyboardShouldPersistTaps="handled"
+      ref={scrollRef}
       showsVerticalScrollIndicator={false}
       style={screenStyles.root}
     >
@@ -227,42 +268,44 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
         />
       ) : null}
 
-      <Card style={styles.card}>
-        <Text style={styles.cardTitle}>이번 주</Text>
-        <View style={styles.metrics}>
-          <Metric label="횟수" value={`${weekTotals.sessions}회`} style={styles.metric} />
-          <Metric label="시간" value={formatDuration(weekTotals.minutes)} style={styles.metric} />
-          <Metric
-            accent
-            label="거리"
-            value={formatDistance(weekTotals.distanceKm)}
-            style={styles.metric}
-          />
-        </View>
-        <View style={styles.metrics}>
-          <Metric label="이번 주 운동일" value={`${weekTotals.activeDays}일`} style={styles.metric} />
-          <Metric label="이번 주 평균 페이스" value={formatPace(weekPace)} style={styles.metric} />
-        </View>
-        <Text style={styles.cardTitle}>이번 달</Text>
-        <View style={styles.metrics}>
-          <Metric label="횟수" value={`${monthTotals.sessions}회`} style={styles.metric} />
-          <Metric label="시간" value={formatDuration(monthTotals.minutes)} style={styles.metric} />
-          <Metric
-            label="거리"
-            value={formatDistance(monthTotals.distanceKm)}
-            style={styles.metric}
-          />
-        </View>
-        <View style={styles.metrics}>
-          <Metric label="이번 달 운동일" value={`${monthTotals.activeDays}일`} style={styles.metric} />
-          <Metric label="이번 달 평균 페이스" value={formatPace(monthPace)} style={styles.metric} />
-        </View>
-        <Text style={styles.cardMeta}>
-          평균 페이스는 거리와 시간이 모두 저장된 기록만으로 계산해요. 거리 기록이 없으면 "기록
-          부족"으로 표시합니다.
-        </Text>
-        <Button label="캘린더에서 보기" onPress={onOpenCalendar} tone="secondary" />
-      </Card>
+      <View onLayout={rememberOffset('week')}>
+        <Card style={styles.card}>
+          <Text style={styles.cardTitle}>이번 주</Text>
+          <View style={styles.metrics}>
+            <Metric label="횟수" value={`${weekTotals.sessions}회`} style={styles.metric} />
+            <Metric label="시간" value={formatDuration(weekTotals.minutes)} style={styles.metric} />
+            <Metric
+              accent
+              label="거리"
+              value={formatDistance(weekTotals.distanceKm)}
+              style={styles.metric}
+            />
+          </View>
+          <View style={styles.metrics}>
+            <Metric label="이번 주 운동일" value={`${weekTotals.activeDays}일`} style={styles.metric} />
+            <Metric label="이번 주 평균 페이스" value={formatPace(weekPace)} style={styles.metric} />
+          </View>
+          <Text style={styles.cardTitle}>이번 달</Text>
+          <View style={styles.metrics}>
+            <Metric label="횟수" value={`${monthTotals.sessions}회`} style={styles.metric} />
+            <Metric label="시간" value={formatDuration(monthTotals.minutes)} style={styles.metric} />
+            <Metric
+              label="거리"
+              value={formatDistance(monthTotals.distanceKm)}
+              style={styles.metric}
+            />
+          </View>
+          <View style={styles.metrics}>
+            <Metric label="이번 달 운동일" value={`${monthTotals.activeDays}일`} style={styles.metric} />
+            <Metric label="이번 달 평균 페이스" value={formatPace(monthPace)} style={styles.metric} />
+          </View>
+          <Text style={styles.cardMeta}>
+            평균 페이스는 거리와 시간이 모두 저장된 기록만으로 계산해요. 거리 기록이 없으면 "기록
+            부족"으로 표시합니다.
+          </Text>
+          <Button label="캘린더에서 보기" onPress={onOpenCalendar} tone="secondary" />
+        </Card>
+      </View>
 
       <SectionHeader title="월별 추이" subtitle="최근 6개월 흐름이에요. 이번 달은 진한 막대예요." />
       <Card style={styles.card}>
@@ -342,10 +385,51 @@ export function MyScreen({ onOpenCalendar }: { onOpenCalendar: () => void }) {
         <Metric label="등급" value={streak.tier} style={styles.metric} />
       </View>
 
-      <SectionHeader
-        title={`배지 ${unlockedCount}/${badgeProgress.length}`}
-        subtitle={`규칙 ${BADGE_RULE_VERSION} · 카테고리별 진행률을 볼 수 있어요.`}
-      />
+      <View onLayout={rememberOffset('records')} style={styles.section}>
+        <SectionHeader
+          title="내 최고 기록"
+          subtitle="구간 계측이 아니라, 저장된 활동의 평균 페이스로 환산한 추정값이에요."
+        />
+        {bestSummary.hasAny ? (
+          <Card style={styles.card}>
+            {bestSummary.bests.length > 0 ? (
+              bestSummary.bests.map((best) => <PersonalBestRow best={best} key={best.key} />)
+            ) : (
+              <Text style={styles.cardMeta}>
+                5K·10K·하프·풀로 환산할 만한 거리 기록이 아직 없어요. 거리와 시간을 함께 남기면
+                구간 추정 기록이 채워져요.
+              </Text>
+            )}
+            {bestSummary.records.length > 0 ? (
+              <View style={styles.metrics}>
+                {bestSummary.records.map((record) => (
+                  <PersonalRecordTile key={record.key} record={record} />
+                ))}
+              </View>
+            ) : null}
+            <Text style={styles.disclaimer}>
+              구간별 랩 기록이 아니라 활동 하나의 평균 페이스를 목표 거리로 환산한 값이라, 실제
+              대회 기록과는 다를 수 있어요. 공인 기록이 아니에요.
+            </Text>
+          </Card>
+        ) : (
+          <EmptyState
+            title="아직 기록이 없어요"
+            body="러닝을 한 번 마치거나 이미 달린 기록을 적으면 5K·10K·하프·풀 추정 기록과 최장 거리·시간이 여기에 쌓여요."
+            actionLabel="캘린더에서 기록 적기"
+            onAction={onOpenCalendar}
+            hint="거리와 시간을 함께 적어야 구간 기록을 환산할 수 있어요."
+            tone="muted"
+          />
+        )}
+      </View>
+
+      <View onLayout={rememberOffset('badges')} style={styles.section}>
+        <SectionHeader
+          title={`배지 ${unlockedCount}/${badgeProgress.length}`}
+          subtitle={`규칙 ${BADGE_RULE_VERSION} · 카테고리별 진행률을 볼 수 있어요.`}
+        />
+      </View>
       <View accessibilityLabel="카테고리별 배지 진행률" style={styles.badgeGrid}>
         {categoryProgress.map((entry) => (
           <Pressable
@@ -507,6 +591,42 @@ const ActivityRow = memo(function ActivityRow({ activity }: { activity: Activity
   );
 });
 
+// 추정 기록임을 제목·설명·범위 안내 세 곳에서 모두 드러냅니다.
+const PersonalBestRow = memo(function PersonalBestRow({ best }: { best: PersonalBest }) {
+  const suffix = best.exact ? '' : ' (추정)';
+  return (
+    <View
+      accessibilityLabel={`${best.label} ${best.timeLabel}${suffix}. ${best.accuracyLabel}`}
+      style={styles.listRow}
+    >
+      <Text style={styles.rowTitle}>
+        {best.label} {best.timeLabel}
+        {suffix} · {formatPace(best.paceMinutesPerKm)}
+      </Text>
+      <Text style={styles.rowMeta}>{best.accuracyLabel}</Text>
+      <Text style={styles.rowMeta}>
+        {best.completedAt.slice(0, 10)} · {best.rangeLabel}
+      </Text>
+    </View>
+  );
+});
+
+const PersonalRecordTile = memo(function PersonalRecordTile({
+  record,
+}: {
+  record: PersonalRecord;
+}) {
+  return (
+    <View
+      accessibilityLabel={`${record.label} ${record.valueLabel}. ${record.detail}`}
+      style={styles.recordTile}
+    >
+      <Metric label={record.label} value={record.valueLabel} />
+      <Text style={styles.rowMeta}>{record.detail}</Text>
+    </View>
+  );
+});
+
 type BadgeRowProps = {
   entry: BadgeProgress;
   featured: boolean;
@@ -551,6 +671,7 @@ const BadgeRow = memo(function BadgeRow({ entry, featured, onFeature }: BadgeRow
 
 const styles = StyleSheet.create({
   card: { gap: spacing.sm },
+  section: { gap: spacing.sm },
   cardTitle: {
     color: palette.ink,
     fontSize: typeScale.body,
@@ -579,6 +700,7 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
   metric: { flex: 1, minWidth: 0 },
+  recordTile: { flex: 1, minWidth: 0, gap: spacing.xxs },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   filterBlock: { gap: spacing.xs },
   targetRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },

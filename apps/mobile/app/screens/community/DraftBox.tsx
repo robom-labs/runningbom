@@ -9,6 +9,7 @@ import { Button, Card, Chip, SectionHeader } from '../../design-system/component
 import {
   borderWidth,
   fontWeight,
+  layout,
   lineHeight,
   palette,
   radius,
@@ -89,9 +90,11 @@ export function DraftBox() {
         compact
       />
       <Card style={styles.card}>
-        <View style={styles.chipRow}>
+        <View accessibilityLabel="글 주제 고르기" style={styles.chipRow}>
           {draftTopics.map((value) => (
             <Chip
+              accessibilityLabel={`${value} 주제로 적기`}
+              accessibilityRole="tab"
               key={value}
               label={value}
               onPress={() => setTopic(value)}
@@ -101,6 +104,7 @@ export function DraftBox() {
           ))}
         </View>
         <TextInput
+          accessibilityHint={`${topic} 주제로 이 기기에만 저장돼요. 최대 ${DRAFT_BODY_MAX}자까지 적을 수 있어요.`}
           accessibilityLabel="질문이나 메모 입력"
           multiline
           onChangeText={setBody}
@@ -110,10 +114,20 @@ export function DraftBox() {
           value={body}
         />
         <View style={styles.actionRow}>
-          <Text style={styles.counter}>
+          <Text
+            accessibilityLabel={`${body.trim().length}자 입력함, 최대 ${DRAFT_BODY_MAX}자`}
+            accessibilityLiveRegion="polite"
+            style={styles.counter}
+          >
             {body.trim().length}/{DRAFT_BODY_MAX}자
           </Text>
-          <Button label="보관하기" onPress={save} style={styles.saveButton} />
+          <Button
+            accessibilityHint="적은 내용을 이 기기 보관함에 저장해요. 서버로 보내거나 게시하지 않아요."
+            accessibilityLabel={`${topic} 질문 보관하기`}
+            label="보관하기"
+            onPress={save}
+            style={styles.saveButton}
+          />
         </View>
         <Text accessibilityLiveRegion="polite" style={styles.status}>
           {status}
@@ -126,13 +140,29 @@ export function DraftBox() {
       {drafts.length > 0 ? (
         <View style={styles.list}>
           {drafts.map((draft) => (
-            <Card key={draft.id} style={styles.draftCard}>
+            <Card
+              accessibilityLabel={`${draft.topic} 주제, ${draft.createdAt.slice(0, 10)} 보관한 글`}
+              key={draft.id}
+              style={styles.draftCard}
+            >
               <View style={styles.draftHeader}>
-                <Chip label={draft.topic} />
-                <Text style={styles.draftDate}>{draft.createdAt.slice(0, 10)}</Text>
+                <Chip accessibilityLabel={`${draft.topic} 주제`} label={draft.topic} />
+                <Text
+                  accessibilityLabel={`${draft.createdAt.slice(0, 10)}에 보관함`}
+                  style={styles.draftDate}
+                >
+                  {draft.createdAt.slice(0, 10)}
+                </Text>
               </View>
               <Text style={styles.draftBody}>{draft.body}</Text>
-              <Button label="삭제" onPress={() => remove(draft.id)} tone="quiet" />
+              <Button
+                accessibilityHint="이 기기에서 바로 지워지고 되돌릴 수 없어요."
+                accessibilityLabel={`${draft.topic} 보관 글 삭제`}
+                label="삭제"
+                onPress={() => remove(draft.id)}
+                style={styles.deleteButton}
+                tone="quiet"
+              />
             </Card>
           ))}
         </View>
@@ -166,7 +196,9 @@ const styles = StyleSheet.create({
     lineHeight: lineHeight.caption,
     fontWeight: fontWeight.semibold,
   },
-  saveButton: { minWidth: 120 },
+  // 터치 대상은 48px 하한(layout.touchTarget)을 지킵니다.
+  saveButton: { minWidth: 120, minHeight: layout.touchTarget },
+  deleteButton: { minHeight: layout.touchTarget },
   status: {
     color: palette.inkSoft,
     fontSize: typeScale.caption,

@@ -19,10 +19,18 @@ import {
   unlockedBadges,
 } from '../domains/badges/rules';
 import {
+  baselineGoalTarget,
   currentWeekProgress,
+  experienceLevels,
   recommendWeeklyGoal,
+  startingWeeklyGoal,
   weeklyGoalProgress,
 } from '../domains/badges/goals';
+import {
+  experienceFromLegacyBio,
+  migrateExperienceLevel,
+  stripLegacyExperiencePrefix,
+} from '../services/storage/preferences';
 import {
   countRaces,
   filterRaceGroups,
@@ -32,6 +40,7 @@ import {
   normalizeRaceName,
 } from '../domains/races/aggregate';
 import { menuGroups, routeFromStoredValue, routeTitles } from '../app/navigation/routes';
+import { isStatsFocus } from '../app/navigation/types';
 import type { Race } from '../src/types';
 
 function activity(completedAt: string, overrides: Partial<ActivityRecord> = {}): ActivityRecord {
@@ -296,5 +305,117 @@ describe('드로어 라우팅', () => {
     assert.equal(routeFromStoredValue('calendar'), 'calendar');
     assert.equal(routeFromStoredValue(undefined), 'home');
     assert.equal(routeFromStoredValue('없는값'), 'home');
+  });
+});
+
+describe('드로어 세부 하위메뉴', () => {
+  const children = menuGroups.flatMap((group) =>
+    group.items.flatMap((item) => (item.children ?? []).map((child) => ({ item, child }))),
+  );
+
+  it('러닝화·대회·기록·캘린더에 하위 항목이 있다', () => {
+    const parents = new Set(children.map((entry) => entry.item.key));
+    for (const key of ['shoes', 'races', 'stats', 'calendar'] as const) {
+      assert.ok(parents.has(key), `${key} 하위 메뉴 누락`);
+    }
+    assert.ok(children.length >= 12);
+  });
+
+  it('모든 하위 항목이 실제 라우트를 가리키고 키가 겹치지 않는다', () => {
+    const keys = new Set<string>();
+    for (const { child } of children) {
+      assert.ok(routeTitles[child.target], `${child.key} 대상 라우트 없음`);
+      assert.ok(!keys.has(child.key), `${child.key} 중복`);
+      keys.add(child.key);
+    }
+  });
+
+  it('focus 값은 그 화면이 실제로 받을 수 있는 값만 쓴다', () => {
+    for (const { child } of children) {
+      if (child.focus === undefined) continue;
+      // 지금은 기록·통계 화면만 구획 focus를 받습니다.
+      assert.equal(child.target, 'stats');
+      assert.ok(isStatsFocus(child.focus), `${child.key} focus 값 미지원`);
+    }
+    const statsFocuses = children
+      .filter((entry) => entry.child.target === 'stats')
+      .map((entry) => entry.child.focus);
+    assert.deepEqual(statsFocuses, ['week', 'badges', 'records']);
+  });
+});
+
+describe('경력(실력) 축 주간 목표', () => {
+  const now = new Date('2026-07-22T12:00:00.000Z');
+
+  it('경력을 고르지 않은 신규 사용자의 값은 예전과 같다', () => {
+    const goal = recommendWeeklyGoal([], now);
+    assert.equal(goal.metric, 'sessions');
+    assert.equal(goal.target, 2);
+    assert.equal(baselineGoalTarget('minutes'), 60);
+    assert.equal(baselineGoalTarget('distance'), 6);
+  });
+
+  it('이력이 없으면 경력별로 출발선이 달라진다', () => {
+    assert.equal(recommendWeeklyGoal([], now, '이제 시작').target, 2);
+    assert.equal(recommendWeeklyGoal([], now, '1년 미만').target, 3);
+    assert.equal(recommendWeeklyGoal([], now, '1~3년').target, 3);
+    assert.equal(recommendWeeklyGoal([], now, '3년 이상').target, 4);
+    for (const level of experienceLevels) {
+      assert.ok(baselineGoalTarget('minutes', level) > 0);
+      assert.ok(baselineGoalTarget('distance', level) > 0);
+    }
+  });
+
+  it('이력이 있으면 이력을 우선하되 경력 상한으로 과한 목표를 막는다', () => {
+    const records = [
+      activity('2026-07-13T12:00:00.000Z'),
+      activity('2026-07-14T12:00:00.000Z'),
+      activity('2026-07-15T12:00:00.000Z'),
+    ];
+    const withoutExperience = recommendWeeklyGoal(records, now);
+    const beginner = recommendWeeklyGoal(records, now, '이제 시작');
+    assert.equal(withoutExperience.target, 4);
+    assert.equal(beginner.target, 3);
+    assert.equal(recommendWeeklyGoal(records, now, '3년 이상').target, 4);
+  });
+
+  it('상한이 이미 하고 있는 양보다 낮아도 목표를 깎지 않는다', () => {
+    const heavy = [1, 2, 3, 4, 5].map((day) =>
+      activity(`2026-07-1${day}T12:00:00.000Z`),
+    );
+    const goal = recommendWeeklyGoal(heavy, now, '이제 시작');
+    const average = recentWeeklyAverage(heavy, now);
+    assert.ok(goal.target >= Math.round(average.sessions));
+  });
+
+  it('첫 목표는 이력 → 경력 → 안전 기본값 순으로 정해진다', () => {
+    assert.deepEqual(startingWeeklyGoal([], undefined, now), {
+      metric: 'sessions',
+      target: 3,
+      auto: true,
+    });
+    assert.equal(startingWeeklyGoal([], '이제 시작', now).target, 2);
+  });
+});
+
+describe('러닝 경력 저장 마이그레이션', () => {
+  it('예전 profileBio 접두어를 전용 필드로 읽어 온다', () => {
+    assert.equal(experienceFromLegacyBio('1~3년 · 아침 러너'), '1~3년');
+    assert.equal(experienceFromLegacyBio('아침 러너'), undefined);
+    assert.equal(experienceFromLegacyBio(undefined), undefined);
+    assert.equal(migrateExperienceLevel({ profileBio: '3년 이상 · 주말 롱런' }), '3년 이상');
+  });
+
+  it('전용 필드가 있으면 그 값을 그대로 쓴다', () => {
+    assert.equal(
+      migrateExperienceLevel({ experienceLevel: '이제 시작', profileBio: '3년 이상 · 옛 값' }),
+      '이제 시작',
+    );
+  });
+
+  it('접두어만 걷어내고 사용자가 쓴 문장은 남긴다', () => {
+    assert.equal(stripLegacyExperiencePrefix('1~3년 · 아침 러너'), '아침 러너');
+    assert.equal(stripLegacyExperiencePrefix('아침 러너'), '아침 러너');
+    assert.equal(stripLegacyExperiencePrefix('1년 미만'), '');
   });
 });

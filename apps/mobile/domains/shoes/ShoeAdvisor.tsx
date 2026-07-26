@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { Button, Card, Chip } from '../../app/design-system/components';
+import { Button, Card, Chip, EmptyState } from '../../app/design-system/components';
 import { palette, spacing, typeScale } from '../../app/design-system/theme';
 import {
   ADVISOR_MAX_RESULTS,
@@ -61,20 +61,31 @@ export function ShoeAdvisor({
 
       {advisorQuestions.map((question) => (
         <Card key={question.key} style={styles.block}>
-          <Text style={styles.blockTitle}>{question.title}</Text>
+          <Text accessibilityRole="header" style={styles.blockTitle}>
+            {question.title}
+          </Text>
           <Text style={styles.note}>{question.help}</Text>
-          <View style={styles.chipWrap}>
-            {question.options.map((option) => (
-              <Chip
-                key={String(option.value)}
-                label={option.label}
-                selected={answers[question.key] === option.value}
-                onPress={() =>
-                  setAnswers((current) => ({ ...current, [question.key]: option.value }))
-                }
-                tone="accent"
-              />
-            ))}
+          <View
+            accessibilityRole="radiogroup"
+            accessibilityLabel={`${question.title} 선택지`}
+            style={styles.chipWrap}
+          >
+            {question.options.map((option) => {
+              const selected = answers[question.key] === option.value;
+              return (
+                <Chip
+                  key={String(option.value)}
+                  label={option.label}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${question.title}: ${option.label}${selected ? ', 선택됨' : ''}`}
+                  selected={selected}
+                  onPress={() =>
+                    setAnswers((current) => ({ ...current, [question.key]: option.value }))
+                  }
+                  tone="accent"
+                />
+              );
+            })}
           </View>
           <Text style={styles.hint}>
             {question.options
@@ -108,11 +119,13 @@ export function ShoeAdvisor({
             </View>
           ))}
           {results.length === 0 ? (
-            <Card style={styles.block}>
-              <Text style={styles.note}>
-                조건에 맞는 러닝화를 찾지 못했어요. 예산이나 거리 답변을 바꿔 다시 시도해 주세요.
-              </Text>
-            </Card>
+            <EmptyState
+              title="조건에 맞는 러닝화를 찾지 못했어요"
+              body="예산이나 거리 답변을 조금 넓히면 후보가 생겨요. 없는 신발을 억지로 추천하지는 않아요."
+              actionLabel="답변 다시 하기"
+              onAction={() => setAnswers({})}
+              hint="목록에서 직접 필터를 조절해 볼 수도 있어요."
+            />
           ) : null}
         </View>
       ) : (

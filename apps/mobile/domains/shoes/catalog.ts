@@ -3,11 +3,13 @@
 // 데이터 출처 · 갱신 주기
 // - 분류(카테고리/세부/플레이트/실력/거리)는 2026-05 기준 러닝화 분류 차트를 옮긴 편집 데이터입니다.
 //   각 항목의 verification 필드로 'chart-2026-05'(차트 기반) / 'official-checked'(공식 페이지 확인)를 구분합니다.
-// - 무게·드롭·스택높이·정확한 원화가·출시일은 확인된 값만 넣습니다. 미확인이면 필드를 비우고
-//   specNote로 "공식 스펙 미확인"을 정직하게 표기합니다. priceBand는 밴드 구간만 나타냅니다.
+// - 무게·드롭·스택높이·정확한 원화가는 제조사 공표값을 그 세대까지 확실히 아는 모델만 채웁니다
+//   (weightGrams·dropMm·stackMm·priceKrw). 미확인이면 필드 자체를 만들지 않고 specNote로
+//   "공식 스펙 미확인"을 정직하게 표기합니다. 출시일은 다루지 않고, priceBand는 밴드 구간만 나타냅니다.
+// - 추정·환산·"대체로 이럴 것"으로 채우지 않습니다. 확신이 없으면 비우는 쪽이 항상 정답입니다.
 // - 갱신 주기: 분기 1회 정기 점검 + 신제품 발표 시 수시. 갱신 시 SHOE_DATA_VERSION을 올립니다.
 // - 정적 데이터 sidecar가 배포되면 domains/shoes/refresh.ts의 mergeShoeCatalog로 병합합니다.
-export const SHOE_DATA_VERSION = '2026.07.26-v3';
+export const SHOE_DATA_VERSION = '2026.07.26-v4';
 
 import {
   shoeBrandColors,
@@ -247,7 +249,7 @@ export type ShoeEntry = {
   plate: ShoePlate;
   levels: ShoeLevel[];
   distances: ShoeDistance[];
-  /** 정확한 원화가는 넣지 않고 가격 밴드만 표기합니다. */
+  /** 모든 항목이 가지는 가격 구간입니다. 정확한 정가는 priceKrw가 확인된 모델에만 붙습니다. */
   priceBand: ShoePriceBand;
   purposeTags: ShoePurposeTag[];
   strengths: string[];
@@ -258,6 +260,22 @@ export type ShoeEntry = {
   verification: ShoeVerification;
   /** 무게·드롭·스택 등 수치 스펙의 확인 상태를 정직하게 남기는 자리 */
   specNote?: string;
+  // -------------------------------------------------------------------------
+  // 공식 스펙(선택 필드)
+  //
+  // 정책: "정확한 수치는 넣지 않는다"를 완화하되 뒤집지는 않습니다.
+  // - 제조사가 공표한 값을 그 세대(버전)까지 확실히 아는 모델만 채웁니다.
+  // - 조금이라도 확신이 없으면 필드를 비웁니다. 추정·환산·반올림으로 채우지 않습니다.
+  // - 비어 있으면 화면은 값을 지어내지 않고 "공식 페이지에서 확인" 안내로 대체합니다.
+  // -------------------------------------------------------------------------
+  /** 제조사 공표 무게(g). 브랜드 표준 남성 사이즈(US 9) 기준 값만 넣습니다. */
+  weightGrams?: number;
+  /** 제조사 공표 힐-토 드롭(mm) */
+  dropMm?: number;
+  /** 제조사 공표 스택 높이(mm). heel/forefoot 두 값이 모두 확인될 때만 넣습니다. */
+  stackMm?: { heel: number; forefoot: number };
+  /** 국내 정가(원). 국내 공식 판매가가 확실할 때만 넣고, 아니면 priceBand만 씁니다. */
+  priceKrw?: number;
   /** 언제 신는 신발인지 2~3문장으로 설명합니다. 세부 카테고리 기준에 항목별 거리·실력을 붙여 만듭니다. */
   useCase: string;
   /** 착화감·발볼·사이즈 경향. 단정하지 않고 "알려져 있어요 · 매장 착화 권장" 톤을 유지합니다. */
@@ -553,6 +571,11 @@ type ShoeEntryInput = {
   pick: string;
   verification?: ShoeVerification;
   specNote?: string;
+  /** 공식 스펙. 확인된 모델만 넘기고 나머지는 넘기지 않습니다(추정 금지). */
+  weightGrams?: number;
+  dropMm?: number;
+  stackMm?: { heel: number; forefoot: number };
+  priceKrw?: number;
   /** 아래 심화 필드는 비워 두면 세부 카테고리·브랜드 기준값으로 채웁니다. */
   useCase?: string;
   fitNote?: string;
@@ -587,6 +610,11 @@ function define(input: ShoeEntryInput): ShoeEntry {
     brandColor: shoeBrandColors[input.brand],
     verification: input.verification ?? 'chart-2026-05',
     ...(input.specNote ? { specNote: input.specNote } : {}),
+    // 확인된 값만 실제 키로 존재하게 둡니다(undefined 키를 만들지 않습니다).
+    ...(typeof input.weightGrams === 'number' ? { weightGrams: input.weightGrams } : {}),
+    ...(typeof input.dropMm === 'number' ? { dropMm: input.dropMm } : {}),
+    ...(input.stackMm ? { stackMm: { ...input.stackMm } } : {}),
+    ...(typeof input.priceKrw === 'number' ? { priceKrw: input.priceKrw } : {}),
     useCase: input.useCase ?? buildUseCase(guide, distances, levels),
     fitNote: input.fitNote ?? brandFitNotes[input.brand],
     bestForRunner: input.bestForRunner ?? [...guide.bestForRunner],
@@ -598,6 +626,12 @@ function define(input: ShoeEntryInput): ShoeEntry {
 
 const UNVERIFIED_SPEC = '무게·드롭·스택 등 공식 스펙 미확인';
 const UNVERIFIED_PLATE = '플레이트 사양 공식 미확인 · 무게·드롭·스택 공식 스펙 미확인';
+/** 드롭만 공표값을 확인한 모델에 붙입니다. */
+const DROP_CONFIRMED = '드롭만 제조사 공표값 확인 · 무게·스택·정가 미확인';
+/** 드롭과 스택을 함께 확인한 모델에 붙입니다. */
+const DROP_STACK_CONFIRMED = '드롭·스택은 제조사 공표값 확인 · 무게·정가 미확인';
+/** 무게와 드롭을 함께 확인한 모델에 붙입니다. */
+const WEIGHT_DROP_CONFIRMED = '무게·드롭은 제조사 공표값 확인 · 스택·정가 미확인';
 
 const dailyEntryShoes: ShoeEntry[] = [
   define({
@@ -610,6 +644,8 @@ const dailyEntryShoes: ShoeEntry[] = [
     watchouts: ['아주 푹신한 착화감을 원하면 맥스 쿠션화를 함께 보세요'],
     pick: '무엇을 살지 모르겠다면 여기서 시작하는 게 가장 안전해요.',
     verification: 'official-checked',
+    dropMm: 10,
+    specNote: DROP_CONFIRMED,
   }),
   define({
     id: 'nike-pegasus-premium',
@@ -791,7 +827,8 @@ const dailyMaxCushionShoes: ShoeEntry[] = [
     strengths: ['나이키 데일리 중 가장 두툼한 쿠션 라인', '장거리 조깅과 회복주에 여유 있는 완충'],
     watchouts: ['무게가 있어 빠른 훈련에는 둔하게 느껴져요'],
     pick: '나이키에서 푹신함 하나만 보고 고른다면 보메로예요.',
-    specNote: UNVERIFIED_SPEC,
+    dropMm: 10,
+    specNote: DROP_CONFIRMED,
   }),
   define({
     id: 'nike-vomero-plus',
@@ -1211,7 +1248,8 @@ const dailyAllrounderShoes: ShoeEntry[] = [
     strengths: ['통통 튀는 반발감으로 유명한 데일리', '조깅과 템포 모두 즐거운 주행감'],
     watchouts: ['반발이 강해 안정감은 상대적으로 덜해요'],
     pick: '달리는 재미를 우선한다면 가장 추천하기 쉬운 모델이에요.',
-    specNote: UNVERIFIED_SPEC,
+    dropMm: 8,
+    specNote: DROP_CONFIRMED,
   }),
   define({
     id: 'new-balance-1080-v15',
@@ -1223,7 +1261,8 @@ const dailyAllrounderShoes: ShoeEntry[] = [
     strengths: ['부드러운 쿠션과 넓은 활용도의 조합', '일상 조깅부터 장거리까지 두루 소화'],
     watchouts: ['빠른 훈련 전용으로는 반응성이 아쉬워요'],
     pick: '편안함 중심의 만능 데일리를 찾을 때예요.',
-    specNote: UNVERIFIED_SPEC,
+    dropMm: 6,
+    specNote: DROP_CONFIRMED,
   }),
   define({
     id: 'puma-velocity-nitro-4',
@@ -1777,7 +1816,8 @@ const racingLongShoes: ShoeEntry[] = [
     strengths: ['마라톤 레이싱화의 기준이 된 계보', '가벼운 무게와 강한 추진의 조합'],
     watchouts: ['내구성이 짧아 대회 중심으로 아껴 써야 해요'],
     pick: '하프·풀 대회 기록을 노린다면 가장 검증된 이름이에요.',
-    specNote: UNVERIFIED_SPEC,
+    dropMm: 8,
+    specNote: DROP_CONFIRMED,
   }),
   define({
     id: 'nike-alphafly-3',
@@ -1789,7 +1829,9 @@ const racingLongShoes: ShoeEntry[] = [
     strengths: ['에어 유닛과 카본을 결합한 최상위 구성', '풀 마라톤 후반부에 강한 성격'],
     watchouts: ['무겁고 구조가 커서 페이스가 느리면 이점이 줄어요'],
     pick: '풀 마라톤 한 종목에 모든 걸 걸 때 선택해요.',
-    specNote: UNVERIFIED_SPEC,
+    dropMm: 8,
+    stackMm: { heel: 40, forefoot: 32 },
+    specNote: DROP_STACK_CONFIRMED,
   }),
   define({
     id: 'adidas-adizero-adios-pro-4',
@@ -1845,7 +1887,8 @@ const racingLongShoes: ShoeEntry[] = [
     strengths: ['보폭을 늘리는 주법에 맞춘 설계', '마라톤 후반 유지력에 초점'],
     watchouts: ['주법에 따라 엣지 모델이 더 맞을 수 있어요'],
     pick: '보폭을 넓게 쓰는 러너를 위한 아식스 레이서예요.',
-    specNote: UNVERIFIED_SPEC,
+    dropMm: 5,
+    specNote: DROP_CONFIRMED,
   }),
   define({
     id: 'asics-metaspeed-tokyo-edge',
@@ -1856,7 +1899,8 @@ const racingLongShoes: ShoeEntry[] = [
     strengths: ['회전수를 올리는 주법에 맞춘 설계', '리듬을 빠르게 유지하기 좋은 구성'],
     watchouts: ['주법에 따라 스카이 모델이 더 맞을 수 있어요'],
     pick: '피치를 빠르게 가져가는 러너를 위한 아식스 레이서예요.',
-    specNote: UNVERIFIED_SPEC,
+    dropMm: 8,
+    specNote: DROP_CONFIRMED,
   }),
   define({
     id: 'asics-metaspeed-ray',
@@ -2027,6 +2071,8 @@ const previousGenerationShoes: ShoeEntry[] = [
     watchouts: ['다음 세대(님버스 28)와 함께 비교해 보세요'],
     pick: '검증된 맥스 쿠션을 이전 세대 가격으로 노릴 때예요.',
     verification: 'official-checked',
+    dropMm: 8,
+    specNote: DROP_CONFIRMED,
   }),
   define({
     id: 'new-balance-1080-v14',
@@ -2038,6 +2084,9 @@ const previousGenerationShoes: ShoeEntry[] = [
     watchouts: ['다음 세대(V15)와 재고·가격을 비교해 보세요'],
     pick: '1080 감성을 이전 세대로 저렴하게 쓰고 싶을 때예요.',
     verification: 'official-checked',
+    weightGrams: 298,
+    dropMm: 6,
+    specNote: WEIGHT_DROP_CONFIRMED,
   }),
   define({
     id: 'saucony-ride-18',
@@ -2149,6 +2198,53 @@ export const shoeCatalog: ShoeEntry[] = withComparisons([
 
 export function findShoeEntry(id: string, values: ShoeEntry[] = shoeCatalog): ShoeEntry | undefined {
   return values.find((entry) => entry.id === id);
+}
+
+// ---------------------------------------------------------------------------
+// 공식 스펙 표시 헬퍼
+// 값이 있는 항목만 만들어 돌려줍니다. 빈칸·물음표·"미확인" 같은 자리표시자를 만들지 않아
+// 화면이 없는 수치를 있는 것처럼 그리는 일을 구조적으로 막습니다.
+// ---------------------------------------------------------------------------
+
+export type ShoeSpecItem = {
+  key: 'weight' | 'drop' | 'stack' | 'price';
+  label: string;
+  value: string;
+};
+
+/** 스펙 카드에 함께 붙이는 출처 캡션입니다. */
+export const OFFICIAL_SPEC_CAPTION = '제조사 공표 기준';
+
+/** 천 단위 구분 쉼표. Intl 없이 동작하도록 직접 만듭니다(Hermes 호환). */
+export function formatKrw(value: number): string {
+  return `${Math.round(value)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`;
+}
+
+export function officialSpecItems(entry: ShoeEntry): ShoeSpecItem[] {
+  const items: ShoeSpecItem[] = [];
+  if (typeof entry.weightGrams === 'number') {
+    items.push({ key: 'weight', label: '무게', value: `${entry.weightGrams}g` });
+  }
+  if (typeof entry.dropMm === 'number') {
+    items.push({ key: 'drop', label: '드롭', value: `${entry.dropMm}mm` });
+  }
+  if (entry.stackMm) {
+    items.push({
+      key: 'stack',
+      label: '스택',
+      value: `${entry.stackMm.heel}/${entry.stackMm.forefoot}mm`,
+    });
+  }
+  if (typeof entry.priceKrw === 'number') {
+    items.push({ key: 'price', label: '정가', value: formatKrw(entry.priceKrw) });
+  }
+  return items;
+}
+
+export function hasOfficialSpec(entry: ShoeEntry): boolean {
+  return officialSpecItems(entry).length > 0;
 }
 
 export function shoeSearchText(entry: ShoeEntry): string {

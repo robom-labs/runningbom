@@ -61,6 +61,8 @@ export function KnowledgeSection({ onNavigate }: Props) {
       >
         {knowledgeCategories.map((value) => (
           <Chip
+            accessibilityLabel={`${value} 주제, 질문 ${counts[value]}개`}
+            accessibilityRole="tab"
             key={value}
             label={`${value} ${counts[value]}`}
             onPress={() => {
@@ -86,20 +88,31 @@ export function KnowledgeSection({ onNavigate }: Props) {
         </Card>
       ) : (
         <View style={styles.list}>
-          {results.map((card) => (
+          {results.map((card) => {
+            const expanded = openId === card.id;
+            return (
+            // 아코디언 머리글의 accessibilityRole="button" + accessibilityState={{ expanded }}와
+            // 48px 이상 터치 높이는 공통 Disclosure(app/design-system/components.tsx)가 보장합니다.
             <Disclosure
-              badge={<Chip label={card.category} />}
-              expanded={openId === card.id}
+              badge={<Chip accessibilityLabel={`${card.category} 주제`} label={card.category} />}
+              expanded={expanded}
               key={card.id}
               onToggle={() => setOpenId((current) => (current === card.id ? undefined : card.id))}
               title={card.question}
             >
-              {card.answer.map((line, index) => (
-                <View key={`${card.id}-${index}`} style={styles.answerRow}>
-                  <Text style={styles.answerDot}>·</Text>
-                  <Text style={styles.answerText}>{line}</Text>
-                </View>
-              ))}
+              <View
+                accessibilityLabel={`${card.question} 답변 ${card.answer.length}줄`}
+                accessibilityLiveRegion="polite"
+                accessibilityState={{ expanded }}
+                style={styles.answerList}
+              >
+                {card.answer.map((line, index) => (
+                  <View key={`${card.id}-${index}`} style={styles.answerRow}>
+                    <Text style={styles.answerDot}>·</Text>
+                    <Text style={styles.answerText}>{line}</Text>
+                  </View>
+                ))}
+              </View>
               {card.link ? (
                 <View style={styles.linkBox}>
                   <Text style={styles.linkLabel}>
@@ -108,6 +121,8 @@ export function KnowledgeSection({ onNavigate }: Props) {
                   <Text style={styles.linkHint}>{card.link.hint}</Text>
                   {onNavigate ? (
                     <Chip
+                      accessibilityLabel={`${knowledgeLinkLabels[card.link.target]} 화면 열기`}
+                      accessibilityRole="button"
                       label={`${knowledgeLinkLabels[card.link.target]} 열기`}
                       onPress={() => onNavigate(card.link!.target)}
                       tone="accent"
@@ -120,7 +135,8 @@ export function KnowledgeSection({ onNavigate }: Props) {
                 </View>
               ) : null}
             </Disclosure>
-          ))}
+            );
+          })}
         </View>
       )}
     </View>
@@ -150,6 +166,7 @@ const styles = StyleSheet.create({
     fontWeight: fontWeight.bold,
   },
   list: { gap: spacing.xs },
+  answerList: { gap: spacing.xxs },
   answerRow: { flexDirection: 'row', gap: spacing.xs },
   answerDot: {
     color: palette.accentDark,

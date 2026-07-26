@@ -24,6 +24,7 @@ import {
   defaultWeeklyGoal,
   isWeeklyGoal,
   recommendWeeklyGoal,
+  startingWeeklyGoal,
   type WeeklyGoal,
 } from '../../domains/badges/goals';
 import {
@@ -176,7 +177,10 @@ export function AppStateProvider({ children }: PropsWithChildren) {
         setPreferences(loadedPreferences);
         setActivities(loadedActivities);
         setPlans(loadedPlans);
-        setWeeklyGoalState(loadedGoal ?? recommendWeeklyGoal(loadedActivities));
+        // 저장된 목표가 없으면 이력 → 경력(실력) → 안전 기본값 순으로 첫 목표를 정합니다.
+        setWeeklyGoalState(
+          loadedGoal ?? startingWeeklyGoal(loadedActivities, loadedPreferences.experienceLevel),
+        );
         const onboarding = resolveOnboardingStatus(
           savedOnboarding,
           looksLikeExistingUser({
@@ -315,10 +319,14 @@ export function AppStateProvider({ children }: PropsWithChildren) {
   );
 
   const applyRecommendedGoal = useCallback(async () => {
-    const recommended = recommendWeeklyGoal(activities);
+    const recommended = recommendWeeklyGoal(
+      activities,
+      Date.now(),
+      preferences.experienceLevel,
+    );
     await setWeeklyGoal(recommended);
     return recommended;
-  }, [activities, setWeeklyGoal]);
+  }, [activities, preferences.experienceLevel, setWeeklyGoal]);
 
   // 온보딩에서 고른 값을 각자의 기존 저장소에 넘겨주고 완료 여부만 새 키에 남깁니다.
   const completeOnboarding = useCallback(

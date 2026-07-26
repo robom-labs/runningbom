@@ -57,14 +57,23 @@ import {
 } from '../../../services/audio/coachService';
 import { coachCompletionRecord } from '../../../domains/coaching/runtime';
 import { withTrackedDistance } from '../../../domains/activities/pace';
+import type { ActivitySplit } from '../../../domains/activities/types';
 import {
+  fastestSplitIndex,
   formatDistanceKm,
   formatPace,
   gpsUnavailableNotice,
+  routePointSummary,
+  splitDistanceKm,
+  splitLabel,
+  splitPaceSecondsPerKm,
   spokenDistanceKm,
   spokenPace,
+  spokenSplit,
   useRunTracking,
+  type TrackedActivityExtras,
 } from '../../../domains/tracking';
+import { attachActivityTrack } from '../../../services/storage/localDatabase';
 
 const guidanceOptions: GuidanceLevel[] = ['minimal', 'standard', 'detailed'];
 const voiceGenders: VoiceGender[] = ['female', 'male'];
@@ -79,6 +88,17 @@ function formatElapsed(seconds: number): string {
   const remainder = Math.floor(safe % 60).toString().padStart(2, '0');
   return `${minutes}:${remainder}`;
 }
+
+/** 구간 목록은 최근 구간이 위로 오게 뒤집어 보여 줍니다. */
+const VISIBLE_SPLIT_COUNT = 6;
+
+/** 완료 화면에 남길 이번 세션의 구간·경로 요약입니다. */
+type CompletionTrack = {
+  splits: ActivitySplit[];
+  routePointCount: number;
+  /** 기기 저장소에 실제로 붙었는지. 실패해도 기록 자체는 저장돼 있습니다. */
+  stored: boolean;
+};
 
 /** 스크린리더가 "12:30"을 숫자로 읽지 않도록 사람이 말하듯 풀어 줍니다. */
 function spokenDuration(seconds: number): string {
@@ -110,6 +130,7 @@ export function StartScreen() {
     native: nativeCoachAvailable(),
   });
   const [completionSaved, setCompletionSaved] = useState(false);
+  const [completionTrack, setCompletionTrack] = useState<CompletionTrack>();
   const completionInFlightRef = useRef<string | null>(null);
 
   const type = useMemo(() => resolveRunningType(kind), [kind]);
@@ -120,11 +141,23 @@ export function StartScreen() {
   const active = runtime.state === 'running' || runtime.state === 'paused';
 
   // GPS 추적은 Preview 빌드에서만 켜지며, 권한을 거부해도 코칭은 그대로 진행됩니다.
-  const tracking = useRunTracking(active);
-  const trackedDistanceRef = useRef<() => number | undefined>(() => undefined);
+  // 화면 꺼짐 방지는 "진행 중"일 때만 켜고, 일시정지하면 바로 풀립니다.
+  const tracking = useRunTracking(active, runtime.state === 'running');
+  const trackingExtrasRef = useRef<() => TrackedActivityExtras>(() => ({}));
   useEffect(() => {
-    trackedDistanceRef.current = tracking.distanceKmForActivity;
-  }, [tracking.distanceKmForActivity]);
+    trackingExtrasRef.current = tracking.activityExtras;
+  }, [tracking.activityExtras]);
+
+  // 최근 구간이 위로 오도록 뒤집고, 진행 중 구간은 맨 위에 따로 얹습니다.
+  const recentSplits = useMemo(
+    () =>
+      tracking.splits
+        .map((split, index) => ({ split, index }))
+        .reverse()
+        .slice(0, VISIBLE_SPLIT_COUNT),
+    [tracking.splits],
+  );
+  const fastestIndex = useMemo(() => fastestSplitIndex(tracking.splits), [tracking.splits]);
 
   const phase = active ? currentPhase(session, runtime.elapsedSeconds) : undefined;
   const upcoming = active ? nextPhase(session, runtime.elapsedSeconds) : undefined;
@@ -187,17 +220,31 @@ export function StartScreen() {
         if (!completion) return;
         completionInFlightRef.current = next.sessionId;
         try {
-          // 측정된 거리가 있을 때만 기존 distanceKm 키에 덧붙입니다(스키마 변경 없음).
-          await completeActivity(
+          // 측정된 거리가 있을 때만 기존 distanceKm 키에 덧붙입니다(기존 저장 키 변경 없음).
+          const extras = trackingExtrasRef.current();
+          const stored = await completeActivity(
             withTrackedDistance(
               {
                 ...completion,
                 source: next.native ? 'COACH_COMPLETED' : 'SELF_LOGGED',
               },
-              trackedDistanceRef.current(),
+              extras.distanceKm,
             ),
           );
           setCompletionSaved(true);
+
+          // 구간·경로는 활동이 저장된 뒤 선택 필드로만 덧붙입니다. 실패해도 기록은 남습니다.
+          if (extras.splits || extras.routePoints) {
+            const attached = await attachActivityTrack(stored.id, {
+              ...(extras.splits === undefined ? {} : { splits: extras.splits }),
+              ...(extras.routePoints === undefined ? {} : { routePoints: extras.routePoints }),
+            });
+            setCompletionTrack({
+              splits: extras.splits ?? [],
+              routePointCount: extras.routePoints?.length ?? 0,
+              stored: attached,
+            });
+          }
         } catch {
           completionInFlightRef.current = null;
           throw new Error('completed coach activity could not be stored');
@@ -235,6 +282,7 @@ export function StartScreen() {
 
   async function begin() {
     setCompletionSaved(false);
+    setCompletionTrack(undefined);
     completionInFlightRef.current = null;
     tracking.reset();
     await updatePreferences({ coachMinutes: minutes, coachType: kind });
@@ -367,6 +415,23 @@ export function StartScreen() {
               onPress={() => void begin()}
               style={styles.primary}
             />
+
+            {/* 시작 전에도 GPS가 어떤 상태인지(빌드·권한·신호) 먼저 알려 줍니다. */}
+            {!active && tracking.notice ? (
+              <View
+                accessibilityLiveRegion="polite"
+                style={[
+                  styles.preNotice,
+                  tracking.notice.tone === 'warning' && styles.preNoticeWarning,
+                ]}
+              >
+                <Text style={styles.preNoticeTitle}>{tracking.notice.title}</Text>
+                <Text style={styles.preNoticeBody}>{tracking.notice.body}</Text>
+                {tracking.notice.action ? (
+                  <Text style={styles.preNoticeAction}>{tracking.notice.action}</Text>
+                ) : null}
+              </View>
+            ) : null}
           </Card>
 
           {active || runtime.state === 'completed' ? (
@@ -458,10 +523,73 @@ export function StartScreen() {
                     </View>
                   </View>
                   <Text style={styles.trackingNote}>{tracking.snapshot.statusDetail}</Text>
+                  {tracking.snapshot.measuring ? (
+                    <Text style={styles.trackingNote}>
+                      {routePointSummary(tracking.routePointCount)} · 지도는 없고 좌표만 기기에
+                      남겨요.
+                    </Text>
+                  ) : null}
                 </View>
               ) : (
-                <Text style={styles.trackingNote}>{gpsUnavailableNotice}</Text>
+                <View style={styles.noticeBox}>
+                  <Text style={styles.noticeTitle}>이 빌드는 시간 기반 코칭만 해요</Text>
+                  <Text style={styles.trackingNote}>{gpsUnavailableNotice}</Text>
+                </View>
               )}
+
+              {tracking.supported && tracking.notice ? (
+                <View
+                  accessibilityLiveRegion="polite"
+                  style={[
+                    styles.noticeBox,
+                    tracking.notice.tone === 'warning' && styles.noticeWarning,
+                  ]}
+                >
+                  <Text style={styles.noticeTitle}>{tracking.notice.title}</Text>
+                  <Text style={styles.trackingNote}>{tracking.notice.body}</Text>
+                  {tracking.notice.action ? (
+                    <Text style={styles.noticeAction}>{tracking.notice.action}</Text>
+                  ) : null}
+                </View>
+              ) : null}
+
+              {tracking.supported && tracking.snapshot.measuring ? (
+                <View style={styles.phaseBox}>
+                  <Text style={styles.phaseLabel}>구간 기록 · 1km마다</Text>
+                  {tracking.currentSplit ? (
+                    <Text
+                      accessibilityLabel={`지금 구간 ${spokenDuration(tracking.currentSplit.seconds)} 진행 중`}
+                      style={styles.splitCurrent}
+                    >
+                      지금 구간 · {formatElapsed(tracking.currentSplit.seconds)} · 누적{' '}
+                      {tracking.currentSplit.km.toFixed(2)}km
+                    </Text>
+                  ) : null}
+                  {recentSplits.length > 0 ? (
+                    recentSplits.map(({ split, index }) => (
+                      <Text
+                        accessibilityLabel={spokenSplit(tracking.splits, index)}
+                        key={`split-${index}-${split.km}`}
+                        style={styles.cueLine}
+                      >
+                        {splitLabel(tracking.splits, index)} · {formatElapsed(split.seconds)} ·{' '}
+                        {formatPace(splitPaceSecondsPerKm(tracking.splits, index))}/km
+                        {index === fastestIndex ? ' · 가장 빠른 구간' : ''}
+                      </Text>
+                    ))
+                  ) : (
+                    <Text style={styles.cueLine}>
+                      아직 확정된 구간이 없어요. 1km를 지날 때마다 하나씩 쌓여요.
+                    </Text>
+                  )}
+                  {tracking.splits.length > VISIBLE_SPLIT_COUNT ? (
+                    <Text style={styles.cueLine}>
+                      앞선 {tracking.splits.length - VISIBLE_SPLIT_COUNT}개 구간은 완료 요약에서
+                      볼 수 있어요.
+                    </Text>
+                  ) : null}
+                </View>
+              ) : null}
 
               {phase ? (
                 <View style={styles.phaseBox}>
@@ -503,8 +631,51 @@ export function StartScreen() {
                   ? '화면을 잠가도 알림의 일시정지·재생·종료로 조작할 수 있어요.'
                   : '이 기기에서는 화면이 열린 동안 시간만 계산해요. 완료 기록은 직접 입력 등급이며 공개 리그 점수에는 쓰지 않아요.'}
               </Text>
+              {tracking.screenAwakeNotice ? (
+                <Text accessibilityLiveRegion="polite" style={styles.runtimeHelp}>
+                  {tracking.screenAwakeNotice}
+                </Text>
+              ) : null}
               {runtime.state === 'completed' ? (
-                <Chip label={completionSaved ? '활동 기록 완료' : '완료 확인 중'} tone="positive" />
+                <View style={styles.completionBox}>
+                  <View style={styles.chips}>
+                    <Chip
+                      label={completionSaved ? '활동 기록 완료' : '완료 확인 중'}
+                      tone="positive"
+                    />
+                  </View>
+                  {completionTrack ? (
+                    <View style={styles.phaseBox}>
+                      <Text style={styles.phaseLabel}>이번 러닝 구간 요약</Text>
+                      {completionTrack.splits.length > 0 ? (
+                        completionTrack.splits.map((split, index) => (
+                          <Text
+                            accessibilityLabel={spokenSplit(completionTrack.splits, index)}
+                            key={`done-split-${index}-${split.km}`}
+                            style={styles.cueLine}
+                          >
+                            {splitLabel(completionTrack.splits, index)} ·{' '}
+                            {formatElapsed(split.seconds)} ·{' '}
+                            {formatPace(splitPaceSecondsPerKm(completionTrack.splits, index))}/km
+                            {splitDistanceKm(completionTrack.splits, index) < 0.99
+                              ? ' · 마지막 구간'
+                              : ''}
+                          </Text>
+                        ))
+                      ) : (
+                        <Text style={styles.cueLine}>
+                          1km를 채우지 못해 구간 기록은 남기지 않았어요.
+                        </Text>
+                      )}
+                      <Text style={styles.cueLine}>
+                        {routePointSummary(completionTrack.routePointCount)}
+                        {completionTrack.stored
+                          ? ' · 기기에만 저장돼요.'
+                          : ' · 이번 실행 중에만 유지돼요.'}
+                      </Text>
+                    </View>
+                  ) : null}
+                </View>
               ) : (
                 <View style={styles.runtimeActions}>
                   <Button
@@ -702,6 +873,19 @@ const styles = StyleSheet.create({
   },
   criteriaValue: { color: palette.ink, fontSize: typeScale.bodySmall, lineHeight: 20 },
   primary: { minHeight: 56 },
+  // 시작 전 안내(밝은 카드 위)입니다.
+  preNotice: {
+    gap: 2,
+    borderRadius: radius.md,
+    padding: spacing.sm,
+    backgroundColor: palette.surfaceMuted,
+    borderLeftWidth: 4,
+    borderLeftColor: palette.line,
+  },
+  preNoticeWarning: { backgroundColor: palette.surfaceWarm, borderLeftColor: palette.accent },
+  preNoticeTitle: { color: palette.ink, fontSize: typeScale.bodySmall, fontWeight: '900', lineHeight: 22 },
+  preNoticeBody: { color: palette.inkSoft, fontSize: typeScale.bodySmall, lineHeight: 20 },
+  preNoticeAction: { color: palette.accentDark, fontSize: typeScale.bodySmall, fontWeight: '800', lineHeight: 20 },
   runtimeCard: { gap: spacing.sm, backgroundColor: palette.navy },
   runtimeHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   // 남색 배경 위 대비를 위해 밝은 살구색·흰색 계열만 씁니다.
@@ -801,6 +985,20 @@ const styles = StyleSheet.create({
   },
   trackingUnit: { color: '#CCD5E3', fontSize: typeScale.caption, fontWeight: '700' },
   trackingNote: { color: '#CCD5E3', fontSize: typeScale.bodySmall, lineHeight: 20 },
+  // 빈 상태·오류 안내. 남색 카드 위에서도 읽히도록 밝은 계열만 씁니다.
+  noticeBox: {
+    gap: 4,
+    borderRadius: radius.md,
+    padding: spacing.sm,
+    backgroundColor: 'rgba(255,255,255,0.10)',
+    borderLeftWidth: 4,
+    borderLeftColor: '#FFD9C6',
+  },
+  noticeWarning: { borderLeftColor: palette.accent, backgroundColor: 'rgba(255,255,255,0.16)' },
+  noticeTitle: { color: palette.white, fontSize: typeScale.bodySmall, fontWeight: '900', lineHeight: 22 },
+  noticeAction: { color: '#FFD9C6', fontSize: typeScale.bodySmall, fontWeight: '800', lineHeight: 20 },
+  splitCurrent: { color: palette.white, fontSize: typeScale.bodySmall, fontWeight: '900', lineHeight: 22 },
+  completionBox: { gap: spacing.sm },
   runtimeActions: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.xs },
   action: { flex: 1, minHeight: 56 },
   advanced: { gap: spacing.md },

@@ -2,9 +2,15 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button, Card, Chip } from '../../app/design-system/components';
-import { palette, radius, spacing, typeScale } from '../../app/design-system/theme';
-import { SHOE_DATA_VERSION, findShoeEntry, type ShoeEntry } from './catalog';
-import { entryPurchaseLinks, type ShoePurchaseLink } from './purchaseLinks';
+import { layout, palette, radius, spacing, typeScale } from '../../app/design-system/theme';
+import {
+  OFFICIAL_SPEC_CAPTION,
+  SHOE_DATA_VERSION,
+  findShoeEntry,
+  officialSpecItems,
+  type ShoeEntry,
+} from './catalog';
+import { entryPurchaseLinks, specReferenceLink, type ShoePurchaseLink } from './purchaseLinks';
 import {
   shoeBrandInitials,
   shoePlateLabels,
@@ -36,6 +42,9 @@ export function ShoeDetail({
   onToggleCompare?: () => void;
 }) {
   const links = entryPurchaseLinks(shoe);
+  // 값이 확인된 항목만 들어옵니다. 비어 있으면 카드 대신 공식 페이지 안내를 보여 줍니다.
+  const specs = officialSpecItems(shoe);
+  const specReference = specReferenceLink(shoe);
   const alternatives = shoe.comparedTo
     .map((id) => findShoeEntry(id))
     .filter((entry): entry is ShoeEntry => Boolean(entry));
@@ -70,6 +79,51 @@ export function ShoeDetail({
           <Chip label={shoePriceBandLabels[shoe.priceBand]} />
         </View>
         <Text style={styles.pick}>{shoe.pick}</Text>
+      </Card>
+
+      <Card style={styles.block}>
+        <Text style={styles.blockTitle}>공식 스펙</Text>
+        {specs.length > 0 ? (
+          <>
+            <View style={styles.specGrid}>
+              {specs.map((item) => (
+                <View
+                  key={item.key}
+                  accessible
+                  accessibilityRole="text"
+                  accessibilityLabel={`${item.label} ${item.value}, ${OFFICIAL_SPEC_CAPTION}`}
+                  style={styles.specItem}
+                >
+                  <Text style={styles.specLabel}>{item.label}</Text>
+                  <Text style={styles.specValue}>{item.value}</Text>
+                </View>
+              ))}
+            </View>
+            <Text style={styles.specCaption}>
+              {OFFICIAL_SPEC_CAPTION} · 무게는 브랜드 표준 남성 사이즈(US 9) 기준이에요.
+            </Text>
+            <Text style={styles.note}>
+              확인되지 않은 항목은 빈칸이나 물음표로 채우지 않고 아예 표시하지 않아요.
+            </Text>
+          </>
+        ) : (
+          <>
+            <Text style={styles.paragraph}>
+              제조사 공식 페이지에서 무게·드롭을 확인하세요. 러닝봄은 확인되지 않은 수치를 추정해서
+              적지 않아요.
+            </Text>
+            {specReference ? (
+              <Button
+                label={`${shoe.brand} ${specReference.label}`}
+                accessibilityLabel={`${shoe.brand} ${shoe.model} ${specReference.label} 열기`}
+                accessibilityHint="외부 브라우저로 이동해요"
+                onPress={() => onOpenPurchase(specReference)}
+                tone="secondary"
+                style={styles.specLink}
+              />
+            ) : null}
+          </>
+        )}
       </Card>
 
       <Card style={styles.block}>
@@ -146,6 +200,8 @@ export function ShoeDetail({
               <Chip
                 key={alternative.id}
                 label={`${alternative.brand} ${alternative.model}`}
+                accessibilityRole="button"
+                accessibilityLabel={`${alternative.brand} ${alternative.model} 상세 보기`}
                 onPress={onOpenShoe ? () => onOpenShoe(alternative.id) : undefined}
               />
             ))}
@@ -153,6 +209,12 @@ export function ShoeDetail({
           {onToggleCompare ? (
             <Chip
               label={compareSelected ? '비교함에 담김' : '비교함에 담기'}
+              accessibilityRole="button"
+              accessibilityLabel={
+                compareSelected
+                  ? `${shoe.model} 비교함에서 빼기`
+                  : `${shoe.model} 비교함에 담기`
+              }
               selected={compareSelected}
               onPress={onToggleCompare}
               tone="accent"
@@ -181,12 +243,20 @@ export function ShoeDetail({
         <View style={styles.chipWrap}>
           <Chip
             label={current ? '현재 러닝화' : '내 러닝화로 설정'}
+            accessibilityRole="button"
+            accessibilityLabel={
+              current ? `${shoe.model} 현재 러닝화 해제` : `${shoe.model} 내 러닝화로 설정`
+            }
             selected={current}
             onPress={onToggleCurrent}
             tone="accent"
           />
           <Chip
             label={saved ? '관심 저장됨' : '관심 저장'}
+            accessibilityRole="button"
+            accessibilityLabel={
+              saved ? `${shoe.model} 관심 저장 해제` : `${shoe.model} 관심 저장`
+            }
             selected={saved}
             onPress={onToggleSaved}
             tone="positive"
@@ -205,13 +275,16 @@ export function ShoeDetail({
             <Button
               key={destination.id}
               label={destination.label}
+              accessibilityLabel={`${shoe.brand} ${shoe.model} ${destination.label} 열기`}
+              accessibilityHint="외부 브라우저로 이동해요"
               onPress={() => onOpenPurchase(destination)}
               tone={destination.id === 'official-korea' ? 'primary' : 'secondary'}
             />
           ))}
         </View>
         <Text style={styles.note}>
-          국내 공식 경로가 확인된 브랜드에만 공식 버튼을 보여 줘요. 해외 공식몰은 국내 구매 경로로
+          국내 공식 경로가 확인된 브랜드에만 공식 버튼을 보여 줘요. 공식 도메인을 확인하지 못한
+          브랜드는 공식몰인 척하지 않고 "브랜드 검색"으로 안내해요. 해외 공식몰은 국내 구매 경로로
           연결하지 않습니다.
         </Text>
       </Card>
@@ -260,4 +333,19 @@ const styles = StyleSheet.create({
   watchout: { color: palette.warning, fontSize: typeScale.bodySmall, lineHeight: 21, fontWeight: '700' },
   note: { color: palette.muted, fontSize: typeScale.caption, lineHeight: 18 },
   linkColumn: { gap: spacing.xs },
+  specGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
+  specItem: {
+    minWidth: 96,
+    // 화면 확대에서도 값이 잘리지 않도록 터치 대상과 같은 48px을 하한으로 둡니다.
+    minHeight: layout.touchTarget,
+    justifyContent: 'center',
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.sm,
+    borderRadius: radius.sm,
+    backgroundColor: palette.surfaceMuted,
+  },
+  specLabel: { color: palette.muted, fontSize: typeScale.caption, fontWeight: '800' },
+  specValue: { color: palette.ink, fontSize: typeScale.body, fontWeight: '900', marginTop: 2 },
+  specCaption: { color: palette.inkSoft, fontSize: typeScale.caption, fontWeight: '700', lineHeight: 18 },
+  specLink: { minHeight: layout.touchTarget },
 });

@@ -27,6 +27,46 @@ export const goalMetricUnits: Record<GoalMetric, string> = {
   distance: 'km',
 };
 
+// ── 실력(러닝 경력) 축 ────────────────────────────────────────────────────────
+// 같은 "주 3회"라도 이제 막 시작한 사람과 3년 차에게 뜻이 다릅니다.
+// 이력이 없을 때의 출발선과, 이력이 있을 때의 상향 보정 상한을 경력으로 나눕니다.
+// 경력은 사용자가 직접 고르는 값이며 건강·능력 판정이 아닙니다.
+export const experienceLevels = ['이제 시작', '1년 미만', '1~3년', '3년 이상'] as const;
+export type ExperienceLevel = (typeof experienceLevels)[number];
+
+export function isExperienceLevel(value: unknown): value is ExperienceLevel {
+  return typeof value === 'string' && (experienceLevels as readonly string[]).includes(value);
+}
+
+/** 측정할 이력이 하나도 없을 때 쓰는 경력별 출발선입니다. */
+const experienceBaseline: Record<ExperienceLevel, Record<GoalMetric, number>> = {
+  '이제 시작': { sessions: 2, minutes: 50, distance: 4 },
+  '1년 미만': { sessions: 3, minutes: 70, distance: 8 },
+  '1~3년': { sessions: 3, minutes: 90, distance: 15 },
+  '3년 이상': { sessions: 4, minutes: 120, distance: 24 },
+};
+
+/** 경력을 고르지 않은 사람에게 쓰는 기존 출발선입니다(하위 호환). */
+const unsetBaseline: Record<GoalMetric, number> = { sessions: 2, minutes: 60, distance: 6 };
+
+/** 이력이 있어도 경력 대비 과한 목표로 튀지 않게 두는 상한입니다. */
+const experienceCeiling: Record<ExperienceLevel, Record<GoalMetric, number>> = {
+  '이제 시작': { sessions: 3, minutes: 120, distance: 15 },
+  '1년 미만': { sessions: 4, minutes: 180, distance: 25 },
+  '1~3년': { sessions: 5, minutes: 300, distance: 45 },
+  '3년 이상': { sessions: 7, minutes: 600, distance: 120 },
+};
+
+export function baselineGoalTarget(metric: GoalMetric, experience?: ExperienceLevel): number {
+  const table = experience ? experienceBaseline[experience] : unsetBaseline;
+  return table[metric];
+}
+
+/**
+ * 경력 미설정 시의 안전값입니다. 이력도 경력도 없을 때만 쓰는 마지막 폴백이며,
+ * 실제 화면에서는 되도록 `recommendWeeklyGoal`(이력 우선)이나
+ * `startingWeeklyGoal`(이력 → 경력 → 이 값 순)을 통해 결정합니다.
+ */
 export const defaultWeeklyGoal: WeeklyGoal = { metric: 'sessions', target: 3, auto: true };
 
 export function isWeeklyGoal(value: unknown): value is WeeklyGoal {
@@ -64,20 +104,36 @@ function roundTarget(metric: GoalMetric, value: number): number {
 }
 
 // 최근 4주 평균에서 10% 이내로만 올려 무리하지 않는 목표를 제안합니다.
+// 이력이 없으면 경력(실력) 축의 출발선을, 이력이 있으면 이력을 우선하되 경력으로 상한을 둡니다.
 export function recommendWeeklyGoal(
   activities: ActivityRecord[],
   now: Date | number = Date.now(),
+  experience?: ExperienceLevel,
 ): WeeklyGoal {
   const average = recentWeeklyAverage(activities, now);
   const metric = suggestedMetric(activities);
   if (average.measuredWeeks === 0) {
-    if (metric === 'minutes') return { metric, target: 60, auto: true };
-    if (metric === 'distance') return { metric, target: 6, auto: true };
-    return { metric: 'sessions', target: 2, auto: true };
+    return { metric, target: baselineGoalTarget(metric, experience), auto: true };
   }
   const base = goalValue(metric, average);
   const stepped = metric === 'sessions' ? Math.min(base + 1, base * 1.34) : base * 1.1;
-  return { metric, target: roundTarget(metric, Math.max(stepped, base)), auto: true };
+  // 상한이 이미 하고 있는 양보다 낮으면 상한을 그 양까지 올립니다(잘하고 있는 사람을 깎지 않습니다).
+  const ceiling = experience ? Math.max(experienceCeiling[experience][metric], base) : Infinity;
+  const target = Math.min(Math.max(stepped, base), ceiling);
+  return { metric, target: roundTarget(metric, target), auto: true };
+}
+
+/**
+ * 저장된 목표가 아직 없을 때 쓰는 첫 목표입니다.
+ * 이력이 있으면 이력 기반 추천을, 없으면 경력 출발선을, 둘 다 없으면 `defaultWeeklyGoal`을 씁니다.
+ */
+export function startingWeeklyGoal(
+  activities: ActivityRecord[],
+  experience?: ExperienceLevel,
+  now: Date | number = Date.now(),
+): WeeklyGoal {
+  if (activities.length === 0 && !experience) return defaultWeeklyGoal;
+  return recommendWeeklyGoal(activities, now, experience);
 }
 
 export type WeeklyGoalProgress = {

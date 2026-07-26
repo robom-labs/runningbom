@@ -3,8 +3,12 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
 import {
+  OFFICIAL_SPEC_CAPTION,
   SHOE_DATA_VERSION,
   findShoeEntry,
+  formatKrw,
+  hasOfficialSpec,
+  officialSpecItems,
   shoeCatalog,
   shoeCatalogInternals,
   shoes,
@@ -37,9 +41,12 @@ import {
 import { mergeShoeCatalog } from '../domains/shoes/refresh';
 import {
   BRAND_OFFICIAL_LABEL,
+  BRAND_SEARCH_LABEL,
   COUPANG_SEARCH_LABEL,
   NAVER_SEARCH_LABEL,
+  brandKoreaRouteKind,
   entryPurchaseLinks,
+  specReferenceLink,
 } from '../domains/shoes/purchaseLinks';
 import {
   isValidSubCategory,
@@ -114,12 +121,30 @@ describe('러닝화 카탈로그 무결성', () => {
     }
   });
 
-  it('추측한 수치 스펙을 필드로 하드코딩하지 않는다', () => {
+  // 정책 완화(2026-07): 수치 스펙을 전면 금지하는 대신, "공표값을 확인한 항목만" 허용합니다.
+  // 확인 근거(specNote)가 없는 수치는 여전히 금지이고, 미검증 필드는 키 자체를 만들지 않습니다.
+  it('수치 스펙은 확인 근거를 남긴 항목에만 존재한다', () => {
     for (const entry of shoeCatalog) {
       const record = entry as unknown as Record<string, unknown>;
-      for (const forbidden of ['weightGram', 'dropMm', 'stackMm', 'priceKrw', 'releaseDate']) {
-        assert.equal(record[forbidden], undefined, `${entry.id}.${forbidden}`);
+      // 출시일은 여전히 다루지 않습니다.
+      assert.equal(record.releaseDate, undefined, `${entry.id}.releaseDate`);
+      const specKeys = ['weightGrams', 'dropMm', 'stackMm', 'priceKrw'] as const;
+      for (const key of specKeys) {
+        // 미확인 항목은 undefined 키조차 만들지 않습니다.
+        if (!(key in record)) continue;
+        assert.notEqual(record[key], undefined, `${entry.id}.${key} 빈 키`);
+        assert.ok(
+          typeof entry.specNote === 'string' && entry.specNote.includes('공표값 확인'),
+          `${entry.id}.${key}에 확인 근거(specNote)가 없습니다`,
+        );
       }
+    }
+  });
+
+  it('확인 근거를 남긴 항목은 실제로 수치를 하나 이상 가진다', () => {
+    for (const entry of shoeCatalog) {
+      if (!entry.specNote?.includes('공표값 확인')) continue;
+      assert.ok(hasOfficialSpec(entry), `${entry.id} 근거만 있고 수치가 없습니다`);
     }
   });
 
@@ -218,6 +243,88 @@ describe('러닝화 필터', () => {
   });
 });
 
+describe('공식 스펙 필드', () => {
+  const filled = shoeCatalog.filter(hasOfficialSpec);
+
+  it('스펙이 채워진 항목이 존재하고, 채운 값은 상식 범위 안에 있다', () => {
+    assert.ok(filled.length > 0, '공식 스펙이 채워진 항목이 하나도 없습니다');
+    for (const entry of filled) {
+      if (typeof entry.weightGrams === 'number') {
+        assert.ok(Number.isFinite(entry.weightGrams), entry.id);
+        assert.ok(entry.weightGrams >= 120 && entry.weightGrams <= 400, `${entry.id} 무게`);
+      }
+      if (typeof entry.dropMm === 'number') {
+        assert.ok(Number.isFinite(entry.dropMm), entry.id);
+        assert.ok(entry.dropMm >= 0 && entry.dropMm <= 14, `${entry.id} 드롭`);
+      }
+      if (entry.stackMm) {
+        const { heel, forefoot } = entry.stackMm;
+        assert.ok(Number.isFinite(heel) && Number.isFinite(forefoot), entry.id);
+        assert.ok(heel >= forefoot, `${entry.id} 스택 heel < forefoot`);
+        // 세계육상연맹 로드 레이싱 상한(40mm)을 넘는 값은 오타로 봅니다.
+        assert.ok(heel > 0 && heel <= 50, `${entry.id} 스택 heel`);
+        assert.ok(forefoot > 0, `${entry.id} 스택 forefoot`);
+      }
+      if (typeof entry.priceKrw === 'number') {
+        assert.ok(Number.isInteger(entry.priceKrw), `${entry.id} 정가는 정수`);
+        assert.ok(entry.priceKrw >= 50_000 && entry.priceKrw <= 500_000, `${entry.id} 정가`);
+      }
+    }
+  });
+
+  it('드롭과 스택을 함께 채웠다면 heel - forefoot가 드롭과 일치한다', () => {
+    for (const entry of filled) {
+      if (!entry.stackMm || typeof entry.dropMm !== 'number') continue;
+      assert.equal(entry.stackMm.heel - entry.stackMm.forefoot, entry.dropMm, entry.id);
+    }
+  });
+
+  it('스펙을 채운 항목은 "공식 스펙 미확인" 문구를 그대로 두지 않는다', () => {
+    for (const entry of filled) {
+      assert.ok(entry.specNote, `${entry.id} specNote 없음`);
+      assert.notEqual(entry.specNote, '무게·드롭·스택 등 공식 스펙 미확인', entry.id);
+      assert.ok(entry.specNote!.includes('공표값 확인'), `${entry.id} ${entry.specNote}`);
+    }
+  });
+
+  it('officialSpecItems는 확인된 값만 만들고 빈칸·물음표를 만들지 않는다', () => {
+    for (const entry of shoeCatalog) {
+      const items = officialSpecItems(entry);
+      const expected =
+        (typeof entry.weightGrams === 'number' ? 1 : 0) +
+        (typeof entry.dropMm === 'number' ? 1 : 0) +
+        (entry.stackMm ? 1 : 0) +
+        (typeof entry.priceKrw === 'number' ? 1 : 0);
+      assert.equal(items.length, expected, entry.id);
+      for (const item of items) {
+        assert.ok(item.value.trim().length > 0, `${entry.id} ${item.key}`);
+        for (const placeholder of ['?', '—', '-', 'undefined', 'NaN', '미확인']) {
+          assert.ok(!item.value.includes(placeholder), `${entry.id} ${item.value}`);
+        }
+      }
+    }
+  });
+
+  it('스펙이 하나도 없는 항목에는 대신 안내할 브랜드 경로가 항상 있다', () => {
+    const empty = shoeCatalog.filter((entry) => !hasOfficialSpec(entry));
+    assert.ok(empty.length > 0);
+    for (const entry of empty) {
+      const reference = specReferenceLink(entry);
+      assert.ok(reference, `${entry.id} 안내 링크 없음`);
+      assert.ok(reference!.url.startsWith('https://'), entry.id);
+    }
+  });
+
+  it('스펙 값 표기는 단위를 붙이고 정가는 천 단위로 끊는다', () => {
+    assert.equal(formatKrw(219000), '219,000원');
+    assert.equal(formatKrw(99000), '99,000원');
+    assert.equal(OFFICIAL_SPEC_CAPTION, '제조사 공표 기준');
+    const sample = shoeCatalog.find((entry) => typeof entry.dropMm === 'number');
+    assert.ok(sample);
+    assert.ok(officialSpecItems(sample!).some((item) => /^\d+mm$/.test(item.value)));
+  });
+});
+
 describe('국내 구매 경로', () => {
   it('모든 러닝화에 네이버·쿠팡 검색 링크를 https로 제공한다', () => {
     for (const entry of shoeCatalog) {
@@ -249,14 +356,67 @@ describe('국내 구매 경로', () => {
     }
   });
 
-  it('국내 공식 경로가 없는 브랜드에는 공식 버튼을 넣지 않는다', () => {
+  it('국내 공식 경로가 없는 브랜드는 공식 버튼 대신 "브랜드 검색"으로 정직하게 표기한다', () => {
     const withoutOfficial = shoeCatalog.filter(
       (entry) => !entryPurchaseLinks(entry).some((link) => link.id === 'official-korea'),
     );
     assert.ok(withoutOfficial.length > 0);
     for (const entry of withoutOfficial) {
-      assert.equal(entryPurchaseLinks(entry).length, 2, entry.id);
+      const links = entryPurchaseLinks(entry);
+      // 네이버·쿠팡 검색 + 브랜드 검색 = 3개. 공식 버튼은 없어야 합니다.
+      assert.equal(links.length, 3, entry.id);
+      const fallback = links.find((link) => link.id === 'brand-search');
+      assert.ok(fallback, entry.id);
+      assert.equal(fallback?.label, BRAND_SEARCH_LABEL, entry.id);
+      // 대체 경로는 공식몰인 척하지 않습니다.
+      assert.ok(!fallback!.label.includes('공식'), entry.id);
+      assert.ok(fallback!.url.startsWith('https://search.shopping.naver.com/'), entry.id);
     }
+  });
+
+  it('모든 브랜드에 국내 경로가 최소 1개 있고 공식/검색 성격이 명확하다', () => {
+    for (const brand of shoeBrands) {
+      const entry = shoeCatalog.find((item) => item.brand === brand);
+      assert.ok(entry, `${brand} 항목 없음`);
+      const links = entryPurchaseLinks(entry!);
+      const brandLink = links.find(
+        (link) => link.id === 'official-korea' || link.id === 'brand-search',
+      );
+      assert.ok(brandLink, `${brand} 브랜드 경로 없음`);
+      const kind = brandKoreaRouteKind(brand);
+      assert.equal(brandLink!.id, kind === 'official' ? 'official-korea' : 'brand-search', brand);
+      assert.equal(
+        brandLink!.label,
+        kind === 'official' ? BRAND_OFFICIAL_LABEL : BRAND_SEARCH_LABEL,
+        brand,
+      );
+    }
+  });
+
+  it('모든 러닝화에 구매 링크가 최소 1개 있고 URL 형태가 유효하다', () => {
+    for (const entry of shoeCatalog) {
+      const links = entryPurchaseLinks(entry);
+      assert.ok(links.length >= 1, entry.id);
+      const seen = new Set<string>();
+      for (const link of links) {
+        assert.ok(link.url.startsWith('https://'), `${entry.id} ${link.url}`);
+        // URL 파싱이 되어야 하고, 호스트가 있어야 하며, 공백이 남아 있으면 안 됩니다.
+        const parsed = new URL(link.url);
+        assert.equal(parsed.protocol, 'https:', `${entry.id} ${link.url}`);
+        assert.ok(parsed.hostname.includes('.'), `${entry.id} ${link.url}`);
+        assert.ok(!link.url.includes(' '), `${entry.id} ${link.url}`);
+        assert.ok(link.label.trim().length > 0, entry.id);
+        assert.ok(!seen.has(link.id), `${entry.id} 중복 링크 ${link.id}`);
+        seen.add(link.id);
+      }
+    }
+  });
+
+  it('브랜드 검색 대체 경로는 국내 공식 도메인 목록과 겹치지 않는다', () => {
+    const officialBrands = shoeBrands.filter((brand) => brandKoreaRouteKind(brand) === 'official');
+    const searchBrands = shoeBrands.filter((brand) => brandKoreaRouteKind(brand) === 'brand-search');
+    assert.deepEqual(officialBrands, ['Nike', 'adidas', 'ASICS', 'New Balance']);
+    assert.deepEqual(searchBrands, ['Saucony', 'PUMA', 'HOKA', 'Brooks', 'Mizuno', 'On']);
   });
 });
 

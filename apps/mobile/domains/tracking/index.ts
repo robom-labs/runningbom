@@ -35,12 +35,48 @@ export {
   spokenPace,
 } from './pace';
 export {
+  activateRunKeepAwake,
+  deactivateRunKeepAwake,
+  keepAwakeNotice,
+  RUN_KEEP_AWAKE_TAG,
+} from './keepAwake';
+export {
+  appendRouteFix,
+  defaultRouteThinningOptions,
+  downsampleRoute,
+  emptyRouteState,
+  routePointSummary,
+  routePointsForActivity,
+  type RouteState,
+  type RouteThinningOptions,
+} from './route';
+export {
   gpsSignalLevel,
   signalLabels,
   trackedDistanceForActivity,
+  trackingNotice,
   trackingSnapshot,
   type GpsSignalLevel,
+  type TrackingNotice,
   type TrackingPermissionState,
   type TrackingSnapshot,
 } from './session';
-export { useRunTracking, type RunTracking } from './useRunTracking';
+export {
+  advanceSplits,
+  fastestSplitIndex,
+  finalSplits,
+  initialSplitState,
+  MIN_TRAILING_SPLIT_METERS,
+  SPLIT_DISTANCE_METERS,
+  splitDistanceKm,
+  splitLabel,
+  splitPaceSecondsPerKm,
+  spokenSplit,
+  trailingSplit,
+  type SplitState,
+} from './splits';
+export {
+  useRunTracking,
+  type RunTracking,
+  type TrackedActivityExtras,
+} from './useRunTracking';

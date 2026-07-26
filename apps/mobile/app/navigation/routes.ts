@@ -21,11 +21,51 @@ export const menuGroups: MenuGroup[] = [
     items: [
       { key: 'home', label: '홈', icon: 'home-outline', hint: '오늘의 러닝 한 장' },
       { key: 'start', label: '러닝 시작', icon: 'play-circle-outline', hint: '음성 코칭으로 바로 시작' },
-      { key: 'calendar', label: '캘린더', icon: 'calendar-outline', hint: '일정 등록과 기록 확인' },
-      { key: 'races', label: '대회', icon: 'trophy-outline', hint: '접수 일정과 알림' },
-      { key: 'shoes', label: '러닝화', icon: 'walk-outline', hint: '국내 구매 경로 비교' },
+      {
+        key: 'calendar',
+        label: '캘린더',
+        icon: 'calendar-outline',
+        hint: '일정 등록과 기록 확인',
+        children: [
+          { key: 'calendar-month', label: '이번 달', target: 'calendar' },
+          { key: 'calendar-plan', label: '일정 등록', target: 'calendar' },
+        ],
+      },
+      {
+        key: 'races',
+        label: '대회',
+        icon: 'trophy-outline',
+        hint: '접수 일정과 알림',
+        children: [
+          { key: 'races-list', label: '목록', target: 'races' },
+          { key: 'races-calendar', label: '달력', target: 'races' },
+          { key: 'races-goal', label: '목표 대회', target: 'races' },
+        ],
+      },
+      {
+        key: 'shoes',
+        label: '러닝화',
+        icon: 'walk-outline',
+        hint: '국내 구매 경로 비교',
+        children: [
+          { key: 'shoes-category', label: '카테고리별', target: 'shoes' },
+          { key: 'shoes-brand', label: '브랜드별', target: 'shoes' },
+          { key: 'shoes-advisor', label: '추천 받기', target: 'shoes' },
+          { key: 'shoes-compare', label: '비교함', target: 'shoes' },
+        ],
+      },
       { key: 'community', label: '커뮤니티', icon: 'people-outline', hint: '공개 피드 읽기' },
-      { key: 'stats', label: '기록·통계', icon: 'stats-chart-outline', hint: '주간·월간 요약과 배지' },
+      {
+        key: 'stats',
+        label: '기록·통계',
+        icon: 'stats-chart-outline',
+        hint: '주간·월간 요약과 배지',
+        children: [
+          { key: 'stats-week', label: '주간 요약', target: 'stats', focus: 'week' },
+          { key: 'stats-badges', label: '배지', target: 'stats', focus: 'badges' },
+          { key: 'stats-records', label: '최고기록', target: 'stats', focus: 'records' },
+        ],
+      },
     ],
   },
   {

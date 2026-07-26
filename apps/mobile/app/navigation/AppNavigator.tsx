@@ -23,7 +23,7 @@ import { raceIdFromDeepLink } from '../../src/races';
 import { AppHeader } from './AppHeader';
 import { DrawerMenu } from './DrawerMenu';
 import { routeFromStoredValue, routeTitles } from './routes';
-import type { RouteKey } from './types';
+import { isStatsFocus, type RouteKey, type StatsFocus } from './types';
 
 export function AppNavigator() {
   const { preferences, updatePreferences, activities, streak, ready, onboardingRequired } =
@@ -32,6 +32,8 @@ export function AppNavigator() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [focusedRaceId, setFocusedRaceId] = useState<string>();
   const [focusedShoeId, setFocusedShoeId] = useState<string>();
+  // 드로어 하위 메뉴에서 고른 기록·통계 구획입니다. 같은 항목을 다시 골라도 반응하도록 nonce를 둡니다.
+  const [statsFocus, setStatsFocus] = useState<{ section: StatsFocus; nonce: number }>();
   const restoredRef = useRef(false);
 
   // 첫 로딩이 끝나면 마지막으로 보던 화면을 복원합니다.
@@ -42,10 +44,14 @@ export function AppNavigator() {
   }, [preferences.lastTab, ready]);
 
   const navigate = useCallback(
-    (next: RouteKey) => {
+    (next: RouteKey, focus?: string) => {
       setRoute(next);
       setDrawerOpen(false);
       restoredRef.current = true;
+      // 화면이 실제로 받을 수 있는 focus만 전달합니다. 나머지 하위 항목은 이동만 합니다.
+      if (next === 'stats' && isStatsFocus(focus)) {
+        setStatsFocus((current) => ({ section: focus, nonce: (current?.nonce ?? 0) + 1 }));
+      }
       void updatePreferences({ lastTab: next });
     },
     [updatePreferences],
@@ -123,7 +129,7 @@ export function AppNavigator() {
         // Q&A 카드의 "관련 기능으로 이동"이 실제 화면 이동으로 동작하게 연결합니다.
         return <CommunityScreen onNavigate={navigate} />;
       case 'stats':
-        return <MyScreen onOpenCalendar={() => navigate('calendar')} />;
+        return <MyScreen focus={statsFocus} onOpenCalendar={() => navigate('calendar')} />;
       case 'profile':
         return <ProfileScreen onOpenSettings={() => navigate('settings')} />;
       case 'settings':
@@ -139,7 +145,7 @@ export function AppNavigator() {
           />
         );
     }
-  }, [focusedRaceId, focusedShoeId, navigate, openRace, openShoe, route]);
+  }, [focusedRaceId, focusedShoeId, navigate, openRace, openShoe, route, statsFocus]);
 
   // 앱을 처음 연 사람은 드로어 셸 대신 온보딩 3화면을 먼저 봅니다.
   if (onboardingRequired) return <OnboardingScreen />;
