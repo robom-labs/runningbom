@@ -80,10 +80,21 @@ describe('연속 코칭 큐 밀도', () => {
     }
   });
 
-  it('안내 밀도 단계는 간단 30~40초, 보통 18~25초, 자세히 10~15초 범위다', () => {
-    assert.ok(guidanceIntervalSeconds.minimal >= 30 && guidanceIntervalSeconds.minimal <= 40);
-    assert.ok(guidanceIntervalSeconds.standard >= 18 && guidanceIntervalSeconds.standard <= 25);
-    assert.ok(guidanceIntervalSeconds.detailed >= 10 && guidanceIntervalSeconds.detailed <= 15);
+  it('안내 밀도 단계는 간단 22~30초, 보통 13~17초, 자세히 8~11초 범위다', () => {
+    // "쉴 새 없이 옆에서 말해 주는 코치"가 기본이라 보통에서 분당 4마디가 나오게 촘촘히 유지합니다.
+    assert.ok(guidanceIntervalSeconds.minimal >= 22 && guidanceIntervalSeconds.minimal <= 30);
+    assert.ok(guidanceIntervalSeconds.standard >= 13 && guidanceIntervalSeconds.standard <= 17);
+    assert.ok(guidanceIntervalSeconds.detailed >= 8 && guidanceIntervalSeconds.detailed <= 11);
+  });
+
+  it('세 안내 밀도 모두 분당 큐가 2.5개 이상이다', () => {
+    for (const guidance of ['minimal', 'standard', 'detailed'] as const) {
+      const session = createCoachSession('이지런', 30, guidance);
+      assert.ok(
+        cueDensityPerMinute(session) >= 2.5,
+        `${guidance}: 분당 ${cueDensityPerMinute(session).toFixed(2)}개`,
+      );
+    }
   });
 
   it('기본 안내에서 큐 사이가 40초를 넘게 비지 않는다', () => {

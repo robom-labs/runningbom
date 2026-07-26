@@ -8,6 +8,7 @@ import { AppNavigator } from './app/navigation/AppNavigator';
 import { palette, spacing, typeScale } from './app/design-system/theme';
 import { AppStateProvider, useAppState } from './app/state/AppStateProvider';
 import { RaceStateProvider } from './app/state/RaceStateProvider';
+import { UpdateBanner } from './services/updates';
 
 function ReadyApp() {
   const { ready } = useAppState();
@@ -19,7 +20,13 @@ function ReadyApp() {
       </View>
     );
   }
-  return <AppNavigator />;
+  // Preview 빌드에서 새 APK가 올라오면 앱 최상단에 조용히 안내합니다(정식 빌드에서는 렌더되지 않음).
+  return (
+    <View style={styles.root}>
+      <UpdateBanner />
+      <AppNavigator />
+    </View>
+  );
 }
 
 export default function App() {

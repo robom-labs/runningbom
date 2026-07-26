@@ -65,11 +65,14 @@ export const recommendedSessionKinds: CoachSessionKind[] = [
   '리커버리 워크',
 ];
 
-/** 안내 밀도별 평시 큐 간격(초)입니다. 평시 15~25초를 기준으로 촘촘하게 유지합니다. */
+/**
+ * 안내 밀도별 평시 큐 간격(초)입니다.
+ * "옆에서 쉴 새 없이 말해 주는 코치"가 기본이므로 보통을 15초로 두어 분당 4마디를 유지합니다.
+ */
 export const guidanceIntervalSeconds: Record<GuidanceLevel, number> = {
-  minimal: 34,
-  standard: 20,
-  detailed: 12,
+  minimal: 26,
+  standard: 15,
+  detailed: 9,
 };
 
 export const guidanceLabels: Record<GuidanceLevel, string> = {
@@ -79,9 +82,9 @@ export const guidanceLabels: Record<GuidanceLevel, string> = {
 };
 
 export const guidanceDescriptions: Record<GuidanceLevel, string> = {
-  minimal: '약 30~40초마다 한 마디',
-  standard: '약 18~25초마다 한 마디',
-  detailed: '약 10~15초마다 한 마디',
+  minimal: '약 25~30초마다 한 마디',
+  standard: '약 15초마다 한 마디 (권장)',
+  detailed: '거의 쉬지 않고 계속',
 };
 
 const legacySummaries: Partial<Record<CoachSessionKind, string>> = {
