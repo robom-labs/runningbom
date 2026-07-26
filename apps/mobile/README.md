@@ -60,7 +60,7 @@ npm run export:native
 
 ## EAS 빌드 프로필
 
-- `development`는 `expo-dev-client`가 포함된 내부 배포용 개발 빌드입니다.
+- `development`는 Expo Go 또는 일반 내부 APK로 확인하는 개발 프로필이며, 프로덕션에 불필요한 overlay 권한을 넣는 `expo-dev-client`는 포함하지 않습니다.
 - `preview`는 개발 도구가 없는 내부 검증 빌드이며 Android는 설치 가능한 APK를 생성합니다.
 - `production`은 스토어용 기본 형식을 사용합니다.
 

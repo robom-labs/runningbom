@@ -65,13 +65,26 @@ assert(
   !appJson.expo.android.permissions.includes('android.permission.SCHEDULE_EXACT_ALARM'),
   '스토어 심사 부담이 큰 정확 알람 특수 권한을 선언하면 안 됩니다.',
 );
+assert(
+  [
+    'android.permission.CAMERA',
+    'android.permission.RECORD_AUDIO',
+    'android.permission.SYSTEM_ALERT_WINDOW',
+    'android.permission.READ_EXTERNAL_STORAGE',
+    'android.permission.WRITE_EXTERNAL_STORAGE',
+  ].every((permission) => appJson.expo.android.blockedPermissions?.includes(permission)),
+  '사용하지 않는 카메라·마이크·overlay·외부 저장소 권한을 명시적으로 차단해야 합니다.',
+);
 assert(!appJson.expo.ios.associatedDomains?.includes('applinks:robom.kr'), '실제 Apple Team ID 검증 전에는 Universal Link 도메인을 선언하면 안 됩니다.');
 assert(!appJson.expo.android.intentFilters.some((filter) => filter.autoVerify === true), '실제 Play 앱 서명 검증 전에는 Android App Link autoVerify를 선언하면 안 됩니다.');
 
 for (const profile of ['development', 'preview', 'production']) {
   assert(easJson.build[profile], `EAS ${profile} 프로필이 없습니다.`);
 }
-assert(easJson.build.development.developmentClient === true, 'developmentClient가 필요합니다.');
+assert(
+  easJson.build.development.developmentClient !== true,
+  '불필요한 overlay 권한을 추가하는 developmentClient를 기본 프로필에 포함하면 안 됩니다.',
+);
 assert(easJson.build.preview.distribution === 'internal', 'preview는 internal 배포여야 합니다.');
 assert(easJson.build.preview.android?.buildType === 'apk', 'preview Android는 설치 가능한 APK여야 합니다.');
 assert(easJson.build.preview.env?.RUNNINGBOM_VARIANT === 'preview', 'preview EAS 변형 환경값이 없습니다.');
