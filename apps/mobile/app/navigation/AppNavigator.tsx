@@ -118,7 +118,8 @@ export function AppNavigator() {
       case 'shoes':
         return <ShoesScreen focusedShoeId={focusedShoeId} />;
       case 'community':
-        return <CommunityScreen />;
+        // Q&A 카드의 "관련 기능으로 이동"이 실제 화면 이동으로 동작하게 연결합니다.
+        return <CommunityScreen onNavigate={navigate} />;
       case 'stats':
         return <MyScreen onOpenCalendar={() => navigate('calendar')} />;
       case 'profile':
