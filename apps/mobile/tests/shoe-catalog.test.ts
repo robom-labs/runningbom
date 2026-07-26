@@ -2,7 +2,30 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { SHOE_DATA_VERSION, findShoeEntry, shoeCatalog, shoes } from '../domains/shoes/catalog';
+import {
+  SHOE_DATA_VERSION,
+  findShoeEntry,
+  shoeCatalog,
+  shoeCatalogInternals,
+  shoes,
+} from '../domains/shoes/catalog';
+import {
+  ADVISOR_MAX_PER_BRAND,
+  ADVISOR_MAX_RESULTS,
+  ADVISOR_MIN_RESULTS,
+  OVER_BUDGET_NOTE,
+  advisorQuestions,
+  recommendShoeEntries,
+  type AdvisorAnswers,
+} from '../domains/shoes/advisor';
+import {
+  COMPARE_MAX,
+  buildComparisonRows,
+  canCompare,
+  compareHighlights,
+  resolveCompareShoes,
+  toggleCompareId,
+} from '../domains/shoes/compare';
 import {
   activeFilterCount,
   countByBrand,
@@ -259,5 +282,248 @@ describe('카탈로그 갱신 훅', () => {
     assert.equal(merged?.pick, '갱신된 추천 문구');
     assert.equal(merged?.brandColor, target.brandColor);
     assert.equal(result.entries.length, shoeCatalog.length);
+  });
+});
+
+describe('구매 결정용 심화 정보', () => {
+  it('모든 항목이 useCase·fitNote·bestForRunner·notFor를 채운다', () => {
+    for (const entry of shoeCatalog) {
+      assert.ok(entry.useCase.trim().length >= 30, `${entry.id} useCase`);
+      assert.ok(entry.fitNote.trim().length >= 20, `${entry.id} fitNote`);
+      assert.ok(entry.bestForRunner.length >= 1, `${entry.id} bestForRunner`);
+      assert.ok(entry.notFor.length >= 1, `${entry.id} notFor`);
+      for (const line of [...entry.bestForRunner, ...entry.notFor]) {
+        assert.ok(line.trim().length > 0, `${entry.id} 빈 줄`);
+      }
+    }
+  });
+
+  it('fitNote는 단정 대신 완충 표현을 쓰고 매장 착화를 권한다', () => {
+    for (const entry of shoeCatalog) {
+      assert.ok(entry.fitNote.includes('매장 착화'), `${entry.id} 매장 착화 권고 없음`);
+      assert.ok(
+        entry.fitNote.includes('알려져 있어요') || entry.fitNote.includes('평이 있어요'),
+        `${entry.id} 완충 표현 없음`,
+      );
+      for (const forbidden of ['반드시', '무조건', '최저가']) {
+        assert.ok(!entry.fitNote.includes(forbidden), `${entry.id} 단정 표현 ${forbidden}`);
+      }
+    }
+  });
+
+  it('useCase는 거리와 실력 정보를 함께 담는다', () => {
+    for (const entry of shoeCatalog) {
+      assert.ok(entry.useCase.includes(entry.distances[0]), `${entry.id} 거리 누락`);
+      assert.ok(entry.useCase.includes(entry.levels[0]), `${entry.id} 실력 누락`);
+    }
+  });
+
+  it('comparedTo는 실제 존재하는 다른 id만 1~2개 가리킨다', () => {
+    const ids = new Set(shoeCatalog.map((entry) => entry.id));
+    for (const entry of shoeCatalog) {
+      assert.ok(
+        entry.comparedTo.length >= 1 && entry.comparedTo.length <= 2,
+        `${entry.id} comparedTo 개수 ${entry.comparedTo.length}`,
+      );
+      assert.equal(new Set(entry.comparedTo).size, entry.comparedTo.length, `${entry.id} 중복`);
+      for (const other of entry.comparedTo) {
+        assert.ok(ids.has(other), `${entry.id} → ${other} 끊어진 참조`);
+        assert.notEqual(other, entry.id, `${entry.id} 자기 자신 참조`);
+      }
+    }
+  });
+
+  it('큐레이션한 비교 조합의 id가 모두 카탈로그에 있다', () => {
+    const ids = new Set(shoeCatalog.map((entry) => entry.id));
+    for (const [id, others] of Object.entries(shoeCatalogInternals.curatedComparisons)) {
+      assert.ok(ids.has(id), `큐레이션 기준 id 없음: ${id}`);
+      for (const other of others) assert.ok(ids.has(other), `${id} → ${other} 없음`);
+    }
+  });
+
+  it('comparedTo는 되도록 같은 세부 카테고리 안에서 연결한다', () => {
+    const byId = new Map(shoeCatalog.map((entry) => [entry.id, entry] as const));
+    for (const entry of shoeCatalog) {
+      for (const other of entry.comparedTo) {
+        assert.equal(byId.get(other)?.subCategory, entry.subCategory, `${entry.id} → ${other}`);
+      }
+    }
+  });
+
+  it('keyTech는 확인된 항목에만 있고 빈 문자열을 넣지 않는다', () => {
+    let filled = 0;
+    for (const entry of shoeCatalog) {
+      assert.ok(Array.isArray(entry.keyTech), `${entry.id} keyTech`);
+      for (const tech of entry.keyTech) assert.ok(tech.trim().length > 0, `${entry.id} 빈 keyTech`);
+      assert.equal(new Set(entry.keyTech).size, entry.keyTech.length, `${entry.id} keyTech 중복`);
+      if (entry.keyTech.length > 0) filled += 1;
+    }
+    // 모르는 항목은 비워 두는 것이 정답이라 100% 채워질 수 없습니다.
+    assert.ok(filled > 0 && filled < shoeCatalog.length, `keyTech 채움 ${filled}`);
+  });
+
+  it('심화 문구 어디에도 "최저가" 같은 금지 표현이 없다', () => {
+    for (const entry of shoeCatalog) {
+      const blob = [
+        entry.useCase,
+        entry.fitNote,
+        entry.pick,
+        ...entry.bestForRunner,
+        ...entry.notFor,
+        ...entry.strengths,
+        ...entry.watchouts,
+        ...entry.keyTech,
+      ].join(' ');
+      for (const forbidden of ['최저가', '해외직구', '병행수입']) {
+        assert.ok(!blob.includes(forbidden), `${entry.id} 금지 표현 ${forbidden}`);
+      }
+    }
+  });
+});
+
+describe('러닝화 추천 마법사', () => {
+  const beginner: AdvisorAnswers = {
+    experience: '입문',
+    goal: '건강조깅',
+    distance: '10K',
+    budget: '미들',
+  };
+  const racer: AdvisorAnswers = {
+    experience: '1년이상',
+    goal: '대회준비',
+    distance: '하프이상',
+    budget: '상관없음',
+  };
+
+  it('질문은 3~4개이고 모두 선택지를 가진다', () => {
+    assert.ok(advisorQuestions.length >= 3 && advisorQuestions.length <= 4);
+    for (const question of advisorQuestions) {
+      assert.ok(question.options.length >= 2, question.key);
+      assert.equal(new Set(question.options.map((option) => option.value)).size, question.options.length);
+    }
+  });
+
+  it('입문자에게는 레이싱 대회화와 카본 플레이트를 추천하지 않는다', () => {
+    const results = recommendShoeEntries(beginner);
+    assert.ok(results.length >= ADVISOR_MIN_RESULTS);
+    for (const result of results) {
+      assert.notEqual(result.shoe.category, '레이싱', result.shoe.id);
+      assert.notEqual(result.shoe.plate, 'carbon', result.shoe.id);
+    }
+  });
+
+  it('예산 밴드 안의 러닝화가 항상 예산 초과 후보보다 먼저 온다', () => {
+    const results = recommendShoeEntries({ ...beginner, budget: '엔트리' });
+    const firstOver = results.findIndex((result) => result.overBudget);
+    if (firstOver >= 0) {
+      for (const result of results.slice(firstOver)) {
+        assert.equal(result.overBudget, true, `${result.shoe.id} 순서 역전`);
+      }
+    }
+    for (const result of results) {
+      if (result.overBudget) {
+        assert.notEqual(result.shoe.priceBand, '엔트리', result.shoe.id);
+        assert.ok(result.reason.includes(OVER_BUDGET_NOTE), `${result.shoe.id} 예산 안내 누락`);
+      } else {
+        assert.equal(result.shoe.priceBand, '엔트리', result.shoe.id);
+      }
+    }
+  });
+
+  it('대회 준비 답변은 대회·슈퍼트레이너 성격을 우선 고른다', () => {
+    const results = recommendShoeEntries(racer);
+    assert.ok(results.length >= ADVISOR_MIN_RESULTS);
+    for (const result of results) {
+      assert.ok(
+        result.shoe.category === '레이싱' ||
+          result.shoe.category === '슈퍼트레이너' ||
+          result.shoe.purposeTags.includes('대회레이스'),
+        result.shoe.id,
+      );
+    }
+  });
+
+  it('추천 거리 조건이 답변한 거리와 겹친다', () => {
+    for (const result of recommendShoeEntries({ ...beginner, distance: '5K이하' })) {
+      assert.ok(
+        result.shoe.distances.some((distance) => distance === '단거리' || distance === '5K'),
+        result.shoe.id,
+      );
+    }
+  });
+
+  it('결과는 5~8종이고 한 브랜드가 3종 이상 차지하지 않는다', () => {
+    for (const answers of [beginner, racer]) {
+      const results = recommendShoeEntries(answers);
+      assert.ok(results.length >= ADVISOR_MIN_RESULTS && results.length <= ADVISOR_MAX_RESULTS);
+      const counts: Record<string, number> = {};
+      for (const result of results) counts[result.shoe.brand] = (counts[result.shoe.brand] ?? 0) + 1;
+      for (const [brand, count] of Object.entries(counts)) {
+        assert.ok(count <= ADVISOR_MAX_PER_BRAND, `${brand} ${count}종`);
+      }
+    }
+  });
+
+  it('모든 추천에 한 줄 근거가 붙고 결과가 결정적이다', () => {
+    const first = recommendShoeEntries(racer);
+    const second = recommendShoeEntries(racer);
+    assert.deepEqual(
+      first.map((result) => result.shoe.id),
+      second.map((result) => result.shoe.id),
+    );
+    for (const result of first) {
+      assert.ok(result.reason.trim().length > 0, result.shoe.id);
+      assert.ok(!result.reason.includes('최저가'), result.shoe.id);
+    }
+  });
+
+  it('점수는 조건이 더 맞을수록 높다', () => {
+    const results = recommendShoeEntries(beginner);
+    for (let index = 1; index < results.length; index += 1) {
+      assert.ok(results[index - 1].score >= results[index].score, `${index} 정렬 역전`);
+    }
+  });
+});
+
+describe('러닝화 나란히 비교', () => {
+  it('비교함은 최대 3켤레까지만 담긴다', () => {
+    let ids: string[] = [];
+    for (const entry of shoeCatalog.slice(0, 5)) ids = toggleCompareId(ids, entry.id);
+    assert.equal(ids.length, COMPARE_MAX);
+    ids = toggleCompareId(ids, ids[0]);
+    assert.equal(ids.length, COMPARE_MAX - 1);
+  });
+
+  it('2켤레 미만이면 비교를 열 수 없다', () => {
+    assert.equal(canCompare([]), false);
+    assert.equal(canCompare([shoeCatalog[0].id]), false);
+    assert.equal(canCompare([shoeCatalog[0].id, shoeCatalog[1].id]), true);
+  });
+
+  it('없는 id는 조용히 버리고 남은 것만 비교한다', () => {
+    const resolved = resolveCompareShoes([shoeCatalog[0].id, 'does-not-exist']);
+    assert.equal(resolved.length, 1);
+    assert.equal(resolved[0].id, shoeCatalog[0].id);
+  });
+
+  it('비교표는 모든 행이 선택한 켤레 수만큼 값을 가진다', () => {
+    const picked = [shoeCatalog[0], shoeCatalog[1], shoeCatalog[2]];
+    const rows = buildComparisonRows(picked);
+    assert.ok(rows.length >= 8);
+    for (const row of rows) {
+      assert.equal(row.values.length, picked.length, row.label);
+      for (const value of row.values) assert.ok(value.trim().length > 0, `${row.label} 빈 값`);
+    }
+    // 수치 스펙 열을 만들지 않습니다.
+    for (const forbidden of ['무게', '드롭', '스택', '원']) {
+      assert.ok(!rows.some((row) => row.label.includes(forbidden)), forbidden);
+    }
+  });
+
+  it('비교 요약은 가격 안내 문구를 항상 포함한다', () => {
+    const highlights = compareHighlights([shoeCatalog[0], shoeCatalog[1]]);
+    assert.ok(highlights.length > 0);
+    assert.ok(highlights.some((line) => line.includes('밴드 구간')));
+    assert.ok(!highlights.some((line) => line.includes('최저가')));
   });
 });

@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "2026.07.26-v3",
+  "policy": {
+    "crawling": "none",
+    "note": "외부 사이트를 크롤링하지 않습니다. 아래 목록은 사람이 브랜드 공식 페이지에서 확인할 대상입니다.",
+    "checklist": [
+      "브랜드 공식 페이지에서 현재 판매 중인 세대(모델명)인지",
+      "카테고리·세부 카테고리 분류가 공식 설명과 어긋나지 않는지",
+      "공식 폼·플레이트 기술명(keyTech)을 채울 수 있는지",
+      "국내 공식 판매 경로가 새로 생겼는지"
+    ]
+  },
+  "totals": {
+    "catalog": 123,
+    "officialChecked": 8,
+    "pending": 115,
+    "queued": 15
+  },
+  "queue": [
+    {
+      "id": "adidas-prime-x-evo",
+      "brand": "adidas",
+      "model": "프라임 X 에보",
+      "modelEn": "Prime X Evo",
+      "category": "레이싱",
+      "subCategory": "장거리",
+      "verification": "chart-2026-05",
+      "specNote": "무게·드롭·스택 등 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "adidas-prime-x3-strung",
+      "brand": "adidas",
+      "model": "프라임 X3 스트렁",
+      "modelEn": "Prime X 3 Strung",
+      "category": "슈퍼트레이너",
+      "subCategory": "카본 플레이트",
+      "verification": "chart-2026-05",
+      "specNote": "무게·드롭·스택 등 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "asics-magic-speed-5",
+      "brand": "ASICS",
+      "model": "매직스피드 5",
+      "modelEn": "MAGIC SPEED 5",
+      "category": "슈퍼트레이너",
+      "subCategory": "카본 플레이트",
+      "verification": "chart-2026-05",
+      "specNote": "무게·드롭·스택 등 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "asics-metaspeed-ray",
+      "brand": "ASICS",
+      "model": "메타스피드 레이",
+      "modelEn": "METASPEED Ray",
+      "category": "레이싱",
+      "subCategory": "장거리",
+      "verification": "chart-2026-05",
+      "specNote": "무게·드롭·스택 등 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "asics-metaspeed-tokyo-edge",
+      "brand": "ASICS",
+      "model": "메타스피드 도쿄 엣지",
+      "modelEn": "METASPEED Tokyo Edge",
+      "category": "레이싱",
+      "subCategory": "장거리",
+      "verification": "chart-2026-05",
+      "specNote": "무게·드롭·스택 등 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "asics-metaspeed-tokyo-sky",
+      "brand": "ASICS",
+      "model": "메타스피드 도쿄 스카이",
+      "modelEn": "METASPEED Tokyo Sky",
+      "category": "레이싱",
+      "subCategory": "장거리",
+      "verification": "chart-2026-05",
+      "specNote": "무게·드롭·스택 등 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "asics-s4-yogiri",
+      "brand": "ASICS",
+      "model": "S4+ 요기리",
+      "modelEn": "S4+ Yogiri",
+      "category": "레이싱",
+      "subCategory": "장거리",
+      "verification": "chart-2026-05",
+      "specNote": "플레이트 사양 공식 미확인 · 무게·드롭·스택 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "brooks-hyperion-elite-5",
+      "brand": "Brooks",
+      "model": "하이페리온 엘리트 5",
+      "modelEn": "Hyperion Elite 5",
+      "category": "레이싱",
+      "subCategory": "장거리",
+      "verification": "chart-2026-05",
+      "specNote": "무게·드롭·스택 등 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "hoka-cielo-x1-3",
+      "brand": "HOKA",
+      "model": "씨엘로 X1 3.0",
+      "modelEn": "Cielo X1 3.0",
+      "category": "레이싱",
+      "subCategory": "장거리",
+      "verification": "chart-2026-05",
+      "specNote": "무게·드롭·스택 등 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "hoka-rocket-x3",
+      "brand": "HOKA",
+      "model": "로켓 X3",
+      "modelEn": "Rocket X 3",
+      "category": "레이싱",
+      "subCategory": "장거리",
+      "verification": "chart-2026-05",
+      "specNote": "무게·드롭·스택 등 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "hoka-skyward-x",
+      "brand": "HOKA",
+      "model": "스카이워드 X",
+      "modelEn": "Skyward X",
+      "category": "슈퍼트레이너",
+      "subCategory": "카본 플레이트",
+      "verification": "chart-2026-05",
+      "specNote": "무게·드롭·스택 등 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "mizuno-hyperwarp-elite",
+      "brand": "Mizuno",
+      "model": "하이퍼워프 엘리트",
+      "modelEn": "Hyperwarp Elite",
+      "category": "레이싱",
+      "subCategory": "장거리",
+      "verification": "chart-2026-05",
+      "specNote": "플레이트 사양 공식 미확인 · 무게·드롭·스택 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "on-cloudboom-max",
+      "brand": "On",
+      "model": "클라우드붐 맥스",
+      "modelEn": "Cloudboom Max",
+      "category": "레이싱",
+      "subCategory": "장거리",
+      "verification": "chart-2026-05",
+      "specNote": "무게·드롭·스택 등 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "on-cloudboom-strike",
+      "brand": "On",
+      "model": "클라우드붐 스트라이크",
+      "modelEn": "Cloudboom Strike",
+      "category": "레이싱",
+      "subCategory": "장거리",
+      "verification": "chart-2026-05",
+      "specNote": "무게·드롭·스택 등 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    },
+    {
+      "id": "on-cloudboom-strike-ls",
+      "brand": "On",
+      "model": "클라우드붐 스트라이크 LS",
+      "modelEn": "Cloudboom Strike LS",
+      "category": "레이싱",
+      "subCategory": "장거리",
+      "verification": "chart-2026-05",
+      "specNote": "무게·드롭·스택 등 공식 스펙 미확인",
+      "keyTechKnown": false,
+      "priority": 1
+    }
+  ]
+}

@@ -7,7 +7,7 @@
 //   specNote로 "공식 스펙 미확인"을 정직하게 표기합니다. priceBand는 밴드 구간만 나타냅니다.
 // - 갱신 주기: 분기 1회 정기 점검 + 신제품 발표 시 수시. 갱신 시 SHOE_DATA_VERSION을 올립니다.
 // - 정적 데이터 sidecar가 배포되면 domains/shoes/refresh.ts의 mergeShoeCatalog로 병합합니다.
-export const SHOE_DATA_VERSION = '2026.07.26-v2';
+export const SHOE_DATA_VERSION = '2026.07.26-v3';
 
 import {
   shoeBrandColors,
@@ -258,6 +258,18 @@ export type ShoeEntry = {
   verification: ShoeVerification;
   /** 무게·드롭·스택 등 수치 스펙의 확인 상태를 정직하게 남기는 자리 */
   specNote?: string;
+  /** 언제 신는 신발인지 2~3문장으로 설명합니다. 세부 카테고리 기준에 항목별 거리·실력을 붙여 만듭니다. */
+  useCase: string;
+  /** 착화감·발볼·사이즈 경향. 단정하지 않고 "알려져 있어요 · 매장 착화 권장" 톤을 유지합니다. */
+  fitNote: string;
+  /** 같은 세부 카테고리 안의 대표 대안 1~2종(카탈로그 id). 화면의 "비슷한 신발 비교"에 씁니다. */
+  comparedTo: string[];
+  /** 어떤 러너에게 맞는지. 의료적 단정 대신 러닝 상황으로만 표현합니다. */
+  bestForRunner: string[];
+  /** 이 신발이 잘 맞지 않는 경우 */
+  notFor: string[];
+  /** 브랜드가 공식적으로 쓰는 폼·플레이트 기술명만. 확인되지 않으면 빈 배열입니다. */
+  keyTech: string[];
 };
 
 type SubCategoryDefault = {
@@ -341,6 +353,184 @@ const subCategoryDefaults: Record<ShoeSubCategory, SubCategoryDefault> = {
   },
 };
 
+// ---------------------------------------------------------------------------
+// 구매 결정용 심화 설명 (useCase / bestForRunner / notFor / fitNote / keyTech)
+//
+// 정직성 원칙
+// - 여기 있는 문장은 "세부 카테고리의 용도"를 옮긴 편집 설명이지, 개별 제품의 측정값이 아닙니다.
+// - 무게·드롭·스택·가격 같은 수치는 여전히 넣지 않습니다(priceBand만 씁니다).
+// - fitNote는 브랜드별로 널리 알려진 경향만 완충 표현으로 적고, 항상 매장 착화를 권합니다.
+// - keyTech는 브랜드 공식 명칭이 확실한 경우에만 채우고 나머지는 빈 배열로 둡니다.
+// ---------------------------------------------------------------------------
+
+type SubCategoryGuide = {
+  /** useCase 첫 문장 */
+  useCase: string;
+  bestForRunner: string[];
+  notFor: string[];
+};
+
+const subCategoryGuides: Record<ShoeSubCategory, SubCategoryGuide> = {
+  입문화: {
+    useCase: '주 3~4회 편안한 조깅과 회복주, 10km 안쪽 일상 러닝에 두루 쓰는 자리예요.',
+    bestForRunner: [
+      '러닝을 막 시작해 한 켤레로 다 해결하고 싶은 러너',
+      '무리 없이 편한 페이스로 꾸준히 달리려는 러너',
+    ],
+    notFor: ['대회 기록 단축이 지금 목표인 경우', '반발력 큰 플레이트 감각을 기대하는 경우'],
+  },
+  '맥스 쿠션화': {
+    useCase: '두툼한 쿠션으로 착지 충격을 덜어 주는 자리예요. 장거리 조깅과 훈련 다음 날 회복주에 잘 맞습니다.',
+    bestForRunner: [
+      '오래 달릴 때 다리 피로가 먼저 오는 러너',
+      '체중 부담이 있어 푹신한 착지를 원하는 러너',
+      '주간 마일리지가 높아 회복용 한 켤레가 필요한 러너',
+    ],
+    notFor: ['가볍고 날렵한 반응성을 우선하는 경우', '빠른 템포·인터벌 전용 신발을 찾는 경우'],
+  },
+  안정화: {
+    useCase: '미드솔 안쪽을 단단하게 잡아 주는 지지 구조가 들어간 자리예요. 발이 안쪽으로 무너지는 느낌이 신경 쓰일 때 데일리 조깅용으로 봅니다.',
+    bestForRunner: [
+      '달릴 때 발이 안쪽으로 기우는 느낌이 있는 러너',
+      '긴 조깅 후반에 자세가 흐트러지는 게 고민인 러너',
+    ],
+    notFor: [
+      '이미 중립형 신발이 잘 맞는 경우',
+      '가벼운 무게가 최우선인 경우',
+      '통증·부상 대응이 필요한 경우(신발 대신 전문가 상담이 먼저예요)',
+    ],
+  },
+  올라운더: {
+    useCase: '조깅부터 가벼운 템포까지 한 켤레로 넓게 쓰는 자리예요. 훈련 종류가 자주 바뀌는 러너가 기본으로 두기 좋습니다.',
+    bestForRunner: [
+      '신발을 여러 켤레로 나누기 부담스러운 러너',
+      '조깅과 스피드 훈련을 섞어 하는 러너',
+    ],
+    notFor: ['한 가지 용도에 극단적으로 특화된 신발을 원하는 경우'],
+  },
+  '경량 트레이너': {
+    useCase: '가볍고 얇은 구성으로 발을 빠르게 굴리는 자리예요. 짧은 스피드 훈련이나 가벼운 템포 구간에 씁니다.',
+    bestForRunner: [
+      '가벼운 무게와 지면 감각을 좋아하는 러너',
+      '스피드 훈련용 한 켤레를 따로 두려는 러너',
+    ],
+    notFor: ['매일 신는 유일한 신발로 쓰려는 경우', '푹신한 쿠션을 우선하는 경우'],
+  },
+  '논 플레이트': {
+    useCase: '플레이트 없이 폼만으로 반발을 만드는 슈퍼트레이너 자리예요. 템포 주행과 긴 거리 훈련을 한 켤레로 소화할 때 봅니다.',
+    bestForRunner: [
+      '플레이트의 단단한 감각은 부담스럽지만 반발은 원하는 러너',
+      '훈련 강도를 폭넓게 쓰는 중급 이상 러너',
+    ],
+    notFor: ['첫 러닝화를 고르는 경우', '가격대를 최대한 낮추려는 경우'],
+  },
+  '라이트 플레이트': {
+    useCase: '가벼운 플레이트로 굴림을 돕는 훈련용 자리예요. 템포·인터벌 훈련과 대회 준비 주행에 씁니다.',
+    bestForRunner: [
+      '대회를 준비하며 훈련용 반발 신발이 필요한 러너',
+      '카본화 전에 플레이트 감각을 익히려는 러너',
+    ],
+    notFor: ['천천히 오래 달리는 조깅이 주력인 경우', '입문 단계에서 첫 켤레를 찾는 경우'],
+  },
+  '카본 플레이트': {
+    useCase: '카본 플레이트가 들어간 훈련·대회 겸용 자리예요. 빠른 페이스 구간에서 굴림을 크게 만들어 줍니다.',
+    bestForRunner: [
+      '레이스 페이스 훈련을 정기적으로 하는 러너',
+      '대회용 신발의 감각을 훈련에서 미리 익히려는 러너',
+    ],
+    notFor: [
+      '러닝을 시작한 지 얼마 되지 않은 경우',
+      '회복주·조깅 위주로 달리는 경우',
+      '발목·발바닥에 부담을 느끼는 시기(무리하지 말고 쉬운 신발부터 보세요)',
+    ],
+  },
+  중거리: {
+    useCase: '5km~10km처럼 짧고 빠른 레이스에 맞춘 대회화 자리예요. 가볍게 만드는 대신 쿠션과 내구성은 양보한 구성입니다.',
+    bestForRunner: ['단거리~10km 대회 기록에 집중하는 러너', '트랙·로드 스피드 세션이 잦은 상급 러너'],
+    notFor: ['일상 조깅용으로 쓰려는 경우', '풀코스 완주가 목표인 경우'],
+  },
+  장거리: {
+    useCase: '하프·풀코스 레이스를 겨냥한 대회화 자리예요. 대회 당일과 레이스 페이스 훈련에서만 쓰는 것을 기본으로 봅니다.',
+    bestForRunner: ['목표 대회를 앞두고 기록을 노리는 러너', '레이스 페이스가 이미 몸에 익은 러너'],
+    notFor: [
+      '매일 신는 데일리화가 필요한 경우',
+      '러닝 경력이 짧아 아직 페이스가 잡히지 않은 경우',
+      '내구성 대비 가격이 부담스러운 경우',
+    ],
+  },
+};
+
+/**
+ * 브랜드별로 널리 알려진 착화감 경향만 완충 표현으로 남깁니다.
+ * 어떤 문장도 특정 제품의 실측이 아니며, 마지막은 항상 매장 착화 권고로 끝냅니다.
+ */
+const FIT_TAIL = '발 모양에 따라 체감이 달라지니 매장 착화를 권해요.';
+
+const brandFitNotes: Readonly<Record<ShoeBrand, string>> = {
+  Nike: `일반적으로 발볼이 좁은 편으로 알려져 있어요. 발볼이 넓다면 반 사이즈 여유를 고려해 보세요. ${FIT_TAIL}`,
+  adidas: `일반적으로 발등이 낮고 감싸는 핏으로 알려져 있어요. 두꺼운 양말을 쓴다면 여유를 고려해 보세요. ${FIT_TAIL}`,
+  ASICS: `일반적으로 표준 발볼에 무난하게 맞는 편으로 알려져 있어요. 라인에 따라 폭 옵션이 있는 경우도 있습니다. ${FIT_TAIL}`,
+  'New Balance': `일반적으로 폭 옵션(2E 등) 선택지가 넓은 브랜드로 알려져 있어요. 발볼이 넓다면 폭 옵션을 먼저 확인해 보세요. ${FIT_TAIL}`,
+  Saucony: `일반적으로 앞볼에 여유가 있는 편으로 알려져 있어요. 발이 가늘다면 끈 조임으로 조절하는 경우가 많습니다. ${FIT_TAIL}`,
+  PUMA: `일반적으로 발을 감싸는 슬림한 핏으로 알려져 있어요. 사이즈는 평소와 같게 보되 앞볼 여유를 확인해 보세요. ${FIT_TAIL}`,
+  HOKA: `일반적으로 스택이 높고 감싸는 어퍼로 알려져 있어요. 라인에 따라 와이드 옵션이 나오는 경우도 있습니다. ${FIT_TAIL}`,
+  Brooks: `일반적으로 표준~여유 있는 발볼로 알려져 있어요. 폭 옵션이 있는 라인이 많은 편입니다. ${FIT_TAIL}`,
+  Mizuno: `일반적으로 발을 단단히 잡아 주는 핏으로 알려져 있어요. 발볼이 넓다면 여유를 확인해 보세요. ${FIT_TAIL}`,
+  On: `일반적으로 길이가 짧게 나오는 편이라는 평이 있어요. 사이즈 선택 전에 길이를 함께 확인해 보세요. ${FIT_TAIL}`,
+};
+
+/**
+ * 모델명 자체에 브랜드 공식 플랫폼명이 들어간 경우만 기계적으로 뽑습니다.
+ * (예: "FuelCell Rebel v5" → FuelCell, "Velocity NITRO 4" → NITRO)
+ * 추정으로 폼 이름을 붙이지 않기 위한 안전한 규칙입니다.
+ */
+const nameEmbeddedTech: readonly (readonly [RegExp, string])[] = [
+  [/fresh foam x/i, 'Fresh Foam X 미드솔'],
+  [/fuelcell/i, 'FuelCell 폼'],
+  [/nitro/i, 'NITRO 폼'],
+  [/supercomp/i, 'FuelCell SuperComp 구성'],
+];
+
+/**
+ * 브랜드 공식 자료에서 확인된 폼·플레이트 명칭만 항목별로 적어 둡니다.
+ * 확신이 없으면 넣지 않습니다(빈 배열이 정답입니다).
+ */
+const curatedKeyTech: Readonly<Record<string, readonly string[]>> = {
+  'nike-pegasus-42': ['ReactX 폼', 'Air Zoom 유닛'],
+  'nike-vaporfly-4': ['ZoomX 폼', '풀 렝스 카본 플레이트'],
+  'nike-alphafly-3': ['ZoomX 폼', 'Air Zoom 유닛', '풀 렝스 카본 플레이트'],
+  'nike-zoomfly-6': ['ZoomX 폼', '카본 플레이트'],
+  'nike-streakfly-2': ['ZoomX 폼'],
+  'nike-pegasus-plus': ['ZoomX 폼'],
+  'adidas-supernova-rise-2': ['Dreamstrike+ 미드솔', '서포트 로드 시스템'],
+  'adidas-supernova-rise-3': ['Dreamstrike+ 미드솔'],
+  'adidas-adizero-adios-pro-4': ['Lightstrike Pro 폼', 'ENERGYRODS'],
+  'adidas-adizero-pro-evo-3': ['Lightstrike Pro 폼', 'ENERGYRODS'],
+  'adidas-adizero-boston-13': ['Lightstrike Pro 폼', 'ENERGYRODS'],
+  'adidas-adizero-takumi-sen-11': ['Lightstrike Pro 폼', 'ENERGYRODS'],
+  'adidas-evo-sl': ['Lightstrike Pro 폼'],
+  'asics-gel-nimbus-27': ['PureGEL', 'FF BLAST PLUS ECO'],
+  'new-balance-1080-v14': ['Fresh Foam X 미드솔'],
+  'saucony-ride-18': ['PWRRUN+ 미드솔'],
+};
+
+function keyTechFor(id: string, modelEn: string): string[] {
+  const curated = curatedKeyTech[id];
+  if (curated) return [...curated];
+  const derived = nameEmbeddedTech
+    .filter(([pattern]) => pattern.test(modelEn))
+    .map(([, label]) => label);
+  return Array.from(new Set(derived));
+}
+
+function buildUseCase(guide: SubCategoryGuide, distances: ShoeDistance[], levels: ShoeLevel[]): string {
+  return [
+    guide.useCase,
+    `어울리는 거리는 ${distances.join('·')} 정도로 봅니다.`,
+    `${levels.join('·')} 러너가 주로 찾는 자리예요.`,
+  ].join(' ');
+}
+
 const categoryOfSubCategory = new Map<ShoeSubCategory, ShoeCategory>(
   (Object.entries(shoeSubCategories) as [ShoeCategory, readonly ShoeSubCategory[]][]).flatMap(
     ([category, subs]) => subs.map((sub) => [sub, category] as const),
@@ -363,12 +553,22 @@ type ShoeEntryInput = {
   pick: string;
   verification?: ShoeVerification;
   specNote?: string;
+  /** 아래 심화 필드는 비워 두면 세부 카테고리·브랜드 기준값으로 채웁니다. */
+  useCase?: string;
+  fitNote?: string;
+  bestForRunner?: string[];
+  notFor?: string[];
+  keyTech?: string[];
+  comparedTo?: string[];
 };
 
 function define(input: ShoeEntryInput): ShoeEntry {
   const fallback = subCategoryDefaults[input.sub];
+  const guide = subCategoryGuides[input.sub];
   const category = categoryOfSubCategory.get(input.sub);
   if (!category) throw new Error(`unknown sub category: ${input.sub}`);
+  const levels = input.levels ?? [...fallback.levels];
+  const distances = input.distances ?? [...fallback.distances];
   return {
     id: input.id,
     brand: input.brand,
@@ -377,8 +577,8 @@ function define(input: ShoeEntryInput): ShoeEntry {
     category,
     subCategory: input.sub,
     plate: input.plate ?? fallback.plate,
-    levels: input.levels ?? [...fallback.levels],
-    distances: input.distances ?? [...fallback.distances],
+    levels,
+    distances,
     priceBand: input.priceBand ?? fallback.priceBand,
     purposeTags: input.purposeTags ?? [...fallback.purposeTags],
     strengths: input.strengths,
@@ -387,6 +587,12 @@ function define(input: ShoeEntryInput): ShoeEntry {
     brandColor: shoeBrandColors[input.brand],
     verification: input.verification ?? 'chart-2026-05',
     ...(input.specNote ? { specNote: input.specNote } : {}),
+    useCase: input.useCase ?? buildUseCase(guide, distances, levels),
+    fitNote: input.fitNote ?? brandFitNotes[input.brand],
+    bestForRunner: input.bestForRunner ?? [...guide.bestForRunner],
+    notFor: input.notFor ?? [...guide.notFor],
+    keyTech: input.keyTech ?? keyTechFor(input.id, input.modelEn),
+    comparedTo: input.comparedTo ? [...input.comparedTo] : [],
   };
 }
 
@@ -1850,7 +2056,84 @@ const previousGenerationShoes: ShoeEntry[] = [
  * 확장 카탈로그 정본입니다.
  * 순서 자체가 기본 "추천순" 정렬(데일리 → 슈퍼트레이너 → 레이싱)로 쓰입니다.
  */
-export const shoeCatalog: ShoeEntry[] = [
+/**
+ * 같은 세부 카테고리 안에서 자주 함께 비교되는 대표 조합입니다.
+ * 여기 없는 항목은 아래 autoComparisons가 같은 세부 카테고리의 다른 브랜드로 채웁니다.
+ */
+const curatedComparisons: Readonly<Record<string, readonly string[]>> = {
+  'nike-pegasus-42': ['asics-gel-cumulus-28', 'brooks-ghost-17'],
+  'asics-gel-cumulus-28': ['nike-pegasus-42', 'brooks-ghost-17'],
+  'brooks-ghost-17': ['nike-pegasus-42', 'asics-gel-cumulus-28'],
+  'hoka-clifton-10': ['nike-pegasus-42', 'new-balance-880-v15'],
+  'new-balance-880-v15': ['asics-gel-cumulus-28', 'brooks-ghost-17'],
+  'asics-gel-nimbus-28': ['hoka-bondi-9', 'brooks-glycerin-23'],
+  'hoka-bondi-9': ['asics-gel-nimbus-28', 'new-balance-more-v6'],
+  'brooks-glycerin-23': ['asics-gel-nimbus-28', 'saucony-triumph-24'],
+  'saucony-triumph-24': ['brooks-glycerin-23', 'nike-vomero-18'],
+  'nike-vomero-18': ['asics-gel-nimbus-28', 'saucony-triumph-24'],
+  'asics-gel-kayano-33': ['brooks-adrenaline-gts-25', 'nike-structure-26'],
+  'brooks-adrenaline-gts-25': ['asics-gt-2000-14', 'saucony-guide-19'],
+  'asics-gt-2000-14': ['brooks-adrenaline-gts-25', 'new-balance-860-v15'],
+  'asics-novablast-5': ['adidas-sl-2', 'on-cloudmonster-3'],
+  'adidas-sl-2': ['asics-novablast-5', 'puma-velocity-nitro-4'],
+  'asics-superblast-3': ['adidas-evo-sl', 'new-balance-balos'],
+  'adidas-evo-sl': ['asics-superblast-3', 'hoka-mach-7'],
+  'saucony-endorphin-speed-5': ['adidas-adizero-boston-13', 'hoka-mach-x3'],
+  'adidas-adizero-boston-13': ['saucony-endorphin-speed-5', 'asics-sonicblast'],
+  'nike-zoomfly-6': ['asics-magic-speed-5', 'puma-deviate-nitro-4'],
+  'asics-magic-speed-5': ['nike-zoomfly-6', 'saucony-endorphin-trainer'],
+  'nike-vaporfly-4': ['adidas-adizero-adios-pro-4', 'asics-metaspeed-tokyo-sky'],
+  'nike-alphafly-3': ['adidas-adizero-pro-evo-3', 'asics-metaspeed-tokyo-sky'],
+  'adidas-adizero-adios-pro-4': ['nike-vaporfly-4', 'saucony-endorphin-pro-5'],
+  'asics-metaspeed-tokyo-sky': ['nike-vaporfly-4', 'asics-metaspeed-tokyo-edge'],
+  'asics-metaspeed-tokyo-edge': ['asics-metaspeed-tokyo-sky', 'nike-vaporfly-4'],
+  'nike-streakfly-2': ['adidas-adizero-takumi-sen-11', 'on-cloudboom-bolt'],
+  'adidas-adizero-takumi-sen-11': ['nike-streakfly-2', 'new-balance-sc-pacer-v2'],
+};
+
+/**
+ * 같은 세부 카테고리 안에서 다른 브랜드 대안을 카탈로그 순서 기준으로 가장 가까운 2종 골라 줍니다.
+ * 결정적(deterministic)이라 데이터가 바뀌지 않는 한 항상 같은 결과가 나옵니다.
+ */
+function autoComparisons(entry: ShoeEntry, group: ShoeEntry[]): string[] {
+  const selfIndex = group.findIndex((item) => item.id === entry.id);
+  const others = group.filter((item) => item.id !== entry.id && item.brand !== entry.brand);
+  const pool = others.length > 0 ? others : group.filter((item) => item.id !== entry.id);
+  return [...pool]
+    .sort((left, right) => {
+      const byDistance =
+        Math.abs(group.indexOf(left) - selfIndex) - Math.abs(group.indexOf(right) - selfIndex);
+      return byDistance !== 0 ? byDistance : left.id.localeCompare(right.id);
+    })
+    .slice(0, 2)
+    .map((item) => item.id);
+}
+
+/** 큐레이션된 조합을 우선 쓰되, 존재하지 않는 id는 버리고 부족하면 자동 대안으로 채웁니다. */
+function withComparisons(entries: ShoeEntry[]): ShoeEntry[] {
+  const known = new Set(entries.map((entry) => entry.id));
+  const groups = new Map<ShoeSubCategory, ShoeEntry[]>();
+  for (const entry of entries) {
+    const group = groups.get(entry.subCategory) ?? [];
+    group.push(entry);
+    groups.set(entry.subCategory, group);
+  }
+  return entries.map((entry) => {
+    const explicit = [...(entry.comparedTo ?? []), ...(curatedComparisons[entry.id] ?? [])].filter(
+      (id) => id !== entry.id && known.has(id),
+    );
+    const merged = Array.from(new Set(explicit)).slice(0, 2);
+    if (merged.length >= 2) return { ...entry, comparedTo: merged };
+    const group = groups.get(entry.subCategory) ?? [];
+    for (const candidate of autoComparisons(entry, group)) {
+      if (merged.length >= 2) break;
+      if (!merged.includes(candidate)) merged.push(candidate);
+    }
+    return { ...entry, comparedTo: merged };
+  });
+}
+
+export const shoeCatalog: ShoeEntry[] = withComparisons([
   ...dailyEntryShoes,
   ...dailyMaxCushionShoes,
   ...dailyStabilityShoes,
@@ -1862,7 +2145,7 @@ export const shoeCatalog: ShoeEntry[] = [
   ...racingShortShoes,
   ...racingLongShoes,
   ...previousGenerationShoes,
-];
+]);
 
 export function findShoeEntry(id: string, values: ShoeEntry[] = shoeCatalog): ShoeEntry | undefined {
   return values.find((entry) => entry.id === id);
@@ -1872,5 +2155,14 @@ export function shoeSearchText(entry: ShoeEntry): string {
   return `${entry.brand} ${entry.model} ${entry.modelEn}`.toLocaleLowerCase('ko-KR');
 }
 
-export const shoeCatalogInternals = { subCategoryDefaults, define };
+export const shoeCatalogInternals = {
+  subCategoryDefaults,
+  subCategoryGuides,
+  brandFitNotes,
+  curatedComparisons,
+  curatedKeyTech,
+  define,
+  keyTechFor,
+  withComparisons,
+};
 

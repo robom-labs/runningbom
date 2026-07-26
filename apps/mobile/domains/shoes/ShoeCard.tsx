@@ -11,12 +11,16 @@ export function ShoeCard({
   shoe,
   focused = false,
   saved = false,
+  compareSelected = false,
   onPress,
+  onToggleCompare,
 }: {
   shoe: ShoeEntry;
   focused?: boolean;
   saved?: boolean;
+  compareSelected?: boolean;
   onPress: () => void;
+  onToggleCompare?: () => void;
 }) {
   return (
     <Pressable
@@ -73,6 +77,17 @@ export function ShoeCard({
             </Text>
           ))}
         </View>
+
+        {onToggleCompare ? (
+          <View style={styles.chipWrap}>
+            <Chip
+              label={compareSelected ? '비교함에 담김' : '비교함에 담기'}
+              selected={compareSelected}
+              onPress={onToggleCompare}
+              tone="accent"
+            />
+          </View>
+        ) : null}
       </View>
     </Pressable>
   );

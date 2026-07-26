@@ -17,8 +17,11 @@ import {
   toggleValue,
   type ShoeFilterState,
 } from './filters';
+import { ShoeAdvisor } from './ShoeAdvisor';
 import { ShoeCard } from './ShoeCard';
+import { ShoeCompare } from './ShoeCompare';
 import { ShoeDetail } from './ShoeDetail';
+import { COMPARE_MAX, canCompare, resolveCompareShoes, toggleCompareId } from './compare';
 import type { ShoePurchaseLink } from './purchaseLinks';
 import {
   shoeBrands,
@@ -38,6 +41,8 @@ export function ShoeScreen({ focusedShoeId }: { focusedShoeId?: string }) {
   const [showFilters, setShowFilters] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [detailId, setDetailId] = useState<string | undefined>(undefined);
+  const [mode, setMode] = useState<'list' | 'advisor' | 'compare'>('list');
+  const [compareIds, setCompareIds] = useState<string[]>([]);
 
   const results = useMemo(
     () => filterShoes(filters, shoeCatalog, { pinnedId: focusedShoeId }),
@@ -80,6 +85,14 @@ export function ShoeScreen({ focusedShoeId }: { focusedShoeId?: string }) {
     });
   }
 
+  function toggleCompare(id: string) {
+    setCompareIds((current) => toggleCompareId(current, id));
+  }
+
+  function openShoe(id: string) {
+    setDetailId(id);
+  }
+
   async function openPurchase(destination: ShoePurchaseLink) {
     try {
       if (!destination.url.startsWith('https://') || !(await Linking.canOpenURL(destination.url))) {
@@ -97,10 +110,37 @@ export function ShoeScreen({ focusedShoeId }: { focusedShoeId?: string }) {
         shoe={detailShoe}
         saved={preferences.interestedShoeIds.includes(detailShoe.id)}
         current={preferences.currentShoeId === detailShoe.id}
+        compareSelected={compareIds.includes(detailShoe.id)}
         onBack={() => setDetailId(undefined)}
         onToggleSaved={() => toggleSaved(detailShoe.id)}
         onToggleCurrent={() => toggleCurrent(detailShoe.id)}
         onOpenPurchase={(destination) => void openPurchase(destination)}
+        onOpenShoe={openShoe}
+        onToggleCompare={() => toggleCompare(detailShoe.id)}
+      />
+    );
+  }
+
+  if (mode === 'advisor') {
+    return (
+      <ShoeAdvisor
+        savedIds={preferences.interestedShoeIds}
+        compareIds={compareIds}
+        onBack={() => setMode('list')}
+        onOpenShoe={openShoe}
+        onToggleCompare={toggleCompare}
+      />
+    );
+  }
+
+  if (mode === 'compare') {
+    return (
+      <ShoeCompare
+        shoes={resolveCompareShoes(compareIds)}
+        onBack={() => setMode('list')}
+        onOpenShoe={openShoe}
+        onRemove={toggleCompare}
+        onClear={() => setCompareIds([])}
       />
     );
   }
@@ -113,6 +153,28 @@ export function ShoeScreen({ focusedShoeId }: { focusedShoeId?: string }) {
 
   return (
     <View style={styles.container}>
+      <Card style={styles.entryCard}>
+        <Text style={styles.entryTitle}>뭘 사야 할지 모르겠다면</Text>
+        <Text style={styles.note}>
+          네 가지 질문에 답하면 카탈로그 {shoeCatalog.length}종에서 조건에 맞는 러닝화를 골라 줘요.
+        </Text>
+        <Button label="내게 맞는 러닝화 찾기" onPress={() => setMode('advisor')} tone="primary" />
+        <View style={styles.summaryActions}>
+          <Button
+            label={`비교함 열기 (${compareIds.length}/${COMPARE_MAX})`}
+            onPress={() => setMode('compare')}
+            tone="secondary"
+            disabled={!canCompare(compareIds)}
+          />
+          <Button
+            label="비교함 비우기"
+            onPress={() => setCompareIds([])}
+            tone="quiet"
+            disabled={compareIds.length === 0}
+          />
+        </View>
+      </Card>
+
       <TextInput
         accessibilityLabel="러닝화 검색"
         onChangeText={(query) => patch({ query })}
@@ -248,7 +310,9 @@ export function ShoeScreen({ focusedShoeId }: { focusedShoeId?: string }) {
             shoe={shoe}
             focused={focusedShoeId === shoe.id}
             saved={preferences.interestedShoeIds.includes(shoe.id)}
+            compareSelected={compareIds.includes(shoe.id)}
             onPress={() => setDetailId(shoe.id)}
+            onToggleCompare={() => toggleCompare(shoe.id)}
           />
         ))}
 
@@ -306,6 +370,8 @@ const styles = StyleSheet.create({
   summary: { color: palette.inkSoft, fontSize: typeScale.bodySmall, fontWeight: '800' },
   summaryActions: { flexDirection: 'row', gap: spacing.xs },
   filterCard: { gap: spacing.md, backgroundColor: palette.surfaceWarm },
+  entryCard: { gap: spacing.sm, backgroundColor: palette.surfaceWarm },
+  entryTitle: { color: palette.ink, fontSize: typeScale.titleSmall, fontWeight: '900' },
   filterGroup: { gap: spacing.xs },
   filterTitle: { color: palette.ink, fontSize: typeScale.bodySmall, fontWeight: '900' },
   note: { color: palette.muted, fontSize: typeScale.caption, lineHeight: 18 },

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Button, Card, Chip } from '../../app/design-system/components';
 import { palette, radius, spacing, typeScale } from '../../app/design-system/theme';
-import { SHOE_DATA_VERSION, type ShoeEntry } from './catalog';
+import { SHOE_DATA_VERSION, findShoeEntry, type ShoeEntry } from './catalog';
 import { entryPurchaseLinks, type ShoePurchaseLink } from './purchaseLinks';
 import {
   shoeBrandInitials,
@@ -16,20 +16,29 @@ export function ShoeDetail({
   shoe,
   saved,
   current,
+  compareSelected = false,
   onBack,
   onToggleSaved,
   onToggleCurrent,
   onOpenPurchase,
+  onOpenShoe,
+  onToggleCompare,
 }: {
   shoe: ShoeEntry;
   saved: boolean;
   current: boolean;
+  compareSelected?: boolean;
   onBack: () => void;
   onToggleSaved: () => void;
   onToggleCurrent: () => void;
   onOpenPurchase: (destination: ShoePurchaseLink) => void;
+  onOpenShoe?: (id: string) => void;
+  onToggleCompare?: () => void;
 }) {
   const links = entryPurchaseLinks(shoe);
+  const alternatives = shoe.comparedTo
+    .map((id) => findShoeEntry(id))
+    .filter((entry): entry is ShoeEntry => Boolean(entry));
 
   return (
     <View style={styles.container}>
@@ -83,6 +92,74 @@ export function ShoeDetail({
           ))}
         </View>
       </Card>
+
+      <Card style={styles.block}>
+        <Text style={styles.blockTitle}>언제 신는 신발인가요</Text>
+        <Text style={styles.paragraph}>{shoe.useCase}</Text>
+      </Card>
+
+      <Card style={styles.block}>
+        <Text style={styles.blockTitle}>이런 러너에게 잘 맞아요</Text>
+        {shoe.bestForRunner.map((line) => (
+          <Text key={line} style={styles.bullet}>
+            · {line}
+          </Text>
+        ))}
+        <Text style={[styles.blockTitle, styles.blockTitleSpaced]}>이럴 땐 다른 신발을 보세요</Text>
+        {shoe.notFor.map((line) => (
+          <Text key={line} style={styles.watchout}>
+            · {line}
+          </Text>
+        ))}
+        <Text style={styles.note}>
+          발 상태나 통증에 대한 판단은 하지 않아요. 불편함이 이어지면 전문가 상담을 먼저 권해요.
+        </Text>
+      </Card>
+
+      <Card style={styles.block}>
+        <Text style={styles.blockTitle}>착화감·사이즈</Text>
+        <Text style={styles.paragraph}>{shoe.fitNote}</Text>
+      </Card>
+
+      {shoe.keyTech.length > 0 ? (
+        <Card style={styles.block}>
+          <Text style={styles.blockTitle}>브랜드 공식 기술명</Text>
+          <View style={styles.chipWrap}>
+            {shoe.keyTech.map((tech) => (
+              <Chip key={tech} label={tech} tone="accent" />
+            ))}
+          </View>
+          <Text style={styles.note}>
+            브랜드가 공식적으로 쓰는 이름만 적어요. 확인되지 않은 기술명은 넣지 않습니다.
+          </Text>
+        </Card>
+      ) : null}
+
+      {alternatives.length > 0 ? (
+        <Card style={styles.block}>
+          <Text style={styles.blockTitle}>비슷한 신발 비교</Text>
+          <Text style={styles.note}>
+            같은 세부 카테고리에서 자주 함께 검토되는 대안이에요.
+          </Text>
+          <View style={styles.chipWrap}>
+            {alternatives.map((alternative) => (
+              <Chip
+                key={alternative.id}
+                label={`${alternative.brand} ${alternative.model}`}
+                onPress={onOpenShoe ? () => onOpenShoe(alternative.id) : undefined}
+              />
+            ))}
+          </View>
+          {onToggleCompare ? (
+            <Chip
+              label={compareSelected ? '비교함에 담김' : '비교함에 담기'}
+              selected={compareSelected}
+              onPress={onToggleCompare}
+              tone="accent"
+            />
+          ) : null}
+        </Card>
+      ) : null}
 
       <Card style={styles.block}>
         <Text style={styles.blockTitle}>장점</Text>
@@ -173,6 +250,7 @@ const styles = StyleSheet.create({
   modelEn: { color: palette.muted, fontSize: typeScale.bodySmall, marginTop: 2 },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   pick: { color: palette.ink, fontSize: typeScale.body, lineHeight: 24, fontWeight: '700' },
+  paragraph: { color: palette.inkSoft, fontSize: typeScale.bodySmall, lineHeight: 22 },
   block: { gap: spacing.sm },
   sourceBlock: { gap: spacing.xs, backgroundColor: palette.surfaceWarm },
   blockTitle: { color: palette.ink, fontSize: typeScale.titleSmall, fontWeight: '900' },
