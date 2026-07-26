@@ -1,5 +1,5 @@
 {
-  "version": "2026.07.26-race-data-14",
+  "version": "2026.07.27-race-data-15",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -2608,8 +2608,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ulsan-marathon-asanro-road-race",
       "sourceName": "마라톤GO",
       "organizer": "울산광역시 육상연맹",
-      "dataVerifiedAt": "2026-07-24T17:59:02.557Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-07-26T15:48:49.451Z",
+      "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2632,8 +2632,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-pinkrun",
       "sourceName": "마라톤GO",
       "organizer": "한국유방건강재단",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-07-26T15:48:49.451Z",
+      "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -3450,8 +3450,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-maritime-run-festa",
       "sourceName": "마라톤GO",
       "organizer": "한국해운신문, 부산항발전협의회",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-07-26T15:48:49.451Z",
+      "status": "open",
       "courseLabel": "10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4183,7 +4183,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-07-25T15:52:29.628Z",
+  "lastSuccessfulRefreshAt": "2026-07-26T15:48:49.451Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
