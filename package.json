@@ -1,12 +1,14 @@
 {
   "name": "runningbom",
-  "version": "0.18.3",
+  "version": "0.19.0",
   "private": true,
   "scripts": {
-    "build": "node scripts/sync-family-static.mjs && node scripts/sync-mobile-races.mjs --check && node scripts/validate-static.mjs",
-    "test": "node scripts/verify-family.mjs generated/robom-family family.lock.json && node scripts/sync-family-static.mjs --check && node scripts/sync-mobile-races.mjs --check && node scripts/validate-static.mjs && node --test \"scripts/*.test.mjs\"",
+    "build": "node scripts/sync-family-static.mjs && node scripts/sync-mobile-races.mjs --check && npm run static-data:check && node scripts/validate-static.mjs",
+    "test": "node scripts/verify-family.mjs generated/robom-family family.lock.json && node scripts/sync-family-static.mjs --check && node scripts/sync-mobile-races.mjs --check && npm run static-data:check && node scripts/validate-static.mjs && node --test \"scripts/*.test.mjs\"",
     "start": "node scripts/serve.mjs",
-    "mobile:sync": "node scripts/sync-mobile-races.mjs",
+    "mobile:sync": "node scripts/sync-mobile-races.mjs && npm run static-data:generate",
+    "static-data:generate": "node --experimental-strip-types scripts/static-data-generate.mjs",
+    "static-data:check": "node --experimental-strip-types scripts/static-data-generate.mjs --check && node scripts/static-data-validate.mjs",
     "data:refresh": "node scripts/refresh-races.mjs --write",
     "data:refresh:check": "node scripts/refresh-races.mjs",
     "audit:prod": "node scripts/audit-production.mjs --dir apps/mobile",

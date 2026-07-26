@@ -3,18 +3,43 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const appSource = await readFile(new URL("../apps/mobile/App.tsx", import.meta.url), "utf8");
+const raceStateSource = await readFile(
+  new URL("../apps/mobile/app/state/RaceStateProvider.tsx", import.meta.url),
+  "utf8",
+);
+const raceScreenSource = await readFile(
+  new URL("../apps/mobile/domains/races/RaceScreen.tsx", import.meta.url),
+  "utf8",
+);
+const pagesWorkflowSource = await readFile(
+  new URL("../.github/workflows/pages.yml", import.meta.url),
+  "utf8",
+);
+const refreshWorkflowSource = await readFile(
+  new URL("../.github/workflows/refresh-race-data.yml", import.meta.url),
+  "utf8",
+);
 
 test("앱 시작 데이터 갱신은 AbortController와 한 번의 effect로 제한한다", () => {
-  assert.match(appSource, /const controller = new AbortController\(\);/);
-  assert.match(appSource, /fetchLatestRaces\(controller\.signal\)/);
-  assert.match(appSource, /return \(\) => controller\.abort\(\);\n  }, \[\]\);/);
-  assert.match(appSource, /shouldReplaceRaceFeed\(current, latest\) \? latest : current/);
+  assert.match(raceStateSource, /const controller = new AbortController\(\);/);
+  assert.match(raceStateSource, /void loadLatest\(controller\.signal\);/);
+  assert.match(raceStateSource, /return \(\) => controller\.abort\(\);/);
+  assert.match(raceStateSource, /const loadLatest = useCallback\(async \(signal\?: AbortSignal\)/);
+  assert.match(raceStateSource, /loadRunningbomStaticData/);
+  assert.match(raceStateSource, /raceFeedFromRecords/);
+  assert.match(raceStateSource, /shouldReplaceRaceFeed\(current, latest\) \? latest : current/);
 });
 
 test("접수 상태 검색과 예약 알림 취소 흐름을 제공한다", () => {
-  assert.match(appSource, /registrationFilter/);
-  assert.match(appSource, /const \[query, setQuery\]/);
-  assert.match(appSource, /cancelRegistrationNotification/);
-  assert.match(appSource, /reconcileRegistrationNotifications/);
+  assert.match(raceScreenSource, /registrationFilter/);
+  assert.match(raceScreenSource, /const \[query, setQuery\]/);
+  assert.match(raceScreenSource, /scheduled \? cancelAlert\(race\) : scheduleAlert\(race\)/);
+  assert.match(raceStateSource, /cancelRegistrationNotification/);
+  assert.match(raceStateSource, /reconcileRegistrationNotifications/);
+});
+
+test("검증된 sidecar를 Pages에 배포하고 자동 갱신 commit에 포함한다", () => {
+  assert.match(pagesWorkflowSource, /cp -a data\/\. \.pages-release\/data\//);
+  assert.match(refreshWorkflowSource, /apps\/mobile\/data\/fallback/);
+  assert.match(refreshWorkflowSource, /git add[\s\S]*data/);
 });

@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "2026.07.26-v1",
+  "generatedAt": "2026-07-26T00:00:00.000Z",
+  "source": {
+    "kind": "verified-upcoming-projection",
+    "path": "apps/mobile/domains/shoes/catalog.ts"
+  },
+  "records": []
+}
