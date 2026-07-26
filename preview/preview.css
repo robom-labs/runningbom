@@ -48,6 +48,11 @@ p { color: var(--muted); line-height: 1.55; }
 .stat { padding: 14px; border-radius: 15px; background: #f6f3f1; }
 .stat b { display: block; font-size: 18px; }
 .stat span { display: block; margin-top: 3px; color: var(--muted); font-size: 13px; }
+.week-strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.week-day { display: grid; min-height: 58px; place-items: center; align-content: center; gap: 5px; border: 1px solid var(--line); border-radius: 14px; color: var(--muted); font-size: 12px; }
+.week-day b { font-size: 17px; color: #d6ccc6; }
+.week-day.done { border-color: #f0b183; background: #fff1e8; color: var(--accent-dark); }
+.week-day.done b { color: var(--accent); }
 .section { margin-top: 36px; }
 .section-title { margin-bottom: 14px; }
 .text-button { border: 0; padding: 6px 0; background: transparent; color: var(--accent-dark); font-weight: 800; }
@@ -84,6 +89,61 @@ p { color: var(--muted); line-height: 1.55; }
 .profile-hero h1 { font-size: 26px; margin: 0; }
 .profile-hero p { margin: 4px 0 0; }
 .notice { margin-top: 20px; border-left: 4px solid #e9ad7d; padding: 12px 14px; border-radius: 0 13px 13px 0; background: #fff0e5; color: #794118; font-size: 14px; }
+.legacy-link { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px; padding: 15px 17px; border: 1px solid #efd9c7; border-radius: 18px; background: #fff3e9; }
+.legacy-link b, .legacy-link span { display: block; }
+.legacy-link span { margin-top: 3px; color: var(--muted); font-size: 13px; }
+.legacy-link a { flex: 0 0 auto; color: var(--accent-dark); font-size: 13px; font-weight: 800; text-decoration: none; }
+.shoe-intro { margin: 0 0 16px; }
+.shoe-grid, .connection-grid, .badge-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.shoe-card { display: grid; gap: 14px; min-width: 0; padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: var(--paper); }
+.shoe-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.shoe-brand { display: block; margin-bottom: 5px; color: var(--accent-dark); font-size: 13px; font-weight: 850; }
+.shoe-card h2 { font-size: 18px; }
+.shoe-card p { margin: 7px 0 0; font-size: 14px; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag-row span { padding: 6px 8px; border-radius: 999px; background: #f7f3f0; color: #68615e; font-size: 12px; font-weight: 750; }
+.shoe-card details { border-top: 1px solid var(--line); padding-top: 12px; }
+.shoe-card summary { color: var(--ink); cursor: pointer; font-weight: 800; }
+.shoe-card details p { margin-bottom: 0; }
+.shoe-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+.shoe-actions a { display: grid; min-height: 40px; place-items: center; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); font-size: 12px; font-weight: 800; text-decoration: none; }
+.shoe-actions a:last-child { border-color: #efb183; background: #fff6f0; color: var(--accent-dark); }
+.session-picker { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.session-option { min-height: 108px; padding: 15px; border: 1px solid var(--line); border-radius: 18px; background: #fff; color: var(--ink); text-align: left; }
+.session-option strong { display: block; font-size: 16px; }
+.session-option span { display: block; margin-top: 5px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.session-option.active { border-color: var(--accent); background: #fff4ed; box-shadow: inset 0 0 0 1px var(--accent); }
+.duration-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.coach-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.coach-head h2 { color: #fff; }
+.phase-list { display: grid; gap: 8px; }
+.phase-list div { display: flex; align-items: baseline; gap: 12px; padding: 11px 0; border-bottom: 1px solid rgba(255, 255, 255, .13); }
+.phase-list div:last-child { border-bottom: 0; }
+.phase-list b { min-width: 54px; color: #ffb487; font-size: 13px; }
+.phase-list span { color: #f2eeeb; font-size: 14px; }
+.coach-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.coach-actions .secondary { border-color: rgba(255,255,255,.32); background: transparent; color: #fff; }
+.my-switcher { margin: 20px 0 18px; }
+.calendar-card { overflow: hidden; }
+.calendar-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.calendar-heading p { margin: 4px 0 0; font-size: 13px; }
+.calendar-legend { color: var(--accent-dark); font-size: 12px; font-weight: 800; }
+.calendar-weekdays, .calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 7px; }
+.calendar-weekdays { margin-bottom: 7px; color: var(--muted); font-size: 11px; font-weight: 800; text-align: center; }
+.calendar-day { display: grid; min-height: 55px; align-content: space-between; padding: 7px; border: 1px solid #eee7e1; border-radius: 12px; background: #fcfbfa; color: var(--ink); font-size: 12px; }
+.calendar-day.recorded { border-color: #f0b183; background: #fff1e8; }
+.calendar-day strong { color: var(--accent-dark); font-size: 11px; }
+.calendar-day em { font-style: normal; color: var(--muted); font-size: 10px; }
+.calendar-empty { min-height: 55px; }
+.connection-card { padding: 17px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
+.connection-card strong { display: block; }
+.connection-card p { margin: 7px 0 12px; font-size: 13px; }
+.connection-card button { width: 100%; }
+.connection-card.disabled { opacity: .72; }
+.badge-card { padding: 15px; border: 1px solid var(--line); border-radius: 16px; background: #fff; }
+.badge-card span { display: block; margin-bottom: 8px; font-size: 21px; }
+.badge-card strong { display: block; font-size: 14px; }
+.badge-card small { display: block; margin-top: 4px; color: var(--muted); line-height: 1.4; }
 .tabbar { position: fixed; z-index: 5; left: 50%; bottom: 18px; display: flex; gap: 4px; width: min(620px, calc(100% - 28px)); padding: 7px; border: 1px solid rgba(223, 209, 198, .9); border-radius: 22px; background: rgba(255, 255, 255, .94); box-shadow: 0 14px 36px rgba(71, 49, 37, .17); transform: translateX(-50%); backdrop-filter: blur(18px); }
 .tabbar button { display: grid; flex: 1; gap: 3px; min-height: 50px; border: 0; border-radius: 16px; background: transparent; color: var(--muted); font-size: 12px; font-weight: 800; }
 .tabbar button span { font-size: 18px; line-height: 18px; }
@@ -103,4 +163,11 @@ p { color: var(--muted); line-height: 1.55; }
   .card-footer { align-items: stretch; flex-direction: column; }
   .card-footer button { width: 100%; }
   .coach-steps { grid-template-columns: 1fr; }
+  .shoe-grid, .connection-grid, .badge-grid { grid-template-columns: 1fr; }
+  .shoe-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .session-picker { grid-template-columns: 1fr; }
+  .calendar-weekdays, .calendar-grid { gap: 4px; }
+  .calendar-day { min-height: 48px; padding: 5px; }
+  .calendar-day em { display: none; }
+  .legacy-link { align-items: flex-start; flex-direction: column; }
 }
