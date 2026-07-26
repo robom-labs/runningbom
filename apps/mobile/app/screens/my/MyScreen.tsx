@@ -18,6 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Card, Chip, Metric, SectionHeader, Wordmark } from '../../design-system/components';
 import { palette, spacing, typeScale } from '../../design-system/theme';
 import { activitySourceLabels } from '../../../domains/activities/types';
+import { ActivityCalendar } from './ActivityCalendar';
 import { BADGE_RULE_VERSION, badgeDefinitions } from '../../../domains/badges/rules';
 import { COACH_CONTENT_VERSION } from '../../../domains/coaching/model';
 import { SHOE_DATA_VERSION, shoes } from '../../../domains/shoes/catalog';
@@ -338,6 +339,16 @@ export function MyScreen() {
           <Metric label="이번 주 러닝" value={`${streak.weeklyRunDays}/3`} style={styles.metric} />
         </View>
 
+        <SectionHeader title="나의 러닝 캘린더" subtitle="이 기기에 저장된 활동을 월별로 확인해요." />
+        <ActivityCalendar activities={activities} />
+        <Card style={styles.healthCard}>
+          <Text style={styles.rowTitle}>기록 가져오기</Text>
+          <Text style={styles.rowMeta}>
+            삼성 헬스, Garmin, Nike Run Club 연동은 각 서비스의 인증·데이터 권한 설정이 필요해요. 현재는 러닝봄 코치와 직접 입력 기록만 안전하게 보관합니다.
+          </Text>
+          <Chip label="외부 연동 준비 중" tone="neutral" />
+        </Card>
+
         <SectionHeader title="배지 보관함" subtitle={`규칙 ${BADGE_RULE_VERSION}`} />
         <ScrollView horizontal contentContainerStyle={styles.badgeRow} showsHorizontalScrollIndicator={false}>
           {badgeDefinitions.map((badge) => {
@@ -415,11 +426,11 @@ export function MyScreen() {
         <Card style={styles.listCard}>
           {providerMatrix().map((provider) => (
             <View key={provider.provider} style={styles.providerRow}>
-              <Text style={styles.rowTitle}>{provider.provider.toUpperCase()}</Text>
-              <Chip
-                label={provider.enabled ? '사용 가능' : '비활성'}
-                tone={provider.enabled ? 'positive' : 'neutral'}
-              />
+              <View style={styles.rowCopy}>
+                <Text style={styles.rowTitle}>{provider.provider.toUpperCase()}</Text>
+                {!provider.enabled && provider.blocker ? <Text style={styles.rowMeta}>{provider.blocker}</Text> : null}
+              </View>
+              <Chip label={provider.enabled ? '사용 가능' : '설정 필요'} tone={provider.enabled ? 'positive' : 'neutral'} />
             </View>
           ))}
           <Text style={styles.rowMeta}>현재 커뮤니티 모드 · {communityMode()}</Text>
@@ -552,6 +563,7 @@ const styles = StyleSheet.create({
   bio: { color: palette.muted, fontSize: typeScale.bodySmall, marginTop: 4 },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs, marginTop: spacing.sm },
   metrics: { flexDirection: 'row', gap: spacing.xs, marginTop: spacing.md },
+  healthCard: { gap: spacing.sm },
   metric: {
     flex: 1,
     minWidth: 0,

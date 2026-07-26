@@ -1,4 +1,4 @@
-// 대회, 공식 러닝화, 출시예정을 한 탐색 화면 안에서 전환합니다.
+// 대회와 러닝화를 한 탐색 화면 안에서 전환합니다.
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -28,7 +28,7 @@ export function ExploreScreen({ request }: { request?: ExploreRequest }) {
           <Text style={styles.subtitle}>대회와 러닝화를 공식 정보로 살펴봐요.</Text>
         </View>
         <View accessibilityRole="tablist" style={styles.tabs}>
-          {(['대회', '러닝화', '출시예정'] as ExploreSection[]).map((value) => (
+          {(['대회', '러닝화'] as ExploreSection[]).map((value) => (
             <Chip
               key={value}
               label={value}
@@ -41,9 +41,6 @@ export function ExploreScreen({ request }: { request?: ExploreRequest }) {
         </View>
         {section === '대회' ? <RaceScreen focusedRaceId={request?.raceId} /> : null}
         {section === '러닝화' ? <ShoeScreen focusedShoeId={request?.shoeId} /> : null}
-        {section === '출시예정' ? (
-          <ShoeScreen focusedShoeId={request?.shoeId} upcomingOnly />
-        ) : null}
       </ScrollView>
     </SafeAreaView>
   );

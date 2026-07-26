@@ -19,6 +19,7 @@ import { palette, radius, spacing, typeScale } from '../../design-system/theme';
 import { useAppState } from '../../state/AppStateProvider';
 import {
   createCoachSession,
+  sessionSummaries,
   type CoachSessionKind,
   recommendedSessionKinds,
 } from '../../../domains/coaching/model';
@@ -33,7 +34,7 @@ import {
 } from '../../../services/audio/coachService';
 import { coachCompletionRecord } from '../../../domains/coaching/runtime';
 
-const allSessionKinds: CoachSessionKind[] = [
+const supportedSessionKinds: CoachSessionKind[] = [
   ...recommendedSessionKinds,
   '조금 빠르게',
   '인터벌',
@@ -44,10 +45,23 @@ const allSessionKinds: CoachSessionKind[] = [
   '걷기',
 ];
 
+const legacySessionKinds: CoachSessionKind[] = [
+  '편안한 지속주',
+  '걷고 달리기',
+  '회복하며',
+  '계속 달리기',
+  '조금 빠르게',
+  '러닝머신',
+  '대회 전',
+  '회복 루틴',
+  '아침 깨우기',
+  '걷기',
+];
+
 function validKind(value: string): CoachSessionKind {
-  return allSessionKinds.includes(value as CoachSessionKind)
+  return [...supportedSessionKinds, ...legacySessionKinds].includes(value as CoachSessionKind)
     ? (value as CoachSessionKind)
-    : '편안한 지속주';
+    : '기본 지속주';
 }
 
 function formatElapsed(seconds: number): string {
@@ -223,6 +237,7 @@ export function StartScreen() {
             <View style={styles.sessionRow}>
               <View style={styles.sessionCopy}>
                 <Text style={styles.sessionTitle}>{kind}</Text>
+                <Text style={styles.sessionSummary}>{sessionSummaries[kind]}</Text>
                 <Text style={styles.sessionMeta}>
                   {preferences.coachGuidance === 'minimal'
                     ? '최소 안내'
@@ -332,12 +347,12 @@ export function StartScreen() {
         <SafeAreaView style={styles.modal}>
           <ScrollView contentContainerStyle={styles.modalContent}>
             <Text style={styles.heading}>러닝 유형</Text>
-            <Text style={styles.modalHelp}>처음에는 자주 쓰는 네 가지를 먼저 보여줘요.</Text>
+            <Text style={styles.modalHelp}>목적이 분명한 다섯 가지 러닝만 먼저 보여줘요.</Text>
             <View style={styles.kindList}>
-              {allSessionKinds.map((value, index) => (
+              {recommendedSessionKinds.map((value) => (
                 <Button
                   key={value}
-                  label={index < 4 ? value : `더 보기 · ${value}`}
+                  label={value}
                   onPress={() => {
                     setKind(value);
                     setShowKinds(false);
@@ -399,6 +414,7 @@ const styles = StyleSheet.create({
   sessionRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   sessionCopy: { flex: 1, minWidth: 0 },
   sessionTitle: { color: palette.ink, fontSize: typeScale.title, fontWeight: '900' },
+  sessionSummary: { color: palette.inkSoft, fontSize: typeScale.bodySmall, lineHeight: 20, marginTop: 4 },
   sessionMeta: { color: palette.muted, fontSize: typeScale.bodySmall, marginTop: 4 },
   primary: { minHeight: 56 },
   runtimeCard: { gap: spacing.md, backgroundColor: palette.navy },

@@ -7,6 +7,7 @@ import {
   activityCountsAsMovement,
   type ActivityRecord,
 } from '../domains/activities/types';
+import { activityCalendarMonth } from '../domains/activities/calendar';
 import { calculateStreak, streakInternals, unlockedBadges } from '../domains/badges/rules';
 import {
   createCoachSession,
@@ -22,6 +23,7 @@ import {
   naverUserInfoAdapterContract,
 } from '../domains/identity/naverAdapter';
 import { recommendShoes, shoes } from '../domains/shoes/catalog';
+import { koreaPurchaseLinks } from '../domains/shoes/purchaseLinks';
 import { reactionKinds, weeklyLeagueScore } from '../domains/social/types';
 import { publicPostRowSchema } from '../services/supabase/contracts';
 import { secureAuthStorageKey } from '../services/supabase/storageKey';
@@ -98,18 +100,28 @@ describe('04시 기준 스트릭', () => {
 });
 
 describe('기기 음성 코칭 큐', () => {
-  it('모든 음성 큐 간격을 90초 이상 유지하고 침묵 비율 75% 이상을 지킨다', () => {
-    const session = createCoachSession('편안한 지속주', 60, 'detailed');
-    for (let index = 1; index < session.cues.length; index += 1) {
+  it('일반 코칭 큐는 충분한 간격과 침묵 비율을 지킨다', () => {
+    const session = createCoachSession('기본 지속주', 60, 'detailed');
+    const regularCues = session.cues.filter(
+      (cue) => cue.kind === 'instruction' || cue.kind === 'encouragement',
+    );
+    for (let index = 1; index < regularCues.length; index += 1) {
       assert.ok(
-        session.cues[index].offsetSeconds - session.cues[index - 1].offsetSeconds >= 90,
+        regularCues[index].offsetSeconds - regularCues[index - 1].offsetSeconds >= 90,
       );
     }
     assert.ok(cueSilenceRatio(session) >= 0.75);
   });
 
+  it('인터벌은 빠른 구간, 전환 10초 전, 회복 구간을 실제 큐로 만든다', () => {
+    const session = createCoachSession('인터벌', 30, 'detailed');
+    assert.ok(session.cues.some((cue) => cue.text.includes('10초 뒤 회복 구간')));
+    assert.ok(session.cues.some((cue) => cue.text.includes('이제 회복하며 걸어요')));
+    assert.ok(session.cues.some((cue) => cue.text.includes('다시 달려요')));
+  });
+
   it('최근 네 문장 안에서 동일 일반 문장을 반복하지 않는다', () => {
-    const session = createCoachSession('걷고 달리기', 60, 'detailed');
+    const session = createCoachSession('기본 지속주', 60, 'detailed');
     const spoken = session.cues.map((cue) => cue.text);
     for (let index = 0; index < spoken.length; index += 1) {
       assert.equal(spoken.slice(Math.max(0, index - 4), index).includes(spoken[index]), false);
@@ -211,6 +223,27 @@ describe('리그와 러닝화', () => {
       ).map((shoe) => shoe.id),
       ['within', 'unknown', 'over'],
     );
+  });
+
+  it('해외 공식 URL을 바로 열지 않고 국내 공식몰 또는 국내 검색 경로를 제공한다', () => {
+    for (const shoe of shoes) {
+      const links = koreaPurchaseLinks(shoe);
+      assert.ok(links.some((link) => link.id === 'naver'));
+      assert.ok(links.some((link) => link.id === 'coupang'));
+      assert.ok(links.every((link) => link.url.startsWith('https://')));
+    }
+  });
+});
+
+describe('활동 캘린더', () => {
+  it('같은 날짜의 활동을 하나의 달력 칸에서 분 단위로 합산한다', () => {
+    const values = activityCalendarMonth([
+      activity('2026-07-15T01:00:00.000Z', { durationMinutes: 30 }),
+      activity('2026-07-15T10:00:00.000Z', { durationMinutes: 20 }),
+    ], new Date('2026-07-01T12:00:00.000Z'));
+    const day = values.find((value) => value.key === '2026-07-15');
+    assert.equal(day?.activities.length, 2);
+    assert.equal(day?.totalMinutes, 50);
   });
 });
 

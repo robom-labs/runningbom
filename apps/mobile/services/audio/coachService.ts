@@ -32,6 +32,38 @@ export type CoachRuntimeState = {
 
 let fallbackState: FallbackCoachClock = idleFallbackClock;
 let fallbackInUse = false;
+let fallbackSession: CoachSession | undefined;
+let fallbackCueIndex = 0;
+let fallbackCueTimer: ReturnType<typeof setTimeout> | undefined;
+let fallbackSpeechRate = 1;
+
+function clearFallbackCueTimer() {
+  if (fallbackCueTimer) clearTimeout(fallbackCueTimer);
+  fallbackCueTimer = undefined;
+}
+
+function scheduleFallbackCuePump() {
+  clearFallbackCueTimer();
+  const pump = () => {
+    fallbackState = snapshotFallbackClock(fallbackState, Date.now());
+    if (!fallbackSession || fallbackState.state !== 'running') return;
+    let dueIndex = -1;
+    while (
+      fallbackCueIndex < fallbackSession.cues.length &&
+      fallbackSession.cues[fallbackCueIndex].offsetSeconds <= fallbackState.elapsedSeconds
+    ) {
+      dueIndex = fallbackCueIndex;
+      fallbackCueIndex += 1;
+    }
+    if (dueIndex >= 0) {
+      const cue = fallbackSession.cues[dueIndex];
+      Speech.stop();
+      Speech.speak(cue.text, { language: 'ko-KR', rate: fallbackSpeechRate });
+    }
+    fallbackCueTimer = setTimeout(pump, 750);
+  };
+  pump();
+}
 
 function runtimeFromFallback(clock: FallbackCoachClock): CoachRuntimeState {
   return {
@@ -76,6 +108,8 @@ export async function startCoachSession(
       );
       fallbackInUse = false;
       fallbackState = idleFallbackClock;
+      fallbackSession = undefined;
+      clearFallbackCueTimer();
       return getCoachState();
     } catch {
       fallbackInUse = true;
@@ -85,10 +119,6 @@ export async function startCoachSession(
   }
 
   Speech.stop();
-  Speech.speak(session.cues[0]?.text ?? '러닝을 시작해요.', {
-    language: 'ko-KR',
-    rate: Math.min(1.2, Math.max(0.7, speechRate)),
-  });
   fallbackState = startFallbackClock({
     sessionId,
     definitionId: session.id,
@@ -96,6 +126,10 @@ export async function startCoachSession(
     countsAs: session.countsAs,
     durationSeconds: session.durationMinutes * 60,
   }, startedAtEpochMillis);
+  fallbackSession = session;
+  fallbackCueIndex = 0;
+  fallbackSpeechRate = Math.min(1.1, Math.max(0.8, speechRate));
+  scheduleFallbackCuePump();
   return runtimeFromFallback(fallbackState);
 }
 
@@ -105,6 +139,7 @@ export async function pauseCoachSession(): Promise<CoachRuntimeState> {
     return getCoachState();
   }
   Speech.stop();
+  clearFallbackCueTimer();
   fallbackState = pauseFallbackClock(fallbackState, Date.now());
   return runtimeFromFallback(fallbackState);
 }
@@ -115,6 +150,7 @@ export async function resumeCoachSession(): Promise<CoachRuntimeState> {
     return getCoachState();
   }
   fallbackState = resumeFallbackClock(fallbackState, Date.now());
+  scheduleFallbackCuePump();
   return runtimeFromFallback(fallbackState);
 }
 
@@ -124,6 +160,8 @@ export async function stopCoachSession(): Promise<CoachRuntimeState> {
     return getCoachState();
   }
   Speech.stop();
+  clearFallbackCueTimer();
+  fallbackSession = undefined;
   fallbackState = stopFallbackClock(fallbackState, Date.now());
   return runtimeFromFallback(fallbackState);
 }

@@ -4,6 +4,7 @@ export const SHOE_DATA_VERSION = '2026.07.26-v1';
 export type ShoeSurface = 'road' | 'treadmill' | 'mixed';
 export type ShoePriority = 'comfort' | 'balanced' | 'speed';
 export type ShoeStatus = 'available' | 'upcoming' | 'global-only';
+export type ShoeCollection = '전체' | '데일리' | '쿠션' | '국내 공식 확인' | '출시 예정';
 
 export type Shoe = {
   id: string;
@@ -157,6 +158,16 @@ export const shoes: Shoe[] = [
     koreaStatus: '글로벌 공식 정보 확인 · 국내 일정 미확인',
   },
 ];
+
+export const shoeCollections: ShoeCollection[] = ['전체', '데일리', '쿠션', '국내 공식 확인', '출시 예정'];
+
+export function matchesShoeCollection(shoe: Shoe, collection: ShoeCollection): boolean {
+  if (collection === '전체') return true;
+  if (collection === '출시 예정') return shoe.status === 'upcoming';
+  if (collection === '국내 공식 확인') return shoe.status === 'available' || shoe.id === 'asics-gel-nimbus-27' || shoe.id === 'new-balance-1080-v14';
+  if (collection === '쿠션') return shoe.priorities.includes('comfort');
+  return shoe.distanceKm === 'daily';
+}
 
 export type ShoeFinderAnswers = {
   surface: ShoeSurface;

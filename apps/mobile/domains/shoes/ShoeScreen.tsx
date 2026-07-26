@@ -16,12 +16,16 @@ import { palette, radius, spacing, typeScale } from '../../app/design-system/the
 import { useAppState } from '../../app/state/AppStateProvider';
 import {
   recommendShoes,
+  matchesShoeCollection,
   shoes,
+  shoeCollections,
   type Shoe,
+  type ShoeCollection,
   type ShoeFinderAnswers,
   type ShoePriority,
   type ShoeSurface,
 } from './catalog';
+import { koreaPurchaseLinks, type ShoePurchaseLink } from './purchaseLinks';
 
 type Mode = 'browse' | 'finder';
 
@@ -37,15 +41,14 @@ const priorityLabels: Record<ShoePriority, string> = {
 };
 
 export function ShoeScreen({
-  upcomingOnly = false,
   focusedShoeId,
 }: {
-  upcomingOnly?: boolean;
   focusedShoeId?: string;
 }) {
   const { preferences, updatePreferences } = useAppState();
   const [mode, setMode] = useState<Mode>('browse');
   const [query, setQuery] = useState('');
+  const [collection, setCollection] = useState<ShoeCollection>('전체');
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [answers, setAnswers] = useState<ShoeFinderAnswers>({
     surface: 'road',
@@ -55,7 +58,7 @@ export function ShoeScreen({
   });
 
   const visible = useMemo(() => {
-    const base = upcomingOnly ? shoes.filter((shoe) => shoe.status !== 'available') : shoes;
+    const base = shoes.filter((shoe) => matchesShoeCollection(shoe, collection));
     const normalized = query.trim().toLocaleLowerCase('ko-KR');
     const filtered = !normalized ? base : base.filter((shoe) =>
       `${shoe.brand} ${shoe.model}`.toLocaleLowerCase('ko-KR').includes(normalized),
@@ -66,7 +69,7 @@ export function ShoeScreen({
       if (right.id === focusedShoeId) return 1;
       return 0;
     });
-  }, [focusedShoeId, query, upcomingOnly]);
+  }, [collection, focusedShoeId, query]);
   const recommendations = useMemo(() => recommendShoes(answers), [answers]);
   const compared = shoes.filter((shoe) => compareIds.includes(shoe.id));
 
@@ -100,14 +103,14 @@ export function ShoeScreen({
     });
   }
 
-  async function openOfficial(shoe: Shoe) {
+  async function openPurchase(destination: ShoePurchaseLink) {
     try {
-      if (!shoe.officialUrl.startsWith('https://') || !(await Linking.canOpenURL(shoe.officialUrl))) {
+      if (!destination.url.startsWith('https://') || !(await Linking.canOpenURL(destination.url))) {
         throw new Error('unsupported');
       }
-      await Linking.openURL(shoe.officialUrl);
+      await Linking.openURL(destination.url);
     } catch {
-      Alert.alert('공식 페이지를 열 수 없어요', '네트워크 연결을 확인해 주세요.');
+      Alert.alert('구매 경로를 열 수 없어요', '네트워크 연결을 확인한 뒤 다시 시도해 주세요.');
     }
   }
 
@@ -180,7 +183,7 @@ export function ShoeScreen({
               onCompare={() => toggleCompare(shoe)}
               onCurrent={() => setCurrentShoe(shoe)}
               onInterest={() => toggleInterest(shoe)}
-              onOfficial={() => void openOfficial(shoe)}
+              onOpenPurchase={(destination) => void openPurchase(destination)}
             />
           ))}
         </View>
@@ -190,26 +193,31 @@ export function ShoeScreen({
 
   return (
     <View style={styles.container}>
-      {!upcomingOnly ? (
-        <View style={styles.searchRow}>
-          <TextInput
-            accessibilityLabel="러닝화 검색"
-            onChangeText={setQuery}
-            placeholder="브랜드 또는 모델"
-            placeholderTextColor={palette.muted}
-            style={styles.search}
-            value={query}
+      <View style={styles.searchRow}>
+        <TextInput
+          accessibilityLabel="러닝화 검색"
+          onChangeText={setQuery}
+          placeholder="브랜드 또는 모델"
+          placeholderTextColor={palette.muted}
+          style={styles.search}
+          value={query}
+        />
+        <Button label="맞춤 찾기" onPress={() => setMode('finder')} />
+      </View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.collectionRow}>
+        {shoeCollections.map((value) => (
+          <Chip
+            key={value}
+            label={value}
+            selected={collection === value}
+            onPress={() => setCollection(value)}
+            tone="accent"
           />
-          <Button label="맞춤 찾기" onPress={() => setMode('finder')} />
-        </View>
-      ) : (
-        <Card style={styles.upcomingIntro}>
-          <Text style={styles.title}>공식 발표만 모았어요</Text>
-          <Text style={styles.subtitle}>
-            국내 일정이 확인되지 않은 제품은 그대로 표시하고, 루머는 싣지 않아요.
-          </Text>
-        </Card>
-      )}
+        ))}
+      </ScrollView>
+      <Text style={styles.collectionNote}>
+        출시 예정은 공식 발표와 국내 일정이 확인된 제품만 표시해요. 가격은 각 판매처에서 최종 확인해 주세요.
+      </Text>
 
       {compared.length > 0 ? (
         <Card style={styles.compareBox}>
@@ -244,9 +252,15 @@ export function ShoeScreen({
             onCompare={() => toggleCompare(shoe)}
             onCurrent={() => setCurrentShoe(shoe)}
             onInterest={() => toggleInterest(shoe)}
-            onOfficial={() => void openOfficial(shoe)}
+            onOpenPurchase={(destination) => void openPurchase(destination)}
           />
         ))}
+        {visible.length === 0 ? (
+          <Card style={styles.emptyCard}>
+            <Text style={styles.emptyTitle}>아직 표시할 제품이 없어요.</Text>
+            <Text style={styles.subtitle}>확인되지 않은 출시 예정 제품은 넣지 않습니다.</Text>
+          </Card>
+        ) : null}
       </View>
     </View>
   );
@@ -291,7 +305,7 @@ function ShoeCard({
   onCompare,
   onCurrent,
   onInterest,
-  onOfficial,
+  onOpenPurchase,
 }: {
   shoe: Shoe;
   selected: boolean;
@@ -301,7 +315,7 @@ function ShoeCard({
   onCompare: () => void;
   onCurrent: () => void;
   onInterest: () => void;
-  onOfficial: () => void;
+  onOpenPurchase: (destination: ShoePurchaseLink) => void;
 }) {
   return (
     <Card style={[styles.shoeCard, focused && styles.shoeCardFocused]}>
@@ -314,10 +328,7 @@ function ShoeCard({
           <Text style={styles.model}>{shoe.model}</Text>
           <Text style={styles.verified}>공식 확인 {shoe.verifiedAt}</Text>
         </View>
-        <Chip
-          label={shoe.status === 'available' ? '국내 확인' : '국내 미확인'}
-          tone={shoe.status === 'available' ? 'positive' : 'warning'}
-        />
+        <Chip label={koreaPurchaseLinks(shoe)[0]?.id === 'official-korea' ? '국내 공식 확인' : '국내 구매 확인 필요'} tone={koreaPurchaseLinks(shoe)[0]?.id === 'official-korea' ? 'positive' : 'warning'} />
       </View>
       <View style={styles.choiceWrap}>
         {shoe.surfaces.map((surface) => (
@@ -352,7 +363,16 @@ function ShoeCard({
           tone={selected ? 'quiet' : 'secondary'}
           style={styles.action}
         />
-        <Button label="공식 페이지" onPress={onOfficial} style={styles.action} />
+        <Button
+          label={koreaPurchaseLinks(shoe)[0]?.id === 'official-korea' ? '국내 공식몰' : '네이버 검색'}
+          onPress={() => onOpenPurchase(koreaPurchaseLinks(shoe)[0])}
+          style={styles.action}
+        />
+      </View>
+      <View style={styles.purchaseRow}>
+        {koreaPurchaseLinks(shoe).slice(1).map((destination) => (
+          <Chip key={destination.id} label={destination.label} onPress={() => onOpenPurchase(destination)} />
+        ))}
       </View>
     </Card>
   );
@@ -381,7 +401,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     fontSize: typeScale.body,
   },
-  upcomingIntro: { backgroundColor: palette.surfaceWarm },
+  collectionRow: { gap: spacing.xs },
+  collectionNote: { color: palette.muted, fontSize: typeScale.caption, lineHeight: 18 },
   compareBox: { gap: spacing.md, backgroundColor: palette.surfaceWarm },
   sectionTitle: { color: palette.ink, fontSize: typeScale.titleSmall, fontWeight: '900' },
   compareRow: { flexDirection: 'row', gap: spacing.sm },
@@ -397,6 +418,8 @@ const styles = StyleSheet.create({
   compareMeta: { color: palette.inkSoft, fontSize: typeScale.caption, lineHeight: 17, marginTop: 8 },
   remove: { color: palette.accentDark, fontSize: typeScale.caption, fontWeight: '800', marginTop: 12 },
   list: { gap: spacing.md },
+  emptyCard: { backgroundColor: palette.surfaceWarm, gap: 4 },
+  emptyTitle: { color: palette.ink, fontSize: typeScale.body, fontWeight: '900' },
   finder: { gap: spacing.md },
   finderTitle: { color: palette.ink, fontSize: typeScale.body, fontWeight: '900' },
   priceNotice: {
@@ -428,4 +451,5 @@ const styles = StyleSheet.create({
   preferenceActions: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   actions: { flexDirection: 'row', gap: spacing.sm },
   action: { flex: 1 },
+  purchaseRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
 });

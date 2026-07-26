@@ -18,7 +18,6 @@ import { useAppState } from '../../app/state/AppStateProvider';
 import { useRaceState } from '../../app/state/RaceStateProvider';
 import {
   canScheduleRegistrationAlert,
-  distances,
   filterByRegistrationStatus,
   filterRaces,
   formatRaceDate,
@@ -39,6 +38,20 @@ type ChoiceRowProps<T extends string> = {
   choices: readonly T[];
   selected: T;
   onSelect: (choice: T) => void;
+};
+
+const distanceRows: ReadonlyArray<ReadonlyArray<DistanceFilter>> = [
+  ['전체', 'Full', 'Half'],
+  ['10K', '5K', 'Trail'],
+];
+
+const distanceLabels: Record<string, string> = {
+  전체: '전체',
+  Full: '풀코스',
+  Half: '하프',
+  '10K': '10K',
+  '5K': '5K',
+  Trail: '트레일',
 };
 
 function ChoiceRow<T extends string>({ label, choices, selected, onSelect }: ChoiceRowProps<T>) {
@@ -80,7 +93,9 @@ export function RaceScreen({ focusedRaceId }: Props) {
   const [distance, setDistance] = useState<DistanceFilter>('전체');
   const [registrationFilter, setRegistrationFilter] = useState<RegistrationFilter>('전체');
   const [query, setQuery] = useState('');
+  const [showRegionFilters, setShowRegionFilters] = useState(false);
   const [activeRaceId, setActiveRaceId] = useState<string | undefined>(focusedRaceId);
+  const [expandedRaceId, setExpandedRaceId] = useState<string | undefined>();
   const [visibleCount, setVisibleCount] = useState(20);
 
   useEffect(() => {
@@ -90,6 +105,7 @@ export function RaceScreen({ focusedRaceId }: Props) {
     setRegistrationFilter('전체');
     setQuery('');
     setActiveRaceId(focusedRaceId);
+    setExpandedRaceId(undefined);
     setVisibleCount(20);
   }, [feed.races, focusedRaceId]);
 
@@ -130,6 +146,8 @@ export function RaceScreen({ focusedRaceId }: Props) {
     setRegistrationFilter('전체');
     setQuery('');
     setActiveRaceId(undefined);
+    setExpandedRaceId(undefined);
+    setShowRegionFilters(false);
     setVisibleCount(20);
   }
 
@@ -169,29 +187,67 @@ export function RaceScreen({ focusedRaceId }: Props) {
         >
           <Text style={styles.refreshText}>{loading ? '확인 중' : '새로고침'}</Text>
         </Pressable>
+        <Pressable
+          accessibilityLabel="지역 필터 열기"
+          accessibilityRole="button"
+          accessibilityState={{ expanded: showRegionFilters }}
+          onPress={() => setShowRegionFilters((current) => !current)}
+          style={({ pressed }) => [styles.regionToggle, pressed && styles.pressed]}
+        >
+          <Text style={styles.regionToggleText}>{region === '전체' ? '지역' : region}</Text>
+        </Pressable>
       </View>
 
       <View style={styles.filters}>
-        <ChoiceRow
-          label="접수 상태"
-          choices={registrationFilters}
-          selected={registrationFilter}
-          onSelect={(choice) => {
-            setActiveRaceId(undefined);
-            setRegistrationFilter(choice);
-            setVisibleCount(20);
-          }}
-        />
-        <ChoiceRow
-          label="거리"
-          choices={distances}
-          selected={distance}
-          onSelect={(choice) => {
-            setActiveRaceId(undefined);
-            setDistance(choice);
-            setVisibleCount(20);
-          }}
-        />
+        <View accessibilityLabel="거리 필터" style={styles.distanceFilterGrid}>
+          {distanceRows.flat().map((choice) => (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ selected: choice === distance }}
+              key={choice}
+              onPress={() => {
+                setActiveRaceId(undefined);
+                setDistance(choice);
+                setVisibleCount(20);
+              }}
+              style={({ pressed }) => [
+                styles.distanceFilter,
+                choice === distance && styles.distanceFilterSelected,
+                pressed && styles.pressed,
+              ]}
+            >
+              <Text style={[styles.distanceFilterLabel, choice === distance && styles.distanceFilterLabelSelected]}>
+                {distanceLabels[choice]}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+        <View accessibilityLabel="접수 상태 필터" style={styles.registrationFilterRow}>
+          {registrationFilters.map((choice) => (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ selected: choice === registrationFilter }}
+              key={choice}
+              onPress={() => {
+                setActiveRaceId(undefined);
+                setRegistrationFilter(choice);
+                setVisibleCount(20);
+              }}
+              style={({ pressed }) => [
+                styles.registrationFilter,
+                choice === registrationFilter && styles.registrationFilterSelected,
+                pressed && styles.pressed,
+              ]}
+            >
+              <Text style={[styles.registrationFilterLabel, choice === registrationFilter && styles.registrationFilterLabelSelected]}>
+                {choice}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+      </View>
+
+      {showRegionFilters ? (
         <ChoiceRow
           label="지역"
           choices={availableRegions}
@@ -202,14 +258,14 @@ export function RaceScreen({ focusedRaceId }: Props) {
             setVisibleCount(20);
           }}
         />
-      </View>
+      ) : null}
 
       <View accessibilityLiveRegion="polite" style={styles.notice}>
         <Text style={styles.noticeText}>{notice}</Text>
       </View>
 
       <View style={styles.resultHeader}>
-        <Text style={styles.resultTitle}>대회 {visibleRaces.length}개</Text>
+        <Text style={styles.resultTitle}>대회 {new Set(visibleRaces.map((race) => race.id)).size}개</Text>
         <Text style={styles.revision}>데이터 {feed.revision}</Text>
       </View>
 
@@ -220,6 +276,7 @@ export function RaceScreen({ focusedRaceId }: Props) {
           const canSchedule = canScheduleRegistrationAlert(race);
           const busy = busyRaceId === race.id;
           const focused = activeRaceId === race.id;
+          const expanded = expandedRaceId === race.id;
           const interested = preferences.interestedRaceIds.includes(race.id);
           return (
             <Card
@@ -281,6 +338,23 @@ export function RaceScreen({ focusedRaceId }: Props) {
                   style={styles.action}
                 />
               </View>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityState={{ expanded }}
+                onPress={() => setExpandedRaceId((current) => (current === race.id ? undefined : race.id))}
+                style={({ pressed }) => [styles.detailToggle, pressed && styles.pressed]}
+              >
+                <Text style={styles.detailToggleText}>{expanded ? '간단히 보기' : '자세히 보기'}</Text>
+              </Pressable>
+              {expanded ? (
+                <View style={styles.details}>
+                  <Text style={styles.detailLabel}>대회 장소</Text>
+                  <Text style={styles.detailValue}>{race.venue}</Text>
+                  {race.organizer ? <Text style={styles.detailValue}>주최 {race.organizer}</Text> : null}
+                  {race.capacity ? <Text style={styles.detailValue}>모집 규모 {race.capacity.toLocaleString('ko-KR')}명</Text> : null}
+                  <Text style={styles.detailSource}>데이터 확인 {race.verifiedAt ?? '확인 시각 준비 중'} · {race.sourceName}</Text>
+                </View>
+              ) : null}
               <Text style={styles.source}>출처 {race.sourceName}</Text>
             </Card>
           );
@@ -335,20 +409,69 @@ const styles = StyleSheet.create({
     backgroundColor: palette.surfaceMuted,
     paddingHorizontal: spacing.sm,
   },
+  regionToggle: {
+    minHeight: 48,
+    maxWidth: 116,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: palette.line,
+    borderWidth: 1,
+    borderRadius: radius.md,
+    backgroundColor: palette.surface,
+    paddingHorizontal: spacing.sm,
+  },
+  regionToggleText: {
+    color: palette.inkSoft,
+    fontSize: typeScale.caption,
+    fontWeight: '800',
+  },
   refreshText: {
     color: palette.inkSoft,
     fontSize: typeScale.caption,
     fontWeight: '800',
   },
   filters: {
-    gap: spacing.md,
+    gap: spacing.sm,
     backgroundColor: palette.surface,
     borderColor: palette.line,
     borderWidth: StyleSheet.hairlineWidth,
     borderRadius: radius.lg,
-    paddingVertical: spacing.md,
+    padding: spacing.sm,
     marginTop: spacing.sm,
   },
+  distanceFilterGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+  },
+  distanceFilter: {
+    flexBasis: '31%',
+    flexGrow: 1,
+    minHeight: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: palette.line,
+    borderWidth: 1,
+    borderRadius: radius.md,
+    backgroundColor: palette.surfaceMuted,
+  },
+  distanceFilterSelected: { backgroundColor: palette.ink, borderColor: palette.ink },
+  distanceFilterLabel: { color: palette.inkSoft, fontSize: typeScale.caption, fontWeight: '900' },
+  distanceFilterLabelSelected: { color: palette.white },
+  registrationFilterRow: { flexDirection: 'row', gap: spacing.xs },
+  registrationFilter: {
+    flex: 1,
+    minHeight: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: palette.line,
+    borderWidth: 1,
+    borderRadius: radius.md,
+    backgroundColor: palette.surfaceMuted,
+  },
+  registrationFilterSelected: { backgroundColor: palette.accent, borderColor: palette.accent },
+  registrationFilterLabel: { color: palette.inkSoft, fontSize: typeScale.caption, fontWeight: '900' },
+  registrationFilterLabelSelected: { color: palette.white },
   filterGroup: {
     gap: spacing.xs,
   },
@@ -467,6 +590,23 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
     marginTop: spacing.xs,
   },
+  detailToggle: {
+    alignSelf: 'flex-start',
+    minHeight: 36,
+    justifyContent: 'center',
+    paddingHorizontal: spacing.xs,
+  },
+  detailToggleText: { color: palette.accentDark, fontSize: typeScale.caption, fontWeight: '900' },
+  details: {
+    gap: 4,
+    borderTopColor: palette.line,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    marginTop: spacing.xs,
+    paddingTop: spacing.sm,
+  },
+  detailLabel: { color: palette.muted, fontSize: 11, fontWeight: '800' },
+  detailValue: { color: palette.inkSoft, fontSize: typeScale.caption, lineHeight: 19, fontWeight: '700' },
+  detailSource: { color: palette.muted, fontSize: 11, lineHeight: 16, marginTop: spacing.xs },
   action: {
     flex: 1,
   },

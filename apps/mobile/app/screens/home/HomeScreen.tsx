@@ -118,8 +118,8 @@ export function HomeScreen({ onStart, onExplore, onCommunity, onProgress }: Prop
         </View>
 
         <SectionHeader
-          title="신제품 러닝화"
-          subtitle="공식 사실과 러닝봄 편집 설명을 구분했어요."
+          title="러닝화 찾기"
+          subtitle="러닝 목적과 국내 구매 경로를 비교해요."
           action={<Button label="전체" onPress={() => onExplore('러닝화')} tone="quiet" />}
         />
         <ScrollView

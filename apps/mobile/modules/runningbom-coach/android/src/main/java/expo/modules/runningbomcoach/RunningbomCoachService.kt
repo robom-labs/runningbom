@@ -22,6 +22,7 @@ import android.os.Looper
 import android.os.SystemClock
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
+import android.speech.tts.Voice
 import androidx.core.content.ContextCompat
 import java.util.Locale
 import kotlin.math.roundToInt
@@ -276,6 +277,7 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
     val result = textToSpeech?.setLanguage(Locale.KOREAN) ?: TextToSpeech.LANG_NOT_SUPPORTED
     textToSpeechReady = result != TextToSpeech.LANG_MISSING_DATA &&
       result != TextToSpeech.LANG_NOT_SUPPORTED
+    selectBestInstalledKoreanVoice()
     textToSpeech?.setSpeechRate(speechRate)
     textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
       override fun onStart(utteranceId: String?) {
@@ -292,6 +294,20 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
         persistCheckpoint(utteranceId, "error:$errorCode")
       }
     })
+  }
+
+  private fun selectBestInstalledKoreanVoice() {
+    val engine = textToSpeech ?: return
+    val candidate = engine.voices
+      ?.asSequence()
+      ?.filter { voice -> voice.locale.language == Locale.KOREAN.language }
+      ?.filter { voice -> !voice.isNetworkConnectionRequired }
+      ?.sortedWith(
+        compareByDescending<Voice> { voice -> voice.quality }
+          .thenBy { voice -> voice.latency },
+      )
+      ?.firstOrNull()
+    if (candidate != null) engine.voice = candidate
   }
 
   private fun requestAudioFocus() {
