@@ -39,6 +39,94 @@ export const minimumGeneralCueCount: Record<CueCategory, number> = {
 /** 유형 전용 풀이 최소한 가져야 하는 문장 수입니다. */
 export const minimumTypeCueCount = 12;
 
+/**
+ * 진행 안내는 "지금 어디쯤인지"를 말하므로 경과 비율과 어긋나면 바로 거짓말이 됩니다.
+ * 그래서 진행 문장만은 무작위 풀이 아니라 경과 비율 구간별 풀에서 뽑습니다.
+ */
+export type ProgressStage = 'early' | 'middle' | 'late' | 'final';
+
+export const progressStages: ProgressStage[] = ['early', 'middle', 'late', 'final'];
+
+/** 경과 비율(0~1) 기준 구간 경계입니다. to는 포함하지 않습니다(마지막 구간 제외). */
+export const progressStageRanges: Record<ProgressStage, { from: number; to: number }> = {
+  early: { from: 0, to: 0.25 },
+  middle: { from: 0.25, to: 0.6 },
+  late: { from: 0.6, to: 0.85 },
+  final: { from: 0.85, to: 1 },
+};
+
+/** 구간별로 최소한 유지해야 하는 진행 문장 수입니다. */
+export const minimumProgressStageCount = 6;
+
+/** 경과 비율을 진행 구간으로 옮깁니다. */
+export function progressStageFor(ratio: number): ProgressStage {
+  if (ratio < progressStageRanges.early.to) return 'early';
+  if (ratio < progressStageRanges.middle.to) return 'middle';
+  if (ratio < progressStageRanges.late.to) return 'late';
+  return 'final';
+}
+
+/** 경과 비율 구간별 진행 안내 문장입니다. */
+export const progressCuesByStage: Record<ProgressStage, string[]> = {
+  early: [
+    '지금 구간을 잘 지나고 있어요.',
+    '시작할 때보다 몸이 가벼워졌을 시간이에요.',
+    '이제부터가 오늘 러닝의 중심이에요.',
+    '초반 구간을 무사히 지났어요.',
+    '다음 구간까지 지금 리듬을 이어가 볼게요.',
+    '여기서부터는 익숙한 리듬으로 가요.',
+    '시작할 때의 다짐을 한 번 떠올려 볼게요.',
+    '아직 초반이에요. 힘을 아껴 두고 가요.',
+    '이제 막 시작했어요. 몸이 풀릴 시간을 줘요.',
+    '초반에는 느리게 느껴지는 게 정상이에요.',
+  ],
+  middle: [
+    '여기까지 오늘 몫을 착실히 채우는 중이에요.',
+    '남은 구간을 생각하며 힘을 배분해 볼게요.',
+    '오늘의 절반을 향해 가고 있어요.',
+    '반환점을 지나면 체감 시간이 빨라져요.',
+    '지금까지 온 만큼만 더 가면 돼요.',
+    '이 구간이 끝나면 한결 편해져요.',
+    '중반은 지루하지만 가장 중요한 구간이에요.',
+    '구간 하나를 또 넘겼어요.',
+    '시간이 흐른 만큼 몸도 적응했어요.',
+    '지금이 페이스를 점검하기 좋은 시점이에요.',
+    '남은 구간을 몇 조각으로 나눠서 가 볼까요.',
+    '여기서 한 번 자세를 리셋하고 이어가요.',
+    '이 리듬으로 남은 구간을 채워 볼게요.',
+    '한 구간씩 지워 나가는 중이에요.',
+  ],
+  late: [
+    '후반부에 들어섰어요. 자세부터 확인해요.',
+    '이제 마무리 구간이 가까워지고 있어요.',
+    '오늘 계획한 시간의 상당 부분을 채웠어요.',
+    '남은 시간은 생각보다 짧아요.',
+    '여기까지 왔다면 나머지도 갈 수 있어요.',
+    '후반으로 갈수록 자세가 흐트러지기 쉬워요.',
+    '오늘 러닝의 큰 산은 이미 넘었어요.',
+    '남은 만큼은 지금보다 짧게 느껴질 거예요.',
+    '끝이 보이기 시작하는 지점이에요.',
+    '지나온 시간이 다리에 그대로 쌓여 있어요.',
+    '이 구간을 넘기면 마무리가 훨씬 쉬워요.',
+    '조금 뒤면 속도를 정리하기 시작할 거예요.',
+    '여기까지의 시간을 잘 써 왔어요.',
+  ],
+  final: [
+    '마지막 구간에서는 힘보다 리듬이에요.',
+    '이제 남은 건 차분히 정리하는 시간이에요.',
+    '오늘 목표까지 얼마 남지 않았어요.',
+    '마지막 몇 분이에요. 호흡만 편하게 가져가요.',
+    '이제 곧 마칠 시간이에요. 자세만 지켜 주세요.',
+    '마무리가 코앞이에요. 서두르지 않아도 돼요.',
+    '오늘 러닝을 정리할 시간이 다가왔어요.',
+  ],
+};
+
+/** 문장이 속한 진행 구간입니다(검증·시뮬레이션용). */
+export function progressStageOfLine(line: string): ProgressStage | undefined {
+  return progressStages.find((stage) => progressCuesByStage[stage].includes(line));
+}
+
 /** 모든 유형에서 공통으로 쓰는 기본 멘트 풀입니다. */
 export const generalCues: Record<CueCategory, string[]> = {
   posture: [
@@ -123,6 +211,12 @@ export const generalCues: Record<CueCategory, string[]> = {
     '호흡이 안정되면 다리도 같이 편해져요.',
     '지금 숨이 몇 걸음마다 들어오는지 세어 볼까요.',
     '흐트러질 때는 속도가 아니라 숨을 먼저 잡아요.',
+    '숨을 몰아쉬게 되면 리듬을 다시 세어 볼게요.',
+    '들숨보다 날숨에 조금 더 집중해 볼게요.',
+    '가슴이 아니라 배로 숨이 들어오게 해 봐요.',
+    '호흡 리듬이 깨지면 걸음부터 다시 잡아 볼게요.',
+    '숨을 내쉴 때 배가 납작해지는지 느껴 봐요.',
+    '한 박자 더 길게 내쉬면 심박이 안정돼요.',
   ],
   cadence: [
     '보폭을 늘리기보다 발걸음 수를 살짝 올려 볼게요.',
@@ -336,45 +430,8 @@ export const generalCues: Record<CueCategory, string[]> = {
     '생각을 줄이면 몸이 훨씬 편해져요.',
     '바람이 스치는 느낌에 잠깐 집중해 볼게요.',
   ],
-  progress: [
-    '여기까지 오늘 몫을 착실히 채우는 중이에요.',
-    '지금 구간을 잘 지나고 있어요.',
-    '시작할 때보다 몸이 가벼워졌을 시간이에요.',
-    '이제부터가 오늘 러닝의 중심이에요.',
-    '남은 구간을 생각하며 힘을 배분해 볼게요.',
-    '오늘의 절반을 향해 가고 있어요.',
-    '반환점을 지나면 체감 시간이 빨라져요.',
-    '후반부에 들어섰어요. 자세부터 확인해요.',
-    '이제 마무리 구간이 가까워지고 있어요.',
-    '지금까지 온 만큼만 더 가면 돼요.',
-    '오늘 계획한 시간의 상당 부분을 채웠어요.',
-    '남은 시간은 생각보다 짧아요.',
-    '여기까지 왔다면 나머지도 갈 수 있어요.',
-    '이 구간이 끝나면 한결 편해져요.',
-    '초반 구간을 무사히 지났어요.',
-    '중반은 지루하지만 가장 중요한 구간이에요.',
-    '후반으로 갈수록 자세가 흐트러지기 쉬워요.',
-    '마지막 구간에서는 힘보다 리듬이에요.',
-    '이제 남은 건 차분히 정리하는 시간이에요.',
-    '다음 구간까지 지금 리듬을 이어가 볼게요.',
-    '구간 하나를 또 넘겼어요.',
-    '오늘 러닝의 큰 산은 이미 넘었어요.',
-    '남은 만큼은 지금보다 짧게 느껴질 거예요.',
-    '여기서부터는 익숙한 리듬으로 가요.',
-    '시작할 때의 다짐을 한 번 떠올려 볼게요.',
-    '시간이 흐른 만큼 몸도 적응했어요.',
-    '지금이 페이스를 점검하기 좋은 시점이에요.',
-    '남은 구간을 몇 조각으로 나눠서 가 볼까요.',
-    '끝이 보이기 시작하는 지점이에요.',
-    '여기서 한 번 자세를 리셋하고 이어가요.',
-    '지나온 시간이 다리에 그대로 쌓여 있어요.',
-    '이 구간을 넘기면 마무리가 훨씬 쉬워요.',
-    '조금 뒤면 속도를 정리하기 시작할 거예요.',
-    '오늘 목표까지 얼마 남지 않았어요.',
-    '이 리듬으로 남은 구간을 채워 볼게요.',
-    '여기까지의 시간을 잘 써 왔어요.',
-    '한 구간씩 지워 나가는 중이에요.',
-  ],
+  // 진행 문장은 경과 비율 구간별 풀의 합집합입니다. 실제 선택은 구간별로만 이뤄집니다.
+  progress: progressStages.flatMap((stage) => progressCuesByStage[stage]),
 };
 
 /** 유형마다 완전히 다른 색을 내는 전용 멘트 풀입니다. */
@@ -801,6 +858,88 @@ export function cuePoolFor(id: RunningTypeId, category: CueCategory): string[] {
   return [...(typeCues[id]?.[category] ?? []), ...generalCues[category]];
 }
 
+/**
+ * 문장 태그입니다. 같은 문장이라도 유형·구간에 따라 말이 안 되는 경우가 있어서
+ * 풀에서 통째로 빼는 대신 상황에 맞을 때만 쓰이도록 표시해 둡니다.
+ * - requiresEasyIntensity: 대화 가능 강도(토크 테스트)를 전제로 한 문장. 인터벌·템포런처럼
+ *   숨이 차는 유형에서는 기준 자체가 맞지 않습니다.
+ * - notForWalking: 달리기 속도를 올리라고 권하는 문장. 걷기·회복 계열에는 맞지 않습니다.
+ * - notForWarmup: 이미 많이 왔다는 전제의 마무리성 문장. 첫 구간(워밍업)에서는 거짓말이 됩니다.
+ */
+export const requiresEasyIntensityCues: string[] = [
+  '지금 속도로 대화가 가능한지 스스로 확인해 볼게요.',
+  '한 문장을 말할 수 있는지 속으로 확인해 볼게요.',
+  '지금 이름과 오늘 날짜를 말할 수 있다면 강도가 맞아요.',
+  '말이 자꾸 끊긴다면 반 단계만 속도를 낮춰 주세요.',
+  '숨이 편한 정도가 오늘 강도의 가장 좋은 기준이에요.',
+];
+
+export const notForWalkingCues: string[] = [
+  '속도를 올리고 싶다면 자세부터 확인해 볼게요.',
+  '페이스를 올릴 자리는 마지막에 남겨 둬요.',
+  '속도를 올릴 때도 회전 수를 먼저 올려 볼게요.',
+  '보폭은 그대로 두고 템포만 살짝 올려 볼게요.',
+  '지금 걸음 수를 조금 올릴 여유가 있는지 볼게요.',
+  '여기서 한 번만 더 밀어 볼까요.',
+];
+
+export const notForWarmupCues: string[] = [
+  '여기까지 온 것만으로 오늘 목표의 큰 부분을 채웠어요.',
+  '여기까지 왔으면 이미 충분히 대단해요.',
+  '오늘의 목표가 이미 손에 잡히는 곳까지 왔어요.',
+  '지금까지 온 거리를 한 번 떠올려 볼까요.',
+  '이 페이스로 끝까지 갈 수 있어요.',
+  '지금 이 한 걸음이 오늘을 완성해요.',
+  '마무리까지 같이 가 볼게요.',
+  '지금까지 온 만큼만 더 가면 돼요.',
+  '오늘 러닝의 큰 산은 이미 넘었어요.',
+  '여기까지의 시간을 잘 써 왔어요.',
+  '여기까지 오늘 몫을 착실히 채우는 중이에요.',
+  '러닝화 한 켤레로 여기까지 왔어요.',
+];
+
+const easyIntensityOnly = new Set(requiresEasyIntensityCues);
+const runningOnly = new Set(notForWalkingCues);
+const afterWarmupOnly = new Set(notForWarmupCues);
+
+/** 큐를 만들 때의 상황입니다. 이 상황에 맞지 않는 문장은 풀에서 제외합니다. */
+export type CueContext = {
+  /** 세션 전체 대비 경과 비율(0~1)입니다. */
+  ratio: number;
+  /** 대화 가능 강도를 전제로 한 문장을 써도 되는 유형인지입니다. */
+  allowEasyIntensity: boolean;
+  /** 속도를 올리라고 권해도 되는 유형인지입니다. */
+  allowSpeedUp: boolean;
+  /** 첫 구간(워밍업)인지입니다. */
+  isWarmup: boolean;
+};
+
+/**
+ * 상황에 맞는 문장만 남긴 큐 풀입니다.
+ * 진행 문장은 경과 비율에 해당하는 구간 풀에서만 뽑아 "2분 15초에 거의 다 왔다" 같은 모순을 막습니다.
+ */
+export function contextualCuePool(
+  id: RunningTypeId,
+  category: CueCategory,
+  context: CueContext,
+): string[] {
+  const base =
+    category === 'progress'
+      ? [
+          ...(typeCues[id]?.progress ?? []),
+          ...progressCuesByStage[progressStageFor(context.ratio)],
+        ]
+      : cuePoolFor(id, category);
+
+  const filtered = base.filter(
+    (line) =>
+      (context.allowEasyIntensity || !easyIntensityOnly.has(line)) &&
+      (context.allowSpeedUp || !runningOnly.has(line)) &&
+      (!context.isWarmup || !afterWarmupOnly.has(line)),
+  );
+  return filtered.length > 0 ? filtered : base;
+}
+
 /** 유형 전용 문장의 총 개수입니다(검증·문서용). */
 export function typeCueCount(id: RunningTypeId): number {
   return Object.values(typeCues[id] ?? {}).reduce(
@@ -1177,10 +1316,12 @@ export function progressLine(
   if (Math.abs(ratio - 0.75) < 0.04) {
     return `${elapsedMinutes}분 지났어요. 4분의 3까지 왔고 ${remainingMinutes}분 남았어요.`;
   }
-  if (remainingMinutes <= 3) {
+  // 남은 "분"만 보고 마무리 말투를 쓰면 짧은 세션에서 초반에 "끝이 보여요"가 나옵니다.
+  // 그래서 경과 비율 조건을 함께 겁니다.
+  if (remainingMinutes <= 3 && ratio >= progressStageRanges.final.from) {
     return `${remainingMinutes}분 남았어요. 마지막까지 자세만 지켜 주세요.`;
   }
-  if (remainingMinutes <= 10) {
+  if (remainingMinutes <= 10 && ratio >= progressStageRanges.late.from) {
     return `${elapsedMinutes}분 지났어요. ${remainingMinutes}분 남았고 이제 끝이 보여요.`;
   }
   return `${elapsedMinutes}분 지났어요. ${remainingMinutes}분 남았어요.`;

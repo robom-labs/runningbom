@@ -23,10 +23,21 @@ import {
   cuePoolFor,
   generalCues,
   minimumGeneralCueCount,
+  minimumProgressStageCount,
   minimumTypeCueCount,
+  notForWalkingCues,
+  notForWarmupCues,
   phaseScripts,
+  progressCuesByStage,
+  progressLine,
+  progressStageFor,
+  progressStageOfLine,
+  progressStageRanges,
+  progressStages,
+  requiresEasyIntensityCues,
   typeCueCount,
 } from '../domains/coaching/cueLibrary';
+import { allowsEasyIntensityCues, allowsSpeedUpCues } from '../domains/coaching/sessionTypes';
 import { cooldownWindowFor, minimumCooldownWindow } from '../domains/coaching/model';
 import {
   classifyVoiceGender,
@@ -383,6 +394,133 @@ describe('러닝 유형 기준과 하위호환', () => {
     const schedule = cueScheduleForNative(createCoachSession('인터벌', 30, 'detailed'));
     for (const line of schedule.split('\n')) {
       assert.equal(line.split('|').length, 2);
+    }
+  });
+});
+
+describe('발화와 상황의 정합', () => {
+  const guidances: GuidanceLevel[] = ['minimal', 'standard', 'detailed'];
+
+  it('진행 문장은 구간마다 6문장 이상이고 합집합이 공용 progress 풀과 같다', () => {
+    for (const stage of progressStages) {
+      assert.ok(
+        progressCuesByStage[stage].length >= minimumProgressStageCount,
+        `${stage} 진행 문장이 부족합니다: ${progressCuesByStage[stage].length}`,
+      );
+    }
+    const union = progressStages.flatMap((stage) => progressCuesByStage[stage]);
+    assert.deepEqual(generalCues.progress, union, 'progress 합집합이 어긋납니다');
+    assert.equal(new Set(union).size, union.length, '진행 문장이 두 구간에 중복 배치됐습니다');
+  });
+
+  it('구간 경계가 0~0.25, 0.25~0.6, 0.6~0.85, 0.85~1로 이어진다', () => {
+    assert.equal(progressStageFor(0), 'early');
+    assert.equal(progressStageFor(0.24), 'early');
+    assert.equal(progressStageFor(0.25), 'middle');
+    assert.equal(progressStageFor(0.59), 'middle');
+    assert.equal(progressStageFor(0.6), 'late');
+    assert.equal(progressStageFor(0.84), 'late');
+    assert.equal(progressStageFor(0.85), 'final');
+    assert.equal(progressStageFor(1), 'final');
+    for (const stage of progressStages) {
+      assert.ok(progressStageRanges[stage].from < progressStageRanges[stage].to);
+    }
+  });
+
+  it('모든 유형 × 3밀도에서 진행 문장이 경과 비율 구간과 일치한다', () => {
+    for (const type of runningTypes) {
+      for (const guidance of guidances) {
+        for (const minutes of [15, 30, 60]) {
+          const session = createCoachSession(type.id, minutes, guidance);
+          const totalSeconds = session.durationMinutes * 60;
+          for (const cue of session.cues) {
+            const stage = progressStageOfLine(cue.text);
+            if (!stage) continue;
+            const ratio = cue.offsetSeconds / totalSeconds;
+            assert.equal(
+              stage,
+              progressStageFor(ratio),
+              `${type.id}/${guidance}/${minutes}분 ${cue.offsetSeconds}초(비율 ${ratio.toFixed(2)})에 ${stage} 문장: ${cue.text}`,
+            );
+          }
+        }
+      }
+    }
+  });
+
+  it('남은 시간 안내도 경과 비율에 어긋나는 마무리 말투를 쓰지 않는다', () => {
+    // 15분 세션의 5분 시점은 남은 10분이지만 아직 3분의 1이라 "끝이 보여요"가 될 수 없습니다.
+    assert.equal(progressLine(300, 900).includes('끝이 보여'), false);
+    assert.ok(progressLine(720, 900).includes('끝이 보여') || progressLine(720, 900).includes('마지막까지'));
+    for (const totalMinutes of [10, 15, 20, 30, 45, 60, 90, 120]) {
+      const total = totalMinutes * 60;
+      for (let offset = 60; offset < total; offset += 30) {
+        const line = progressLine(offset, total);
+        const ratio = offset / total;
+        if (/끝이 보여|마지막까지/.test(line)) {
+          assert.ok(
+            ratio >= progressStageRanges.late.from,
+            `${totalMinutes}분 세션 비율 ${ratio.toFixed(2)}에서 마무리 말투: ${line}`,
+          );
+        }
+      }
+    }
+  });
+
+  it('대화 가능 강도 전제 문장은 고강도 유형에서 나오지 않는다', () => {
+    const easyOnly = new Set(requiresEasyIntensityCues);
+    for (const type of runningTypes) {
+      if (allowsEasyIntensityCues(type)) continue;
+      for (const guidance of guidances) {
+        for (const cue of createCoachSession(type.id, 40, guidance).cues) {
+          assert.equal(
+            easyOnly.has(cue.text),
+            false,
+            `${type.id}(RPE ${type.rpe.min}~${type.rpe.max})에 대화 가능 강도 문장: ${cue.text}`,
+          );
+        }
+      }
+    }
+    // 반대로 이지런 계열에서는 그대로 쓰여야 합니다.
+    assert.ok(allowsEasyIntensityCues(resolveRunningType('이지런')));
+    assert.ok(allowsEasyIntensityCues(resolveRunningType('리커버리 워크')));
+    assert.equal(allowsEasyIntensityCues(resolveRunningType('인터벌')), false);
+    assert.equal(allowsEasyIntensityCues(resolveRunningType('템포런')), false);
+  });
+
+  it('걷기·회복 유형에는 속도를 올리라는 문장이 나오지 않는다', () => {
+    const runOnly = new Set(notForWalkingCues);
+    for (const type of runningTypes) {
+      if (allowsSpeedUpCues(type)) continue;
+      for (const guidance of guidances) {
+        for (const cue of createCoachSession(type.id, 40, guidance).cues) {
+          assert.equal(runOnly.has(cue.text), false, `${type.id}에 속도 상승 문장: ${cue.text}`);
+        }
+      }
+    }
+    assert.equal(allowsSpeedUpCues(resolveRunningType('걷기')), false);
+    assert.equal(allowsSpeedUpCues(resolveRunningType('회복 걷기')), false);
+    assert.ok(allowsSpeedUpCues(resolveRunningType('인터벌')));
+  });
+
+  it('워밍업 구간에는 마무리성 문장이 없다', () => {
+    const closing = new Set(notForWarmupCues);
+    for (const type of runningTypes) {
+      for (const guidance of guidances) {
+        for (const minutes of [15, 30, 60]) {
+          const session = createCoachSession(type.id, minutes, guidance);
+          const warmup = session.phases[0];
+          for (const cue of session.cues) {
+            if (cue.kind === 'phase') continue;
+            if (cue.offsetSeconds >= warmup.endSeconds) continue;
+            assert.equal(
+              closing.has(cue.text),
+              false,
+              `${type.id}/${guidance}/${minutes}분 워밍업(${cue.offsetSeconds}초)에 마무리성 문장: ${cue.text}`,
+            );
+          }
+        }
+      }
     }
   });
 });

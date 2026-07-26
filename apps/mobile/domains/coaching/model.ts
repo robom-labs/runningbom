@@ -1,6 +1,8 @@
 // 옆에서 쉴 새 없이 말해 주는 코치처럼, 촘촘하고 반복되지 않는 TTS 큐를 만드는 코칭 도메인 정본입니다.
 import type { ActivityKind } from '../activities/types';
 import {
+  allowsEasyIntensityCues,
+  allowsSpeedUpCues,
   buildPhases,
   resolveRunningType,
   runningTypes,
@@ -11,7 +13,7 @@ import {
 import {
   categoryRotation,
   closingCues,
-  cuePoolFor,
+  contextualCuePool,
   openingCues,
   phaseScripts,
   progressLine,
@@ -299,13 +301,25 @@ export function createCoachSession(
   }
 
   // 3) 평시 큐: 카테고리를 로테이션하며 촘촘하게 채웁니다.
+  //    문장은 "그 시점의 상황"에 맞는 것만 뽑습니다. 경과 비율에 맞는 진행 문장, 유형 강도에 맞는
+  //    표현, 워밍업에서 마무리성 문장 배제까지 여기서 걸러집니다.
+  const allowEasyIntensity = allowsEasyIntensityCues(type);
+  const allowSpeedUp = allowsSpeedUpCues(type);
+  const phaseAt = (offset: number): SessionPhase | undefined =>
+    phases.find((phase) => offset >= phase.startSeconds && offset < phase.endSeconds);
+
   const rotation = categoryRotation[type.id];
   let rotationIndex = 0;
   for (let offset = interval; offset < durationSeconds - 20; offset += interval) {
     const category: CueCategory = rotation[rotationIndex % rotation.length];
     rotationIndex += 1;
-    const pool = cuePoolFor(type.id, category);
     const at = offset;
+    const pool = contextualCuePool(type.id, category, {
+      ratio: at / durationSeconds,
+      allowEasyIntensity,
+      allowSpeedUp,
+      isWarmup: (phaseAt(at)?.index ?? 0) === 0,
+    });
     slots.push({
       offsetSeconds: at,
       priority: 10,

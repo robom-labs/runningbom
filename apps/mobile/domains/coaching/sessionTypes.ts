@@ -403,6 +403,23 @@ export function runningTypeById(id: RunningTypeId): RunningTypeDefinition {
   return typeById.get(id) as RunningTypeDefinition;
 }
 
+/**
+ * 대화 가능 강도(토크 테스트)를 전제로 한 멘트를 써도 되는 유형인지입니다.
+ * RPE 5 이하, 즉 이지런·롱런·워크런·회복 계열에서만 "대화가 되는지 확인해 보세요"가 성립합니다.
+ * 템포런·인터벌·힐 리핏처럼 숨이 차는 것이 목적인 유형에서는 기준 자체가 맞지 않습니다.
+ */
+export function allowsEasyIntensityCues(type: RunningTypeDefinition): boolean {
+  return type.rpe.max <= 5;
+}
+
+/**
+ * 속도를 올리라고 권해도 되는 유형인지입니다.
+ * 걷기·회복 걷기·회복 루틴·아침 깨우기는 속도를 올리는 것이 목적에 어긋납니다.
+ */
+export function allowsSpeedUpCues(type: RunningTypeDefinition): boolean {
+  return type.countsAs === 'run';
+}
+
 export function runningTypesByCategory(
   category: RunningTypeCategory,
 ): RunningTypeDefinition[] {
