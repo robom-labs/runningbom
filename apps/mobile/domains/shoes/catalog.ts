@@ -1,0 +1,197 @@
+// 공식 브랜드 페이지에서 확인한 사실과 러닝봄의 편집 설명을 분리한 러닝화 정본입니다.
+export const SHOE_DATA_VERSION = '2026.07.26-v1';
+
+export type ShoeSurface = 'road' | 'treadmill' | 'mixed';
+export type ShoePriority = 'comfort' | 'balanced' | 'speed';
+export type ShoeStatus = 'available' | 'upcoming' | 'global-only';
+
+export type Shoe = {
+  id: string;
+  brand: string;
+  model: string;
+  status: ShoeStatus;
+  surfaces: ShoeSurface[];
+  priorities: ShoePriority[];
+  distanceKm: 'short' | 'daily' | 'long';
+  officialFacts: string[];
+  editorialSummary: string;
+  consideration: string;
+  officialUrl: string;
+  verifiedAt: string;
+  priceKrw: number | null;
+  koreaStatus: string;
+};
+
+export const shoes: Shoe[] = [
+  {
+    id: 'nike-pegasus-42',
+    brand: 'Nike',
+    model: 'Pegasus 42',
+    status: 'available',
+    surfaces: ['road', 'treadmill'],
+    priorities: ['balanced'],
+    distanceKm: 'daily',
+    officialFacts: ['일상 러닝용 로드 러닝화', 'ReactX 폼과 Air Zoom 유닛'],
+    editorialSummary: '속도와 편안함 사이에서 무난한 데일리 선택이에요.',
+    consideration: '아주 푹신한 착화감을 우선한다면 쿠션 중심 모델도 비교해 보세요.',
+    officialUrl: 'https://www.nike.com/kr/t/페가수스-42-남성-로드-러닝화-Hq1m5r/FD2722-001',
+    verifiedAt: '2026-07-26',
+    priceKrw: null,
+    koreaStatus: '국내 공식 페이지 확인',
+  },
+  {
+    id: 'adidas-supernova-rise-2',
+    brand: 'adidas',
+    model: 'Supernova Rise 2',
+    status: 'available',
+    surfaces: ['road', 'treadmill'],
+    priorities: ['comfort', 'balanced'],
+    distanceKm: 'daily',
+    officialFacts: ['Dreamstrike+ 미드솔', '서포트 로드 시스템', '남성 265mm 기준 275g'],
+    editorialSummary: '편안한 일상 러닝을 우선할 때 살펴보기 좋아요.',
+    consideration: '빠른 훈련 전용 신발을 찾는다면 속도 중심 모델과 함께 비교하세요.',
+    officialUrl:
+      'https://www.adidas.co.kr/%EC%8A%88%ED%8D%BC%EB%85%B8%EB%B0%94-%EB%9D%BC%EC%9D%B4%EC%A6%88-2/IH2504.html',
+    verifiedAt: '2026-07-26',
+    priceKrw: null,
+    koreaStatus: '국내 공식 페이지 확인',
+  },
+  {
+    id: 'asics-gel-nimbus-27',
+    brand: 'ASICS',
+    model: 'GEL-NIMBUS 27',
+    status: 'global-only',
+    surfaces: ['road', 'treadmill'],
+    priorities: ['comfort'],
+    distanceKm: 'long',
+    officialFacts: ['PureGEL 기술', 'FF BLAST PLUS ECO 쿠셔닝', 'HYBRID ASICSGRIP 아웃솔'],
+    editorialSummary: '부드러운 착지와 장거리 편안함을 중시할 때 비교하기 좋아요.',
+    consideration: '가볍고 빠른 느낌을 최우선으로 한다면 무게와 반응성을 함께 확인하세요.',
+    officialUrl: 'https://www.asics.com/jp/ja-jp/mk/running/nimbus',
+    verifiedAt: '2026-07-26',
+    priceKrw: null,
+    koreaStatus: '글로벌 공식 정보 확인 · 국내 일정 미확인',
+  },
+  {
+    id: 'new-balance-1080-v14',
+    brand: 'New Balance',
+    model: 'Fresh Foam X 1080v14',
+    status: 'global-only',
+    surfaces: ['road', 'treadmill'],
+    priorities: ['comfort', 'balanced'],
+    distanceKm: 'long',
+    officialFacts: ['Fresh Foam X 미드솔', '6mm 드롭', '남성 기준 298g'],
+    editorialSummary: '일상부터 긴 거리까지 편안함을 넓게 쓰고 싶을 때 살펴보기 좋아요.',
+    consideration: '발에 맞는 폭과 사이즈는 공식 사이즈 안내에서 다시 확인하세요.',
+    officialUrl:
+      'https://www.newbalance.com/pd/fresh-foam-x-1080v14/M1080V14-47512-PMG-NA-E.html',
+    verifiedAt: '2026-07-26',
+    priceKrw: null,
+    koreaStatus: '글로벌 공식 정보 확인 · 국내 일정 미확인',
+  },
+  {
+    id: 'hoka-clifton-10',
+    brand: 'HOKA',
+    model: 'Clifton 10',
+    status: 'global-only',
+    surfaces: ['road', 'treadmill'],
+    priorities: ['comfort'],
+    distanceKm: 'daily',
+    officialFacts: ['데일리 로드 러닝 제품군', '공식 Clifton 10 제품 페이지 확인'],
+    editorialSummary: '부드러운 데일리 러닝화를 비교할 때 함께 보기 좋아요.',
+    consideration: '국내 판매 상태와 정확한 사양은 구매 전 국내 공식 채널에서 확인하세요.',
+    officialUrl:
+      'https://vn.hoka.com/en/products/giay-chay-bo-nam-hoka-clifton-10-1162030-prsm-persimmon',
+    verifiedAt: '2026-07-26',
+    priceKrw: null,
+    koreaStatus: '글로벌 공식 정보 확인 · 국내 일정 미확인',
+  },
+  {
+    id: 'mizuno-wave-rider-29',
+    brand: 'Mizuno',
+    model: 'Wave Rider 29',
+    status: 'global-only',
+    surfaces: ['road', 'treadmill'],
+    priorities: ['balanced'],
+    distanceKm: 'daily',
+    officialFacts: ['공식 Wave Rider 29 발표 자료 확인', '데일리 러닝 제품군'],
+    editorialSummary: '안정적인 일상 훈련화를 넓게 비교할 때 살펴보기 좋아요.',
+    consideration: '국내 출시 여부와 세부 사양은 공식 판매 페이지에서 다시 확인하세요.',
+    officialUrl:
+      'https://corp.mizuno.com/en/articles/0067',
+    verifiedAt: '2026-07-26',
+    priceKrw: null,
+    koreaStatus: '글로벌 공식 정보 확인 · 국내 일정 미확인',
+  },
+  {
+    id: 'saucony-ride-18',
+    brand: 'Saucony',
+    model: 'Ride 18',
+    status: 'global-only',
+    surfaces: ['road', 'treadmill'],
+    priorities: ['balanced'],
+    distanceKm: 'daily',
+    officialFacts: ['PWRRUN+ 미드솔', '8mm 오프셋', '남성 기준 259g'],
+    editorialSummary: '부드러움과 반응성을 함께 보려는 일상 러너에게 맞는 비교 후보예요.',
+    consideration: '국내 판매 여부와 가격은 공식 국내 채널에서 별도로 확인하세요.',
+    officialUrl: 'https://www.saucony.com/UK/en_GB/ride-18/59943M.html',
+    verifiedAt: '2026-07-26',
+    priceKrw: null,
+    koreaStatus: '글로벌 공식 정보 확인 · 국내 일정 미확인',
+  },
+  {
+    id: 'brooks-ghost-17',
+    brand: 'Brooks',
+    model: 'Ghost 17',
+    status: 'global-only',
+    surfaces: ['road', 'treadmill'],
+    priorities: ['comfort', 'balanced'],
+    distanceKm: 'daily',
+    officialFacts: ['10mm 미드솔 드롭', '남성 기준 286.3g', 'DNA LOFT v3 쿠셔닝'],
+    editorialSummary: '편안한 일상 러닝과 걷기를 함께 고려할 때 비교하기 좋아요.',
+    consideration: '국내 판매 상태와 폭 선택은 구매 전 공식 채널에서 확인하세요.',
+    officialUrl:
+      'https://www.brooksrunning.com/en_gb/mens/road-running-shoes/ghost-17/1104421D112.150.html',
+    verifiedAt: '2026-07-26',
+    priceKrw: null,
+    koreaStatus: '글로벌 공식 정보 확인 · 국내 일정 미확인',
+  },
+];
+
+export type ShoeFinderAnswers = {
+  surface: ShoeSurface;
+  distance: Shoe['distanceKm'];
+  priority: ShoePriority;
+  budget: 'under-150' | 'under-200' | 'open';
+};
+
+function budgetLimitKrw(budget: ShoeFinderAnswers['budget']): number | undefined {
+  if (budget === 'under-150') return 150_000;
+  if (budget === 'under-200') return 200_000;
+  return undefined;
+}
+
+export function recommendShoes(
+  answers: ShoeFinderAnswers,
+  values: Shoe[] = shoes,
+): Shoe[] {
+  const limit = budgetLimitKrw(answers.budget);
+  return [...values]
+    .map((shoe) => ({
+      shoe,
+      score:
+        Number(shoe.surfaces.includes(answers.surface)) * 3 +
+        Number(shoe.distanceKm === answers.distance) * 2 +
+        Number(shoe.priorities.includes(answers.priority)) * 3 +
+        (limit === undefined || shoe.priceKrw === null
+          ? 0
+          : shoe.priceKrw <= limit
+            ? 2
+            : -5),
+    }))
+    .sort((left, right) => right.score - left.score || left.shoe.model.localeCompare(right.shoe.model))
+    .map(({ shoe }) => shoe)
+    .slice(0, 3);
+}
+
+export const shoeFinderInternals = { budgetLimitKrw };

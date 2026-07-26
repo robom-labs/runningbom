@@ -6,10 +6,26 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "RUNNINGBOM_VARIANT": "preview",
+        "EXPO_PUBLIC_RELEASE_CHANNEL": "development",
+        "EXPO_PUBLIC_COMMUNITY_MODE": "CORE_ONLY",
+        "EXPO_PUBLIC_SOCIAL_ENABLED": "false"
+      }
     },
     "preview": {
       "distribution": "internal",
+      "env": {
+        "RUNNINGBOM_VARIANT": "preview",
+        "EXPO_PUBLIC_RELEASE_CHANNEL": "preview",
+        "EXPO_PUBLIC_COMMUNITY_MODE": "CORE_ONLY",
+        "EXPO_PUBLIC_SOCIAL_ENABLED": "false",
+        "EXPO_PUBLIC_AUTH_GOOGLE_ENABLED": "false",
+        "EXPO_PUBLIC_AUTH_KAKAO_ENABLED": "false",
+        "EXPO_PUBLIC_AUTH_NAVER_ENABLED": "false",
+        "EXPO_PUBLIC_AUTH_APPLE_ENABLED": "false"
+      },
       "android": {
         "buildType": "apk"
       }
@@ -17,6 +33,14 @@
     "production": {
       "autoIncrement": false,
       "env": {
+        "RUNNINGBOM_VARIANT": "production",
+        "EXPO_PUBLIC_RELEASE_CHANNEL": "production",
+        "EXPO_PUBLIC_COMMUNITY_MODE": "CORE_ONLY",
+        "EXPO_PUBLIC_SOCIAL_ENABLED": "false",
+        "EXPO_PUBLIC_AUTH_GOOGLE_ENABLED": "false",
+        "EXPO_PUBLIC_AUTH_KAKAO_ENABLED": "false",
+        "EXPO_PUBLIC_AUTH_NAVER_ENABLED": "false",
+        "EXPO_PUBLIC_AUTH_APPLE_ENABLED": "false",
         "EXPO_PUBLIC_SUPPORT_URL": "https://robom.kr/support",
         "EXPO_PUBLIC_PRIVACY_URL": "https://robom.kr/privacy/runningbom"
       },

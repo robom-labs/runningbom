@@ -1,9 +1,11 @@
 // 러닝봄 모바일의 SDK, 식별자, EAS 프로필, 번들 데이터 계약을 정적으로 검증합니다.
 import { readFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const require = createRequire(import.meta.url);
 const readJson = async (relativePath) =>
   JSON.parse(await readFile(path.join(root, relativePath), 'utf8'));
 const assert = (condition, message) => {
@@ -19,15 +21,37 @@ const [packageJson, rootPackageJson, appJson, easJson, raceData] = await Promise
   readJson('eas.json'),
   readJson('src/data/races.json'),
 ]);
+const { resolveRunningbomConfig } = require(path.join(root, 'app.config.js'));
+const productionConfig = resolveRunningbomConfig(structuredClone(appJson.expo), 'production');
+const previewConfig = resolveRunningbomConfig(structuredClone(appJson.expo), 'preview');
 
 assert(packageJson.version === rootPackageJson.version, '웹·모바일 앱 버전이 일치해야 합니다.');
 assert(packageJson.dependencies.expo === '~57.0.6', 'Expo SDK 57 버전이 고정되지 않았습니다.');
 assert(packageJson.dependencies.react === '19.2.3', 'React 19.2.3이 필요합니다.');
 assert(packageJson.dependencies['react-native'] === '0.86.0', 'React Native 0.86.0이 필요합니다.');
 assert(!packageJson.dependencies['react-native-webview'], 'WebView 의존성은 허용하지 않습니다.');
-assert(appJson.expo.scheme === 'runningbom', '앱 scheme은 runningbom이어야 합니다.');
-assert(appJson.expo.android.package === 'kr.robom.runningbom', 'Android package가 일치하지 않습니다.');
-assert(appJson.expo.ios.bundleIdentifier === 'kr.robom.runningbom', 'iOS bundleIdentifier가 일치하지 않습니다.');
+assert(productionConfig.name === '러닝봄', 'production 앱 이름은 러닝봄이어야 합니다.');
+assert(productionConfig.scheme === 'runningbom', 'production scheme은 runningbom이어야 합니다.');
+assert(productionConfig.android.package === 'kr.robom.runningbom', 'production Android package가 일치하지 않습니다.');
+assert(productionConfig.ios.bundleIdentifier === 'kr.robom.runningbom', 'production iOS bundleIdentifier가 일치하지 않습니다.');
+assert(previewConfig.name === '러닝봄 Preview', 'Preview 앱 이름이 분리되지 않았습니다.');
+assert(previewConfig.scheme === 'runningbom-preview', 'Preview scheme이 분리되지 않았습니다.');
+assert(previewConfig.android.package === 'kr.robom.runningbom.preview', 'Preview Android package가 분리되지 않았습니다.');
+assert(previewConfig.ios.bundleIdentifier === 'kr.robom.runningbom.preview', 'Preview iOS bundleIdentifier가 분리되지 않았습니다.');
+assert(previewConfig.extra.releaseChannel === 'preview', 'Preview releaseChannel 표시값이 없습니다.');
+assert(previewConfig.extra.preview.enabled === true, 'Preview 사용자 표시 플래그가 켜져야 합니다.');
+assert(
+  previewConfig.extra.runtimePolicy.productionOauthRedirectsEnabled === false,
+  'Preview에서 production OAuth redirect가 기본 차단돼야 합니다.',
+);
+assert(
+  previewConfig.extra.runtimePolicy.productionSocialWriteEnabled === false,
+  'Preview에서 production 소셜 쓰기가 기본 차단돼야 합니다.',
+);
+assert(
+  productionConfig.extra.eas.projectId === previewConfig.extra.eas.projectId,
+  'Preview가 기존 EAS projectId를 변경하면 안 됩니다.',
+);
 assert(appJson.expo.orientation === 'default', '휴대폰·태블릿 회전을 모두 지원해야 합니다.');
 assert(appJson.expo.ios.supportsTablet === true, 'iPad 지원이 켜져 있어야 합니다.');
 assert(typeof appJson.expo.description === 'string' && appJson.expo.description.length >= 20, '스토어 설명이 필요합니다.');
@@ -49,6 +73,20 @@ for (const profile of ['development', 'preview', 'production']) {
 }
 assert(easJson.build.development.developmentClient === true, 'developmentClient가 필요합니다.');
 assert(easJson.build.preview.distribution === 'internal', 'preview는 internal 배포여야 합니다.');
+assert(easJson.build.preview.android?.buildType === 'apk', 'preview Android는 설치 가능한 APK여야 합니다.');
+assert(easJson.build.preview.env?.RUNNINGBOM_VARIANT === 'preview', 'preview EAS 변형 환경값이 없습니다.');
+assert(easJson.build.preview.env?.EXPO_PUBLIC_RELEASE_CHANNEL === 'preview', 'preview 채널 표시 환경값이 없습니다.');
+assert(easJson.build.preview.env?.EXPO_PUBLIC_COMMUNITY_MODE === 'CORE_ONLY', 'preview는 CORE_ONLY여야 합니다.');
+for (const key of [
+  'EXPO_PUBLIC_SOCIAL_ENABLED',
+  'EXPO_PUBLIC_AUTH_GOOGLE_ENABLED',
+  'EXPO_PUBLIC_AUTH_KAKAO_ENABLED',
+  'EXPO_PUBLIC_AUTH_NAVER_ENABLED',
+  'EXPO_PUBLIC_AUTH_APPLE_ENABLED',
+]) {
+  assert(easJson.build.preview.env?.[key] === 'false', `preview의 ${key}가 기본 차단돼야 합니다.`);
+}
+assert(easJson.build.production.env?.RUNNINGBOM_VARIANT === 'production', 'production EAS 변형 환경값이 없습니다.');
 assert(easJson.build.production.android?.buildType === 'app-bundle', 'production Android는 AAB여야 합니다.');
 assert(!easJson.submit, '스토어 자동 제출 설정을 두면 안 됩니다.');
 
@@ -68,6 +106,7 @@ const sourceFiles = [
   'src/notifications.ts',
   'src/races.ts',
   'src/types.ts',
+  'app.config.js',
   'scripts/verify-config.mjs',
 ];
 for (const sourceFile of sourceFiles) {
@@ -78,4 +117,6 @@ for (const sourceFile of sourceFiles) {
   }
 }
 
-console.log(`모바일 정적 검증 통과: Expo 57 · 대회 ${raceData.races.length}개 · EAS 3개 프로필`);
+console.log(
+  `모바일 정적 검증 통과: production ${productionConfig.android.package} · Preview ${previewConfig.android.package} · 대회 ${raceData.races.length}개`,
+);

@@ -21,10 +21,13 @@ const raceDateFormatter = new Intl.DateTimeFormat('ko-KR', {
 });
 
 export const bundledRevision = bundledData.revision;
-const todayKst = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date());
 const REMOTE_RACES_URL =
   process.env.EXPO_PUBLIC_RACE_DATA_URL ??
   'https://raw.githubusercontent.com/robom-labs/runningbom/main/apps/mobile/src/data/races.json';
+
+function todayKst(now = Date.now()): string {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date(now));
+}
 
 function isRace(value: unknown): value is Race {
   if (!value || typeof value !== 'object') return false;
@@ -47,16 +50,16 @@ function isVisibleRace(race: Race, now = Date.now()): boolean {
   const status = race.registrationStatus ?? '';
   const closesAt = race.registrationClosesAt ? new Date(race.registrationClosesAt).getTime() : Number.NaN;
   return (
-    race.raceDate >= todayKst &&
+    race.raceDate >= todayKst(now) &&
     !['cancelled', 'postponed', 'sold_out', 'closed'].includes(status) &&
     (!Number.isFinite(closesAt) || closesAt >= now)
   );
 }
 
-function visibleRaces(values: Race[]): Race[] {
+function visibleRaces(values: Race[], now = Date.now()): Race[] {
   const seen = new Set<string>();
   return values.filter((race) => {
-    if (!isRace(race) || seen.has(race.id) || !isVisibleRace(race)) return false;
+    if (!isRace(race) || seen.has(race.id) || !isVisibleRace(race, now)) return false;
     seen.add(race.id);
     return true;
   });
@@ -80,6 +83,19 @@ export type RaceFeed = {
   revision: string;
   races: Race[];
 };
+
+export function raceFeedFromRecords(
+  revision: unknown,
+  values: unknown,
+  now = Date.now(),
+): RaceFeed {
+  if (typeof revision !== 'string' || !revision || !Array.isArray(values)) {
+    throw new Error('race feed schema invalid');
+  }
+  const next = visibleRaces(values.filter(isRace), now);
+  if (next.length === 0) throw new Error('race feed has no active races');
+  return { revision, races: next };
+}
 
 export type RegistrationFilter = '전체' | '접수 예정' | '접수 중';
 export const registrationFilters: RegistrationFilter[] = ['전체', '접수 예정', '접수 중'];
@@ -105,13 +121,7 @@ export async function fetchLatestRaces(signal?: AbortSignal): Promise<RaceFeed> 
   });
   if (!response.ok) throw new Error(`race feed HTTP ${response.status}`);
   const payload = (await response.json()) as { revision?: unknown; races?: unknown };
-  if (typeof payload.revision !== 'string' || !Array.isArray(payload.races)) {
-    throw new Error('race feed schema invalid');
-  }
-
-  const next = visibleRaces(payload.races.filter(isRace));
-  if (next.length === 0) throw new Error('race feed has no active races');
-  return { revision: payload.revision, races: next };
+  return raceFeedFromRecords(payload.revision, payload.races);
 }
 
 export function formatRegistrationTime(race: Race): string {
