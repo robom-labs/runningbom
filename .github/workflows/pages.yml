@@ -21,8 +21,8 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
       - name: JavaScript 문법 검사
@@ -42,17 +42,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: 운영 빌드 식별자 기록
         shell: bash
         run: |
           mkdir -p .pages-release
           cp -a outputs/pushrun-site/. .pages-release/
+          mkdir -p .pages-release/data
+          cp -a data/. .pages-release/data/
           sed -i "s/__BUILD_SHA__/${GITHUB_SHA::7}/g" .pages-release/app.js
 
       - name: Deploy static site to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@329bcc8f12caed2cefe5a5b80781499a6f3b361b # v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages

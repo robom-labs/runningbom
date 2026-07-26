@@ -1,0 +1,9 @@
+{
+  "_comment": "Google Play 릴리스 권한을 기본 차단 상태로 유지하는 정본이다.",
+  "schemaVersion": 1,
+  "stage": "CODE_ONLY",
+  "playInternalAllowed": false,
+  "playClosedReviewAllowed": false,
+  "playClosedPublishAllowed": false,
+  "playProductionAllowed": false
+}

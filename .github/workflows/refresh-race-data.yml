@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: main
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
       - name: 공개 일정 수집 및 정규화
@@ -33,19 +33,27 @@ jobs:
           node scripts/validate-static.mjs
           node --test scripts/race-data-core.test.mjs scripts/mobile-data-contract.test.mjs scripts/secure-link-core.test.mjs
       - name: 수집 리포트 보관
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: running-race-data-refresh-report
           path: outputs/race-data-refresh-report.json
           if-no-files-found: error
       - name: 검증된 변경만 main에 반영
         run: |
-          if git diff --quiet -- outputs/pushrun-site/races.json apps/mobile/src/data/races.json; then
+          if git diff --quiet -- \
+            outputs/pushrun-site/races.json \
+            apps/mobile/src/data/races.json \
+            data \
+            apps/mobile/data/fallback; then
             echo "검증된 대회 데이터 변경이 없습니다."
             exit 0
           fi
           git config user.name "robom-data-bot"
           git config user.email "actions@github.com"
-          git add outputs/pushrun-site/races.json apps/mobile/src/data/races.json
+          git add \
+            outputs/pushrun-site/races.json \
+            apps/mobile/src/data/races.json \
+            data \
+            apps/mobile/data/fallback
           git commit -m "chore(data): 자동 대회 일정 동기화"
           git push origin HEAD:main

@@ -1,0 +1,244 @@
+# Google Play 제출을 수동 승인과 fail-closed release guard 뒤에서만 실행한다.
+name: Guarded Google Play release
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_track:
+        description: Google Play 대상 트랙
+        required: true
+        type: choice
+        options:
+          - internal
+          - closed
+          - production
+      release_intent:
+        description: 승인받은 릴리스 의도
+        required: true
+        type: choice
+        options:
+          - INTERNAL_TEST
+          - CLOSED_REVIEW
+          - CLOSED_PUBLISH
+          - PRODUCTION
+      source_sha:
+        description: 후보 AAB를 만든 전체 40자리 source SHA
+        required: true
+        type: string
+      eas_build_id:
+        description: 후보 production AAB의 EAS build ID
+        required: true
+        type: string
+      artifact_sha256:
+        description: 후보 AAB의 SHA-256
+        required: true
+        type: string
+      approval_reference:
+        description: docs/release/CEO_APPROVALS.md의 승인 참조값
+        required: true
+        type: string
+      execute:
+        description: 보호 environment 승인 후 실제 제출 실행
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: play-release-${{ inputs.target_track }}
+  cancel-in-progress: false
+
+jobs:
+  guarded-dry-run:
+    name: Validate release intent and artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.source_sha }}
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+
+      - name: Setup Java for official bundletool
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Download exact EAS artifact
+        id: artifact
+        working-directory: apps/mobile
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EAS_BUILD_ID: ${{ inputs.eas_build_id }}
+          EXPECTED_SOURCE_SHA: ${{ inputs.source_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUILD_JSON="${RUNNER_TEMP}/eas-build.json"
+          ARTIFACT_PATH="${RUNNER_TEMP}/runningbom-candidate.aab"
+          npx --yes eas-cli@16.19.0 build:view "${EAS_BUILD_ID}" --json --non-interactive > "${BUILD_JSON}"
+          BUILD_SOURCE_SHA="$(jq -er '.gitCommitHash' "${BUILD_JSON}")"
+          test "${BUILD_SOURCE_SHA}" = "${EXPECTED_SOURCE_SHA}"
+          BUILD_URL="$(jq -er '.artifacts.buildUrl' "${BUILD_JSON}")"
+          curl --fail --location --retry 3 --silent --show-error "${BUILD_URL}" --output "${ARTIFACT_PATH}"
+          echo "path=${ARTIFACT_PATH}" >> "${GITHUB_OUTPUT}"
+
+      - name: Validate AAB with pinned official bundletool
+        env:
+          ARTIFACT_PATH: ${{ steps.artifact.outputs.path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUNDLETOOL="${RUNNER_TEMP}/bundletool-all-1.18.3.jar"
+          curl --fail --location --retry 3 --silent --show-error \
+            "https://github.com/google/bundletool/releases/download/1.18.3/bundletool-all-1.18.3.jar" \
+            --output "${BUNDLETOOL}"
+          echo "a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29  ${BUNDLETOOL}" \
+            | sha256sum --check
+          java -jar "${BUNDLETOOL}" validate --bundle="${ARTIFACT_PATH}"
+
+      - name: Fail-closed dry-run guard
+        env:
+          ARTIFACT_PATH: ${{ steps.artifact.outputs.path }}
+        run: |
+          node scripts/release/assert-release-intent.mjs \
+            --stage-file ops/release/RELEASE_STAGE.json \
+            --target-track "${{ inputs.target_track }}" \
+            --intent "${{ inputs.release_intent }}" \
+            --artifact "${ARTIFACT_PATH}" \
+            --artifact-sha256 "${{ inputs.artifact_sha256 }}" \
+            --source-sha "${{ inputs.source_sha }}" \
+            --approval-reference "${{ inputs.approval_reference }}" \
+            --approval-file docs/release/CEO_APPROVALS.md \
+            --mode dry-run
+
+  protected-submit:
+    name: Protected submit
+    if: ${{ inputs.execute }}
+    needs: guarded-dry-run
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: play-${{ inputs.target_track }}-approval
+    steps:
+      - name: Checkout exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.source_sha }}
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+
+      - name: Setup Java for official bundletool
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Download and revalidate exact EAS artifact
+        id: artifact
+        working-directory: apps/mobile
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EAS_BUILD_ID: ${{ inputs.eas_build_id }}
+          EXPECTED_SOURCE_SHA: ${{ inputs.source_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUILD_JSON="${RUNNER_TEMP}/eas-build.json"
+          ARTIFACT_PATH="${RUNNER_TEMP}/runningbom-candidate.aab"
+          npx --yes eas-cli@16.19.0 build:view "${EAS_BUILD_ID}" --json --non-interactive > "${BUILD_JSON}"
+          BUILD_SOURCE_SHA="$(jq -er '.gitCommitHash' "${BUILD_JSON}")"
+          test "${BUILD_SOURCE_SHA}" = "${EXPECTED_SOURCE_SHA}"
+          BUILD_URL="$(jq -er '.artifacts.buildUrl' "${BUILD_JSON}")"
+          curl --fail --location --retry 3 --silent --show-error "${BUILD_URL}" --output "${ARTIFACT_PATH}"
+          echo "path=${ARTIFACT_PATH}" >> "${GITHUB_OUTPUT}"
+
+      - name: Validate AAB with pinned official bundletool
+        env:
+          ARTIFACT_PATH: ${{ steps.artifact.outputs.path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUNDLETOOL="${RUNNER_TEMP}/bundletool-all-1.18.3.jar"
+          curl --fail --location --retry 3 --silent --show-error \
+            "https://github.com/google/bundletool/releases/download/1.18.3/bundletool-all-1.18.3.jar" \
+            --output "${BUNDLETOOL}"
+          echo "a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29  ${BUNDLETOOL}" \
+            | sha256sum --check
+          java -jar "${BUNDLETOOL}" validate --bundle="${ARTIFACT_PATH}"
+
+      - name: Fail closed when review-only submission cannot be guaranteed
+        if: ${{ inputs.release_intent == 'CLOSED_REVIEW' }}
+        run: |
+          echo "CLOSED_REVIEW execution is disabled until a guaranteed review-only API is configured." >&2
+          exit 1
+
+      - name: Execute-mode release guard
+        env:
+          ARTIFACT_PATH: ${{ steps.artifact.outputs.path }}
+          RELEASE_EXECUTION_CONFIRMED: "true"
+          PLAY_RELEASE_ENVIRONMENT_GUARD: ${{ secrets.PLAY_RELEASE_ENVIRONMENT_GUARD }}
+          PLAY_RELEASE_ENVIRONMENT_NAME: play-${{ inputs.target_track }}-approval
+        run: |
+          node scripts/release/assert-release-intent.mjs \
+            --stage-file ops/release/RELEASE_STAGE.json \
+            --target-track "${{ inputs.target_track }}" \
+            --intent "${{ inputs.release_intent }}" \
+            --artifact "${ARTIFACT_PATH}" \
+            --artifact-sha256 "${{ inputs.artifact_sha256 }}" \
+            --source-sha "${{ inputs.source_sha }}" \
+            --approval-reference "${{ inputs.approval_reference }}" \
+            --approval-file docs/release/CEO_APPROVALS.md \
+            --mode execute
+
+      - name: Configure ephemeral EAS submit profile
+        working-directory: apps/mobile
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          TARGET_TRACK: ${{ inputs.target_track }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVICE_ACCOUNT_PATH="${RUNNER_TEMP}/google-service-account.json"
+          printf '%s' "${GOOGLE_SERVICE_ACCOUNT_JSON}" > "${SERVICE_ACCOUNT_PATH}"
+          chmod 600 "${SERVICE_ACCOUNT_PATH}"
+          case "${TARGET_TRACK}" in
+            internal) PLAY_TRACK="internal" ;;
+            closed) PLAY_TRACK="alpha" ;;
+            production) PLAY_TRACK="production" ;;
+            *) exit 1 ;;
+          esac
+          jq \
+            --arg serviceAccountKeyPath "${SERVICE_ACCOUNT_PATH}" \
+            --arg track "${PLAY_TRACK}" \
+            '.submit.guarded.android = {
+              serviceAccountKeyPath: $serviceAccountKeyPath,
+              track: $track
+            }' \
+            eas.json > "${RUNNER_TEMP}/eas.json"
+          mv "${RUNNER_TEMP}/eas.json" eas.json
+
+      - name: Submit guarded artifact to Google Play
+        working-directory: apps/mobile
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          ARTIFACT_PATH: ${{ steps.artifact.outputs.path }}
+        run: |
+          npx --yes eas-cli@16.19.0 submit \
+            --platform android \
+            --profile guarded \
+            --path "${ARTIFACT_PATH}" \
+            --non-interactive
