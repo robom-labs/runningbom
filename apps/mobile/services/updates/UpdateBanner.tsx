@@ -10,7 +10,7 @@ import {
 } from './checkForUpdate';
 
 export type UpdateBannerProps = {
-  /** 24시간 제한을 무시하고 즉시 확인합니다. */
+  /** 확인 주기 제한을 무시하고 즉시 확인합니다. */
   force?: boolean;
   /** 배너를 닫았을 때 부모가 추가 처리를 하고 싶을 때 사용합니다. */
   onDismiss?: () => void;

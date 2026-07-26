@@ -12,7 +12,8 @@ export const PREVIEW_RELEASE_PAGE_URL =
 
 const LAST_CHECKED_KEY = 'runningbom:preview:update-last-checked:v1';
 const DISMISSED_KEY = 'runningbom:preview:update-dismissed:v1';
-const CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000;
+// Preview는 고칠 때마다 바로 확인하는 빌드라 하루 한 번은 너무 깁니다. 3시간마다 확인합니다.
+const CHECK_INTERVAL_MS = 3 * 60 * 60 * 1000;
 const REQUEST_TIMEOUT_MS = 6000;
 
 export type PreviewReleaseManifest = {
@@ -38,7 +39,7 @@ export type UpdateCheckResult = {
 };
 
 export type CheckForUpdateOptions = {
-  /** 24시간 제한을 무시하고 즉시 확인합니다(설정 화면의 "지금 확인" 용도). */
+  /** 확인 주기 제한을 무시하고 즉시 확인합니다(설정 화면의 "지금 확인" 용도). */
   force?: boolean;
   /** 테스트·통합에서 매니페스트 주소를 바꿀 때 사용합니다. */
   manifestUrl?: string;
