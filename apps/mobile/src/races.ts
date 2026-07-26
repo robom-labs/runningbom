@@ -69,7 +69,8 @@ export const races = visibleRaces(bundledData.races as Race[]);
 export function regionsFor(values: Race[]): RegionFilter[] {
   return ['전체', ...new Set(values.map((race) => race.region))];
 }
-export const distances: DistanceFilter[] = ['전체', '5K', '10K', 'Half', 'Full', 'Trail'];
+// 대회 탐색 정본 순서입니다. 같은 행사의 여러 종목은 하나의 행사 카드 안에서만 표시합니다.
+export const distances: DistanceFilter[] = ['전체', 'Full', 'Half', '10K', '5K', 'Trail'];
 
 export function filterRaces(region: RegionFilter, distance: DistanceFilter, values = races): Race[] {
   return values.filter((race) => {
@@ -98,7 +99,7 @@ export function raceFeedFromRecords(
 }
 
 export type RegistrationFilter = '전체' | '접수 예정' | '접수 중';
-export const registrationFilters: RegistrationFilter[] = ['전체', '접수 예정', '접수 중'];
+export const registrationFilters: RegistrationFilter[] = ['전체', '접수 중', '접수 예정'];
 
 export function filterByRegistrationStatus(
   statusFilter: RegistrationFilter,
