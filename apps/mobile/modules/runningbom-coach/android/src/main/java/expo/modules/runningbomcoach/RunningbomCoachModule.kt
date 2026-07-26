@@ -16,6 +16,7 @@ class RunningbomCoachModule : Module() {
       true
     }
 
+    // Expo 네이티브 함수는 인자를 8개까지만 받는다. 음성 설정 3개는 한 객체로 묶어 7개로 유지한다.
     AsyncFunction("startSession") {
       sessionId: String,
       definitionId: String,
@@ -23,9 +24,10 @@ class RunningbomCoachModule : Module() {
       countsAs: String,
       durationSeconds: Int,
       cueSchedule: String,
-      speechRate: Double,
-      voiceId: String,
-      pitch: Double ->
+      voice: Map<String, Any?> ->
+      val speechRate = (voice["rate"] as? Number)?.toDouble() ?: 1.0
+      val voiceId = voice["voiceId"] as? String ?: ""
+      val pitch = (voice["pitch"] as? Number)?.toDouble() ?: 1.0
       val context = requireContext()
       val intent = Intent(context, RunningbomCoachService::class.java).apply {
         action = RunningbomCoachService.ACTION_START

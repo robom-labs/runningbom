@@ -12,9 +12,8 @@ declare class RunningbomCoachModule extends NativeModule {
     countsAs: 'run' | 'walk' | 'recovery',
     durationSeconds: number,
     cueSchedule: string,
-    speechRate: number,
-    voiceId: string,
-    pitch: number,
+    // Expo 네이티브 함수는 인자 8개까지만 받으므로 음성 설정은 한 객체로 묶어 전달합니다.
+    voice: { rate: number; voiceId: string; pitch: number },
   ): Promise<void>;
   pauseSession(): Promise<void>;
   resumeSession(): Promise<void>;

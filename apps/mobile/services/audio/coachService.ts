@@ -216,9 +216,7 @@ export async function startCoachSession(
         session.countsAs,
         session.durationMinutes * 60,
         cueScheduleForNative(session),
-        tuning.rate,
-        voiceIdentifier ?? '',
-        tuning.pitch,
+        { rate: tuning.rate, voiceId: voiceIdentifier ?? '', pitch: tuning.pitch },
       );
       fallbackInUse = false;
       fallbackState = idleFallbackClock;
