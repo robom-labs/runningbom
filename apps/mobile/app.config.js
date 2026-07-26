@@ -25,6 +25,8 @@ function resolveRunningbomConfig(config, requestedVariant = process.env.RUNNINGB
     android: {
       ...config.android,
       package: isPreview ? 'kr.robom.runningbom.preview' : 'kr.robom.runningbom',
+      // Preview는 정식 앱의 Play versionCode와 분리해, 설치된 Preview APK도 안전하게 업데이트합니다.
+      versionCode: isPreview ? 8 : config.android?.versionCode,
       intentFilters: (config.android?.intentFilters ?? []).map((filter) => ({
         ...filter,
         data: (filter.data ?? []).map((entry) =>
