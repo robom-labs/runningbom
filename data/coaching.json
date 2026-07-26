@@ -1,0 +1,4006 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "2026.07-v1",
+  "generatedAt": "2026-07-01T00:00:00.000Z",
+  "source": {
+    "kind": "runningbom-authored-content",
+    "path": "apps/mobile/domains/coaching/model.ts"
+  },
+  "records": [
+    {
+      "id": "걷고 달리기:10:standard:2026.07-v1",
+      "title": "걷고 달리기",
+      "durationMinutes": 10,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "다시 움직일 준비가 되면 달려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "걷고 달리기:15:standard:2026.07-v1",
+      "title": "걷고 달리기",
+      "durationMinutes": 15,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "다시 움직일 준비가 되면 달려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "걷는 구간도 활동의 일부예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 895,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "걷고 달리기:20:standard:2026.07-v1",
+      "title": "걷고 달리기",
+      "durationMinutes": 20,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "숨이 차면 편하게 걸어요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "걷는 구간도 활동의 일부예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "내 리듬에 맞춰 전환해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1195,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "걷고 달리기:30:standard:2026.07-v1",
+      "title": "걷고 달리기",
+      "durationMinutes": 30,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "숨이 차면 편하게 걸어요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "다시 움직일 준비가 되면 달려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "걷는 구간도 활동의 일부예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "숨이 차면 편하게 걸어요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "다시 움직일 준비가 되면 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "걷는 구간도 활동의 일부예요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1795,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "걷고 달리기:40:standard:2026.07-v1",
+      "title": "걷고 달리기",
+      "durationMinutes": 40,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "숨이 차면 편하게 걸어요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "다시 움직일 준비가 되면 달려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "걷는 구간도 활동의 일부예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "내 리듬에 맞춰 전환해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "다시 움직일 준비가 되면 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "걷는 구간도 활동의 일부예요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "내 리듬에 맞춰 전환해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "숨이 차면 편하게 걸어요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "다시 움직일 준비가 되면 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2395,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "걷고 달리기:50:standard:2026.07-v1",
+      "title": "걷고 달리기",
+      "durationMinutes": 50,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "숨이 차면 편하게 걸어요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "다시 움직일 준비가 되면 달려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "걷는 구간도 활동의 일부예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "내 리듬에 맞춰 전환해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "숨이 차면 편하게 걸어요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "걷는 구간도 활동의 일부예요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "내 리듬에 맞춰 전환해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "숨이 차면 편하게 걸어요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "다시 움직일 준비가 되면 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "걷는 구간도 활동의 일부예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "내 리듬에 맞춰 전환해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2995,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "걷고 달리기:60:standard:2026.07-v1",
+      "title": "걷고 달리기",
+      "durationMinutes": 60,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "숨이 차면 편하게 걸어요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "다시 움직일 준비가 되면 달려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "걷는 구간도 활동의 일부예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "내 리듬에 맞춰 전환해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "숨이 차면 편하게 걸어요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "다시 움직일 준비가 되면 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "걷는 구간도 활동의 일부예요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "숨이 차면 편하게 걸어요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "다시 움직일 준비가 되면 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "걷는 구간도 활동의 일부예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "내 리듬에 맞춰 전환해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "지금은 가볍게 달려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3060,
+          "text": "숨이 차면 편하게 걸어요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3240,
+          "text": "다시 움직일 준비가 되면 달려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 3420,
+          "text": "걷는 구간도 활동의 일부예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "걷기:10:standard:2026.07-v1",
+      "title": "걷기",
+      "durationMinutes": 10,
+      "guidance": "standard",
+      "countsAs": "walk",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "시선은 편안하게 앞을 봐요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "발걸음에 맞춰 편하게 호흡해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "걷기:20:standard:2026.07-v1",
+      "title": "걷기",
+      "durationMinutes": 20,
+      "guidance": "standard",
+      "countsAs": "walk",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "시선은 편안하게 앞을 봐요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "팔을 자연스럽게 흔들어요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "걸음 폭을 무리하게 넓히지 않아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "주변을 보며 여유 있게 걸어요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "시선은 편안하게 앞을 봐요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1195,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "계속 달리기:10:standard:2026.07-v1",
+      "title": "계속 달리기",
+      "durationMinutes": 10,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "남은 시간도 같은 힘으로 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "계속 달리기:15:standard:2026.07-v1",
+      "title": "계속 달리기",
+      "durationMinutes": 15,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "남은 시간도 같은 힘으로 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "발걸음을 서두르지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 895,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "계속 달리기:20:standard:2026.07-v1",
+      "title": "계속 달리기",
+      "durationMinutes": 20,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "상체를 편안하게 세워요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "발걸음을 서두르지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "호흡과 움직임을 편하게 맞춰요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1195,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "계속 달리기:30:standard:2026.07-v1",
+      "title": "계속 달리기",
+      "durationMinutes": 30,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "상체를 편안하게 세워요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "남은 시간도 같은 힘으로 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "발걸음을 서두르지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "상체를 편안하게 세워요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "남은 시간도 같은 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "발걸음을 서두르지 않아도 돼요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1795,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "계속 달리기:40:standard:2026.07-v1",
+      "title": "계속 달리기",
+      "durationMinutes": 40,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "상체를 편안하게 세워요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "남은 시간도 같은 힘으로 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "발걸음을 서두르지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "호흡과 움직임을 편하게 맞춰요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "남은 시간도 같은 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "발걸음을 서두르지 않아도 돼요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "호흡과 움직임을 편하게 맞춰요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "상체를 편안하게 세워요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "남은 시간도 같은 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2395,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "계속 달리기:50:standard:2026.07-v1",
+      "title": "계속 달리기",
+      "durationMinutes": 50,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "상체를 편안하게 세워요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "남은 시간도 같은 힘으로 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "발걸음을 서두르지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "호흡과 움직임을 편하게 맞춰요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "상체를 편안하게 세워요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "발걸음을 서두르지 않아도 돼요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "호흡과 움직임을 편하게 맞춰요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "상체를 편안하게 세워요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "남은 시간도 같은 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "발걸음을 서두르지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "호흡과 움직임을 편하게 맞춰요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2995,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "계속 달리기:60:standard:2026.07-v1",
+      "title": "계속 달리기",
+      "durationMinutes": 60,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "상체를 편안하게 세워요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "남은 시간도 같은 힘으로 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "발걸음을 서두르지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "호흡과 움직임을 편하게 맞춰요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "상체를 편안하게 세워요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "남은 시간도 같은 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "발걸음을 서두르지 않아도 돼요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "상체를 편안하게 세워요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "남은 시간도 같은 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "발걸음을 서두르지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "호흡과 움직임을 편하게 맞춰요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "리듬을 유지하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3060,
+          "text": "상체를 편안하게 세워요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3240,
+          "text": "남은 시간도 같은 힘으로 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 3420,
+          "text": "발걸음을 서두르지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "대회 전:10:standard:2026.07-v1",
+      "title": "대회 전",
+      "durationMinutes": 10,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "가볍게 몸을 깨우고 마무리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "대회 전:15:standard:2026.07-v1",
+      "title": "대회 전",
+      "durationMinutes": 15,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "가볍게 몸을 깨우고 마무리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "속도 경쟁 없이 느낌만 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 895,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "대회 전:20:standard:2026.07-v1",
+      "title": "대회 전",
+      "durationMinutes": 20,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "새 장비보다 익숙한 장비가 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "속도 경쟁 없이 느낌만 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "평소보다 짧게 마쳐도 괜찮아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1195,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "대회 전:30:standard:2026.07-v1",
+      "title": "대회 전",
+      "durationMinutes": 30,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "새 장비보다 익숙한 장비가 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "가볍게 몸을 깨우고 마무리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "속도 경쟁 없이 느낌만 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "새 장비보다 익숙한 장비가 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "가볍게 몸을 깨우고 마무리해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "속도 경쟁 없이 느낌만 확인해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1795,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "대회 전:40:standard:2026.07-v1",
+      "title": "대회 전",
+      "durationMinutes": 40,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "새 장비보다 익숙한 장비가 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "가볍게 몸을 깨우고 마무리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "속도 경쟁 없이 느낌만 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "평소보다 짧게 마쳐도 괜찮아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "가볍게 몸을 깨우고 마무리해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "속도 경쟁 없이 느낌만 확인해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "평소보다 짧게 마쳐도 괜찮아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "새 장비보다 익숙한 장비가 좋아요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "가볍게 몸을 깨우고 마무리해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2395,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "대회 전:50:standard:2026.07-v1",
+      "title": "대회 전",
+      "durationMinutes": 50,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "새 장비보다 익숙한 장비가 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "가볍게 몸을 깨우고 마무리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "속도 경쟁 없이 느낌만 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "평소보다 짧게 마쳐도 괜찮아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "새 장비보다 익숙한 장비가 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "속도 경쟁 없이 느낌만 확인해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "평소보다 짧게 마쳐도 괜찮아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "새 장비보다 익숙한 장비가 좋아요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "가볍게 몸을 깨우고 마무리해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "속도 경쟁 없이 느낌만 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "평소보다 짧게 마쳐도 괜찮아요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2995,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "대회 전:60:standard:2026.07-v1",
+      "title": "대회 전",
+      "durationMinutes": 60,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "새 장비보다 익숙한 장비가 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "가볍게 몸을 깨우고 마무리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "속도 경쟁 없이 느낌만 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "평소보다 짧게 마쳐도 괜찮아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "새 장비보다 익숙한 장비가 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "가볍게 몸을 깨우고 마무리해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "속도 경쟁 없이 느낌만 확인해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "새 장비보다 익숙한 장비가 좋아요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "가볍게 몸을 깨우고 마무리해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "속도 경쟁 없이 느낌만 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "평소보다 짧게 마쳐도 괜찮아요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "오늘은 여유를 남기는 러닝이에요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3060,
+          "text": "새 장비보다 익숙한 장비가 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3240,
+          "text": "가볍게 몸을 깨우고 마무리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 3420,
+          "text": "속도 경쟁 없이 느낌만 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "러닝머신:10:standard:2026.07-v1",
+      "title": "러닝머신",
+      "durationMinutes": 10,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "속도 변경 전 주변을 확인해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "러닝머신:15:standard:2026.07-v1",
+      "title": "러닝머신",
+      "durationMinutes": 15,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "속도 변경 전 주변을 확인해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "화면보다 발밑을 먼저 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 895,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "러닝머신:20:standard:2026.07-v1",
+      "title": "러닝머신",
+      "durationMinutes": 20,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "손잡이에 기대지 않고 가볍게 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "화면보다 발밑을 먼저 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "정지 전 속도를 천천히 낮춰요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1195,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "러닝머신:30:standard:2026.07-v1",
+      "title": "러닝머신",
+      "durationMinutes": 30,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "손잡이에 기대지 않고 가볍게 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "속도 변경 전 주변을 확인해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "화면보다 발밑을 먼저 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "손잡이에 기대지 않고 가볍게 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "속도 변경 전 주변을 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "화면보다 발밑을 먼저 살펴요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1795,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "러닝머신:40:standard:2026.07-v1",
+      "title": "러닝머신",
+      "durationMinutes": 40,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "손잡이에 기대지 않고 가볍게 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "속도 변경 전 주변을 확인해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "화면보다 발밑을 먼저 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "정지 전 속도를 천천히 낮춰요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "속도 변경 전 주변을 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "화면보다 발밑을 먼저 살펴요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "정지 전 속도를 천천히 낮춰요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "손잡이에 기대지 않고 가볍게 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "속도 변경 전 주변을 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2395,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "러닝머신:50:standard:2026.07-v1",
+      "title": "러닝머신",
+      "durationMinutes": 50,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "손잡이에 기대지 않고 가볍게 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "속도 변경 전 주변을 확인해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "화면보다 발밑을 먼저 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "정지 전 속도를 천천히 낮춰요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "손잡이에 기대지 않고 가볍게 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "화면보다 발밑을 먼저 살펴요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "정지 전 속도를 천천히 낮춰요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "손잡이에 기대지 않고 가볍게 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "속도 변경 전 주변을 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "화면보다 발밑을 먼저 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "정지 전 속도를 천천히 낮춰요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2995,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "러닝머신:60:standard:2026.07-v1",
+      "title": "러닝머신",
+      "durationMinutes": 60,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "손잡이에 기대지 않고 가볍게 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "속도 변경 전 주변을 확인해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "화면보다 발밑을 먼저 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "정지 전 속도를 천천히 낮춰요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "손잡이에 기대지 않고 가볍게 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "속도 변경 전 주변을 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "화면보다 발밑을 먼저 살펴요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "손잡이에 기대지 않고 가볍게 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "속도 변경 전 주변을 확인해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "화면보다 발밑을 먼저 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "정지 전 속도를 천천히 낮춰요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "벨트 중앙을 편안하게 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3060,
+          "text": "손잡이에 기대지 않고 가볍게 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3240,
+          "text": "속도 변경 전 주변을 확인해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 3420,
+          "text": "화면보다 발밑을 먼저 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "아침 깨우기:5:standard:2026.07-v1",
+      "title": "아침 깨우기",
+      "durationMinutes": 5,
+      "guidance": "standard",
+      "countsAs": "recovery",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "작은 움직임부터 시작해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 295,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "인터벌:10:standard:2026.07-v1",
+      "title": "인터벌",
+      "durationMinutes": 10,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "다음 구간 전 호흡을 정리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "인터벌:15:standard:2026.07-v1",
+      "title": "인터벌",
+      "durationMinutes": 15,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "다음 구간 전 호흡을 정리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "빠른 구간도 힘을 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 895,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "인터벌:20:standard:2026.07-v1",
+      "title": "인터벌",
+      "durationMinutes": 20,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "이제 천천히 회복해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "빠른 구간도 힘을 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "회복 구간은 충분히 천천히 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1195,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "인터벌:30:standard:2026.07-v1",
+      "title": "인터벌",
+      "durationMinutes": 30,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "이제 천천히 회복해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "다음 구간 전 호흡을 정리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "빠른 구간도 힘을 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "이제 천천히 회복해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "다음 구간 전 호흡을 정리해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "빠른 구간도 힘을 남겨요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1795,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "인터벌:40:standard:2026.07-v1",
+      "title": "인터벌",
+      "durationMinutes": 40,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "이제 천천히 회복해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "다음 구간 전 호흡을 정리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "빠른 구간도 힘을 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "회복 구간은 충분히 천천히 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "다음 구간 전 호흡을 정리해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "빠른 구간도 힘을 남겨요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "회복 구간은 충분히 천천히 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "이제 천천히 회복해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "다음 구간 전 호흡을 정리해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2395,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "인터벌:50:standard:2026.07-v1",
+      "title": "인터벌",
+      "durationMinutes": 50,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "이제 천천히 회복해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "다음 구간 전 호흡을 정리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "빠른 구간도 힘을 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "회복 구간은 충분히 천천히 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "이제 천천히 회복해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "빠른 구간도 힘을 남겨요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "회복 구간은 충분히 천천히 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "이제 천천히 회복해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "다음 구간 전 호흡을 정리해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "빠른 구간도 힘을 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "회복 구간은 충분히 천천히 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2995,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "인터벌:60:standard:2026.07-v1",
+      "title": "인터벌",
+      "durationMinutes": 60,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "이제 천천히 회복해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "다음 구간 전 호흡을 정리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "빠른 구간도 힘을 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "회복 구간은 충분히 천천히 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "이제 천천히 회복해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "다음 구간 전 호흡을 정리해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "빠른 구간도 힘을 남겨요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "이제 천천히 회복해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "다음 구간 전 호흡을 정리해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "빠른 구간도 힘을 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "회복 구간은 충분히 천천히 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "빠른 구간을 시작해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3060,
+          "text": "이제 천천히 회복해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3240,
+          "text": "다음 구간 전 호흡을 정리해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 3420,
+          "text": "빠른 구간도 힘을 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "조금 빠르게:10:standard:2026.07-v1",
+      "title": "조금 빠르게",
+      "durationMinutes": 10,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "무리하면 바로 편한 속도로 돌아와요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "조금 빠르게:15:standard:2026.07-v1",
+      "title": "조금 빠르게",
+      "durationMinutes": 15,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "무리하면 바로 편한 속도로 돌아와요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "속도보다 안정된 리듬이 먼저예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 895,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "조금 빠르게:20:standard:2026.07-v1",
+      "title": "조금 빠르게",
+      "durationMinutes": 20,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "짧고 가벼운 발걸음을 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "속도보다 안정된 리듬이 먼저예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "남길 힘을 생각하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1195,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "조금 빠르게:30:standard:2026.07-v1",
+      "title": "조금 빠르게",
+      "durationMinutes": 30,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "짧고 가벼운 발걸음을 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "무리하면 바로 편한 속도로 돌아와요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "속도보다 안정된 리듬이 먼저예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "짧고 가벼운 발걸음을 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "무리하면 바로 편한 속도로 돌아와요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "속도보다 안정된 리듬이 먼저예요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1795,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "조금 빠르게:40:standard:2026.07-v1",
+      "title": "조금 빠르게",
+      "durationMinutes": 40,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "짧고 가벼운 발걸음을 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "무리하면 바로 편한 속도로 돌아와요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "속도보다 안정된 리듬이 먼저예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "남길 힘을 생각하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "무리하면 바로 편한 속도로 돌아와요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "속도보다 안정된 리듬이 먼저예요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "남길 힘을 생각하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "짧고 가벼운 발걸음을 유지해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "무리하면 바로 편한 속도로 돌아와요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2395,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "조금 빠르게:50:standard:2026.07-v1",
+      "title": "조금 빠르게",
+      "durationMinutes": 50,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "짧고 가벼운 발걸음을 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "무리하면 바로 편한 속도로 돌아와요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "속도보다 안정된 리듬이 먼저예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "남길 힘을 생각하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "짧고 가벼운 발걸음을 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "속도보다 안정된 리듬이 먼저예요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "남길 힘을 생각하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "짧고 가벼운 발걸음을 유지해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "무리하면 바로 편한 속도로 돌아와요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "속도보다 안정된 리듬이 먼저예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "남길 힘을 생각하며 이어가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2995,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "조금 빠르게:60:standard:2026.07-v1",
+      "title": "조금 빠르게",
+      "durationMinutes": 60,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "짧고 가벼운 발걸음을 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "무리하면 바로 편한 속도로 돌아와요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "속도보다 안정된 리듬이 먼저예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "남길 힘을 생각하며 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "짧고 가벼운 발걸음을 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "무리하면 바로 편한 속도로 돌아와요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "속도보다 안정된 리듬이 먼저예요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "짧고 가벼운 발걸음을 유지해요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "무리하면 바로 편한 속도로 돌아와요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "속도보다 안정된 리듬이 먼저예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "남길 힘을 생각하며 이어가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "자세가 편한 선에서만 올려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3060,
+          "text": "짧고 가벼운 발걸음을 유지해요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3240,
+          "text": "무리하면 바로 편한 속도로 돌아와요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 3420,
+          "text": "속도보다 안정된 리듬이 먼저예요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "편안한 지속주:10:standard:2026.07-v1",
+      "title": "편안한 지속주",
+      "durationMinutes": 10,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "호흡을 억지로 맞추지 않아도 돼요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "편안한 지속주:15:standard:2026.07-v1",
+      "title": "편안한 지속주",
+      "durationMinutes": 15,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "호흡을 억지로 맞추지 않아도 돼요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "발걸음 소리를 가볍게 들어봐요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 895,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "편안한 지속주:20:standard:2026.07-v1",
+      "title": "편안한 지속주",
+      "durationMinutes": 20,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "어깨 힘을 가볍게 내려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "발걸음 소리를 가볍게 들어봐요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "지금의 편안한 리듬을 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1195,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "편안한 지속주:30:standard:2026.07-v1",
+      "title": "편안한 지속주",
+      "durationMinutes": 30,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "어깨 힘을 가볍게 내려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "호흡을 억지로 맞추지 않아도 돼요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "발걸음 소리를 가볍게 들어봐요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "어깨 힘을 가볍게 내려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "호흡을 억지로 맞추지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "발걸음 소리를 가볍게 들어봐요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1795,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "편안한 지속주:40:standard:2026.07-v1",
+      "title": "편안한 지속주",
+      "durationMinutes": 40,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "어깨 힘을 가볍게 내려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "호흡을 억지로 맞추지 않아도 돼요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "발걸음 소리를 가볍게 들어봐요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "지금의 편안한 리듬을 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "호흡을 억지로 맞추지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "발걸음 소리를 가볍게 들어봐요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "지금의 편안한 리듬을 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "어깨 힘을 가볍게 내려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "호흡을 억지로 맞추지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2395,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "편안한 지속주:50:standard:2026.07-v1",
+      "title": "편안한 지속주",
+      "durationMinutes": 50,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "어깨 힘을 가볍게 내려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "호흡을 억지로 맞추지 않아도 돼요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "발걸음 소리를 가볍게 들어봐요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "지금의 편안한 리듬을 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "어깨 힘을 가볍게 내려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "발걸음 소리를 가볍게 들어봐요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "지금의 편안한 리듬을 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "어깨 힘을 가볍게 내려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "호흡을 억지로 맞추지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "발걸음 소리를 가볍게 들어봐요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "지금의 편안한 리듬을 이어가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2995,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "편안한 지속주:60:standard:2026.07-v1",
+      "title": "편안한 지속주",
+      "durationMinutes": 60,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "어깨 힘을 가볍게 내려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "호흡을 억지로 맞추지 않아도 돼요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "발걸음 소리를 가볍게 들어봐요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "지금의 편안한 리듬을 이어가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "어깨 힘을 가볍게 내려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "호흡을 억지로 맞추지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "발걸음 소리를 가볍게 들어봐요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "어깨 힘을 가볍게 내려요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "호흡을 억지로 맞추지 않아도 돼요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "발걸음 소리를 가볍게 들어봐요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "지금의 편안한 리듬을 이어가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "말할 수 있는 편안한 힘으로 가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3060,
+          "text": "어깨 힘을 가볍게 내려요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3240,
+          "text": "호흡을 억지로 맞추지 않아도 돼요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 3420,
+          "text": "발걸음 소리를 가볍게 들어봐요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "회복 루틴:5:standard:2026.07-v1",
+      "title": "회복 루틴",
+      "durationMinutes": 5,
+      "guidance": "standard",
+      "countsAs": "recovery",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "천천히 관절을 움직여요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 295,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "회복하며:10:standard:2026.07-v1",
+      "title": "회복하며",
+      "durationMinutes": 10,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "무리하지 말고 여유를 남겨요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "회복하며:15:standard:2026.07-v1",
+      "title": "회복하며",
+      "durationMinutes": 15,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "무리하지 말고 여유를 남겨요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "호흡이 편한 범위를 지켜요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 895,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "회복하며:20:standard:2026.07-v1",
+      "title": "회복하며",
+      "durationMinutes": 20,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "발걸음을 작고 편하게 가져가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "호흡이 편한 범위를 지켜요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "오늘은 가볍게 마치는 게 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1195,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "회복하며:30:standard:2026.07-v1",
+      "title": "회복하며",
+      "durationMinutes": 30,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "발걸음을 작고 편하게 가져가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "무리하지 말고 여유를 남겨요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "호흡이 편한 범위를 지켜요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "발걸음을 작고 편하게 가져가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "무리하지 말고 여유를 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "호흡이 편한 범위를 지켜요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1795,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "회복하며:40:standard:2026.07-v1",
+      "title": "회복하며",
+      "durationMinutes": 40,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "발걸음을 작고 편하게 가져가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "무리하지 말고 여유를 남겨요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "호흡이 편한 범위를 지켜요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "오늘은 가볍게 마치는 게 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "무리하지 말고 여유를 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "호흡이 편한 범위를 지켜요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "오늘은 가볍게 마치는 게 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "발걸음을 작고 편하게 가져가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "무리하지 말고 여유를 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2395,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "회복하며:50:standard:2026.07-v1",
+      "title": "회복하며",
+      "durationMinutes": 50,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "발걸음을 작고 편하게 가져가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "무리하지 말고 여유를 남겨요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "호흡이 편한 범위를 지켜요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "오늘은 가볍게 마치는 게 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "발걸음을 작고 편하게 가져가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "호흡이 편한 범위를 지켜요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "오늘은 가볍게 마치는 게 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "발걸음을 작고 편하게 가져가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "무리하지 말고 여유를 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "호흡이 편한 범위를 지켜요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "오늘은 가볍게 마치는 게 좋아요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2995,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    },
+    {
+      "id": "회복하며:60:standard:2026.07-v1",
+      "title": "회복하며",
+      "durationMinutes": 60,
+      "guidance": "standard",
+      "countsAs": "run",
+      "cues": [
+        {
+          "offsetSeconds": 0,
+          "text": "주변을 확인하고 무리 없이 시작해요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 180,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 360,
+          "text": "발걸음을 작고 편하게 가져가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 540,
+          "text": "무리하지 말고 여유를 남겨요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 720,
+          "text": "호흡이 편한 범위를 지켜요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 900,
+          "text": "오늘은 가볍게 마치는 게 좋아요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1080,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1260,
+          "text": "발걸음을 작고 편하게 가져가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1440,
+          "text": "무리하지 말고 여유를 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 1620,
+          "text": "호흡이 편한 범위를 지켜요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 1800,
+          "text": "불편하거나 아프면 속도를 낮추거나 멈춰요.",
+          "kind": "safety"
+        },
+        {
+          "offsetSeconds": 1980,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2160,
+          "text": "발걸음을 작고 편하게 가져가요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2340,
+          "text": "무리하지 말고 여유를 남겨요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2520,
+          "text": "호흡이 편한 범위를 지켜요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 2700,
+          "text": "오늘은 가볍게 마치는 게 좋아요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 2880,
+          "text": "속도보다 몸의 느낌을 살펴요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3060,
+          "text": "발걸음을 작고 편하게 가져가요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3240,
+          "text": "무리하지 말고 여유를 남겨요.",
+          "kind": "encouragement"
+        },
+        {
+          "offsetSeconds": 3420,
+          "text": "호흡이 편한 범위를 지켜요.",
+          "kind": "instruction"
+        },
+        {
+          "offsetSeconds": 3595,
+          "text": "오늘의 움직임을 마쳤어요. 천천히 정리해요.",
+          "kind": "completion"
+        }
+      ]
+    }
+  ]
+}
