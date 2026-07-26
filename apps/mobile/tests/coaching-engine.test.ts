@@ -16,7 +16,18 @@ import {
   type CoachSessionKind,
   type GuidanceLevel,
 } from '../domains/coaching/model';
-import { legacyKindMap, resolveRunningType } from '../domains/coaching/sessionTypes';
+import { legacyKindMap, phaseGroups, resolveRunningType } from '../domains/coaching/sessionTypes';
+import {
+  categoryRotation,
+  cueCategories,
+  cuePoolFor,
+  generalCues,
+  minimumGeneralCueCount,
+  minimumTypeCueCount,
+  phaseScripts,
+  typeCueCount,
+} from '../domains/coaching/cueLibrary';
+import { cooldownWindowFor, minimumCooldownWindow } from '../domains/coaching/model';
 import {
   classifyVoiceGender,
   koreanVoiceAvailability,
@@ -143,6 +154,109 @@ describe('반복 없는 멘트', () => {
   });
 });
 
+describe('멘트 풀 규모', () => {
+  it('카테고리별 공용 문장이 하한선을 넘는다', () => {
+    for (const category of cueCategories) {
+      assert.ok(
+        generalCues[category].length >= minimumGeneralCueCount[category],
+        `${category} 문장이 부족합니다: ${generalCues[category].length}`,
+      );
+    }
+  });
+
+  it('공용 멘트 풀 전체가 300문장 이상이고 중복이 없다', () => {
+    const all = cueCategories.flatMap((category) => generalCues[category]);
+    assert.ok(all.length >= 300, `공용 문장 총합: ${all.length}`);
+    assert.equal(new Set(all).size, all.length, '중복된 공용 문장이 있습니다');
+  });
+
+  it('모든 문장이 음성으로 듣기 좋은 길이와 존댓말을 지킨다', () => {
+    const all = [
+      ...cueCategories.flatMap((category) => generalCues[category]),
+      ...runningTypes.flatMap((type) =>
+        cueCategories.flatMap((category) => cuePoolFor(type.id, category)),
+      ),
+      ...Object.values(phaseScripts).flatMap((script) => [
+        ...script.pre,
+        ...script.start,
+        ...script.settle,
+      ]),
+    ];
+    for (const line of all) {
+      assert.ok(line.length >= 8 && line.length <= 48, `길이 이상: ${line} (${line.length}자)`);
+      assert.match(line, /(요|다)[.?!]$/u, `존댓말·문장부호 이상: ${line}`);
+    }
+  });
+
+  it('유형마다 전용 문장을 12개 이상 갖는다', () => {
+    for (const type of runningTypes) {
+      assert.ok(
+        typeCueCount(type.id) >= minimumTypeCueCount,
+        `${type.id} 전용 문장: ${typeCueCount(type.id)}`,
+      );
+    }
+  });
+
+  it('유형 전용 문장은 회전 카테고리 안에 있어 실제로 쓰인다', () => {
+    for (const type of runningTypes) {
+      const rotation = new Set(categoryRotation[type.id]);
+      for (const category of cueCategories) {
+        if (cuePoolFor(type.id, category).length > generalCues[category].length) {
+          assert.ok(rotation.has(category), `${type.id}의 ${category} 전용 문장이 쓰이지 않아요`);
+        }
+      }
+      // 여덟 카테고리를 모두 돌아야 결이 한쪽으로 몰리지 않습니다.
+      assert.equal(rotation.size, cueCategories.length, `${type.id} 회전 카테고리 누락`);
+    }
+  });
+
+  it('쿨다운 윈도는 카테고리 풀의 40퍼센트 또는 최소 15문장이다', () => {
+    assert.equal(cooldownWindowFor(60), 24);
+    assert.equal(cooldownWindowFor(30), minimumCooldownWindow);
+    assert.equal(cooldownWindowFor(6), 5);
+    for (const category of cueCategories) {
+      const size = generalCues[category].length;
+      assert.ok(cooldownWindowFor(size) >= Math.min(size - 1, minimumCooldownWindow));
+    }
+  });
+});
+
+describe('가장 빡센 조건에서의 반복 상한', () => {
+  it('40분 자세히 세션에서 같은 문장이 3회를 넘지 않는다', () => {
+    for (const type of runningTypes) {
+      const texts = createCoachSession(type.id, 40, 'detailed').cues.map((cue) => cue.text);
+      assert.ok(texts.length >= 160, `${type.id} 큐가 너무 적습니다: ${texts.length}`);
+      const counts = new Map<string, number>();
+      for (const text of texts) counts.set(text, (counts.get(text) ?? 0) + 1);
+      for (const [text, count] of counts) {
+        assert.ok(count <= 3, `${type.id}에서 ${count}회 반복: ${text}`);
+      }
+    }
+  });
+
+  it('60분 세션의 고유 문장 비율이 0.5 이상이다', () => {
+    for (const guidance of ['standard', 'detailed'] as GuidanceLevel[]) {
+      for (const type of runningTypes) {
+        const texts = createCoachSession(type.id, 60, guidance).cues.map((cue) => cue.text);
+        const ratio = new Set(texts).size / texts.length;
+        assert.ok(
+          ratio >= 0.5,
+          `${type.id}/${guidance} 고유율: ${ratio.toFixed(2)} (${texts.length}마디)`,
+        );
+      }
+    }
+  });
+
+  it('120분 롱런에서도 반복이 4회를 넘지 않는다', () => {
+    const texts = createCoachSession('롱런', 120, 'standard').cues.map((cue) => cue.text);
+    const counts = new Map<string, number>();
+    for (const text of texts) counts.set(text, (counts.get(text) ?? 0) + 1);
+    for (const [text, count] of counts) {
+      assert.ok(count <= 4, `${count}회 반복: ${text}`);
+    }
+  });
+});
+
 describe('구간 전환 3단 안내', () => {
   it('인터벌은 예고, 전환, 전환 직후 순서로 큐를 만든다', () => {
     const session = createCoachSession('인터벌', 40, 'standard');
@@ -184,6 +298,17 @@ describe('구간 전환 3단 안내', () => {
     assert.ok(progress.length >= 4);
     assert.ok(progress.some((cue) => cue.text.includes('절반')));
     assert.ok(progress.every((cue) => /분/.test(cue.text)));
+  });
+
+  it('모든 구간이 러닝 중 화면에서 보여 줄 묶음 이름을 갖는다', () => {
+    for (const type of runningTypes) {
+      for (const phase of createCoachSession(type.id, 40, 'standard').phases) {
+        assert.ok(
+          ['워밍업', '본운동', '회복', '쿨다운'].includes(phaseGroups[phase.kind]),
+          `${phase.kind} 묶음 이름 누락`,
+        );
+      }
+    }
   });
 
   it('시작 안전 안내와 마무리 정리 안내가 항상 있다', () => {

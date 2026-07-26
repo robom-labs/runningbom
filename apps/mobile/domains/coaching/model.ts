@@ -24,11 +24,13 @@ export type { CoachSessionKind, RunningTypeId, SessionPhase };
 export {
   buildPhases,
   legacyKindMap,
+  phaseGroups,
   resolveRunningType,
   runningTypeById,
   runningTypes,
   runningTypeCategories,
   runningTypesByCategory,
+  type PhaseGroup,
   type RunningTypeCategory,
   type RunningTypeDefinition,
   type PhaseKind,
@@ -150,33 +152,64 @@ function createRandom(seed: number): () => number {
   };
 }
 
-const MAX_COOLDOWN = 12;
+/** 풀 크기와 무관하게 최소한 이만큼은 최근 문장을 피합니다. */
+export const minimumCooldownWindow = 15;
+/** 카테고리 풀 크기 대비 쿨다운 윈도 비율입니다. */
+export const cooldownWindowRatio = 0.4;
+/** 카테고리가 달라도 바로 앞 문장과는 겹치지 않게 하는 전역 윈도입니다. */
+const GLOBAL_COOLDOWN = 5;
+
+/** 풀 크기에 맞춘 쿨다운 윈도(최근 사용 문장 회피 개수)입니다. */
+export function cooldownWindowFor(poolSize: number): number {
+  if (poolSize <= 1) return 0;
+  return Math.min(
+    poolSize - 1,
+    Math.max(minimumCooldownWindow, Math.floor(poolSize * cooldownWindowRatio)),
+  );
+}
+
+/** 풀마다 최근 사용 이력을 따로 기억하는 선택기입니다. */
+type CuePicker = {
+  /** 세션 전체에서 마지막으로 말한 문장들입니다(카테고리 무관 근접 반복 방지). */
+  spoken: string[];
+  /** 풀 키별 최근 사용 문장입니다(카테고리별 넉넉한 쿨다운). */
+  byPool: Map<string, string[]>;
+};
+
+function createPicker(): CuePicker {
+  return { spoken: [], byPool: new Map() };
+}
 
 /** 최근에 쓴 문장을 피해 가며 큐를 고릅니다. 연속·근접 반복을 막습니다. */
 function pickWithCooldown(
   pool: string[],
-  recent: string[],
+  poolKey: string,
+  picker: CuePicker,
   random: () => number,
 ): string {
   if (pool.length === 0) return '';
-  for (
-    let window = Math.min(MAX_COOLDOWN, pool.length - 1);
-    window >= 0;
-    window -= 1
-  ) {
-    const blocked = new Set(recent.slice(-window));
+  const usedInPool = picker.byPool.get(poolKey) ?? [];
+  const globallyRecent = picker.spoken.slice(-GLOBAL_COOLDOWN);
+
+  let chosen = pool[Math.floor(random() * pool.length) % pool.length];
+  for (let window = cooldownWindowFor(pool.length); window >= 0; window -= 1) {
+    const blocked = new Set(usedInPool.slice(-window));
+    for (const text of globallyRecent) blocked.add(text);
     const candidates = pool.filter((text) => !blocked.has(text));
     if (candidates.length > 0) {
-      return candidates[Math.floor(random() * candidates.length) % candidates.length];
+      chosen = candidates[Math.floor(random() * candidates.length) % candidates.length];
+      break;
     }
   }
-  return pool[Math.floor(random() * pool.length) % pool.length];
+
+  picker.byPool.set(poolKey, [...usedInPool, chosen]);
+  return chosen;
 }
 
 type CueSlot = {
   offsetSeconds: number;
   priority: number;
-  build: (recent: string[], random: () => number) => CoachCue;
+  build: (picker: CuePicker, random: () => number) => CoachCue;
 };
 
 function phaseSlot(
@@ -188,13 +221,25 @@ function phaseSlot(
   return {
     offsetSeconds,
     priority,
-    build: (recent, random) => ({
+    build: (picker, random) => ({
       offsetSeconds,
-      text: pickWithCooldown(phaseScripts[phase.kind][step], recent, random),
+      text: pickWithCooldown(
+        phaseScripts[phase.kind][step],
+        `phase:${phase.kind}:${step}`,
+        picker,
+        random,
+      ),
       kind: 'phase',
       phaseIndex: phase.index,
     }),
   };
+}
+
+/** 카테고리를 화면·기록에서 쓰는 큐 종류로 옮깁니다. */
+function kindForCategory(category: CueCategory): CoachCue['kind'] {
+  if (category === 'safety') return 'safety';
+  if (category === 'encouragement' || category === 'mindset') return 'encouragement';
+  return 'instruction';
 }
 
 export function createCoachSession(
@@ -264,15 +309,10 @@ export function createCoachSession(
     slots.push({
       offsetSeconds: at,
       priority: 10,
-      build: (recent, rng) => ({
+      build: (picker, rng) => ({
         offsetSeconds: at,
-        text: pickWithCooldown(pool, recent, rng),
-        kind:
-          category === 'safety'
-            ? 'safety'
-            : category === 'encouragement'
-              ? 'encouragement'
-              : 'instruction',
+        text: pickWithCooldown(pool, `category:${category}`, picker, rng),
+        kind: kindForCategory(category),
         category,
       }),
     });
@@ -296,13 +336,13 @@ export function createCoachSession(
     kept.push(slot);
   }
 
-  const recent: string[] = [];
+  const picker = createPicker();
   const cues: CoachCue[] = [];
   for (const slot of kept.sort((left, right) => left.offsetSeconds - right.offsetSeconds)) {
-    const cue = slot.build(recent, random);
+    const cue = slot.build(picker, random);
     if (!cue.text) continue;
     cues.push(cue);
-    recent.push(cue.text);
+    picker.spoken.push(cue.text);
   }
 
   return {

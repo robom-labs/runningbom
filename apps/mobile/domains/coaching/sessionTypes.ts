@@ -70,6 +70,24 @@ export type PhaseKind =
   | 'cooldown'
   | 'mobility';
 
+/** 러닝 중 화면에서 크게 보여 주는 구간 묶음 이름입니다. */
+export type PhaseGroup = '워밍업' | '본운동' | '회복' | '쿨다운';
+
+export const phaseGroups: Record<PhaseKind, PhaseGroup> = {
+  warmup: '워밍업',
+  steady: '본운동',
+  work: '본운동',
+  surge: '본운동',
+  climb: '본운동',
+  build: '본운동',
+  stride: '본운동',
+  mobility: '본운동',
+  recovery: '회복',
+  descent: '회복',
+  walk: '회복',
+  cooldown: '쿨다운',
+};
+
 export type SessionPhase = {
   index: number;
   kind: PhaseKind;

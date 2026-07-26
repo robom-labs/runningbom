@@ -26,6 +26,7 @@ import {
   guidanceLabels,
   isCoachSessionKind,
   nextPhase,
+  phaseGroups,
   recentCues,
   resolveRunningType,
   runningTypeCategories,
@@ -70,6 +71,16 @@ function formatElapsed(seconds: number): string {
   return `${minutes}:${remainder}`;
 }
 
+/** 스크린리더가 "12:30"을 숫자로 읽지 않도록 사람이 말하듯 풀어 줍니다. */
+function spokenDuration(seconds: number): string {
+  const safe = Math.max(0, Math.floor(seconds));
+  const minutes = Math.floor(safe / 60);
+  const remainder = safe % 60;
+  if (minutes === 0) return `${remainder}초`;
+  if (remainder === 0) return `${minutes}분`;
+  return `${minutes}분 ${remainder}초`;
+}
+
 export function StartScreen() {
   const { preferences, updatePreferences, completeActivity } = useAppState();
   const [minutes, setMinutes] = useState(preferences.coachMinutes);
@@ -101,7 +112,19 @@ export function StartScreen() {
 
   const phase = active ? currentPhase(session, runtime.elapsedSeconds) : undefined;
   const upcoming = active ? nextPhase(session, runtime.elapsedSeconds) : undefined;
-  const spoken = active ? recentCues(session, runtime.elapsedSeconds, 3) : [];
+  // 첫 줄은 크게 보여 줄 "지금 멘트", 나머지 셋은 최근 로그입니다.
+  const spoken = active ? recentCues(session, runtime.elapsedSeconds, 4) : [];
+  const latestCue = spoken[0];
+  const cueHistory = spoken.slice(1);
+  const remainingSeconds = Math.max(0, runtime.durationSeconds - runtime.elapsedSeconds);
+  const progressRatio =
+    runtime.durationSeconds > 0
+      ? Math.max(0, Math.min(1, runtime.elapsedSeconds / runtime.durationSeconds))
+      : 0;
+  const progressPercent = Math.round(progressRatio * 100);
+  const phaseRemainingSeconds = phase
+    ? Math.max(0, phase.endSeconds - runtime.elapsedSeconds)
+    : 0;
 
   useEffect(() => {
     let cancelled = false;
@@ -202,18 +225,22 @@ export function StartScreen() {
     }
   }
 
-  function stopFallback() {
-    if (runtime.native) return;
-    Alert.alert('세션을 종료할까요?', '예정 시간 전에 끝내면 완주 기록으로 저장하지 않아요.', [
-      { text: '계속', style: 'cancel' },
-      {
-        text: '종료',
-        style: 'destructive',
-        onPress: () => {
-          void stopCoachSession().then(setRuntime);
+  // 오확인으로 러닝이 끊기지 않도록 종료는 항상 한 번 되묻습니다.
+  function confirmStop() {
+    Alert.alert(
+      '세션을 종료할까요?',
+      `${formatElapsed(runtime.elapsedSeconds)} 진행했어요. 예정 시간 전에 끝내면 완주 기록으로 저장하지 않아요.`,
+      [
+        { text: '계속 달리기', style: 'cancel' },
+        {
+          text: '종료',
+          style: 'destructive',
+          onPress: () => {
+            void stopCoachSession().then(setRuntime);
+          },
         },
-      },
-    ]);
+      ],
+    );
   }
 
   return (
@@ -320,37 +347,71 @@ export function StartScreen() {
           </Card>
 
           {active || runtime.state === 'completed' ? (
-            <Card style={styles.runtimeCard}>
-              <Text style={styles.runtimeLabel}>
-                {runtime.native ? '기기 백그라운드 코치' : '화면 안내 fallback'}
+            <Card accessibilityLabel="러닝 진행 화면" style={styles.runtimeCard}>
+              <View style={styles.runtimeHeader}>
+                <Text style={styles.runtimeLabel}>
+                  {runtime.native ? '기기 백그라운드 코치' : '화면 안내 fallback'}
+                </Text>
+                <Text style={styles.runtimeState}>
+                  {runtime.state === 'paused'
+                    ? '일시정지'
+                    : runtime.state === 'completed'
+                      ? '완료'
+                      : '진행 중'}
+                </Text>
+              </View>
+
+              <Text
+                accessibilityLabel={`경과 ${spokenDuration(runtime.elapsedSeconds)}`}
+                style={styles.runtimeTime}
+              >
+                {formatElapsed(runtime.elapsedSeconds)}
               </Text>
-              <Text style={styles.runtimeTime}>
-                {formatElapsed(runtime.elapsedSeconds)} / {formatElapsed(runtime.durationSeconds)}
-              </Text>
-              <Text style={styles.runtimeHelp}>
-                남은 시간 {formatElapsed(Math.max(0, runtime.durationSeconds - runtime.elapsedSeconds))}
-              </Text>
+              <View style={styles.timeRow}>
+                <Text
+                  accessibilityLabel={`남은 시간 ${spokenDuration(remainingSeconds)}`}
+                  style={styles.runtimeRemain}
+                >
+                  남은 {formatElapsed(remainingSeconds)}
+                </Text>
+                <Text style={styles.runtimeTotal}>전체 {minutes}분</Text>
+              </View>
+
+              <View
+                accessibilityLabel={`진행률 ${progressPercent}퍼센트`}
+                accessibilityRole="progressbar"
+                style={styles.progressTrack}
+              >
+                <View style={[styles.progressFill, { width: `${progressPercent}%` }]} />
+              </View>
+              <Text style={styles.progressCaption}>{progressPercent}% 진행</Text>
 
               {phase ? (
                 <View style={styles.phaseBox}>
                   <Text style={styles.phaseLabel}>현재 구간</Text>
-                  <Text style={styles.phaseValue}>{phase.label}</Text>
+                  <Text style={styles.phaseValue}>
+                    {phaseGroups[phase.kind]} · {phase.label}
+                  </Text>
                   <Text style={styles.phaseNext}>
                     {upcoming
-                      ? `다음 구간 "${upcoming.label}"까지 ${formatElapsed(upcoming.startSeconds - runtime.elapsedSeconds)}`
-                      : '마지막 구간이에요'}
+                      ? `${formatElapsed(Math.max(0, upcoming.startSeconds - runtime.elapsedSeconds))} 뒤 "${upcoming.label}" (${phaseGroups[upcoming.kind]})`
+                      : `마지막 구간이에요 · ${formatElapsed(phaseRemainingSeconds)} 남음`}
                   </Text>
                 </View>
               ) : null}
 
-              {spoken.length > 0 ? (
+              <View accessibilityLiveRegion="polite" style={styles.cueBox}>
+                <Text style={styles.phaseLabel}>지금 코치 멘트</Text>
+                <Text style={styles.cueNow}>
+                  {latestCue ? latestCue.text : '곧 첫 안내가 나와요.'}
+                </Text>
+              </View>
+
+              {cueHistory.length > 0 ? (
                 <View style={styles.phaseBox}>
-                  <Text style={styles.phaseLabel}>코치 멘트</Text>
-                  {spoken.map((cue, index) => (
-                    <Text
-                      key={`${cue.offsetSeconds}-${index}`}
-                      style={[styles.cueLine, index === 0 && styles.cueLineLatest]}
-                    >
+                  <Text style={styles.phaseLabel}>최근 안내</Text>
+                  {cueHistory.map((cue, index) => (
+                    <Text key={`${cue.offsetSeconds}-${index}`} style={styles.cueLine}>
                       {formatElapsed(cue.offsetSeconds)} · {cue.text}
                     </Text>
                   ))}
@@ -367,7 +428,12 @@ export function StartScreen() {
               ) : (
                 <View style={styles.runtimeActions}>
                   <Button
-                    label={runtime.state === 'paused' ? '계속' : '일시정지'}
+                    accessibilityHint={
+                      runtime.state === 'paused'
+                        ? '멈춰 둔 코칭을 이어서 재생해요.'
+                        : '코칭 음성과 시간을 잠시 멈춰요.'
+                    }
+                    label={runtime.state === 'paused' ? '재개' : '일시정지'}
                     onPress={() =>
                       void (runtime.state === 'paused' ? resumeCoachSession() : pauseCoachSession())
                         .then(setRuntime)
@@ -376,12 +442,9 @@ export function StartScreen() {
                     style={styles.action}
                   />
                   <Button
+                    accessibilityHint="한 번 더 확인한 뒤 세션을 끝내요."
                     label="종료"
-                    onPress={() =>
-                      runtime.native
-                        ? void stopCoachSession().then(setRuntime)
-                        : stopFallback()
-                    }
+                    onPress={confirmStop}
                     tone="danger"
                     style={styles.action}
                   />
@@ -559,14 +622,44 @@ const styles = StyleSheet.create({
   },
   criteriaValue: { color: palette.ink, fontSize: typeScale.bodySmall, lineHeight: 20 },
   primary: { minHeight: 56 },
-  runtimeCard: { gap: spacing.md, backgroundColor: palette.navy },
+  runtimeCard: { gap: spacing.sm, backgroundColor: palette.navy },
+  runtimeHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  // 남색 배경 위 대비를 위해 밝은 살구색·흰색 계열만 씁니다.
   runtimeLabel: { color: '#FFB596', fontSize: typeScale.caption, fontWeight: '900' },
+  runtimeState: {
+    color: palette.navy,
+    backgroundColor: '#FFD9C6',
+    fontSize: typeScale.caption,
+    fontWeight: '900',
+    overflow: 'hidden',
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+  },
   runtimeTime: {
     color: palette.white,
-    fontSize: typeScale.display,
+    fontSize: 64,
+    lineHeight: 70,
+    fontWeight: '900',
+    letterSpacing: -2,
+    fontVariant: ['tabular-nums'],
+  },
+  timeRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
+  runtimeRemain: {
+    color: palette.white,
+    fontSize: typeScale.titleSmall,
     fontWeight: '900',
     fontVariant: ['tabular-nums'],
   },
+  runtimeTotal: { color: '#CCD5E3', fontSize: typeScale.bodySmall, fontWeight: '700' },
+  progressTrack: {
+    height: 12,
+    borderRadius: radius.pill,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    overflow: 'hidden',
+  },
+  progressFill: { height: 12, borderRadius: radius.pill, backgroundColor: palette.accent },
+  progressCaption: { color: '#CCD5E3', fontSize: typeScale.caption, fontWeight: '700' },
   runtimeHelp: { color: '#CCD5E3', fontSize: typeScale.bodySmall, lineHeight: 20 },
   phaseBox: {
     gap: 4,
@@ -577,10 +670,23 @@ const styles = StyleSheet.create({
   phaseLabel: { color: '#FFB596', fontSize: typeScale.caption, fontWeight: '900' },
   phaseValue: { color: palette.white, fontSize: typeScale.titleSmall, fontWeight: '900' },
   phaseNext: { color: '#CCD5E3', fontSize: typeScale.bodySmall, lineHeight: 20 },
-  cueLine: { color: '#9FB0C7', fontSize: typeScale.bodySmall, lineHeight: 20 },
-  cueLineLatest: { color: palette.white, fontWeight: '700' },
-  runtimeActions: { flexDirection: 'row', gap: spacing.sm },
-  action: { flex: 1 },
+  cueBox: {
+    gap: spacing.xs,
+    borderRadius: radius.md,
+    padding: spacing.md,
+    backgroundColor: 'rgba(255,255,255,0.14)',
+    borderLeftWidth: 4,
+    borderLeftColor: palette.accent,
+  },
+  cueNow: {
+    color: palette.white,
+    fontSize: typeScale.title,
+    fontWeight: '800',
+    lineHeight: 32,
+  },
+  cueLine: { color: '#CCD5E3', fontSize: typeScale.bodySmall, lineHeight: 20 },
+  runtimeActions: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.xs },
+  action: { flex: 1, minHeight: 56 },
   advanced: { gap: spacing.md },
   advancedTitle: { color: palette.ink, fontSize: typeScale.bodySmall, fontWeight: '900' },
   notice: { color: palette.inkSoft, fontSize: typeScale.bodySmall, lineHeight: 20 },
