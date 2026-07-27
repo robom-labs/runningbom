@@ -275,6 +275,7 @@ function scheduleFallbackCuePump() {
       );
       fallbackCueIndex = nextIndex;
       for (const cue of spoken) {
+        lastSpokenOffsetSeconds = cue.offsetSeconds;
         enqueueSpeech(cue.text, {
           language: 'ko-KR',
           rate: fallbackSpeechRate,
@@ -312,11 +313,58 @@ export function nativeCoachAvailable(): boolean {
   return Platform.OS === 'android' && RunningbomCoachModule.isAvailable();
 }
 
+/**
+ * 누가 말할지입니다.
+ *
+ *  - `native`: Android 포그라운드 서비스가 시간도 재고 말도 합니다(자유 러닝의 기존 동작).
+ *  - `app`: 시간·화면 잠금 유지는 서비스가 맡고, **말은 앱이 직접** 합니다.
+ *
+ * `app`을 만든 이유:
+ *   프로그램 회차에서 첫 대사만 들리고 그 뒤로 조용하다는 신고가 두 번 들어왔습니다.
+ *   회차 음성은 서비스의 대사표에만 의존하고 있었고, 그 서비스가 첫 대사 뒤 조용히
+ *   멈추는 것을 앱에서는 볼 수도 고칠 수도 없습니다(서비스는 네이티브라 원격 수정이 안 됩니다).
+ *   반면 앱이 직접 말하는 경로(카운트다운·자동 멈춤·중간 기록 안내)는 같은 기기에서
+ *   잘 들리고 있습니다. 그래서 회차는 들리는 것이 확인된 경로로 옮깁니다.
+ *
+ * 두 곳에서 같이 말하면 겹치므로, `app`일 때는 서비스에 **빈 대사표**를 넘깁니다.
+ */
+export type CoachSpeechOwner = 'native' | 'app';
+
+export type CoachStartOptions = {
+  speechOwner?: CoachSpeechOwner;
+};
+
+/** 앱이 직접 말하는 중인지입니다(네이티브가 시간만 재는 상태). */
+let appSpeechActive = false;
+
+/** 지금 음성이 어떤 경로로 나가고 있는지 화면에 보여 주기 위한 값입니다. */
+export type CoachSpeechDiagnostics = {
+  owner: CoachSpeechOwner | 'none';
+  /** 마지막으로 말한 대사의 시각(초)입니다. 아직 없으면 undefined입니다. */
+  lastSpokenOffsetSeconds?: number;
+  /** 앞으로 말할 대사가 몇 개 남았는지입니다. */
+  remainingCues: number;
+};
+
+let lastSpokenOffsetSeconds: number | undefined;
+
+export function coachSpeechDiagnostics(): CoachSpeechDiagnostics {
+  if (!fallbackSession) return { owner: 'native', remainingCues: 0 };
+  return {
+    // 앱 시계와 대사표를 들고 있으면 말하는 주체는 앱입니다(네이티브 실패로 넘어온 경우 포함).
+    owner: 'app',
+    ...(lastSpokenOffsetSeconds === undefined ? {} : { lastSpokenOffsetSeconds }),
+    remainingCues: Math.max(0, fallbackSession.cues.length - fallbackCueIndex),
+  };
+}
+
 export async function startCoachSession(
   session: CoachSession,
   speechRate = 1,
   gender: VoiceGender = 'female',
+  options: CoachStartOptions = {},
 ): Promise<CoachRuntimeState> {
+  const speechOwner: CoachSpeechOwner = options.speechOwner ?? 'native';
   const sessionId = Crypto.randomUUID();
   const startedAtEpochMillis = Date.now();
   const voices = await availableVoices();
@@ -331,6 +379,25 @@ export async function startCoachSession(
   asideSpeechPitch = tuning.pitch;
   asideVoiceIdentifier = voiceIdentifier;
 
+  /** 앱이 말할 준비를 합니다(시계·대사표·목소리). */
+  const armAppSpeech = () => {
+    clearSpeechQueue();
+    fallbackState = startFallbackClock({
+      sessionId,
+      definitionId: session.id,
+      title: session.title,
+      countsAs: session.countsAs,
+      durationSeconds: session.durationMinutes * 60,
+    }, startedAtEpochMillis);
+    fallbackSession = session;
+    fallbackCueIndex = 0;
+    fallbackSpeechRate = tuning.rate;
+    fallbackSpeechPitch = tuning.pitch;
+    fallbackVoiceIdentifier = voiceIdentifier;
+    lastSpokenOffsetSeconds = undefined;
+    scheduleFallbackCuePump();
+  };
+
   if (nativeCoachAvailable()) {
     try {
       await RunningbomCoachModule.startSession(
@@ -339,12 +406,21 @@ export async function startCoachSession(
         session.title,
         session.countsAs,
         session.durationMinutes * 60,
-        cueScheduleForNative(session),
+        // 앱이 말할 때는 서비스에 대사를 주지 않습니다. 두 곳이 같이 말하면 겹칩니다.
+        speechOwner === 'app' ? '' : cueScheduleForNative(session),
         { rate: tuning.rate, voiceId: voiceIdentifier ?? '', pitch: tuning.pitch },
       );
       fallbackInUse = false;
+      if (speechOwner === 'app') {
+        // 시간과 화면 잠금 유지는 서비스가, 말하기는 앱이 맡습니다.
+        appSpeechActive = true;
+        armAppSpeech();
+        return getCoachState();
+      }
+      appSpeechActive = false;
       fallbackState = idleFallbackClock;
       fallbackSession = undefined;
+      lastSpokenOffsetSeconds = undefined;
       clearFallbackCueTimer();
       return getCoachState();
     } catch {
@@ -354,26 +430,19 @@ export async function startCoachSession(
     fallbackInUse = true;
   }
 
-  clearSpeechQueue();
-  fallbackState = startFallbackClock({
-    sessionId,
-    definitionId: session.id,
-    title: session.title,
-    countsAs: session.countsAs,
-    durationSeconds: session.durationMinutes * 60,
-  }, startedAtEpochMillis);
-  fallbackSession = session;
-  fallbackCueIndex = 0;
-  fallbackSpeechRate = tuning.rate;
-  fallbackSpeechPitch = tuning.pitch;
-  fallbackVoiceIdentifier = voiceIdentifier;
-  scheduleFallbackCuePump();
+  appSpeechActive = false;
+  armAppSpeech();
   return runtimeFromFallback(fallbackState);
 }
 
 export async function pauseCoachSession(): Promise<CoachRuntimeState> {
   // 멈추는 순간에는 짧은 안내도 함께 끊습니다(네이티브 코치를 쓸 때도 마찬가지입니다).
   clearSpeechQueue();
+  // 앱이 말하는 중이면 앱 시계도 함께 멈춰야 합니다. 안 그러면 멈춘 동안에도 계속 말합니다.
+  if (appSpeechActive) {
+    clearFallbackCueTimer();
+    fallbackState = pauseFallbackClock(fallbackState, Date.now());
+  }
   if (nativeCoachAvailable() && !fallbackInUse) {
     await RunningbomCoachModule.pauseSession();
     return getCoachState();
@@ -384,6 +453,10 @@ export async function pauseCoachSession(): Promise<CoachRuntimeState> {
 }
 
 export async function resumeCoachSession(): Promise<CoachRuntimeState> {
+  if (appSpeechActive) {
+    fallbackState = resumeFallbackClock(fallbackState, Date.now());
+    scheduleFallbackCuePump();
+  }
   if (nativeCoachAvailable() && !fallbackInUse) {
     await RunningbomCoachModule.resumeSession();
     return getCoachState();
@@ -395,6 +468,12 @@ export async function resumeCoachSession(): Promise<CoachRuntimeState> {
 
 export async function stopCoachSession(): Promise<CoachRuntimeState> {
   clearSpeechQueue();
+  if (appSpeechActive) {
+    clearFallbackCueTimer();
+    fallbackSession = undefined;
+    appSpeechActive = false;
+    fallbackState = stopFallbackClock(fallbackState, Date.now());
+  }
   if (nativeCoachAvailable() && !fallbackInUse) {
     await RunningbomCoachModule.stopSession();
     return getCoachState();

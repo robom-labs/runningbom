@@ -29,6 +29,8 @@ import {
 import { formatClock, type ProgramSession } from '../../../domains/programs/types';
 import { programCoachSession } from '../../../domains/programs/coachSession';
 import {
+  coachSpeechDiagnostics,
+  type CoachSpeechDiagnostics,
   pauseCoachSession,
   resumeCoachSession,
   startCoachSession,
@@ -55,6 +57,8 @@ export function SessionRunner({ session, onClose, onFinish }: SessionRunnerProps
   const [ended, setEnded] = useState(false);
   /** 음성 엔진에 마지막으로 알려 준 멈춤 상태입니다. 처음에는 아직 알려 준 적이 없습니다. */
   const pausedSentRef = useRef<boolean | undefined>(undefined);
+  /** 음성이 실제로 나가고 있는지 화면에 보여 주는 값입니다. */
+  const [voiceStatus, setVoiceStatus] = useState<CoachSpeechDiagnostics | undefined>(undefined);
 
   // 회차를 메인 음성 코치 엔진에 그대로 넘깁니다.
   // 이 화면이 직접 말하지 않고, 자유 러닝과 같은 엔진이 읽어 줍니다.
@@ -62,7 +66,15 @@ export function SessionRunner({ session, onClose, onFinish }: SessionRunnerProps
   useEffect(() => {
     let cancelled = false;
     pausedSentRef.current = undefined;
-    void startCoachSession(programCoachSession(session)).catch(() => {
+    // 말하기는 앱이 직접 합니다. 시간과 화면 잠금 유지만 기기 서비스에 맡깁니다.
+    //
+    // 회차 음성이 기기 서비스의 대사표에만 의존하던 동안, 첫 대사만 들리고 그 뒤로
+    // 조용하다는 신고가 두 번 있었습니다. 그 서비스 안에서 무슨 일이 일어나는지는
+    // 앱에서 볼 수 없고, 고치려면 새 APK가 필요합니다.
+    // 반면 앱이 직접 말하는 경로는 같은 기기에서 이미 잘 들리고 있습니다.
+    void startCoachSession(programCoachSession(session), 1, 'female', {
+      speechOwner: 'app',
+    }).catch(() => {
       // 음성이 준비되지 않아도 회차 자체는 그대로 진행합니다(화면 안내는 남아 있습니다).
     });
     return () => {
@@ -97,6 +109,9 @@ export function SessionRunner({ session, onClose, onFinish }: SessionRunnerProps
     if (paused || ended) return undefined;
     const id = setInterval(() => {
       setElapsed((value) => value + 1);
+      // 음성이 실제로 나가고 있는지 화면에서 바로 확인할 수 있게 합니다.
+      // "안 들린다"를 짐작이 아니라 사실로 좁히기 위한 값입니다.
+      setVoiceStatus(coachSpeechDiagnostics());
     }, 1000);
     return () => {
       clearInterval(id);
@@ -216,6 +231,19 @@ export function SessionRunner({ session, onClose, onFinish }: SessionRunnerProps
         </View>
       </View>
 
+      {/*
+        음성이 나가고 있는지를 화면에서 바로 확인할 수 있게 합니다.
+        "안 들린다"가 들어왔을 때, 안내가 안 만들어진 것인지·안 나간 것인지·
+        나갔는데 소리가 안 들린 것인지를 짐작이 아니라 사실로 가릅니다.
+      */}
+      {voiceStatus ? (
+        <Text style={styles.voiceStatus}>
+          {voiceStatus.lastSpokenOffsetSeconds === undefined
+            ? `음성 준비 중 · 남은 안내 ${voiceStatus.remainingCues}개`
+            : `방금 안내 ${formatClock(voiceStatus.lastSpokenOffsetSeconds)} · 남은 안내 ${voiceStatus.remainingCues}개`}
+        </Text>
+      ) : null}
+
       <View style={styles.controls}>
         <Button
           label={paused ? '이어서 하기' : '일시정지'}
@@ -297,6 +325,12 @@ const styles = StyleSheet.create({
     color: palette.muted,
     fontSize: typeScale.caption,
     lineHeight: lineHeight.caption,
+  },
+  voiceStatus: {
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    textAlign: 'center',
   },
   controls: {
     flexDirection: 'row',
