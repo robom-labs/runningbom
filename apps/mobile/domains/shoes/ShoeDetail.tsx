@@ -11,6 +11,9 @@ import {
   type ShoeEntry,
 } from './catalog';
 import { entryPurchaseLinks, specReferenceLink, type ShoePurchaseLink } from './purchaseLinks';
+import { SHOE_ART_CAPTION, shoeArtSpec } from './art';
+import { ShoeArt } from './ShoeArt';
+import { priceDisplay } from './price';
 import {
   shoeBrandInitials,
   shoePlateLabels,
@@ -42,6 +45,8 @@ export function ShoeDetail({
   onToggleCompare?: () => void;
 }) {
   const links = entryPurchaseLinks(shoe);
+  // 가격은 상세에서 가장 먼저 보이는 숫자여야 합니다. 정가를 모르면 가격대 범위가 옵니다.
+  const price = priceDisplay(shoe, new Date());
   // 값이 확인된 항목만 들어옵니다. 비어 있으면 카드 대신 공식 페이지 안내를 보여 줍니다.
   const specs = officialSpecItems(shoe);
   const specReference = specReferenceLink(shoe);
@@ -79,6 +84,33 @@ export function ShoeDetail({
           <Chip label={shoePriceBandLabels[shoe.priceBand]} />
         </View>
         <Text style={styles.pick}>{shoe.pick}</Text>
+      </Card>
+
+      {/* 그림 — 사진이 아니라 형태입니다. 그래서 캡션을 반드시 붙입니다. */}
+      <Card style={styles.artCard}>
+        <ShoeArt
+          accessibilityLabel={`${shoe.model} 옆모습 그림`}
+          spec={shoeArtSpec(shoe)}
+          width={220}
+        />
+        <Text style={styles.artCaption}>{SHOE_ART_CAPTION}</Text>
+      </Card>
+
+      {/*
+        가격 — 정가를 확인했으면 정가를, 아직이면 가격대 범위를 크게 씁니다.
+        빈칸도 만들지 않고, 값을 지어내지도 않습니다.
+      */}
+      <Card style={styles.block}>
+        <Text style={styles.blockTitle}>가격</Text>
+        <Text style={[styles.priceHeadline, !price.confirmed && styles.priceHeadlineBand]}>
+          {price.headline}
+        </Text>
+        <Text style={styles.priceDetail}>{price.detail}</Text>
+        {price.basis ? <Text style={styles.note}>{price.basis}</Text> : null}
+        {price.warning ? <Text style={styles.priceWarning}>{price.warning}</Text> : null}
+        <Text style={styles.note}>
+          매장·시기에 따라 다를 수 있어요. 러닝봄은 신발을 팔지 않고 공식 판매처로 이동만 해요.
+        </Text>
       </Card>
 
       <Card style={styles.block}>
@@ -325,6 +357,14 @@ const styles = StyleSheet.create({
   pick: { color: palette.ink, fontSize: typeScale.body, lineHeight: 24, fontWeight: '700' },
   paragraph: { color: palette.inkSoft, fontSize: typeScale.bodySmall, lineHeight: 22 },
   block: { gap: spacing.sm },
+  artCard: { alignItems: 'center', gap: spacing.xs },
+  artCaption: { color: palette.muted, fontSize: typeScale.micro, textAlign: 'center' },
+  // 가격은 상세에서 가장 큰 숫자입니다. 가격 때문에 고민하는 사람이 대부분입니다.
+  priceHeadline: { color: palette.ink, fontSize: typeScale.headline, fontWeight: '900' },
+  // 확인된 정가가 아니라 가격대 범위일 때는 한 단계 눌러 씁니다(다른 값임이 보여야 합니다).
+  priceHeadlineBand: { fontSize: typeScale.title, color: palette.inkSoft },
+  priceDetail: { color: palette.inkSoft, fontSize: typeScale.bodySmall, fontWeight: '700' },
+  priceWarning: { color: palette.warning, fontSize: typeScale.caption, fontWeight: '700' },
   sourceBlock: { gap: spacing.xs, backgroundColor: palette.surfaceWarm },
   blockTitle: { color: palette.ink, fontSize: typeScale.titleSmall, fontWeight: '900' },
   blockTitleSpaced: { marginTop: spacing.sm },

@@ -28,8 +28,16 @@ const topIndex = args.indexOf('--top');
 const parsedTop = topIndex >= 0 ? Number(args[topIndex + 1]) : NaN;
 const TOP_N = Number.isFinite(parsedTop) && parsedTop > 0 ? Math.floor(parsedTop) : 15;
 
-/** 카탈로그 엔트리에 절대 있으면 안 되는 수치 필드입니다. */
-const FORBIDDEN_FIELDS = ['weightGram', 'dropMm', 'stackMm', 'priceKrw', 'releaseDate', 'stackHeight'];
+/**
+ * 카탈로그 엔트리에 절대 있으면 안 되는 필드입니다.
+ *
+ * 2026-07 변경: `priceKrw`를 이 목록에서 뺐습니다.
+ * 값을 지어낼까 봐 아예 못 넣게 했던 것인데, 그 결과 **123종 전부 가격이 없었습니다.**
+ * 가격을 보고 사는 사람에게 가격 없는 목록은 쓸모가 없습니다.
+ * 그래서 금지를 푸는 대신 **더 엄격한 규칙(validatePrices)으로 바꿨습니다.**
+ * 지금은 정가·출처·확인 시점이 셋 다 있어야 하고, 값이 가격대와 어긋나면 CI가 막습니다.
+ */
+const FORBIDDEN_FIELDS = ['weightGram', 'releaseDate', 'stackHeight'];
 /** 사용자 문구에 쓰면 안 되는 표현입니다. */
 const FORBIDDEN_PHRASES = ['최저가', '해외직구', '병행수입', '정품 보장'];
 /** 심화 정보 필수 필드입니다. */
@@ -37,8 +45,10 @@ const REQUIRED_FIELDS = ['useCase', 'fitNote', 'bestForRunner', 'notFor', 'keyTe
 
 const catalogModule = await import(pathToFileURL(join(shoesDir, 'catalog.ts')).href);
 const taxonomyModule = await import(pathToFileURL(join(shoesDir, 'taxonomy.ts')).href);
+const priceModule = await import(pathToFileURL(join(shoesDir, 'price.ts')).href);
 
 const { shoeCatalog, SHOE_DATA_VERSION } = catalogModule;
+const { priceCoverage, validatePrices, PRICE_STALE_DAYS } = priceModule;
 const { isValidSubCategory, shoeCategories, shoeBrands } = taxonomyModule;
 
 const problems = [];
@@ -141,6 +151,15 @@ for (const file of sourceFiles) {
   }
 }
 
+// 가격 값 검사 — 지어낸 값·뒤집힌 범위·미래 날짜·가격대 불일치를 여기서 막습니다.
+const now = new Date();
+for (const problem of validatePrices(shoeCatalog, now)) {
+  fail(problem.code, `${problem.id}: ${problem.message}`);
+}
+
+// 가격 커버리지 — 목표는 100%입니다. 안 세면 "가격 확인 중"이 영원히 남습니다.
+const coverage = priceCoverage(shoeCatalog, now);
+
 // --- 2) 공식 확인 대기 큐 --------------------------------------------------
 
 const subCategoryPriority = {
@@ -178,6 +197,29 @@ const pending = shoeCatalog
       left.id.localeCompare(right.id),
   );
 
+/**
+ * 가격을 확인해야 할 신발입니다.
+ *   - 아직 정가가 없는 것
+ *   - 확인한 지 PRICE_STALE_DAYS가 지난 것
+ * 크롤링하지 않습니다. 사람이 공식 페이지에서 보고 채웁니다.
+ */
+const priceQueue = shoeCatalog
+  .filter((entry) => {
+    if (!entry.price) return true;
+    const checked = new Date(`${entry.price.checkedAt}T00:00:00Z`);
+    if (Number.isNaN(checked.getTime())) return true;
+    return Math.floor((now.getTime() - checked.getTime()) / 86_400_000) > PRICE_STALE_DAYS;
+  })
+  .map((entry) => ({
+    id: entry.id,
+    brand: entry.brand,
+    modelEn: entry.modelEn,
+    priceBand: entry.priceBand,
+    officialUrl: entry.officialUrl ?? null,
+    reason: entry.price ? 'stale' : 'missing',
+  }))
+  .sort((left, right) => left.id.localeCompare(right.id));
+
 const queue = {
   schemaVersion: 1,
   dataVersion: SHOE_DATA_VERSION,
@@ -198,6 +240,12 @@ const queue = {
     pending: pending.length,
     queued: Math.min(TOP_N, pending.length),
   },
+  price: {
+    coverage,
+    pending: priceQueue.length,
+    queued: Math.min(TOP_N, priceQueue.length),
+    queue: priceQueue.slice(0, TOP_N),
+  },
   queue: pending.slice(0, TOP_N),
 };
 
@@ -209,6 +257,19 @@ const issueLines = [
   `- 카탈로그: ${shoeCatalog.length}종 (데이터 버전 ${SHOE_DATA_VERSION})`,
   `- 공식 확인 완료: ${queue.totals.officialChecked}종 / 확인 대기: ${queue.totals.pending}종`,
   `- 무결성 문제: ${problems.length}건`,
+  `- **가격 확인: ${coverage.confirmed}/${coverage.total}종 (${coverage.percent}%)** · 오래된 값 ${coverage.stale}종`,
+  '',
+  '### 가격 확인 (목표 100%)',
+  '',
+  `가격이 없는 카드는 나오지 않습니다. 정가를 모르면 화면에는 가격대 범위가 대신 나갑니다.`,
+  `다만 그건 "이 갈래는 대체로 얼마"일 뿐이라, 정가를 채울수록 목록이 정확해집니다.`,
+  '',
+  '| 브랜드 | 모델 | 가격대 | 이유 | 공식 페이지 |',
+  '| --- | --- | --- | --- | --- |',
+  ...queue.price.queue.map(
+    (item) =>
+      `| ${item.brand} | ${item.modelEn} | ${item.priceBand} | ${item.reason === 'stale' ? '오래됨' : '없음'} | ${item.officialUrl ?? '-'} |`,
+  ),
   '',
   '### 이번에 공식 페이지에서 확인할 러닝화',
   '',

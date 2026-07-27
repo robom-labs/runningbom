@@ -11,6 +11,7 @@
 // - 정적 데이터 sidecar가 배포되면 domains/shoes/refresh.ts의 mergeShoeCatalog로 병합합니다.
 export const SHOE_DATA_VERSION = '2026.07.26-v4';
 
+import type { ShoePrice } from './price';
 import {
   shoeBrandColors,
   shoeSubCategories,
@@ -276,6 +277,14 @@ export type ShoeEntry = {
   stackMm?: { heel: number; forefoot: number };
   /** 국내 정가(원). 국내 공식 판매가가 확실할 때만 넣고, 아니면 priceBand만 씁니다. */
   priceKrw?: number;
+  /**
+   * 확인된 가격 묶음입니다 — 정가 + 실구매 범위 + 출처 + 확인 시점.
+   *
+   * 없어도 화면은 **비지 않습니다.** 가격대 범위를 대신 크게 씁니다(`./price.ts`).
+   * 값을 지어내는 것과 빈칸을 두는 것, 둘 다 하지 않기 위한 구조입니다.
+   * 채우는 절차는 주 1회 확인 큐(`scripts/refresh-shoe-data.mjs`)를 따릅니다.
+   */
+  price?: ShoePrice;
   /** 언제 신는 신발인지 2~3문장으로 설명합니다. 세부 카테고리 기준에 항목별 거리·실력을 붙여 만듭니다. */
   useCase: string;
   /** 착화감·발볼·사이즈 경향. 단정하지 않고 "알려져 있어요 · 매장 착화 권장" 톤을 유지합니다. */

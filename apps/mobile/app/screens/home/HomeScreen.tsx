@@ -40,6 +40,7 @@ import { goalMetricLabels } from '../../../domains/badges/goals';
 import { kstDayKey } from '../../../domains/activities/summary';
 import { upcomingPlans } from '../../../domains/activities/plans';
 import { shoeCatalog } from '../../../domains/shoes/catalog';
+import { ShoeRankingCard } from '../../../domains/shoes/ShoeRankingCard';
 import { knowledgeCards } from '../community/knowledge';
 import { usePrograms } from '../../../domains/programs/usePrograms';
 import { TodayCard } from '../programs/TodayCard';
@@ -180,10 +181,7 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe, onStartTraining
   }, [feed.races, goalRace, now, onOpenRace, openCalendar, plans]);
 
   // 발견 자리는 앱 안의 기존 목록에서 그날 하나씩만 고릅니다(없는 항목을 지어내지 않습니다).
-  const shoe = useMemo(
-    () => pickForToday(shoeCatalog.filter((entry) => isPlainKorean(entry.pick)), now),
-    [now],
-  );
+  // 러닝화는 하나만 뽑던 것을 순위 다섯 줄(ShoeRankingCard)로 바꿨습니다. 가격이 같이 보입니다.
   const knowledge = useMemo(
     () =>
       pickForToday(
@@ -349,22 +347,19 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe, onStartTraining
         </>
       ) : null}
 
-      {/* ⑦ 발견 */}
-      <SectionHeader title="발견" subtitle="오늘 볼 만한 것 두 가지예요." />
-      {shoe ? (
-        <Card style={styles.discoverCard}>
-          <View style={styles.discoverCopy}>
-            <Text style={styles.cardEyebrow}>러닝화 추천</Text>
-            <Text numberOfLines={2} style={styles.cardTitle}>
-              {shoe.brand} {shoe.model}
-            </Text>
-            <Text numberOfLines={2} style={styles.cardBody}>
-              {shoe.pick}
-            </Text>
-          </View>
-          <Button label="이 러닝화 보기" onPress={() => onOpenShoe(shoe.id)} tone="quiet" />
-        </Card>
-      ) : null}
+      {/*
+        ⑦ 러닝화 순위 — 화면 아래쪽입니다.
+        오늘 뛰러 나가려고 켠 사람을 방해하지 않으면서, 신발을 고민하는 사람은 반드시 만납니다.
+        모든 줄에 값이 있습니다(정가를 알면 정가, 모르면 가격대 범위).
+      */}
+      <ShoeRankingCard
+        onOpenAll={() => onOpenShoe(undefined)}
+        onOpenShoe={(shoeId) => onOpenShoe(shoeId)}
+        shoes={shoeCatalog}
+      />
+
+      {/* ⑧ 발견 */}
+      <SectionHeader title="발견" subtitle="오늘 볼 만한 것 하나예요." />
       {knowledge ? (
         <Card style={styles.discoverCard}>
           <View style={styles.discoverCopy}>
