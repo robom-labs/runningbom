@@ -1,0 +1,37 @@
+name: PR36 mobile test tail
+
+on:
+  pull_request:
+    paths:
+      - 'apps/mobile/**'
+      - '.github/workflows/pr36-mobile-test-tail.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-test-tail:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'codex/runningbom-product-audit-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Fetch audit branch quietly
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git init -q
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git fetch -q --depth=1 origin codex/runningbom-product-audit-v1
+          git checkout -q -B codex/runningbom-product-audit-v1 FETCH_HEAD
+      - name: Install quietly
+        run: npm --prefix apps/mobile ci --silent
+      - name: Show only the mobile test result tail
+        shell: bash
+        run: |
+          set +e
+          npm --prefix apps/mobile test > /tmp/mobile-tests.log 2>&1
+          status=$?
+          tail -n 180 /tmp/mobile-tests.log
+          exit "$status"
