@@ -13,6 +13,7 @@ import {
   type WeeklyGoal,
 } from '../../../domains/badges/goals';
 import type { ActivityRecord } from '../../../domains/activities/types';
+import type { StartingPointId } from '../../../domains/programs/onboardingPlan';
 import {
   onboardingDoneCopy,
   onboardingLoginCopy,
@@ -22,6 +23,8 @@ import {
 export type OnboardingStepId =
   | 'intro'
   | 'goal'
+  /** 지금 어느 정도 뛰는지. 이 답이 온보딩 끝에 깔릴 계획을 정합니다. */
+  | 'start'
   | 'voice'
   | 'login'
   | 'notification'
@@ -31,12 +34,17 @@ export type OnboardingStepId =
 
 /**
  * 온보딩 전체 순서입니다.
- * 소개 → 목표 → 음성 → 로그인 → 알림 → 위치 → 배터리 → 완료.
+ * 소개 → 목표 → 지금 상태 → 음성 → 로그인 → 알림 → 위치 → 배터리 → 완료.
  * 거부감이 적은 알림을 먼저 묻고, 그다음 위치, 마지막에 배터리를 안내합니다.
+ *
+ * '지금 상태'를 목표 바로 뒤에 둔 이유:
+ *   이 답 하나로 **온보딩이 끝날 때 계획이 깔립니다.**
+ *   묻기만 하고 아무것도 해 주지 않으면, 물어본 것이 오히려 부담이 됩니다.
  */
 export const onboardingStepIds: OnboardingStepId[] = [
   'intro',
   'goal',
+  'start',
   'voice',
   'login',
   'notification',
@@ -78,6 +86,7 @@ export function buildOnboardingSteps(options: OnboardingFlowOptions): Onboarding
 export const onboardingStepTitles: Record<OnboardingStepId, string> = {
   intro: '러닝봄이 이렇게 도와드려요',
   goal: '이번 주 목표를 정해 볼까요',
+  start: '지금은 어느 정도 뛰세요?',
   voice: '어떤 목소리로 들을까요',
   login: onboardingLoginCopy.title,
   notification: permissionPriming.notification.title,
@@ -89,6 +98,7 @@ export const onboardingStepTitles: Record<OnboardingStepId, string> = {
 export const onboardingStepSubtitles: Record<OnboardingStepId, string> = {
   intro: '로그인 없이 바로 쓸 수 있어요. 기록은 이 기기에 저장돼요.',
   goal: '지금 고른 값은 나중에 기록·통계에서 언제든 바꿀 수 있어요.',
+  start: '잘하고 못하고를 가르는 게 아니에요. 여기에 맞춰 계획을 깔아 드리려고 여쭤요.',
   voice: '설정에서 언제든 바꿀 수 있어요.',
   login: onboardingLoginCopy.body,
   notification: permissionPriming.notification.body,
@@ -228,6 +238,8 @@ export function checkNickname(raw: string): NicknameCheck {
 export type OnboardingResult = {
   /** 건너뛰기로 끝냈는지 여부입니다. 건너뛰어도 완료로 저장해 다시 뜨지 않게 합니다. */
   skipped: boolean;
+  /** 고른 지금 상태입니다. 이 값으로 계획 하나가 깔립니다. */
+  startingPointId?: StartingPointId;
   goalPresetId?: GoalPresetId;
   nickname?: string;
   voiceGender?: VoiceGender;

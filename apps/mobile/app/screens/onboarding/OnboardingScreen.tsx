@@ -33,6 +33,11 @@ import {
 import { countRaces } from '../../../domains/races/aggregate';
 import { shoeCatalog } from '../../../domains/shoes/catalog';
 import { voiceGenderLabels, type VoiceGender } from '../../../domains/coaching/voice';
+import {
+  onboardingPlanNote,
+  startingPoints,
+  type StartingPointId,
+} from '../../../domains/programs/onboardingPlan';
 import { useAppState } from '../../state/AppStateProvider';
 import { useRaceState } from '../../state/RaceStateProvider';
 import {
@@ -81,6 +86,9 @@ export function OnboardingScreen({ renderLoginStep }: OnboardingScreenProps = {}
   const [nicknameDraft, setNicknameDraft] = useState('');
   const [nicknameError, setNicknameError] = useState('');
   const [voiceGender, setVoiceGender] = useState<VoiceGender>('female');
+  // 지금 어느 정도 뛰는지. 이 값 하나가 온보딩 끝에 깔릴 계획을 정합니다.
+  // 기본값은 가장 낮은 쪽입니다. 잘못 짚었을 때 위로 틀리면 다칩니다.
+  const [startingPointId, setStartingPointId] = useState<StartingPointId>('walking');
   const [stepNotes, setStepNotes] = useState<Partial<Record<PermissionKey, string>>>({});
   const [busy, setBusy] = useState(false);
 
@@ -119,11 +127,12 @@ export function OnboardingScreen({ renderLoginStep }: OnboardingScreenProps = {}
       void completeOnboarding({
         skipped: false,
         goalPresetId,
+        startingPointId,
         voiceGender,
         ...(nickname.value ? { nickname: nickname.value } : {}),
       });
     },
-    [completeOnboarding, goalPresetId, nicknameDraft, voiceGender],
+    [completeOnboarding, goalPresetId, nicknameDraft, startingPointId, voiceGender],
   );
 
   const goNext = useCallback(() => {
@@ -292,6 +301,31 @@ export function OnboardingScreen({ renderLoginStep }: OnboardingScreenProps = {}
                   {nicknameError}
                 </Text>
               ) : null}
+            </Card>
+          </>
+        ) : null}
+
+        {step === 'start' ? (
+          <>
+            <View accessibilityRole="radiogroup" style={styles.options}>
+              {startingPoints.map((point) => (
+                <OptionRow
+                  key={point.id}
+                  selected={startingPointId === point.id}
+                  label={point.label}
+                  description={point.description}
+                  onPress={() => setStartingPointId(point.id)}
+                  testID={`onboarding-start-${point.id}`}
+                />
+              ))}
+            </View>
+            <Card style={styles.card}>
+              <Text style={styles.cardTitle}>고르면 이렇게 돼요</Text>
+              {/* 무엇이 준비되는지 미리 보여 줍니다. 모르는 채로 고르게 하지 않습니다. */}
+              <Text style={styles.cardBody}>{onboardingPlanNote(startingPointId)}</Text>
+              <Text style={styles.cardBody}>
+                나중에 훈련 화면에서 다른 계획으로 언제든 바꿀 수 있어요.
+              </Text>
             </Card>
           </>
         ) : null}

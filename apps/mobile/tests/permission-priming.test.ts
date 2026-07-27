@@ -249,10 +249,11 @@ describe('거부 처리 규칙', () => {
 });
 
 describe('온보딩 단계 편성', () => {
-  it('소개 → 목표 → 음성 → 로그인 → 알림 → 위치 → 배터리 → 완료 순서다', () => {
+  it('소개 → 목표 → 지금 상태 → 음성 → 로그인 → 알림 → 위치 → 배터리 → 완료 순서다', () => {
     assert.deepEqual(onboardingStepIds, [
       'intro',
       'goal',
+      'start',
       'voice',
       'login',
       'notification',
@@ -277,20 +278,20 @@ describe('온보딩 단계 편성', () => {
   it('정식 빌드에서는 위치 단계를 아예 만들지 않는다', () => {
     const production = buildOnboardingSteps({ locationStep: false, batteryStep: true });
     assert.equal(production.includes('location'), false);
-    assert.equal(production.length, 7, '진행 점 개수가 실제 단계 수와 같아야 합니다.');
+    assert.equal(production.length, 8, '진행 점 개수가 실제 단계 수와 같아야 합니다.');
 
     const preview = buildOnboardingSteps({ locationStep: true, batteryStep: true });
-    assert.equal(preview.length, 8);
+    assert.equal(preview.length, 9);
     assert.equal(preview.includes('location'), true);
   });
 
   it('배터리 설정이 없는 기기에서는 배터리 단계를 빼고 진행 점도 줄인다', () => {
     const ios = buildOnboardingSteps({ locationStep: true, batteryStep: false });
     assert.equal(ios.includes('battery'), false);
-    assert.equal(ios.length, 7);
+    assert.equal(ios.length, 8);
 
     const minimal = buildOnboardingSteps({ locationStep: false, batteryStep: false });
-    assert.deepEqual(minimal, ['intro', 'goal', 'voice', 'login', 'notification', 'done']);
+    assert.deepEqual(minimal, ['intro', 'goal', 'start', 'voice', 'login', 'notification', 'done']);
   });
 });
 
