@@ -15,6 +15,7 @@ export type RouteKey =
   | 'calendar'
   | 'races'
   | 'shoes'
+  | 'cadence'
   | 'challenges'
   | 'community'
   | 'guide'
