@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
 import {
+  buildOnboardingSteps,
   checkNickname,
   coachSentenceTotal,
   defaultGoalPresetId,
@@ -41,17 +42,36 @@ function activity(completedAt: string): ActivityRecord {
 }
 
 describe('온보딩 단계', () => {
-  it('소개·목표·음성 3화면을 이 순서로 보여 준다', () => {
-    assert.deepEqual(onboardingStepIds, ['intro', 'goal', 'voice']);
-    assert.equal(onboardingStepCount, 3);
+  it('소개·목표·음성 다음에 로그인 자리와 허락 안내가 이어진다', () => {
+    assert.deepEqual(onboardingStepIds, [
+      'intro',
+      'goal',
+      'voice',
+      'login',
+      'notification',
+      'location',
+      'battery',
+      'done',
+    ]);
+    assert.equal(onboardingStepCount, 8);
     assert.equal(onboardingStepIndex('goal'), 1);
     assert.equal(nextOnboardingStep('intro'), 'goal');
     assert.equal(nextOnboardingStep('goal'), 'voice');
-    assert.equal(nextOnboardingStep('voice'), undefined);
+    assert.equal(nextOnboardingStep('voice'), 'login');
+    assert.equal(nextOnboardingStep('done'), undefined);
     assert.equal(previousOnboardingStep('intro'), undefined);
     assert.equal(previousOnboardingStep('voice'), 'goal');
-    assert.equal(isLastOnboardingStep('voice'), true);
+    assert.equal(isLastOnboardingStep('done'), true);
     assert.equal(isLastOnboardingStep('goal'), false);
+  });
+
+  it('보여 줄 단계만 남긴 배열 위에서 앞뒤로 움직이고 진행 점도 그 배열을 따른다', () => {
+    const steps = buildOnboardingSteps({ locationStep: false, batteryStep: true });
+    assert.equal(nextOnboardingStep('notification', steps), 'battery');
+    assert.equal(previousOnboardingStep('battery', steps), 'notification');
+    assert.equal(onboardingStepIndex('done', steps), steps.length - 1);
+    assert.equal(isLastOnboardingStep('done', steps), true);
+    assert.equal(isLastOnboardingStep('battery', steps), false);
   });
 
   it('모든 단계에 제목과 안내 문구가 있다', () => {

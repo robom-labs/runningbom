@@ -13,42 +13,118 @@ import {
   type WeeklyGoal,
 } from '../../../domains/badges/goals';
 import type { ActivityRecord } from '../../../domains/activities/types';
+import {
+  onboardingDoneCopy,
+  onboardingLoginCopy,
+  permissionPriming,
+} from '../../permissions/copy';
 
-export type OnboardingStepId = 'intro' | 'goal' | 'voice';
+export type OnboardingStepId =
+  | 'intro'
+  | 'goal'
+  | 'voice'
+  | 'login'
+  | 'notification'
+  | 'location'
+  | 'battery'
+  | 'done';
 
-/** 3화면 순서입니다. 화면을 늘리면 이 배열만 바꾸면 됩니다. */
-export const onboardingStepIds: OnboardingStepId[] = ['intro', 'goal', 'voice'];
+/**
+ * 온보딩 전체 순서입니다.
+ * 소개 → 목표 → 음성 → 로그인 → 알림 → 위치 → 배터리 → 완료.
+ * 거부감이 적은 알림을 먼저 묻고, 그다음 위치, 마지막에 배터리를 안내합니다.
+ */
+export const onboardingStepIds: OnboardingStepId[] = [
+  'intro',
+  'goal',
+  'voice',
+  'login',
+  'notification',
+  'location',
+  'battery',
+  'done',
+];
 
 export const onboardingStepCount = onboardingStepIds.length;
+
+/** 사전 설명이 붙는 세 단계입니다. 이 단계에서는 아래 버튼이 "허용하고 계속 / 나중에"가 됩니다. */
+export const permissionStepIds = ['notification', 'location', 'battery'] as const;
+
+export type PermissionStepId = (typeof permissionStepIds)[number];
+
+export function isPermissionStep(step: OnboardingStepId): step is PermissionStepId {
+  return (permissionStepIds as readonly string[]).includes(step);
+}
+
+export type OnboardingFlowOptions = {
+  /** 위치 단계는 Preview 빌드에서만 보여 줍니다. */
+  locationStep: boolean;
+  /** 배터리 아끼기 설정이 있는 기기(안드로이드)에서만 보여 줍니다. */
+  batteryStep: boolean;
+};
+
+/**
+ * 이 빌드·이 기기에서 실제로 보여 줄 단계만 남깁니다.
+ * 진행 점(StepDots)은 언제나 이 배열의 길이와 위치를 그대로 씁니다.
+ */
+export function buildOnboardingSteps(options: OnboardingFlowOptions): OnboardingStepId[] {
+  return onboardingStepIds.filter((step) => {
+    if (step === 'location') return options.locationStep;
+    if (step === 'battery') return options.batteryStep;
+    return true;
+  });
+}
 
 export const onboardingStepTitles: Record<OnboardingStepId, string> = {
   intro: '러닝봄이 이렇게 도와드려요',
   goal: '이번 주 목표를 정해 볼까요',
   voice: '어떤 목소리로 들을까요',
+  login: onboardingLoginCopy.title,
+  notification: permissionPriming.notification.title,
+  location: permissionPriming.location.title,
+  battery: permissionPriming.battery.title,
+  done: onboardingDoneCopy.title,
 };
 
 export const onboardingStepSubtitles: Record<OnboardingStepId, string> = {
   intro: '로그인 없이 바로 쓸 수 있어요. 기록은 이 기기에 저장돼요.',
   goal: '지금 고른 값은 나중에 기록·통계에서 언제든 바꿀 수 있어요.',
   voice: '설정에서 언제든 바꿀 수 있어요.',
+  login: onboardingLoginCopy.body,
+  notification: permissionPriming.notification.body,
+  location: permissionPriming.location.body,
+  battery: permissionPriming.battery.body,
+  done: onboardingDoneCopy.body,
 };
 
-export function onboardingStepIndex(step: OnboardingStepId): number {
-  const index = onboardingStepIds.indexOf(step);
+export function onboardingStepIndex(
+  step: OnboardingStepId,
+  steps: OnboardingStepId[] = onboardingStepIds,
+): number {
+  const index = steps.indexOf(step);
   return index < 0 ? 0 : index;
 }
 
-export function nextOnboardingStep(step: OnboardingStepId): OnboardingStepId | undefined {
-  return onboardingStepIds[onboardingStepIndex(step) + 1];
+export function nextOnboardingStep(
+  step: OnboardingStepId,
+  steps: OnboardingStepId[] = onboardingStepIds,
+): OnboardingStepId | undefined {
+  return steps[onboardingStepIndex(step, steps) + 1];
 }
 
-export function previousOnboardingStep(step: OnboardingStepId): OnboardingStepId | undefined {
-  if (onboardingStepIndex(step) === 0) return undefined;
-  return onboardingStepIds[onboardingStepIndex(step) - 1];
+export function previousOnboardingStep(
+  step: OnboardingStepId,
+  steps: OnboardingStepId[] = onboardingStepIds,
+): OnboardingStepId | undefined {
+  if (onboardingStepIndex(step, steps) === 0) return undefined;
+  return steps[onboardingStepIndex(step, steps) - 1];
 }
 
-export function isLastOnboardingStep(step: OnboardingStepId): boolean {
-  return onboardingStepIndex(step) === onboardingStepIds.length - 1;
+export function isLastOnboardingStep(
+  step: OnboardingStepId,
+  steps: OnboardingStepId[] = onboardingStepIds,
+): boolean {
+  return onboardingStepIndex(step, steps) === steps.length - 1;
 }
 
 /** 코치가 실제로 갖고 있는 문장 수입니다(중복 제거). 화면에서 지어내지 않고 이 값을 씁니다. */

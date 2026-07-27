@@ -1,5 +1,6 @@
-// 설정 화면입니다. 코치·음성 / 알림 / 연동 / 계정·데이터 / 앱 정보 다섯 묶음으로 나누고,
+// 설정 화면입니다. 코치·음성 / 알림·위치·배터리 / 알림 / 연동 / 계정·데이터 / 앱 정보 묶음으로 나누고,
 // 각 항목에 한 줄 설명을 붙여 무엇을 바꾸는 값인지 바로 알 수 있게 합니다.
+// 알림·위치·배터리 묶음은 지금 상태를 보여 주고 거기서 다시 켤 수 있는 진입점입니다.
 import * as Application from 'expo-application';
 import Constants from 'expo-constants';
 import type { Session, UserIdentity } from '@supabase/supabase-js';
@@ -22,6 +23,7 @@ import {
   spacing,
   typeScale,
 } from '../../design-system/theme';
+import { PermissionSettingsCard } from '../../permissions';
 import { BADGE_RULE_VERSION } from '../../../domains/badges/rules';
 import { COACH_CONTENT_VERSION } from '../../../domains/coaching/model';
 import { voiceGenderLabels, type VoiceGender } from '../../../domains/coaching/voice';
@@ -341,6 +343,12 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
           ))}
         </View>
       </Card>
+
+      <SectionHeader
+        title="알림·위치·배터리"
+        subtitle="지금 무엇이 켜져 있는지 그대로 보여 주고, 여기서 다시 켤 수 있어요."
+      />
+      <PermissionSettingsCard />
 
       <SectionHeader title="알림" subtitle="대회 접수 알림은 대회 화면에서 대회별로 예약해요." />
       <Card style={styles.card}>
