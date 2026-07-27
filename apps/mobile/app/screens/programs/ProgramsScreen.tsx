@@ -57,6 +57,8 @@ import {
   type TrainingSectionKey,
 } from '../../../domains/programs/trainingSections';
 import { activeChallenges } from '../../../domains/challenges/library';
+import { useRetrospects } from '../../../domains/activities/retrospectStore';
+import { RetrospectCard } from './RetrospectCard';
 import { TrainingPlanCard } from './TrainingPlanCard';
 import { TrainingSection } from './TrainingSection';
 
@@ -77,6 +79,12 @@ export function ProgramsScreen({ onBack, onOpenRaces, startRequest }: ProgramsSc
   const { goalRace } = useGoalRace();
   const { ready, progress, finishSession, activePlanId, choosePlan } = usePrograms();
   const projects = useProjects();
+  const retrospects = useRetrospects();
+  /**
+   * 회차를 마치면 회고를 한 번 묻습니다.
+   * 여기서 고른 값이 내일 제안을 실제로 바꿉니다. 안 그러면 회고는 그냥 설문입니다.
+   */
+  const [askRetrospect, setAskRetrospect] = useState(false);
   const [running, setRunning] = useState<ProgramSession | undefined>(undefined);
   /**
    * 지금 하는 것이 "오늘 한 번만"인지입니다.
@@ -131,6 +139,7 @@ export function ProgramsScreen({ onBack, onOpenRaces, startRequest }: ProgramsSc
       void finishSession(attempt, runningIsWorkout ? false : markComplete);
       setRunning(undefined);
       setRunningIsWorkout(false);
+      setAskRetrospect(true);
     },
     [finishSession, runningIsWorkout],
   );
@@ -204,10 +213,25 @@ export function ProgramsScreen({ onBack, onOpenRaces, startRequest }: ProgramsSc
 
       {loading ? <SkeletonCard accessibilityLabel="훈련을 불러오는 중이에요" lines={3} /> : null}
 
+      {/*
+        방금 마친 회차에 대한 회고입니다. 한 번만 묻고, 건너뛸 수 있습니다.
+        답해야만 넘어가는 화면은 다음부터 앱을 안 켜게 만듭니다.
+      */}
+      {askRetrospect ? (
+        <RetrospectCard
+          onSave={(value) => {
+            void retrospects.save(value);
+            setAskRetrospect(false);
+          }}
+          onSkip={() => setAskRetrospect(false)}
+        />
+      ) : null}
+
       {/* 오늘 할 것 하나는 칸 밖에 둡니다. 이것만은 열지 않아도 보여야 합니다. */}
       {!loading ? (
         <TodayCard
           activities={activities}
+          adjust={retrospects.adjust}
           hasPlanSessionLeft={Boolean(progress.current)}
           onStartPlanSession={startPlanSession}
           onStartWorkout={startWorkoutTemplate}

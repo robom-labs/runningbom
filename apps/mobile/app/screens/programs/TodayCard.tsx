@@ -9,6 +9,7 @@ import { Button, Card } from '../../design-system/components';
 import { fontWeight, lineHeight, palette, spacing, typeScale } from '../../design-system/theme';
 import type { ActivityRecord } from '../../../domains/activities/types';
 import { suggestToday } from '../../../domains/today/suggest';
+import type { SuggestionAdjust } from '../../../domains/activities/retrospect';
 import {
   buildWorkoutSession,
   workoutTemplates,
@@ -24,11 +25,17 @@ export type TodayCardProps = {
   onStartPlanSession: () => void;
   /** 오늘 한 번만 하는 훈련을 시작할 때 부릅니다. */
   onStartWorkout: (template: WorkoutTemplate) => void;
+  /**
+   * 최근 회고에서 나온 조정입니다. 이 값이 있어야 회고가 설문이 아니게 됩니다.
+   * 없으면 예전과 똑같이 동작합니다.
+   */
+  adjust?: SuggestionAdjust;
   now?: Date;
 };
 
 export function TodayCard({
   activities,
+  adjust,
   hasPlanSessionLeft,
   now,
   onStartPlanSession,
@@ -36,10 +43,10 @@ export function TodayCard({
 }: TodayCardProps) {
   const at = now ?? new Date();
   const suggestion = useMemo(
-    () => suggestToday({ activities, now: at, hasPlanSessionLeft }),
+    () => suggestToday({ activities, now: at, hasPlanSessionLeft, ...(adjust ? { adjust } : {}) }),
     // 시각은 초 단위로 바뀌므로 날짜만 열쇠로 씁니다.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activities, hasPlanSessionLeft, at.toISOString().slice(0, 10)],
+    [activities, adjust, hasPlanSessionLeft, at.toISOString().slice(0, 10)],
   );
 
   const template = useMemo(
