@@ -23,18 +23,29 @@ jobs:
       - name: Install mobile dependencies
         run: npm --prefix apps/mobile ci
       - name: Family lock
+        if: always()
         run: node scripts/verify-family.mjs generated/robom-family family.lock.json
       - name: Static family sync
+        if: always()
         run: node scripts/sync-family-static.mjs --check
       - name: Mobile race sync
+        if: always()
         run: node scripts/sync-mobile-races.mjs --check
-      - name: Static data contract
-        run: npm run static-data:check
+      - name: Static data generation check
+        if: always()
+        run: node --experimental-strip-types scripts/static-data-generate.mjs --check
+      - name: Static data validation
+        if: always()
+        run: node scripts/static-data-validate.mjs
       - name: Static UI contract
+        if: always()
         run: node scripts/validate-static.mjs
       - name: Root script tests
+        if: always()
         run: node --test "scripts/*.test.mjs"
       - name: Mobile tests
+        if: always()
         run: npm --prefix apps/mobile test
       - name: Mobile typecheck
+        if: always()
         run: npm --prefix apps/mobile run typecheck
