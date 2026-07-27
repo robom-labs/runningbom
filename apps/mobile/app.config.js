@@ -74,6 +74,27 @@ function resolvePreviewVersionCode(rawValue = process.env.PREVIEW_VERSION_CODE) 
   return parsed;
 }
 
+// EAS 프로젝트 주소입니다. Preview 앱이 여기서 새 내용을 스스로 받아 옵니다.
+const EAS_PROJECT_ID = '5be5e57e-a1a7-4d08-adf1-2218f38b32a5';
+const UPDATES_URL = `https://u.expo.dev/${EAS_PROJECT_ID}`;
+
+/**
+ * Preview에서만 자동 내려받기를 켭니다.
+ * 정식 앱은 Play 심사 대상이라 지금 단계에서 원격 업데이트를 켜지 않습니다.
+ * runtimeVersion은 fingerprint 정책이라 네이티브 구성이 바뀌면 값이 달라집니다.
+ * 덕분에 예전 APK가 자기와 맞지 않는 새 내용을 받아 깨지는 일이 생기지 않습니다.
+ */
+function resolveUpdates(isPreview) {
+  if (!isPreview) return { enabled: false };
+  return {
+    enabled: true,
+    url: UPDATES_URL,
+    // 앱을 열 때 확인하고, 기다리지 않고 바로 화면을 띄운 뒤 뒤에서 받아 둡니다.
+    checkAutomatically: 'ON_LOAD',
+    fallbackToCacheTimeout: 0,
+  };
+}
+
 function resolveRunningbomConfig(config, requestedVariant = process.env.RUNNINGBOM_VARIANT) {
   const variant = normalizeVariant(requestedVariant);
   const isPreview = variant === PREVIEW_VARIANT;
@@ -83,6 +104,8 @@ function resolveRunningbomConfig(config, requestedVariant = process.env.RUNNINGB
     ...config,
     name: isPreview ? '러닝봄 Preview' : '러닝봄',
     scheme,
+    updates: resolveUpdates(isPreview),
+    runtimeVersion: { policy: 'fingerprint' },
     ios: {
       ...config.ios,
       bundleIdentifier: isPreview ? 'kr.robom.runningbom.preview' : 'kr.robom.runningbom',

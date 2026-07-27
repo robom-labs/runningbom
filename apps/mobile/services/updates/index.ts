@@ -14,3 +14,4 @@ export {
   type UpdateCheckStatus,
 } from './checkForUpdate';
 export { UpdateBanner, type UpdateBannerProps } from './UpdateBanner';
+export { OtaBanner } from './OtaBanner';

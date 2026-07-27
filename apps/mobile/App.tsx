@@ -8,7 +8,7 @@ import { AppNavigator } from './app/navigation/AppNavigator';
 import { palette, spacing, typeScale } from './app/design-system/theme';
 import { AppStateProvider, useAppState } from './app/state/AppStateProvider';
 import { RaceStateProvider } from './app/state/RaceStateProvider';
-import { UpdateBanner } from './services/updates';
+import { OtaBanner, UpdateBanner } from './services/updates';
 
 function ReadyApp() {
   const { ready } = useAppState();
@@ -20,9 +20,11 @@ function ReadyApp() {
       </View>
     );
   }
-  // Preview 빌드에서 새 APK가 올라오면 앱 최상단에 조용히 안내합니다(정식 빌드에서는 렌더되지 않음).
+  // 화면·글 변경은 OtaBanner가 알아서 받아 옵니다(APK 재설치 없음).
+  // 네이티브 구성이 바뀌어 새 APK가 필요할 때만 UpdateBanner가 다운로드를 안내합니다.
   return (
     <View style={styles.root}>
+      <OtaBanner />
       <UpdateBanner />
       <AppNavigator />
     </View>

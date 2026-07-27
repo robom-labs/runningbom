@@ -1,0 +1,115 @@
+# 화면·글·계산 로직만 바뀌었을 때는 APK를 새로 받지 않아도 되게, 앱이 스스로 내려받을 새 내용을 올린다.
+# 네이티브 구성이 바뀌면 fingerprint 값이 달라져 이 업데이트가 예전 APK에 적용되지 않으므로,
+# 그때는 preview-apk.yml이 만든 새 APK를 설치해야 한다(앱이 그 사실을 화면으로 알려 준다).
+name: Preview 자동 업데이트
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: '업데이트 설명(비우면 커밋 메시지 사용)'
+        required: false
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: preview-ota
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Node 22 준비
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+
+      - name: 토큰 확인
+        id: token
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${EXPO_TOKEN:-}" ]; then
+            echo "::warning::EXPO_TOKEN이 없어 자동 업데이트를 올리지 못합니다. APK를 직접 받아야 합니다."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 모바일 의존성 설치
+        if: steps.token.outputs.ready == 'true'
+        run: npm --prefix apps/mobile ci
+
+      # 품질 게이트: 하나라도 실패하면 올리지 않는다. 잘못된 내용이 폰에 자동으로 깔리면 안 된다.
+      - name: 테스트
+        if: steps.token.outputs.ready == 'true'
+        run: npm --prefix apps/mobile test
+
+      - name: 타입·설정·번들 검증
+        if: steps.token.outputs.ready == 'true'
+        run: npm --prefix apps/mobile run check
+
+      - name: 정식 빌드에 원격 업데이트가 켜지지 않았는지 확인
+        if: steps.token.outputs.ready == 'true'
+        working-directory: apps/mobile
+        env:
+          RUNNINGBOM_VARIANT: production
+        run: |
+          set -euo pipefail
+          npx --yes expo config --type public --json > /tmp/production-config.json
+          ENABLED="$(node -p "require('/tmp/production-config.json').updates?.enabled === true")"
+          if [ "$ENABLED" != "false" ]; then
+            echo "::error::정식 빌드에서 원격 업데이트가 켜져 있습니다. Play 심사 중이라 중단합니다."
+            exit 1
+          fi
+          echo "정식 빌드 원격 업데이트: 꺼짐(정상)"
+
+      - name: 새 내용 올리기
+        if: steps.token.outputs.ready == 'true'
+        working-directory: apps/mobile
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          RUNNINGBOM_VARIANT: preview
+          EXPO_PUBLIC_RELEASE_CHANNEL: preview
+          EXPO_PUBLIC_COMMUNITY_MODE: CORE_ONLY
+          EXPO_PUBLIC_SOCIAL_ENABLED: 'false'
+          EXPO_PUBLIC_AUTH_GOOGLE_ENABLED: 'false'
+          EXPO_PUBLIC_AUTH_KAKAO_ENABLED: 'false'
+          EXPO_PUBLIC_AUTH_NAVER_ENABLED: 'false'
+          EXPO_PUBLIC_AUTH_APPLE_ENABLED: 'false'
+          UPDATE_MESSAGE: ${{ inputs.message }}
+        run: |
+          set -euo pipefail
+          MESSAGE="${UPDATE_MESSAGE:-}"
+          if [ -z "$MESSAGE" ]; then
+            MESSAGE="$(git log -1 --pretty=%s)"
+          fi
+          if ! npx --yes eas-cli@latest update \
+              --branch preview \
+              --message "$MESSAGE" \
+              --non-interactive; then
+            echo "::error::자동 업데이트를 올리지 못했습니다. 위 로그를 확인하세요."
+            exit 1
+          fi
+
+      - name: 결과 기록
+        if: steps.token.outputs.ready == 'true'
+        run: |
+          {
+            echo "### Preview 자동 업데이트 완료"
+            echo ""
+            echo "- 앱을 껐다 켜면 새 내용이 적용됩니다. APK를 다시 받지 않아도 됩니다."
+            echo "- 네이티브 구성이 바뀐 경우에는 이 업데이트가 적용되지 않고, 새 APK 설치가 필요합니다."
+          } >> "$GITHUB_STEP_SUMMARY"
