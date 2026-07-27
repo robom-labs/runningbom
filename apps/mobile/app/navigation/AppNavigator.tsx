@@ -14,7 +14,6 @@ import { ProfileScreen } from '../screens/profile/ProfileScreen';
 import { RacesScreen } from '../screens/explore/RacesScreen';
 import { SettingsScreen } from '../screens/settings/SettingsScreen';
 import { ShoesScreen } from '../screens/explore/ShoesScreen';
-import { AuthScreen } from '../screens/auth';
 import { BadgesScreen } from '../screens/badges';
 import { ChallengesScreen } from '../screens/challenges';
 import { GuideScreen } from '../screens/guide';
@@ -195,15 +194,9 @@ export function AppNavigator() {
     }
   }, [focusedRaceId, focusedShoeId, goBack, navigate, openRace, openShoe, route, statsFocus]);
 
-  // 앱을 처음 연 사람은 드로어 셸 대신 온보딩을 먼저 봅니다. 로그인 단계는 여기서 끼워 넣습니다.
+  // 첫 실행은 핵심 가치를 설명하고 필요한 허락만 요청합니다. 계정 연결은 설정에서 선택적으로 합니다.
   if (onboardingRequired) {
-    return (
-      <OnboardingScreen
-        renderLoginStep={({ onDone, onSkip }) => (
-          <AuthScreen onDone={() => onDone()} onSkip={onSkip} />
-        )}
-      />
-    );
+    return <OnboardingScreen />;
   }
 
   return (
