@@ -34,7 +34,17 @@ jobs:
       - name: 정적 자산·대회 데이터 검사
         run: npm test
       - name: 모바일 테스트
-        run: npm --prefix apps/mobile test
+        shell: bash
+        run: |
+          set +e
+          npm --prefix apps/mobile test > /tmp/mobile-tests.log 2>&1
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            echo '--- mobile test failure (last 160 lines) ---'
+            tail -n 160 /tmp/mobile-tests.log
+            exit "$status"
+          fi
+          tail -n 30 /tmp/mobile-tests.log
       - name: 모바일 타입 검사
         run: npm --prefix apps/mobile run typecheck
       - name: 모바일 출시 설정 검사
