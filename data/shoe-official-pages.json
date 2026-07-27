@@ -1,0 +1,7 @@
+{
+  "note": "러닝화 모델별 공식 제품 페이지입니다. 이 주소가 있어야 그 신발의 공식 이미지를 가져올 수 있어요. 브랜드 검색 페이지가 아니라 그 모델 페이지여야 합니다. 확실하지 않으면 비워 두세요 — 지어낸 주소는 깨진 이미지가 됩니다.",
+  "pages": {
+    "nike-pegasus-42": "https://www.nike.com/kr/t/페가수스-42-남성-로드-러닝화-Hq1m5r/FD2722-001",
+    "adidas-supernova-rise-2": "https://www.adidas.co.kr/%EC%8A%88%ED%8D%BC%EB%85%B8%EB%B0%94-%EB%9D%BC%EC%9D%B4%EC%A6%88-2/IH2504.html"
+  }
+}

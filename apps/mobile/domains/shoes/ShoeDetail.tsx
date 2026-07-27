@@ -13,6 +13,8 @@ import {
 import { entryPurchaseLinks, specReferenceLink, type ShoePurchaseLink } from './purchaseLinks';
 import { SHOE_ART_CAPTION, shoeArtSpec } from './art';
 import { ShoeArt } from './ShoeArt';
+import { ArtImage } from '../media/ArtImage';
+import { imageCreditLabel, officialImage } from '../media/officialImages';
 import { priceDisplay } from './price';
 import {
   shoeBrandInitials,
@@ -86,14 +88,25 @@ export function ShoeDetail({
         <Text style={styles.pick}>{shoe.pick}</Text>
       </Card>
 
-      {/* 그림 — 사진이 아니라 형태입니다. 그래서 캡션을 반드시 붙입니다. */}
+      {/*
+        공식 사진이 있으면 사진, 없으면 우리 그림입니다.
+        캡션도 그에 맞게 바뀝니다 — 우리 그림을 사진인 것처럼, 남의 사진을 우리 것처럼 보이게 하지 않습니다.
+      */}
       <Card style={styles.artCard}>
-        <ShoeArt
-          accessibilityLabel={`${shoe.model} 옆모습 그림`}
-          spec={shoeArtSpec(shoe)}
+        <ArtImage
+          accessibilityLabel={`${shoe.brand} ${shoe.model} 이미지`}
+          fallback={
+            <ShoeArt spec={shoeArtSpec(shoe)} width={220} />
+          }
+          height={140}
+          id={shoe.id}
           width={220}
         />
-        <Text style={styles.artCaption}>{SHOE_ART_CAPTION}</Text>
+        <Text style={styles.artCaption}>
+          {officialImage(shoe.id)
+            ? imageCreditLabel(officialImage(shoe.id) as { source: string; url: string; checkedAt: string })
+            : SHOE_ART_CAPTION}
+        </Text>
       </Card>
 
       {/*
