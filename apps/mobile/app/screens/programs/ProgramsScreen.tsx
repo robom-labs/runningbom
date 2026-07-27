@@ -35,6 +35,8 @@ import { recentRunning, recentRunningNote } from '../../../domains/programs/rece
 import { formatDuration, type ProgramSession } from '../../../domains/programs/types';
 import { usePrograms } from '../../../domains/programs/usePrograms';
 import { SessionRunner } from './SessionRunner';
+import { PlanPicker } from './PlanPicker';
+import { capabilityFromActivities } from '../../../domains/programs/level';
 import { TrainingPlanCard } from './TrainingPlanCard';
 
 export type ProgramsScreenProps = {
@@ -47,12 +49,17 @@ export type ProgramsScreenProps = {
 export function ProgramsScreen({ onBack, onOpenRaces }: ProgramsScreenProps) {
   const { activities, ready: activitiesReady } = useAppState();
   const { goalRace } = useGoalRace();
-  const { ready, progress, finishSession } = usePrograms();
+  const { ready, progress, finishSession, activePlanId, choosePlan } = usePrograms();
   const [running, setRunning] = useState<ProgramSession | undefined>(undefined);
   const [pickedDistance, setPickedDistance] = useState<RacePlanDistance | undefined>(undefined);
   const [openWeeks, setOpenWeeks] = useState(false);
 
   const summary = useMemo(() => recentRunning(activities), [activities]);
+  // 최근 기록에서 수준 판단 재료를 뽑습니다. 기록이 없으면 빈 값이 나옵니다.
+  const capability = useMemo(
+    () => capabilityFromActivities(activities, new Date()),
+    [activities],
+  );
   const countdown = useMemo(
     () => (goalRace ? goalRaceCountdown(goalRace.raceDate) : undefined),
     [goalRace],
@@ -98,6 +105,17 @@ export function ProgramsScreen({ onBack, onOpenRaces }: ProgramsScreenProps) {
       />
 
       {loading ? <SkeletonCard accessibilityLabel="프로그램을 불러오는 중이에요" lines={3} /> : null}
+
+      {!loading ? (
+        <PlanPicker
+          activePlanId={activePlanId}
+          capability={capability}
+          onChoose={(planId) => {
+            void choosePlan(planId);
+            setOpenWeeks(false);
+          }}
+        />
+      ) : null}
 
       {!loading ? (
         <Card elevated style={styles.programCard}>
