@@ -29,11 +29,10 @@ export function reanchorTrackWithoutDistance(
     };
   }
 
-  const { lastRejectReason: _lastRejectReason, ...current } = accumulator;
   return {
-    ...current,
+    ...accumulator,
     anchor: probe.anchor,
-    lastFix: probe.lastFix,
+    ...(probe.lastFix === undefined ? {} : { lastFix: probe.lastFix }),
     acceptedCount: accumulator.acceptedCount + probe.acceptedCount,
     recentSegments: [],
     implausibleStreak: 0,
