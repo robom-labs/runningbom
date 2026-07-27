@@ -81,6 +81,8 @@ const tabByRoute: Record<string, TabKey> = {
   programs: 'programs',
   challenges: 'programs',
   guide: 'programs',
+  // 박자 맞추기는 훈련의 한 갈래입니다. 러닝화나 대회가 아닙니다.
+  cadence: 'programs',
 
   shoes: 'shoes',
 

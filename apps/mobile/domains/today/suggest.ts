@@ -11,6 +11,7 @@
 //
 // 계산은 전부 순수 함수입니다. 같은 입력이면 언제나 같은 결과가 나옵니다.
 import type { ActivityRecord } from '../activities/types';
+import { adjustReasons, type SuggestionAdjust } from '../activities/retrospect';
 
 export type SuggestionKind =
   /** 하고 있는 계획의 다음 회차 */
@@ -37,6 +38,13 @@ export type TodayInput = {
   now: Date;
   /** 하고 있는 계획에 아직 남은 회차가 있는지입니다. */
   hasPlanSessionLeft: boolean;
+  /**
+   * 최근 회고에서 나온 조정입니다(`domains/activities/retrospect.ts`).
+   *
+   * 이 값이 실제로 제안을 바꿉니다. 안 그러면 회고는 그냥 설문이 됩니다.
+   * 없으면 예전과 똑같이 동작합니다.
+   */
+  adjust?: SuggestionAdjust;
 };
 
 function dayKey(value: Date | string): string {
@@ -110,13 +118,23 @@ export function movedToday(activities: ActivityRecord[], now: Date): boolean {
  *   5) 그 밖에는 계획의 다음 회차, 계획이 없으면 알맞은 훈련
  */
 export function suggestToday(input: TodayInput): TodaySuggestion {
-  const { activities, now, hasPlanSessionLeft } = input;
+  const { activities, now, hasPlanSessionLeft, adjust } = input;
 
   if (movedToday(activities, now)) {
     return {
       kind: 'rest',
       title: '오늘은 이미 했어요',
       reason: '오늘 몫은 끝났어요. 더 하지 않아도 괜찮아요.',
+    };
+  }
+
+  // 회고에서 아픈 신호가 이어졌으면 다른 무엇보다 먼저 쉬라고 말합니다.
+  // 참고 뛰면 오래 못 뜁니다. 이 판단이 연속 일수보다 위에 있어야 하는 이유입니다.
+  if (adjust === 'rest') {
+    return {
+      kind: 'rest',
+      title: '오늘은 쉬어요',
+      reason: adjustReasons.rest,
     };
   }
 
@@ -147,11 +165,25 @@ export function suggestToday(input: TodayInput): TodaySuggestion {
     };
   }
 
+  // 힘들었다는 회고가 이어지면 계획 회차 대신 가벼운 것을 권합니다.
+  // 계획을 계속 밀어붙이면 계획을 그만두게 됩니다.
+  if (adjust === 'easier') {
+    return {
+      kind: 'workout',
+      title: '오늘은 가볍게',
+      reason: adjustReasons.easier,
+      workoutId: 'recovery-20m',
+    };
+  }
+
   if (hasPlanSessionLeft) {
     return {
       kind: 'planSession',
       title: '오늘의 회차',
-      reason: '하고 있는 계획의 다음 회차예요. 순서대로만 따라가면 돼요.',
+      reason:
+        adjust === 'ready'
+          ? adjustReasons.ready
+          : '하고 있는 계획의 다음 회차예요. 순서대로만 따라가면 돼요.',
     };
   }
 

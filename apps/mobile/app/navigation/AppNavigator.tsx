@@ -16,6 +16,7 @@ import { SettingsScreen } from '../screens/settings/SettingsScreen';
 import { ShoesScreen } from '../screens/explore/ShoesScreen';
 import { AuthScreen } from '../screens/auth';
 import { BadgesScreen } from '../screens/badges';
+import { CadenceScreen } from '../screens/cadence';
 import { ChallengesScreen } from '../screens/challenges';
 import { GuideScreen } from '../screens/guide';
 import { OnboardingScreen } from '../screens/onboarding';
@@ -179,6 +180,8 @@ export function AppNavigator() {
         return <RacesScreen focusedRaceId={focusedRaceId} />;
       case 'shoes':
         return <ShoesScreen focusedShoeId={focusedShoeId} />;
+      case 'cadence':
+        return <CadenceScreen onBack={() => goBack('programs')} />;
       case 'challenges':
         return <ChallengesScreen onBack={() => goBack()} />;
       case 'community':
