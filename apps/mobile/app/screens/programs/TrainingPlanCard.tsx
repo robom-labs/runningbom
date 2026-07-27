@@ -18,8 +18,14 @@ import {
   racePlanDistances,
   type RacePlanDistance,
   type RacePlanInput,
+  type PlanRun,
   type PlanWeek,
 } from '../../../domains/programs/racePlan';
+import {
+  DEFAULT_PACE_SECONDS_PER_KM,
+  planRunToSession,
+} from '../../../domains/programs/racePlanSession';
+import { formatDuration } from '../../../domains/programs/types';
 
 export type TrainingPlanCardProps = {
   raceName: string;
@@ -32,6 +38,18 @@ export type TrainingPlanCardProps = {
   input: RacePlanInput;
   /** 무엇을 근거로 만들었는지 알려 주는 한 줄입니다. */
   basisNote: string;
+  /**
+   * 이번 주 회차를 지금 바로 시작할 때 부릅니다.
+   * 없으면 시작 버튼을 그리지 않습니다(예전처럼 보기 전용).
+   */
+  onStartRun?: (run: PlanRun) => void;
+  /**
+   * 거리를 시간으로 바꿀 때 쓰는 1km당 초입니다.
+   * 계획은 거리로 쓰여 있고 실행 엔진은 시간으로 움직이므로 이 값이 필요합니다.
+   */
+  paceSecondsPerKm?: number;
+  /** 그 속도가 실제 기록에서 나온 값인지입니다. 추정값을 사실처럼 보여 주지 않기 위함입니다. */
+  paceFromRecords?: boolean;
 };
 
 const shortDistanceLabels: Record<RacePlanDistance, string> = {
@@ -64,6 +82,9 @@ export function TrainingPlanCard({
   onChangeDistance,
   input,
   basisNote,
+  onStartRun,
+  paceSecondsPerKm = DEFAULT_PACE_SECONDS_PER_KM,
+  paceFromRecords = false,
 }: TrainingPlanCardProps) {
   const [expanded, setExpanded] = useState(false);
   const plan = useMemo(() => buildTrainingPlan(input), [input]);
@@ -122,12 +143,30 @@ export function TrainingPlanCard({
 
       <View style={styles.thisWeek}>
         <Text style={styles.thisWeekTitle}>이번 주에 할 것</Text>
-        {thisWeek.runs.map((run) => (
-          <View key={run.id} style={styles.runRow}>
-            <Text style={styles.runLabel}>{`${run.label} ${run.km}km`}</Text>
-            <Text style={styles.runNote}>{run.note}</Text>
-          </View>
-        ))}
+        {thisWeek.runs.map((run) => {
+          // 계획이 보기 전용으로 끝나지 않도록, 지금 바로 시작할 수 있는지 여기서 판단합니다.
+          const runnable = planRunToSession(run, paceSecondsPerKm, paceFromRecords);
+          return (
+            <View key={run.id} style={styles.runRow}>
+              <Text style={styles.runLabel}>{`${run.label} ${run.km}km`}</Text>
+              <Text style={styles.runNote}>{run.note}</Text>
+              {onStartRun && runnable.ok ? (
+                <>
+                  <Text style={styles.runPace}>{runnable.paceNote}</Text>
+                  <Button
+                    label={`지금 시작 (${formatDuration(runnable.session.totalSeconds)})`}
+                    onPress={() => onStartRun(run)}
+                    size="lg"
+                  />
+                </>
+              ) : null}
+              {onStartRun && !runnable.ok ? (
+                // 시작할 수 없을 때도 왜 안 되는지 알려 줍니다. 버튼만 사라지면 고장으로 보입니다.
+                <Text style={styles.runPace}>{runnable.reason}</Text>
+              ) : null}
+            </View>
+          );
+        })}
         <Text style={styles.weekMeta}>{thisWeek.note}</Text>
       </View>
 
@@ -248,6 +287,12 @@ const styles = StyleSheet.create({
     fontSize: typeScale.bodySmall,
     lineHeight: lineHeight.bodySmall,
     fontWeight: fontWeight.medium,
+  },
+  runPace: {
+    color: palette.muted,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    paddingTop: spacing.xxs,
   },
   runNote: {
     color: palette.muted,
