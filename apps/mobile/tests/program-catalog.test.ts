@@ -31,11 +31,36 @@ describe('계획 목록', () => {
   it('계획 수와 갈래가 줄어들지 않는다', () => {
     // 리팩터링하다 계획이 사라지는 일을 막습니다.
     assert.ok(
-      programFamilies.length >= 24,
+      programFamilies.length >= 40,
       `계획이 ${programFamilies.length}개로 줄었습니다`,
     );
     const categories = new Set(programFamilies.map((family) => family.category));
-    assert.ok(categories.size >= 6, `갈래가 ${categories.size}개뿐입니다`);
+    assert.ok(categories.size >= 8, `갈래가 ${categories.size}개뿐입니다`);
+  });
+
+  it('모든 갈래에 시작할 수 있는 계획이 하나씩은 있다', () => {
+    // 갈래를 만들어 놓고 그 안이 비어 있으면 화면에 빈칸이 생깁니다.
+    const byCategory = new Map<string, number>();
+    for (const family of programFamilies) {
+      byCategory.set(family.category, (byCategory.get(family.category) ?? 0) + 1);
+    }
+    for (const [category, count] of byCategory) {
+      assert.ok(count > 0, `${category} 갈래가 비어 있습니다`);
+    }
+    assert.equal(byCategory.size, Object.keys(categoryLabels).length);
+  });
+
+  it('한 회차가 사람이 끝까지 할 수 있는 길이다', () => {
+    // 검증기는 90분을 상한으로 두지만, 목록에 실제로 넣은 것들이 그 안인지 따로 봅니다.
+    for (const family of programFamilies) {
+      const plan = buildPlan(family);
+      if (!plan) continue;
+      const longest = Math.max(...plan.sessions.map((session) => session.totalSeconds));
+      assert.ok(
+        longest <= 90 * 60,
+        `${family.id}: 가장 긴 회차가 ${Math.round(longest / 60)}분입니다`,
+      );
+    }
   });
 
   it('계획 ID가 겹치지 않는다', () => {
