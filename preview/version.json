@@ -1,10 +1,10 @@
 {
   "latestVersion": "0.19.0",
-  "versionCode": 40,
+  "versionCode": 41,
   "apkUrl": "https://github.com/robom-labs/runningbom/releases/download/preview-latest/runningbom-preview.apk",
   "releasePageUrl": "https://github.com/robom-labs/runningbom/releases/tag/preview-latest",
   "package": "kr.robom.runningbom.preview",
-  "releasedAt": "2026-07-27T12:39:22.306Z",
+  "releasedAt": "2026-07-27T13:21:24.461Z",
   "notes": [
     "GitHub Actions에서 Preview APK를 자동 빌드합니다.",
     "기존에 설치된 러닝봄 Preview 위에 그대로 덮어쓰기 업데이트됩니다.",
