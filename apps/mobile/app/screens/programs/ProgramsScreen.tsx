@@ -36,7 +36,11 @@ import { formatDuration, type ProgramSession } from '../../../domains/programs/t
 import { usePrograms } from '../../../domains/programs/usePrograms';
 import { SessionRunner } from './SessionRunner';
 import { PlanPicker } from './PlanPicker';
-import { capabilityFromActivities } from '../../../domains/programs/level';
+import { capabilityFromActivities, decideLevel } from '../../../domains/programs/level';
+import { buildWorkoutSession } from '../../../domains/workouts/library';
+import { WorkoutPicker } from './WorkoutPicker';
+import { ChallengeBoard } from './ChallengeBoard';
+import { planPaceSecondsPerKm, planRunToSession } from '../../../domains/programs/racePlanSession';
 import { TrainingPlanCard } from './TrainingPlanCard';
 
 export type ProgramsScreenProps = {
@@ -51,6 +55,12 @@ export function ProgramsScreen({ onBack, onOpenRaces }: ProgramsScreenProps) {
   const { goalRace } = useGoalRace();
   const { ready, progress, finishSession, activePlanId, choosePlan } = usePrograms();
   const [running, setRunning] = useState<ProgramSession | undefined>(undefined);
+  /**
+   * 지금 하는 것이 "오늘 한 번만"인지입니다.
+   * 일회성 훈련을 계획 진도로 세면 하지도 않은 회차가 끝난 것으로 표시됩니다.
+   * 기록은 남기되 진도는 건드리지 않습니다.
+   */
+  const [runningIsWorkout, setRunningIsWorkout] = useState(false);
   const [pickedDistance, setPickedDistance] = useState<RacePlanDistance | undefined>(undefined);
   const [openWeeks, setOpenWeeks] = useState(false);
 
@@ -65,6 +75,21 @@ export function ProgramsScreen({ onBack, onOpenRaces }: ProgramsScreenProps) {
     [goalRace],
   );
   const distance = pickedDistance ?? (goalRace ? guessRaceDistance(goalRace.name) : '10k');
+  // 오늘 한 번만 하는 훈련도 같은 수준 판단을 씁니다. 기준이 두 개면 사용자가 헷갈립니다.
+  const level = useMemo(() => decideLevel(undefined, capability).level, [capability]);
+
+  // 대회 계획은 거리로 쓰여 있고 실행 엔진은 시간으로 움직입니다.
+  // 그래서 최근 기록에서 1km당 걸린 시간을 뽑아 둡니다. 근거가 없으면 넉넉한 기본값이 나옵니다.
+  const pace = useMemo(() => {
+    const totals = activities.reduce(
+      (sum, record) => ({
+        km: sum.km + (record.distanceKm ?? 0),
+        minutes: sum.minutes + (record.distanceKm ? record.durationMinutes : 0),
+      }),
+      { km: 0, minutes: 0 },
+    );
+    return planPaceSecondsPerKm(totals.km, totals.minutes);
+  }, [activities]);
 
   const planInput = useMemo(
     () => ({
@@ -79,14 +104,17 @@ export function ProgramsScreen({ onBack, onOpenRaces }: ProgramsScreenProps) {
 
   const onFinish = useCallback(
     (attempt: SessionAttempt, markComplete: boolean) => {
-      void finishSession(attempt, markComplete);
+      // 일회성 훈련은 기록만 남기고 계획 진도는 그대로 둡니다.
+      void finishSession(attempt, runningIsWorkout ? false : markComplete);
       setRunning(undefined);
+      setRunningIsWorkout(false);
     },
-    [finishSession],
+    [finishSession, runningIsWorkout],
   );
 
   const closeRunner = useCallback(() => {
     setRunning(undefined);
+    setRunningIsWorkout(false);
   }, []);
 
   if (running) {
@@ -113,6 +141,18 @@ export function ProgramsScreen({ onBack, onOpenRaces }: ProgramsScreenProps) {
           onChoose={(planId) => {
             void choosePlan(planId);
             setOpenWeeks(false);
+          }}
+        />
+      ) : null}
+
+      {!loading ? <ChallengeBoard activities={activities} /> : null}
+
+      {!loading ? (
+        <WorkoutPicker
+          level={level}
+          onStart={(template) => {
+            setRunningIsWorkout(true);
+            setRunning(buildWorkoutSession(template));
           }}
         />
       ) : null}
@@ -214,6 +254,15 @@ export function ProgramsScreen({ onBack, onOpenRaces }: ProgramsScreenProps) {
           distance={distance}
           input={planInput}
           onChangeDistance={setPickedDistance}
+          onStartRun={(run) => {
+            const built = planRunToSession(run, pace.paceSecondsPerKm, pace.fromRecords);
+            if (!built.ok) return;
+            // 대회 계획 회차도 일회성으로 봅니다. 9주 프로그램 진도와 섞이면 안 됩니다.
+            setRunningIsWorkout(true);
+            setRunning(built.session);
+          }}
+          paceFromRecords={pace.fromRecords}
+          paceSecondsPerKm={pace.paceSecondsPerKm}
           raceName={goalRace.name}
           remainingLabel={countdown.remainingLabel}
         />
