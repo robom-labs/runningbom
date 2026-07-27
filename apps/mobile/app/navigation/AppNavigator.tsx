@@ -26,7 +26,9 @@ import { palette } from '../design-system/theme';
 import { useAppState } from '../state/AppStateProvider';
 import { currentWeekStart, formatDistance, totalsForWeek } from '../../domains/activities/summary';
 import { raceIdFromDeepLink } from '../../src/races';
+import { tabBarVisible, tabForRoute } from '../../domains/navigation/tabs';
 import { AppHeader } from './AppHeader';
+import { BottomTabs } from './BottomTabs';
 import { DrawerMenu } from './DrawerMenu';
 import { routeFromStoredValue, routeTitles } from './routes';
 import { isStatsFocus, type RouteKey, type StatsFocus } from './types';
@@ -40,6 +42,12 @@ export function AppNavigator() {
   const [focusedShoeId, setFocusedShoeId] = useState<string>();
   // 드로어 하위 메뉴에서 고른 기록·통계 구획입니다. 같은 항목을 다시 골라도 반응하도록 nonce를 둡니다.
   const [statsFocus, setStatsFocus] = useState<{ section: StatsFocus; nonce: number }>();
+  // 홈의 오늘 카드에서 "바로 시작"을 눌렀을 때 훈련 화면에 넘길 요청입니다.
+  const [startRequest, setStartRequest] = useState<{
+    kind: 'plan' | 'workout';
+    workoutId?: string;
+    nonce: number;
+  }>();
   // 뒤로가기가 무조건 홈으로 튀지 않도록, 지나온 화면을 쌓아 둡니다.
   const historyRef = useRef<RouteKey[]>([]);
   const restoredRef = useRef(false);
@@ -158,7 +166,13 @@ export function AppNavigator() {
       case 'start':
         return <StartScreen />;
       case 'programs':
-        return <ProgramsScreen onBack={() => goBack()} onOpenRaces={() => navigate('races')} />;
+        return (
+          <ProgramsScreen
+            onBack={() => goBack()}
+            onOpenRaces={() => navigate('races')}
+            {...(startRequest ? { startRequest } : {})}
+          />
+        );
       case 'calendar':
         return <CalendarScreen />;
       case 'races':
@@ -190,10 +204,23 @@ export function AppNavigator() {
             onNavigate={navigate}
             onOpenRace={(raceId) => openRace(raceId)}
             onOpenShoe={(shoeId) => openShoe(shoeId)}
+            onStartTraining={(intent) => {
+              setStartRequest((current) => ({ ...intent, nonce: (current?.nonce ?? 0) + 1 }));
+            }}
           />
         );
     }
-  }, [focusedRaceId, focusedShoeId, goBack, navigate, openRace, openShoe, route, statsFocus]);
+  }, [
+    focusedRaceId,
+    focusedShoeId,
+    goBack,
+    navigate,
+    openRace,
+    openShoe,
+    route,
+    startRequest,
+    statsFocus,
+  ]);
 
   // 앱을 처음 연 사람은 드로어 셸 대신 온보딩을 먼저 봅니다. 로그인 단계는 여기서 끼워 넣습니다.
   if (onboardingRequired) {
@@ -210,6 +237,10 @@ export function AppNavigator() {
     <SafeAreaView edges={['top']} style={styles.root}>
       <AppHeader onMenu={() => setDrawerOpen(true)} title={routeTitles[route]} />
       <View style={styles.body}>{screen}</View>
+      {/* 달리는 중에는 탭을 감춥니다. 뛰면서 잘못 누르면 코칭이 끊깁니다. */}
+      {tabBarVisible(route) ? (
+        <BottomTabs active={tabForRoute(route)} onSelect={navigate} />
+      ) : null}
       <DrawerMenu
         activeRoute={route}
         nickname={preferences.nickname}

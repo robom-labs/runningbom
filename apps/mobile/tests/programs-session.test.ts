@@ -337,9 +337,17 @@ describe('회차 실행 화면 구성', () => {
 describe('프로그램 목록 화면 구성', () => {
   const screen = source('app/screens/programs/ProgramsScreen.tsx');
 
-  it('부모가 라우팅하도록 onBack만 받는다', () => {
-    assert.match(screen, /export function ProgramsScreen\(\{ onBack, onOpenRaces \}/);
+  it('스스로 화면을 옮기지 않고 부모가 넘겨 준 것만 쓴다', () => {
+    // 화면이 직접 라우팅하면 뒤로가기 이력이 두 곳에서 관리됩니다.
+    assert.match(screen, /export function ProgramsScreen\(\{ onBack, onOpenRaces, startRequest \}/);
     assert.match(source('app/screens/programs/index.ts'), /export \{ ProgramsScreen/);
+  });
+
+  it('훈련을 네 칸으로 나눠 한 번에 하나만 편다', () => {
+    // 예전에는 일곱 덩어리가 세로로 전부 쌓여 있었습니다("너무 길다").
+    assert.match(screen, /trainingSections\.map/);
+    assert.match(screen, /toggleSection\(value, section\.key\)/);
+    assert.match(screen, /defaultOpenSection/);
   });
 
   it('9주 프로그램의 진행률과 다음 회차를 보여 준다', () => {
