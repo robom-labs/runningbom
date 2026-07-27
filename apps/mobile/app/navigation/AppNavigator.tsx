@@ -161,7 +161,12 @@ export function AppNavigator() {
       case 'calendar':
         return <CalendarScreen />;
       case 'races':
-        return <RacesScreen focusedRaceId={focusedRaceId} />;
+        return (
+          <RacesScreen
+            focusedRaceId={focusedRaceId}
+            onOpenPrograms={() => navigate('programs')}
+          />
+        );
       case 'shoes':
         return <ShoesScreen focusedShoeId={focusedShoeId} />;
       case 'challenges':
