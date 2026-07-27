@@ -1,5 +1,5 @@
 {
-  "revision": "2026.07.27-race-data-15",
+  "revision": "2026.07.28-race-data-16",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -708,7 +708,7 @@
       "registrationOpensAt": "2026-02-03T00:00:00+09:00",
       "registrationClosesAt": "2026-07-27T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "2/3 - 7/27",
       "organizer": "봉화군체육회, 매일신문사",
       "verifiedAt": "마라톤온라인 home 아이콘",
@@ -2850,7 +2850,7 @@
       "registrationOpensAt": "2026-07-28T00:00:00+09:00",
       "registrationClosesAt": "2026-08-10T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "07/28 - 08/10",
       "organizer": "기후에너지환경부,안동시",
       "verifiedAt": "마라톤GO 공개 일정 상세",
@@ -2894,7 +2894,7 @@
       "registrationOpensAt": "2026-07-28T00:00:00+09:00",
       "registrationClosesAt": "2026-08-18T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "07/28 - 08/18",
       "organizer": "부산일보사",
       "verifiedAt": "마라톤GO 공개 일정 상세",
