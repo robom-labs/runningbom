@@ -6,10 +6,24 @@
 //   자유 러닝은 startCoachSession(=네이티브 포그라운드 서비스)로 잘 말하고 있었으므로,
 //   회차를 같은 계약(CoachSession)으로 바꾸기만 하면 같은 엔진이 그대로 읽어 줍니다.
 //
+// 회장 보고 2차: "5분 동안 걷기 시작할게요 그건 말하는데 그 뒤에 말을 안 해."
+//   실제로 두 가지가 겹쳐 있었습니다.
+//   1) 0초에 대사를 세 개 겹쳐 놨습니다. 재생 엔진(네이티브·JS 모두)은 같은 시각에 밀린 대사 중
+//      마지막 하나만 읽고 나머지를 버립니다. 그래서 세 마디 중 한 마디만 들렸습니다.
+//   2) 그 다음 대사가 150초 뒤였습니다. 5분짜리 걷기 구간에 안내가 단 하나뿐이라,
+//      귀로는 "고장 나서 말을 안 한다"와 구분되지 않습니다.
+//   그래서 이 파일은 이제 (a) 대사를 절대 겹치지 않게 벌리고,
+//   (b) 조용한 구간을 코칭 문장으로 채워 침묵이 MAX_SILENCE_SECONDS를 넘지 않게 합니다.
+//
 // 여기서는 시간표만 만듭니다. 실제 말하기·화면 잠금 유지·일시정지는 기존 엔진이 합니다.
+import {
+  categoryRotation,
+  contextualCuePool,
+  type CueCategory,
+} from '../coaching/cueLibrary';
 import type { CoachCue, CoachSession } from '../coaching/model';
 import type { PhaseKind } from '../coaching/sessionTypes';
-import { buildTimeline } from './session';
+import { buildTimeline, type TimelineEntry } from './session';
 import { formatClock, type ProgramSession, type SessionSegment } from './types';
 
 /** 구간이 바뀌기 몇 초 전에 미리 알려 줄지입니다. 숨이 찬 중에도 준비할 수 있는 간격입니다. */
@@ -20,6 +34,21 @@ export const READY_LEAD_SECONDS = 10;
 const MIN_SECONDS_FOR_PREVIEW = 45;
 /** 구간이 이보다 길면 중간에 한 번 더 알려 줍니다. */
 const MIN_SECONDS_FOR_HALFWAY = 90;
+
+/**
+ * 대사 사이의 최소 간격입니다.
+ * 재생 엔진은 같은 시각(정확히는 같은 500ms 틱)에 밀린 대사 중 하나만 읽고 나머지를 버립니다.
+ * 그래서 시간표 단계에서 미리 벌려 둡니다. 이 값보다 촘촘하면 말이 사라집니다.
+ */
+export const MIN_CUE_GAP_SECONDS = 6;
+/** 이보다 오래 조용하면 사용자는 고장으로 느낍니다. 넘지 않게 코칭 문장으로 채웁니다. */
+export const MAX_SILENCE_SECONDS = 24;
+/** 조용한 구간을 채울 때 쓰는 간격입니다. */
+const FILL_INTERVAL_SECONDS = 18;
+/** 여는 인사 뒤 첫 구간 안내를 넣는 시각입니다. */
+const FIRST_SEGMENT_START_SECONDS = 6;
+/** 안전 안내를 넣는 시각입니다. */
+const SAFETY_SECONDS = 12;
 
 /** 걷기·뛰기를 말로 할 때 쓰는 동사입니다. 화면 글자와 읽는 말을 분리합니다. */
 function actionVerb(segment: SessionSegment): string {
@@ -69,48 +98,199 @@ function halfwaySentence(segment: SessionSegment): string {
   return '절반 지났어요. 숨이 편해지면 그대로 걸어요.';
 }
 
+/** 카테고리를 화면·기록에서 쓰는 큐 종류로 옮깁니다. */
+function kindForCategory(category: CueCategory): CoachCue['kind'] {
+  if (category === 'safety') return 'safety';
+  if (category === 'progress') return 'progress';
+  if (category === 'encouragement' || category === 'mindset') return 'encouragement';
+  return 'instruction';
+}
+
+/** 회차 ID만으로 정해지는 씨앗입니다. 같은 회차는 언제나 같은 문장을 얻습니다. */
+function hashSeed(value: string): number {
+  let hash = 2_166_136_261;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16_777_619);
+  }
+  return hash >>> 0;
+}
+
+/** 최근에 쓴 문장을 피해 가며 뽑습니다. 30분 내내 같은 말을 반복하면 코치가 아닙니다. */
+function createFillerPicker(seed: string): (pool: string[]) => string {
+  let state = hashSeed(seed) || 1;
+  const recent: string[] = [];
+  return (pool) => {
+    if (pool.length === 0) return '';
+    const window = Math.min(pool.length - 1, 20);
+    const blocked = new Set(recent.slice(-window));
+    const candidates = pool.filter((line) => !blocked.has(line));
+    const usable = candidates.length > 0 ? candidates : pool;
+    state = (Math.imul(state, 1_664_525) + 1_013_904_223) >>> 0;
+    const chosen = usable[state % usable.length];
+    recent.push(chosen);
+    return chosen;
+  };
+}
+
+/** 남은 시간은 초 단위로 읽어 주면 산만합니다. 10초 단위로 반올림합니다. */
+function roundedRemaining(seconds: number): number {
+  return Math.max(10, Math.round(seconds / 10) * 10);
+}
+
+type PriorityCue = CoachCue & {
+  /** 클수록 먼저 자리를 잡습니다. 구간 경계 안내는 절대 밀리지 않습니다. */
+  priority: number;
+};
+
+/**
+ * 대사를 서로 MIN_CUE_GAP_SECONDS 이상 벌립니다.
+ * 우선순위가 높은 대사가 먼저 자리를 잡고, 너무 가까운 낮은 우선순위 대사는 버립니다.
+ * (버리는 쪽은 언제나 채움 문장이나 격려이고, "지금 뛰세요" 같은 안내는 남습니다.)
+ */
+function declutter(cues: PriorityCue[]): PriorityCue[] {
+  const kept: PriorityCue[] = [];
+  const ordered = [...cues].sort(
+    (left, right) => right.priority - left.priority || left.offsetSeconds - right.offsetSeconds,
+  );
+  for (const cue of ordered) {
+    const collides = kept.some(
+      (other) => Math.abs(other.offsetSeconds - cue.offsetSeconds) < MIN_CUE_GAP_SECONDS,
+    );
+    if (collides) continue;
+    kept.push(cue);
+  }
+  return kept.sort((left, right) => left.offsetSeconds - right.offsetSeconds);
+}
+
 /**
  * 회차 하나를 음성 시간표로 바꿉니다.
  * 같은 회차를 넣으면 언제나 같은 결과가 나옵니다(결정적).
  */
 export function programCoachCues(session: ProgramSession): CoachCue[] {
   const timeline = buildTimeline(session.segments);
-  const cues: CoachCue[] = [];
-  const push = (offsetSeconds: number, text: string, kind: CoachCue['kind']) => {
+  const total = timeline.totalSeconds;
+  const core: PriorityCue[] = [];
+  const push = (
+    offsetSeconds: number,
+    text: string,
+    kind: CoachCue['kind'],
+    priority: number,
+  ) => {
     // 시작 전이나 끝난 뒤로 새는 안내는 넣지 않습니다.
-    if (offsetSeconds < 0 || offsetSeconds > timeline.totalSeconds) return;
-    cues.push({ offsetSeconds: Math.round(offsetSeconds), text, kind });
+    if (!text) return;
+    if (offsetSeconds < 0 || offsetSeconds > total) return;
+    core.push({ offsetSeconds: Math.round(offsetSeconds), text, kind, priority });
   };
 
-  push(0, `${session.title} 시작할게요. 전체 ${spokenDuration(timeline.totalSeconds)}이에요.`, 'phase');
-  push(0, '주변을 확인하고, 불편하면 언제든 멈춰도 괜찮아요.', 'safety');
+  push(0, `${session.title} 시작할게요. 전체 ${spokenDuration(total)}이에요.`, 'phase', 90);
+  push(SAFETY_SECONDS, '주변을 확인하고, 불편하면 언제든 멈춰도 괜찮아요.', 'safety', 70);
 
   timeline.entries.forEach((entry, index) => {
     const segment = entry.segment;
     const isFirst = index === 0;
-    push(entry.startSeconds, startSentence(segment, isFirst), 'instruction');
+    // 첫 구간의 시작 안내만은 여는 인사와 겹치지 않게 몇 초 뒤로 둡니다.
+    // 0초에 몰아 두면 엔진이 그중 하나만 읽고 나머지를 버립니다(이번 무음 신고의 원인).
+    const startAt = isFirst
+      ? Math.min(FIRST_SEGMENT_START_SECONDS, Math.max(0, segment.seconds - 2))
+      : entry.startSeconds;
+    push(startAt, startSentence(segment, isFirst), 'instruction', 100);
 
     if (segment.seconds >= MIN_SECONDS_FOR_HALFWAY) {
-      push(entry.startSeconds + segment.seconds / 2, halfwaySentence(segment), 'progress');
+      push(entry.startSeconds + segment.seconds / 2, halfwaySentence(segment), 'progress', 60);
     }
 
     const next = timeline.entries[index + 1]?.segment;
     if (!next) return;
     if (segment.seconds >= MIN_SECONDS_FOR_PREVIEW) {
-      push(entry.endSeconds - PREVIEW_LEAD_SECONDS, previewSentence(next), 'instruction');
+      push(entry.endSeconds - PREVIEW_LEAD_SECONDS, previewSentence(next), 'instruction', 95);
     }
-    push(entry.endSeconds - READY_LEAD_SECONDS, readySentence(next), 'instruction');
+    push(entry.endSeconds - READY_LEAD_SECONDS, readySentence(next), 'instruction', 100);
   });
 
   push(
-    timeline.totalSeconds,
-    `${session.title} 끝났어요. 전체 ${formatClock(timeline.totalSeconds)} 채웠어요. 수고했어요.`,
+    total,
+    `${session.title} 끝났어요. 전체 ${formatClock(total)} 채웠어요. 수고했어요.`,
     'completion',
+    100,
   );
 
-  // 같은 시각에 여러 문장이 겹치면 듣기 나쁘므로 시간순으로만 정렬해 둡니다.
-  // (한 번에 하나만 말하는 규칙은 발화 큐가 지킵니다.)
-  return cues.sort((left, right) => left.offsetSeconds - right.offsetSeconds);
+  const anchored = declutter(core);
+  const filled = declutter([...anchored, ...fillerCues(session, timeline, anchored)]);
+  return filled.map(({ priority: _priority, ...cue }) => cue);
+}
+
+/**
+ * 조용한 구간을 코칭 문장으로 채웁니다.
+ * "지금 이 구간이 얼마나 남았는지"를 우선 알려 주고, 그사이에 자세·호흡·격려를 섞습니다.
+ * 자유 러닝 코치가 쓰는 것과 같은 문장 풀을 그대로 씁니다(따로 관리하지 않습니다).
+ */
+function fillerCues(
+  session: ProgramSession,
+  timeline: ReturnType<typeof buildTimeline>,
+  anchored: PriorityCue[],
+): PriorityCue[] {
+  const total = timeline.totalSeconds;
+  if (total <= 0 || anchored.length === 0) return [];
+
+  const pick = createFillerPicker(`${session.id}:${total}`);
+  const rotation = categoryRotation.walkRun;
+  const filler: PriorityCue[] = [];
+  let step = 0;
+
+  const entryAt = (offset: number): TimelineEntry =>
+    timeline.entries.find(
+      (entry) => offset >= entry.startSeconds && offset < entry.endSeconds,
+    ) ?? timeline.entries[timeline.entries.length - 1];
+
+  const gaps: { from: number; to: number }[] = [];
+  for (let index = 1; index < anchored.length; index += 1) {
+    gaps.push({ from: anchored[index - 1].offsetSeconds, to: anchored[index].offsetSeconds });
+  }
+
+  for (const gap of gaps) {
+    if (gap.to - gap.from <= MAX_SILENCE_SECONDS) continue;
+    for (
+      let at = gap.from + FILL_INTERVAL_SECONDS;
+      at <= gap.to - MIN_CUE_GAP_SECONDS;
+      at += FILL_INTERVAL_SECONDS
+    ) {
+      const entry = entryAt(at);
+      const segment = entry.segment;
+      const remaining = entry.endSeconds - at;
+      step += 1;
+
+      // 두 번에 한 번은 "이 구간 얼마 남았는지"를 알려 줍니다. 가장 듣고 싶어 하는 정보입니다.
+      if (step % 2 === 1 && remaining >= 35 && segment.seconds >= 90) {
+        filler.push({
+          offsetSeconds: at,
+          text: `${actionVerb(segment)} ${spokenDuration(roundedRemaining(remaining))} 남았어요.`,
+          kind: 'progress',
+          priority: 30,
+        });
+        continue;
+      }
+
+      const category = rotation[step % rotation.length];
+      const pool = contextualCuePool('walkRun', category, {
+        ratio: at / total,
+        allowEasyIntensity: true,
+        // 걷는 중에 "속도를 올려요"라고 말하면 안 됩니다.
+        allowSpeedUp: segment.kind === 'run',
+        isWarmup: segment.role === 'warmup',
+      });
+      const text = pick(pool);
+      if (!text) continue;
+      filler.push({
+        offsetSeconds: at,
+        text,
+        kind: kindForCategory(category),
+        priority: 20,
+      });
+    }
+  }
+
+  return filler;
 }
 
 /**

@@ -7,6 +7,11 @@ import RunningbomCoachModule from '../../modules/runningbom-coach/src/Runningbom
 import type { ActivityKind } from '../../domains/activities/types';
 import type { CoachSession } from '../../domains/coaching/model';
 import { cueScheduleForNative } from '../../domains/coaching/model';
+import {
+  dueCues,
+  MAX_SPOKEN_CUES_PER_TICK,
+  speechWatchdogMillis,
+} from '../../domains/coaching/cuePump';
 import { toSpeech } from '../../domains/coaching/speechText';
 import { loadCoachVoicePick, type CoachVoicePick } from '../../app/screens/voice/voicePickStorage';
 import {
@@ -131,35 +136,62 @@ export async function coachVoiceStatus(gender: VoiceGender): Promise<CoachVoiceS
 type SpeechJob = { text: string; options: Speech.SpeechOptions };
 let speechQueue: SpeechJob[] = [];
 let speaking = false;
+let speechWatchdog: ReturnType<typeof setTimeout> | undefined;
+
+/** 밀렸을 때 남겨 두는 최대 개수입니다. 지난 이야기를 되풀이하지 않으면서 연속 두 마디는 살립니다. */
+const MAX_PENDING_SPEECH = MAX_SPOKEN_CUES_PER_TICK;
+
+function clearSpeechWatchdog() {
+  if (speechWatchdog) clearTimeout(speechWatchdog);
+  speechWatchdog = undefined;
+}
 
 function drainSpeechQueue() {
   if (speaking) return;
   const job = speechQueue.shift();
   if (!job) return;
   speaking = true;
+
+  // 같은 발화에 대해 끝 신호와 감시 타이머가 모두 울려도 한 번만 넘어가게 합니다.
+  let settled = false;
   const finish = () => {
+    if (settled) return;
+    settled = true;
+    clearSpeechWatchdog();
     speaking = false;
     drainSpeechQueue();
   };
-  Speech.speak(job.text, {
-    ...job.options,
-    onDone: finish,
-    onStopped: finish,
-    onError: finish,
-  });
+
+  clearSpeechWatchdog();
+  speechWatchdog = setTimeout(finish, speechWatchdogMillis(job.text, job.options.rate ?? 1));
+
+  try {
+    Speech.speak(job.text, {
+      ...job.options,
+      onDone: finish,
+      onStopped: finish,
+      onError: finish,
+    });
+  } catch {
+    // 말하기 자체가 실패해도 큐는 계속 흘러야 합니다.
+    finish();
+  }
 }
 
 function enqueueSpeech(text: string, options: Speech.SpeechOptions) {
   // 화면에 쓰는 글과 읽어 줄 글을 분리합니다. 원문은 그대로 두고 말하기 직전에만 다듬습니다.
   speechQueue.push({ text: toSpeech(text), options });
-  // 코치는 지난 이야기를 되풀이하지 않습니다. 밀린 큐는 최신 하나만 유지합니다.
-  if (speechQueue.length > 1) speechQueue = speechQueue.slice(-1);
+  // 코치는 지난 이야기를 되풀이하지 않습니다. 너무 밀리면 최근 것만 남깁니다.
+  if (speechQueue.length > MAX_PENDING_SPEECH) {
+    speechQueue = speechQueue.slice(-MAX_PENDING_SPEECH);
+  }
   drainSpeechQueue();
 }
 
 function clearSpeechQueue() {
   speechQueue = [];
   speaking = false;
+  clearSpeechWatchdog();
   void Speech.stop();
 }
 
@@ -224,24 +256,34 @@ function scheduleFallbackCuePump() {
   clearFallbackCueTimer();
   const pump = () => {
     fallbackState = snapshotFallbackClock(fallbackState, Date.now());
-    if (!fallbackSession || fallbackState.state !== 'running') return;
-    let dueIndex = -1;
-    while (
-      fallbackCueIndex < fallbackSession.cues.length &&
-      fallbackSession.cues[fallbackCueIndex].offsetSeconds <= fallbackState.elapsedSeconds
-    ) {
-      dueIndex = fallbackCueIndex;
-      fallbackCueIndex += 1;
+
+    // 세션이 없거나 이미 끝났으면 여기서 멈춥니다.
+    if (!fallbackSession) return;
+    if (fallbackState.state === 'completed' || fallbackState.state === 'stopped') return;
+    if (fallbackState.state === 'idle') return;
+
+    // 잠시 멈춤 상태여도 타이머는 살려 둡니다.
+    //
+    // 예전에는 running이 아니면 다시 예약하지 않고 그냥 빠져나갔습니다.
+    // 그래서 한 번이라도 running이 아닌 순간을 보면 그 뒤로 영영 아무 말도 하지 않았습니다.
+    if (fallbackState.state === 'running') {
+      // 같은 순간에 여러 대사가 밀렸어도 하나만 읽고 버리지 않습니다.
+      const { spoken, nextIndex } = dueCues(
+        fallbackSession.cues,
+        fallbackCueIndex,
+        fallbackState.elapsedSeconds,
+      );
+      fallbackCueIndex = nextIndex;
+      for (const cue of spoken) {
+        enqueueSpeech(cue.text, {
+          language: 'ko-KR',
+          rate: fallbackSpeechRate,
+          pitch: fallbackSpeechPitch,
+          ...(fallbackVoiceIdentifier ? { voice: fallbackVoiceIdentifier } : {}),
+        });
+      }
     }
-    if (dueIndex >= 0) {
-      const cue = fallbackSession.cues[dueIndex];
-      enqueueSpeech(cue.text, {
-        language: 'ko-KR',
-        rate: fallbackSpeechRate,
-        pitch: fallbackSpeechPitch,
-        ...(fallbackVoiceIdentifier ? { voice: fallbackVoiceIdentifier } : {}),
-      });
-    }
+
     fallbackCueTimer = setTimeout(pump, 500);
   };
   pump();

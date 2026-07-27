@@ -11,16 +11,19 @@ import { describe, it } from 'node:test';
 import { beginnerProgram } from '../domains/programs/beginnerProgram';
 import { buildTimeline } from '../domains/programs/session';
 import {
+  MIN_CUE_GAP_SECONDS,
   programCoachCues,
   programCoachSession,
   spokenDuration,
 } from '../domains/programs/coachSession';
 import type { ProgramSession } from '../domains/programs/types';
 
-const runnerSource = readFileSync(
-  fileURLToPath(new URL('../app/screens/programs/SessionRunner.tsx', import.meta.url)),
-  'utf8',
-);
+function read(relative: string): string {
+  return readFileSync(fileURLToPath(new URL(relative, import.meta.url)), 'utf8');
+}
+
+const runnerSource = read('../app/screens/programs/SessionRunner.tsx');
+const serviceSource = read('../services/audio/coachService.ts');
 
 /** 9주 프로그램의 모든 회차입니다. */
 const allSessions: ProgramSession[] = beginnerProgram.weeks.flatMap((week) => week.sessions);
@@ -39,7 +42,14 @@ describe('프로그램 회차 음성', () => {
       const cues = programCoachCues(session);
       const timeline = buildTimeline(session.segments);
       for (const entry of timeline.entries) {
-        const atStart = cues.filter((cue) => cue.offsetSeconds === entry.startSeconds);
+        // 첫 구간만은 여는 인사와 겹치지 않게 몇 초 뒤에 말합니다.
+        // 0초에 몰아 두면 재생 엔진이 그중 하나만 읽고 나머지를 버립니다.
+        const window = entry.index === 0 ? MIN_CUE_GAP_SECONDS * 2 : 0;
+        const atStart = cues.filter(
+          (cue) =>
+            cue.offsetSeconds >= entry.startSeconds &&
+            cue.offsetSeconds <= entry.startSeconds + window,
+        );
         assert.ok(
           atStart.some((cue) => cue.kind === 'instruction'),
           `${session.id} / ${entry.segment.label}(${entry.startSeconds}초) 시작 안내가 없습니다`,
@@ -135,5 +145,32 @@ describe('회차 화면과 음성 엔진 연결', () => {
   it('일시정지·재개를 음성에도 전달한다', () => {
     assert.ok(runnerSource.includes('pauseCoachSession()'));
     assert.ok(runnerSource.includes('resumeCoachSession()'));
+  });
+
+  it('화면이 처음 그려질 때 재개 신호를 먼저 보내지 않는다', () => {
+    // 시작이 준비되는 동안 재개 신호가 먼저 닿으면 엔진이 시작 전 상태에서 그 신호를 받습니다.
+    assert.ok(
+      runnerSource.includes('pausedSentRef'),
+      '멈춤 상태가 실제로 바뀌었는지 구분하지 않습니다',
+    );
+  });
+});
+
+describe('재생 엔진이 스스로 멈추지 않는다', () => {
+  it('잠시 멈춤 상태에서도 다음 확인을 예약한다', () => {
+    // 예전에는 running이 아니면 재예약 없이 빠져나가, 그 뒤로 영영 조용했습니다.
+    assert.ok(
+      serviceSource.includes("fallbackState.state === 'completed'"),
+      '끝난 경우와 잠시 멈춘 경우를 구분하지 않습니다',
+    );
+    assert.ok(!/state !== 'running'\) return;/.test(serviceSource));
+  });
+
+  it('밀린 대사를 하나만 남기고 버리지 않는다', () => {
+    assert.ok(serviceSource.includes('dueCues('), '대사 선택 규칙을 공유하지 않습니다');
+  });
+
+  it('끝 신호가 유실돼도 큐가 잠기지 않는다', () => {
+    assert.ok(serviceSource.includes('speechWatchdogMillis'), '발화 감시 장치가 없습니다');
   });
 });
