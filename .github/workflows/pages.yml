@@ -25,14 +25,34 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - name: 네이티브·생성기 의존성 설치
+        run: npm --prefix apps/mobile ci
       - name: JavaScript 문법 검사
         run: node --check outputs/pushrun-site/app.js && node --check outputs/pushrun-site/family-analytics.js && node --check outputs/pushrun-site/family-shell.js && node --check outputs/pushrun-site/sw.js && node --check outputs/pushrun-site/alerts-core.js && node --check outputs/pushrun-site/race-calendar-core.js
       - name: 정적 자산·대회 데이터 검사
         run: npm test
-      - name: 네이티브 의존성 설치
-        run: npm --prefix apps/mobile ci
-      - name: Android·iOS 네이티브 검증
-        run: npm --prefix apps/mobile run check && npm --prefix apps/mobile run export:native
+      - name: 모바일 테스트
+        shell: bash
+        run: |
+          set +e
+          npm --prefix apps/mobile test > /tmp/mobile-tests.log 2>&1
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            echo '--- mobile test failure (last 160 lines) ---'
+            tail -n 160 /tmp/mobile-tests.log
+            exit "$status"
+          fi
+          tail -n 30 /tmp/mobile-tests.log
+      - name: 모바일 타입 검사
+        run: npm --prefix apps/mobile run typecheck
+      - name: 모바일 출시 설정 검사
+        run: npm --prefix apps/mobile run verify
+      - name: Expo 공개 설정 검사
+        run: npm --prefix apps/mobile run config
+      - name: Android·iOS 번들 내보내기
+        run: npm --prefix apps/mobile run export:native
       - name: Production dependency audit
         run: npm run audit:prod
 

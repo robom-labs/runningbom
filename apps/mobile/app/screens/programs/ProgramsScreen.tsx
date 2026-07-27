@@ -28,6 +28,7 @@ import {
 import { useAppState } from '../../state/AppStateProvider';
 import { goalRaceCountdown } from '../../../domains/races/goalRace';
 import { useGoalRace } from '../../../domains/races/useGoalRace';
+import { activityFromProgramAttempt } from '../../../domains/programs/activity';
 import { sessionShape } from '../../../domains/programs/beginnerProgram';
 import { progressSummary, type SessionAttempt } from '../../../domains/programs/progress';
 import { guessRaceDistance, type RacePlanDistance } from '../../../domains/programs/racePlan';
@@ -45,7 +46,7 @@ export type ProgramsScreenProps = {
 };
 
 export function ProgramsScreen({ onBack, onOpenRaces }: ProgramsScreenProps) {
-  const { activities, ready: activitiesReady } = useAppState();
+  const { activities, completeActivity, ready: activitiesReady } = useAppState();
   const { goalRace } = useGoalRace();
   const { ready, progress, finishSession } = usePrograms();
   const [running, setRunning] = useState<ProgramSession | undefined>(undefined);
@@ -72,10 +73,17 @@ export function ProgramsScreen({ onBack, onOpenRaces }: ProgramsScreenProps) {
 
   const onFinish = useCallback(
     (attempt: SessionAttempt, markComplete: boolean) => {
+      const session = running;
+      if (!session) return;
+
+      // 프로그램 진행과 실제 운동 기록을 동시에 남깁니다. 짧은 오작동은 helper가 걸러 내고,
+      // 기록 id는 회차·완료 시각으로 고정해 완료 버튼이 두 번 눌려도 중복되지 않습니다.
+      const activity = activityFromProgramAttempt(session, attempt);
       void finishSession(attempt, markComplete);
+      if (activity) void completeActivity(activity);
       setRunning(undefined);
     },
-    [finishSession],
+    [completeActivity, finishSession, running],
   );
 
   const closeRunner = useCallback(() => {

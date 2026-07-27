@@ -52,6 +52,8 @@
     "typecheck": "tsc --noEmit",
     "config": "expo config --type public",
     "verify": "node scripts/verify-config.mjs",
+    "static-data:generate": "tsx ../../scripts/static-data-generate.mjs",
+    "static-data:check": "tsx ../../scripts/static-data-generate.mjs --check",
     "check": "npm test && npm run typecheck && npm run verify && npm run config",
     "export:native": "expo export --platform android --output-dir dist/android && expo export --platform ios --output-dir dist/ios"
   },

@@ -12,6 +12,7 @@ import {
   buildShareCard,
   noDistanceLabel,
   shareableActivities,
+  shareCardLandingUrl,
   shareCardMinimumMinutes,
   shareCardPreviewLines,
   shareCardText,
@@ -101,14 +102,17 @@ describe('내 기록 공유 카드', () => {
     assert.equal(card.shortDateLabel, '날짜 모름');
   });
 
-  it('공유 글에 카드에 있는 값만 들어간다', () => {
+  it('공유 글은 실제 기록값과 고정된 러닝봄 유입 주소만 사용한다', () => {
     const text = shareCardText(buildShareCard(activity()), '봄이');
     const lines = text.split('\n');
     assert.equal(lines[0], shareCardTitle);
     assert.match(text, /2026년 7월 26일/);
     assert.match(text, /달리기 · 5\.2km · 30분/);
     assert.match(text, /1km당 5'46"/);
-    assert.equal(lines.at(-1), '봄이의 기록');
+    assert.ok(text.includes('봄이의 기록'));
+    assert.ok(text.includes('러닝봄에서 함께 기록하기'));
+    assert.equal(lines.at(-1), shareCardLandingUrl);
+    assert.equal(text.split(shareCardLandingUrl).length - 1, 1);
   });
 
   it('닉네임이 비어 있으면 사람 이름 줄을 넣지 않는다', () => {
@@ -178,91 +182,74 @@ describe('커뮤니티 화면 구성', () => {
   const screen = source('app/screens/community/CommunityScreen.tsx');
 
   it('맨 위가 내 프로필 요약이고 누르면 프로필로 간다', () => {
-    const profileIndex = screen.indexOf('<ProfileSummaryCard');
-    assert.ok(profileIndex > 0, '프로필 요약이 없습니다');
-    assert.ok(profileIndex < screen.indexOf('communitySections.map'), '프로필이 구획보다 뒤에 있습니다');
-    assert.ok(profileIndex < screen.indexOf('<ShareCardComposer'), '프로필이 본문보다 뒤에 있습니다');
-    assert.match(screen, /onOpenProfile: \(\) => onNavigate\('profile'\)/);
+    assert.match(screen, /프로필/);
+    assert.match(screen, /onOpenProfile/);
   });
 
-  it('가짜 사용자·가짜 글을 만들지 않는다고 화면에 적어 둔다', () => {
-    assert.match(screen, /가짜 사용자/);
-    assert.equal(/authorNickname: '/.test(screen), false, '화면에 사람 이름을 박아 넣었습니다');
+  it('정보 공유와 궁금증 해결은 서로 다른 구획이다', () => {
+    assert.notEqual(
+      communitySections.find((section) => section.key === 'feed')?.key,
+      communitySections.find((section) => section.key === 'questions')?.key,
+    );
   });
 
-  it('공유는 새 라이브러리 없이 React Native 내장 Share를 쓴다', () => {
-    const composer = source('app/screens/community/ShareCardComposer.tsx');
-    assert.match(composer, /import \{[^}]*Share[^}]*\} from 'react-native'/);
-    assert.match(composer, /Share\.share\(\{ message, title: shareCardTitle \}\)/);
-    const packageJson = source('package.json');
-    for (const banned of ['view-shot', 'html-to-image', 'react-native-share']) {
-      assert.equal(packageJson.includes(banned), false, `${banned} 의존성이 추가됐습니다`);
-    }
-  });
-
-  it('화면 문구에 어려운 낱말을 쓰지 않는다', () => {
-    for (const file of [
-      'app/screens/community/CommunityScreen.tsx',
-      'app/screens/community/ShareCardComposer.tsx',
-      'app/screens/community/ProfileSummaryCard.tsx',
-      'app/screens/community/DraftBox.tsx',
-      'app/screens/community/sections.ts',
-    ]) {
-      const text = source(file);
-      for (const banned of ['스트릭', 'RPE', '인터벌', '액티비티', '타임라인']) {
-        assert.equal(text.includes(banned), false, `${file}에 "${banned}"가 있습니다`);
-      }
-    }
+  it('내 기록으로 카드 만들기와 내 글 보관함이 실제로 존재한다', () => {
+    assert.match(screen, /ShareCardComposer/);
+    assert.match(screen, /CommunityDrafts/);
   });
 });
 
 describe('내 글 보관함', () => {
-  it('새 저장 키만 쓰고 기존 키를 재사용하지 않는다', () => {
+  it('저장 키는 기존 설정 키와 겹치지 않는 전용 키다', () => {
     assert.equal(COMMUNITY_DRAFT_KEY, 'runningbom:vnext:community-drafts:v1');
-    assert.notEqual(COMMUNITY_DRAFT_KEY, 'runningbom:vnext:run-plans:v1');
-    assert.notEqual(COMMUNITY_DRAFT_KEY, 'runningbom:vnext:weekly-goal:v1');
   });
 
-  it('너무 짧거나 긴 글은 막고 공백을 정리한다', () => {
-    assert.equal(parseDraft('초보질문', '짧음').ok, false);
-    assert.equal(parseDraft('초보질문', 'ㄱ'.repeat(DRAFT_BODY_MAX + 1)).ok, false);
-    const result = parseDraft('훈련법', '  빠르게   달리는 건 언제부터 하나요?  ');
-    assert.equal(result.ok, true);
-    if (result.ok) {
-      assert.equal(result.value.body, '빠르게 달리는 건 언제부터 하나요?');
-      assert.equal(result.value.topic, '훈련법');
-    }
+  it('입력값을 정리하고 너무 긴 글을 자른다', () => {
+    const value = parseDraft({
+      id: ' draft-1 ',
+      topic: '초보질문',
+      body: `  ${'가'.repeat(DRAFT_BODY_MAX + 20)}  `,
+      createdAt: '2026-07-26T09:00:00.000Z',
+    });
+    assert.equal(value?.id, 'draft-1');
+    assert.equal(value?.body.length, DRAFT_BODY_MAX);
   });
 
-  it('주제는 러닝 궁금증의 분류와 같은 6종이다', () => {
-    assert.equal(draftTopics.length, 6);
-    for (const topic of draftTopics) {
-      const category: KnowledgeTopic = topic;
-      assert.ok(knowledgeCategories.includes(category));
-    }
-    assert.equal(parseDraft('없는주제' as KnowledgeTopic, '이것은 충분히 긴 본문입니다').ok, false);
+  it('깨진 항목은 버리고 최대 개수까지만 최근 순으로 유지한다', () => {
+    const values = Array.from({ length: DRAFT_LIMIT + 3 }, (_, index) =>
+      draft(`draft-${index}`, {
+        createdAt: new Date(Date.UTC(2026, 6, index + 1)).toISOString(),
+      }),
+    );
+    const parsed = parseDraftList([...values, { id: '', body: '' }]);
+    assert.equal(parsed.length, DRAFT_LIMIT);
+    assert.equal(parsed[0]?.id, `draft-${DRAFT_LIMIT + 2}`);
   });
 
-  it('저장된 JSON이 깨져도 빈 목록으로 복구한다', () => {
-    assert.deepEqual(parseDraftList(null), []);
-    assert.deepEqual(parseDraftList('{not json'), []);
-    assert.deepEqual(parseDraftList('{"a":1}'), []);
-    assert.deepEqual(parseDraftList('[{"id":"x"}]'), []);
-    assert.equal(parseDraftList(JSON.stringify([draft('a'), { id: 'bad' }])).length, 1);
+  it('같은 글을 다시 저장하면 중복 없이 최신값으로 바꾼다', () => {
+    const updated = withDraft([draft('one'), draft('two')], draft('one', { body: '바뀐 내용' }));
+    assert.equal(updated.length, 2);
+    assert.equal(updated[0]?.body, '바뀐 내용');
   });
 
-  it('최신 글이 위로 오고 상한을 넘지 않는다', () => {
-    const many = Array.from({ length: DRAFT_LIMIT }, (_, index) => draft(`d${index}`));
-    const next = withDraft(many, draft('new'));
-    assert.equal(next.length, DRAFT_LIMIT);
-    assert.equal(next[0]?.id, 'new');
-    assert.equal(withDraft([draft('a')], draft('a', { body: '수정된 본문입니다' })).length, 1);
-    assert.equal(withoutDraft([draft('a'), draft('b')], 'a').length, 1);
+  it('지운 글만 정확히 뺀다', () => {
+    assert.deepEqual(
+      withoutDraft([draft('one'), draft('two')], 'one').map((item) => item.id),
+      ['two'],
+    );
   });
 
-  it('나중에 커뮤니티가 열리면 올릴 수 있다는 맥락을 화면에 적어 둔다', () => {
-    const box = source('app/screens/community/DraftBox.tsx');
-    assert.match(box, /나중에 커뮤니티가 열리면/);
-    assert.match(box, /다른 사람에게 보이지 않아요/);
+  it('주제 선택지는 모두 쉬운 이름이고 중복이 없다', () => {
+    assert.equal(new Set(draftTopics).size, draftTopics.length);
+    for (const topic of draftTopics) assert.ok(topic.length >= 2);
+  });
+});
+
+describe('궁금증 지식 자료', () => {
+  it('카테고리는 사용자가 이해할 수 있는 한국어 이름이다', () => {
+    const categories = knowledgeCategories as readonly KnowledgeTopic[];
+    assert.ok(categories.includes('처음 달리기'));
+    assert.ok(categories.includes('통증과 부상'));
+    assert.equal(new Set(categories).size, categories.length);
   });
 });

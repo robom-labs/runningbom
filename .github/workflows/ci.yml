@@ -1,4 +1,4 @@
-# 러닝봄 웹 정본과 Android·iOS 네이티브 출시 계약을 함께 검증한다.
+# 러닝봄 웹 정본과 Android·iOS 네이티브 출시 계약을 독립 작업으로 검증한다.
 name: CI
 
 on:
@@ -11,7 +11,36 @@ permissions:
   contents: read
 
 jobs:
-  verify:
+  static-product:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - name: Install generator runtime
+        run: npm --prefix apps/mobile ci --silent
+      - name: Diff check
+        run: git diff --check
+      - name: Static product tests
+        shell: bash
+        run: |
+          set +e
+          npm test > /tmp/static-tests.log 2>&1
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            echo '--- static test failure (last 160 lines) ---'
+            tail -n 160 /tmp/static-tests.log
+            exit "$status"
+          fi
+          tail -n 30 /tmp/static-tests.log
+      - name: Static product build
+        run: npm run build
+
+  mobile-product:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -21,11 +50,25 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: apps/mobile/package-lock.json
-      - run: npm --prefix apps/mobile ci
-      - run: git diff --check
-      - run: npm test
-      - run: npm run build
-      - name: Android·iOS 네이티브 검증
-        run: npm --prefix apps/mobile run check
+      - name: Install mobile dependencies
+        run: npm --prefix apps/mobile ci --silent
+      - name: Mobile tests
+        shell: bash
+        run: |
+          set +e
+          npm --prefix apps/mobile test > /tmp/mobile-tests.log 2>&1
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            echo '--- mobile test failure (last 160 lines) ---'
+            tail -n 160 /tmp/mobile-tests.log
+            exit "$status"
+          fi
+          tail -n 30 /tmp/mobile-tests.log
+      - name: Mobile typecheck
+        run: npm --prefix apps/mobile run typecheck
+      - name: Mobile release config
+        run: npm --prefix apps/mobile run verify
+      - name: Expo public config
+        run: npm --prefix apps/mobile run config
       - name: Production dependency audit
         run: npm run audit:prod
