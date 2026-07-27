@@ -21,11 +21,21 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: apps/mobile/package-lock.json
-      - run: npm --prefix apps/mobile ci
-      - run: git diff --check
-      - run: npm test
-      - run: npm run build
-      - name: Android·iOS 네이티브 검증
-        run: npm --prefix apps/mobile run check
+      - name: Install mobile dependencies
+        run: npm --prefix apps/mobile ci
+      - name: Diff check
+        run: git diff --check
+      - name: Static product tests
+        run: npm test
+      - name: Static product build
+        run: npm run build
+      - name: Mobile tests
+        run: npm --prefix apps/mobile test
+      - name: Mobile typecheck
+        run: npm --prefix apps/mobile run typecheck
+      - name: Mobile release config
+        run: npm --prefix apps/mobile run verify
+      - name: Expo public config
+        run: npm --prefix apps/mobile run config
       - name: Production dependency audit
         run: npm run audit:prod
