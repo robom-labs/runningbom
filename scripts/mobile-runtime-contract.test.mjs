@@ -30,10 +30,13 @@ test("앱 시작 데이터 갱신은 AbortController와 한 번의 effect로 제
   assert.match(raceStateSource, /shouldReplaceRaceFeed\(current, latest\) \? latest : current/);
 });
 
-test("접수 상태 검색과 예약 알림 취소 흐름을 제공한다", () => {
+test("접수 상태 검색과 묶음 카드의 대표 대회 알림 취소 흐름을 제공한다", () => {
   assert.match(raceScreenSource, /registrationFilter/);
   assert.match(raceScreenSource, /const \[query, setQuery\]/);
-  assert.match(raceScreenSource, /scheduled \? cancelAlert\(race\) : scheduleAlert\(race\)/);
+  assert.match(
+    raceScreenSource,
+    /scheduled \? cancelAlert\(primary\) : scheduleAlert\(primary\)/,
+  );
   assert.match(raceStateSource, /cancelRegistrationNotification/);
   assert.match(raceStateSource, /reconcileRegistrationNotifications/);
 });
