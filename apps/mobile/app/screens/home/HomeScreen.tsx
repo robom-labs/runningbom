@@ -1,5 +1,11 @@
-// 오늘의 러닝 한 장과 이번 주 목표를 먼저 보여주는 러닝봄 홈입니다.
-// 가장 자주 하는 행동(러닝 시작)이 첫 화면 상단에서 한 번에 닿도록 배치합니다.
+// 러닝봄 홈입니다. 오늘 → 이번 주 → 다가오는 것 → 최근 기록 → 발견 순서로 한 화면에 맥락을 담습니다.
+//
+// 화면 규칙
+// - 맨 위는 숫자 나열이 아니라 "오늘 뭘 하면 되는지" 한 문장입니다(model.ts의 todayHeadline).
+// - 숫자에는 반드시 비교나 의미를 붙입니다(weekInsight.meaning, 최근 기록의 note).
+// - 달리기 시작 버튼은 스크롤 없이 보이는 첫 카드 안에 크게 둡니다.
+// - 카드마다 사용자가 할 행동은 하나입니다.
+// - 기록 수(0 / 1~4 / 5+)에 따라 보여 줄 카드를 바꿔 빈 화면을 만들지 않습니다.
 import { memo, useCallback, useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -27,16 +33,32 @@ import {
 } from '../../design-system/theme';
 import { useAppState } from '../../state/AppStateProvider';
 import { useRaceState } from '../../state/RaceStateProvider';
-import { formatDDay, groupRaces } from '../../../domains/races/aggregate';
+import { groupRaces } from '../../../domains/races/aggregate';
 import { goalRaceCountdown, goalRacePhaseLabels } from '../../../domains/races/goalRace';
 import { useGoalRace } from '../../../domains/races/useGoalRace';
-import { currentWeekProgress, goalMetricLabels } from '../../../domains/badges/goals';
-import { formatDistance, kstDayKey } from '../../../domains/activities/summary';
-import { suggestTodayRun } from '../../../domains/activities/trend';
-import { activitySourceLabels, type ActivityRecord } from '../../../domains/activities/types';
+import { goalMetricLabels } from '../../../domains/badges/goals';
+import { kstDayKey } from '../../../domains/activities/summary';
 import { upcomingPlans } from '../../../domains/activities/plans';
 import { shoeCatalog } from '../../../domains/shoes/catalog';
+import { knowledgeCards } from '../community/knowledge';
 import type { RouteKey } from '../../navigation/types';
+import {
+  dayCountLabel,
+  greetingLine,
+  homeStage,
+  isPlainKorean,
+  pickForToday,
+  planForToday,
+  recentActivityCards,
+  registrationDeadlineLabel,
+  startActionLabel,
+  todayHeadline,
+  weekDayMarks,
+  weekInsight,
+  weekMovementCaption,
+  type HomeDayMark,
+  type HomeRecentActivity,
+} from './model';
 
 type Props = {
   onNavigate: (route: RouteKey) => void;
@@ -44,45 +66,125 @@ type Props = {
   onOpenShoe: (shoeId?: string) => void;
 };
 
-const kindLabels: Record<string, string> = { run: '러닝', walk: '걷기', recovery: '회복' };
+/** '다가오는 것' 한 줄입니다. 목표 대회·내 일정·접수 마감을 같은 모양으로 세웁니다. */
+type UpcomingRow = {
+  key: string;
+  badge: string;
+  title: string;
+  meta: string;
+  accessibilityHint: string;
+  onPress: () => void;
+};
+
+const UPCOMING_LIMIT = 4;
 
 export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe }: Props) {
-  const { preferences, streak, storageError, activities, weeklyGoal, plans, badges } = useAppState();
+  const { preferences, streak, storageError, activities, weeklyGoal, plans } = useAppState();
   const { feed, loading } = useRaceState();
   const { goalRace } = useGoalRace();
 
-  const progress = useMemo(
-    () => currentWeekProgress(activities, weeklyGoal),
-    [activities, weeklyGoal],
-  );
-
-  const suggestion = useMemo(
-    () => suggestTodayRun(activities, preferences.coachMinutes),
-    [activities, preferences.coachMinutes],
-  );
-
-  const goalCountdown = useMemo(
-    () => (goalRace ? goalRaceCountdown(goalRace.raceDate) : undefined),
-    [goalRace],
-  );
-
-  const nextRaces = useMemo(
-    () =>
-      groupRaces(feed.races)
-        .filter((group) => group.status === '접수 중' || group.status === '접수 예정')
-        .slice(0, 3),
-    [feed.races],
-  );
-
-  const nextPlans = useMemo(() => upcomingPlans(plans, kstDayKey(new Date()), 2), [plans]);
-  const recentActivities = useMemo(() => activities.slice(0, 3), [activities]);
-  const recentBadges = useMemo(() => badges.slice(0, 3), [badges]);
-  const featuredShoes = useMemo(() => shoeCatalog.slice(0, 4), []);
-  const hasActivity = activities.length > 0;
+  // 한 번 그린 홈 안에서는 같은 '오늘'을 씁니다(문장과 요일 칸이 서로 어긋나지 않게).
+  const now = useMemo(() => Date.now(), []);
 
   const openStart = useCallback(() => onNavigate('start'), [onNavigate]);
   const openCalendar = useCallback(() => onNavigate('calendar'), [onNavigate]);
   const openStats = useCallback(() => onNavigate('stats'), [onNavigate]);
+  const openCommunity = useCallback(() => onNavigate('community'), [onNavigate]);
+  const openAllRaces = useCallback(() => onOpenRace(undefined), [onOpenRace]);
+
+  const stage = useMemo(() => homeStage(activities), [activities]);
+  const todayPlan = useMemo(() => planForToday(plans, now), [now, plans]);
+
+  const headline = useMemo(
+    () =>
+      todayHeadline({
+        activities,
+        weeklyGoal,
+        plans,
+        coachMinutes: preferences.coachMinutes,
+        ...(goalRace ? { goalRace: { name: goalRace.name, raceDate: goalRace.raceDate } } : {}),
+        now,
+      }),
+    [activities, goalRace, now, plans, preferences.coachMinutes, weeklyGoal],
+  );
+
+  const week = useMemo(() => weekInsight(activities, weeklyGoal, now), [activities, now, weeklyGoal]);
+  const dayMarks = useMemo(() => weekDayMarks(activities, now), [activities, now]);
+  const dayCaption = useMemo(
+    () => weekMovementCaption(dayMarks, streak.current),
+    [dayMarks, streak.current],
+  );
+  const movedDays = useMemo(() => dayMarks.filter((mark) => mark.moved).length, [dayMarks]);
+  const recent = useMemo(() => recentActivityCards(activities, 2), [activities]);
+
+  const upcoming = useMemo<UpcomingRow[]>(() => {
+    const rows: UpcomingRow[] = [];
+
+    if (goalRace) {
+      const countdown = goalRaceCountdown(goalRace.raceDate, now);
+      rows.push({
+        key: `goal-${goalRace.raceId}`,
+        badge: dayCountLabel(goalRace.raceDate, now),
+        title: goalRace.name,
+        meta: `목표 대회 · ${goalRace.region} · ${goalRacePhaseLabels[countdown.phase]}`,
+        accessibilityHint: '목표 대회 상세를 열어요',
+        onPress: () => onOpenRace(goalRace.raceId),
+      });
+    }
+
+    for (const plan of upcomingPlans(plans, kstDayKey(new Date(now)), 2)) {
+      rows.push({
+        key: `plan-${plan.id}`,
+        badge: dayCountLabel(plan.date, now),
+        title: plan.title,
+        meta: `내가 적어 둔 일정 · ${plan.date}`,
+        accessibilityHint: '캘린더에서 자세히 봐요',
+        onPress: openCalendar,
+      });
+    }
+
+    const openGroups = groupRaces(feed.races, now).filter((group) => group.status === '접수 중');
+    const closingSoon = openGroups
+      .map((group) => ({
+        group,
+        deadline: registrationDeadlineLabel(group.primary.registrationClosesAt, now),
+      }))
+      .filter((entry) => entry.deadline !== undefined);
+    const raceCandidates =
+      closingSoon.length > 0
+        ? closingSoon
+        : openGroups.slice(0, 2).map((group) => ({ group, deadline: undefined }));
+
+    for (const { group, deadline } of raceCandidates) {
+      if (goalRace && group.raceIds.includes(goalRace.raceId)) continue;
+      rows.push({
+        key: `race-${group.id}`,
+        badge: dayCountLabel(group.raceDate, now),
+        title: group.name,
+        meta: `${deadline ?? group.status} · ${group.region} · ${group.distances.join(' · ')}`,
+        accessibilityHint: '대회 상세와 접수 알림을 열어요',
+        onPress: () => onOpenRace(group.id),
+      });
+    }
+
+    return rows.slice(0, UPCOMING_LIMIT);
+  }, [feed.races, goalRace, now, onOpenRace, openCalendar, plans]);
+
+  // 발견 자리는 앱 안의 기존 목록에서 그날 하나씩만 고릅니다(없는 항목을 지어내지 않습니다).
+  const shoe = useMemo(
+    () => pickForToday(shoeCatalog.filter((entry) => isPlainKorean(entry.pick)), now),
+    [now],
+  );
+  const knowledge = useMemo(
+    () =>
+      pickForToday(
+        knowledgeCards.filter(
+          (card) => isPlainKorean(card.question) && isPlainKorean(card.answer[0] ?? ''),
+        ),
+        now,
+      ),
+    [now],
+  );
 
   return (
     <ScrollView
@@ -92,429 +194,355 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe }: Props) {
     >
       {storageError ? <Banner title="저장 상태 안내" body={storageError} tone="warning" /> : null}
 
-      <Card style={styles.todayCard} tone="navy" accessibilityLabel="오늘의 러닝 추천">
-        <Text style={styles.eyebrow}>TODAY RUN</Text>
-        <Text style={styles.todayTitle}>{suggestion.title}</Text>
-        <Text style={styles.todayPlan}>
-          {suggestion.minutes}분 · {preferences.coachType}
-        </Text>
-        <View style={styles.todayActions}>
-          <Button
-            accessibilityHint="음성 코치와 함께 오늘의 러닝을 시작해요"
-            label="러닝 시작"
-            onPress={openStart}
-            size="lg"
-            style={styles.primaryAction}
-            testID="home-start-run"
-            tone="secondary"
-          />
-          <Button
-            label="캘린더"
-            onPress={openCalendar}
-            style={styles.secondaryAction}
-            tone="quiet"
-          />
-        </View>
-        <Text style={styles.todayDescription}>{suggestion.body}</Text>
-        <Text style={styles.todayNote}>
-          세부 시간과 유형은 러닝 시작 화면에서 바꿀 수 있어요. 몸 상태가 우선이에요.
-        </Text>
-      </Card>
-
-      {goalRace && goalCountdown ? (
-        <Pressable
-          accessibilityHint="목표 대회 상세를 열어요"
-          accessibilityLabel={`목표 대회 ${goalRace.name} ${goalCountdown.dDayLabel}`}
-          accessibilityRole="button"
-          onPress={() => onOpenRace(goalRace.raceId)}
-          style={({ pressed }) => [pressed && styles.pressed]}
-        >
-          <Card style={styles.goalRaceCard} tone="warm">
-            <View style={styles.goalRaceTop}>
-              <View style={styles.goalRaceDDay}>
-                <Text style={styles.goalRaceDDayText}>{goalCountdown.dDayLabel}</Text>
-              </View>
-              <Chip label={goalRacePhaseLabels[goalCountdown.phase]} tone="accent" />
-            </View>
-            <Text style={styles.goalRaceName}>{goalRace.name}</Text>
-            <Text style={styles.goalRaceMeta}>
-              {goalRace.raceDate} · {goalRace.region} · {goalCountdown.remainingLabel}
-            </Text>
-          </Card>
-        </Pressable>
-      ) : null}
-
-      <Card style={styles.goalCard}>
-        <View style={styles.goalHeader}>
-          <View style={styles.goalCopy}>
-            <Text style={styles.goalTitle}>
-              이번 주 목표 · {goalMetricLabels[weeklyGoal.metric]}
-            </Text>
-            <Text style={styles.goalMeta}>{progress.remainingLabel}</Text>
-          </View>
-          <Chip
-            label={progress.met ? '달성' : '진행 중'}
-            tone={progress.met ? 'positive' : 'accent'}
-          />
-        </View>
-        <ProgressBar
-          label={progress.label}
-          ratio={progress.ratio}
-          tone={progress.met ? 'positive' : 'accent'}
+      {/* ① 인사 + 오늘 한 문장 + ② 큰 시작 버튼: 스크롤 없이 여기까지 보입니다. */}
+      <Card
+        accessibilityLabel={`오늘 안내. ${headline.text}`}
+        style={styles.hero}
+        tone="navy"
+      >
+        <Text style={styles.heroEyebrow}>{greetingLine(preferences.nickname, now)}</Text>
+        <Text style={styles.heroHeadline}>{headline.text}</Text>
+        <Button
+          accessibilityHint="음성 코치와 함께 오늘의 러닝을 시작해요"
+          label={startActionLabel(todayPlan)}
+          onPress={openStart}
+          size="lg"
+          style={styles.heroAction}
+          testID="home-start-run"
+          tone="secondary"
         />
-        <View style={styles.goalFooter}>
-          <Text style={styles.goalFooterText}>
-            {streak.current > 0 ? `연속 ${streak.current}일 · ${streak.tier}` : streak.tier}
-          </Text>
-          <Button label="기록·통계" onPress={openStats} tone="quiet" />
-        </View>
+        <Text style={styles.heroNote}>
+          시간과 유형은 시작 화면에서 바꿀 수 있어요. 몸 상태가 우선이에요.
+        </Text>
       </Card>
 
-      {nextPlans.length > 0 ? (
-        <Card style={styles.planCard}>
-          <Text style={styles.sectionMini}>예정된 러닝</Text>
-          {nextPlans.map((plan) => (
-            <Pressable
-              accessibilityHint="캘린더에서 자세히 봐요"
-              accessibilityLabel={`${plan.date} ${plan.title}`}
-              accessibilityRole="button"
-              key={plan.id}
-              onPress={openCalendar}
-              style={({ pressed }) => [styles.planRow, pressed && styles.pressed]}
-            >
-              <Text style={styles.planTitle}>{plan.title}</Text>
-              <Text style={styles.planMeta}>{plan.date}</Text>
-            </Pressable>
-          ))}
-        </Card>
-      ) : null}
-
-      <SectionHeader
-        title="최근 활동"
-        subtitle="이 기기에 저장된 기록이에요."
-        {...(hasActivity ? { action: <Button label="전체" onPress={openStats} tone="quiet" /> } : {})}
-      />
-      {hasActivity ? (
-        <Card style={styles.recentCard}>
-          {recentActivities.map((activity) => (
-            <ActivityRow activity={activity} key={activity.id} />
-          ))}
-        </Card>
-      ) : (
+      {/* ③+④ 이번 주 진행과 요일 7칸. 기록이 0건이면 숫자 카드 대신 첫 러닝 안내를 둡니다. */}
+      {stage === 'new' ? (
         <EmptyState
-          title="아직 저장된 기록이 없어요"
-          body="러닝 시작을 누르면 음성 코치가 함께 달리고, 끝난 뒤 이 기기에 자동으로 기록이 남아요. 이미 달린 기록은 캘린더에서 직접 적을 수도 있어요."
-          actionLabel="러닝 시작"
+          title="첫 러닝을 시작해볼까요?"
+          body="처음에는 20~30분 안에서 걷기와 달리기를 섞는 것으로 충분해요. 음성 코치가 언제 걷고 언제 뛸지 알려 주고, 끝나면 이 기기에 기록이 남아요."
+          actionLabel="짧게 첫 러닝 시작"
           onAction={openStart}
-          secondaryActionLabel="기록 직접 입력"
+          secondaryActionLabel="캘린더에 첫 계획 적어 두기"
           onSecondaryAction={openCalendar}
           hint="로그인 없이 쓸 수 있고, 기록은 기기 밖으로 자동 전송되지 않아요."
         />
-      )}
-
-      {recentBadges.length > 0 ? (
-        <>
-          <SectionHeader
-            title="새로 얻은 배지"
-            subtitle="가장 최근에 열린 배지예요."
-            action={<Button label="전체" onPress={openStats} tone="quiet" />}
-            compact
+      ) : (
+        <Card style={styles.stackCard}>
+          <View style={styles.cardHeader}>
+            <Text style={styles.cardTitle}>
+              이번 주 목표 · {goalMetricLabels[weeklyGoal.metric]}
+            </Text>
+            <Chip label={week.met ? '달성' : '진행 중'} tone={week.met ? 'positive' : 'accent'} />
+          </View>
+          <ProgressBar
+            label={week.valueLabel}
+            ratio={week.ratio}
+            tone={week.met ? 'positive' : 'accent'}
           />
-          <View style={styles.badgeRow}>
-            {recentBadges.map((badge) => (
-              <Chip key={badge.id} label={badge.title} tone="positive" />
+          <Text style={styles.cardBody}>{week.meaning}</Text>
+          <View
+            accessibilityLabel={`이번 주 움직인 날 ${movedDays}일`}
+            style={styles.dayStrip}
+          >
+            {dayMarks.map((mark) => (
+              <DayCell key={mark.key} mark={mark} />
             ))}
           </View>
-        </>
-      ) : null}
-
-      <SectionHeader
-        title="다가오는 대회"
-        subtitle={`검증 데이터 ${feed.revision}`}
-        action={<Button label="전체" onPress={() => onOpenRace(undefined)} tone="quiet" />}
-      />
-      {loading && nextRaces.length === 0 ? (
-        <Card accessibilityLabel="대회 정보를 불러오는 중이에요" style={styles.loadingCard}>
-          <Skeleton height={18} width="72%" />
-          <Skeleton height={12} width="54%" />
-          <Skeleton height={12} width="46%" />
+          <Text style={styles.cardCaption}>{dayCaption}</Text>
+          <Button label="기록·통계 보기" onPress={openStats} tone="quiet" />
         </Card>
-      ) : nextRaces.length > 0 ? (
-        <View style={styles.compactList}>
-          {nextRaces.map((group) => (
+      )}
+
+      {/* ⑤ 다가오는 것 */}
+      <SectionHeader
+        title="다가오는 것"
+        subtitle="목표 대회, 내가 적어 둔 일정, 접수 마감이 가까운 대회예요."
+        action={<Button label="대회 전체" onPress={openAllRaces} tone="quiet" />}
+      />
+      {loading && upcoming.length === 0 ? (
+        <Card accessibilityLabel="대회 정보를 불러오는 중이에요" style={styles.loadingCard}>
+          <Skeleton height={typeScale.titleSmall} width="72%" />
+          <Skeleton height={typeScale.caption} width="54%" />
+          <Skeleton height={typeScale.caption} width="46%" />
+        </Card>
+      ) : upcoming.length > 0 ? (
+        <View style={styles.rowList}>
+          {upcoming.map((row, index) => (
             <Pressable
-              key={group.key}
-              accessibilityHint="대회 상세와 접수 알림을 열어요"
-              accessibilityLabel={`${group.name} ${formatDDay(group.raceDate)} ${group.status}`}
+              accessibilityHint={row.accessibilityHint}
+              accessibilityLabel={`${row.badge} ${row.title}. ${row.meta}`}
               accessibilityRole="button"
-              onPress={() => onOpenRace(group.id)}
-              style={({ pressed }) => [styles.compactItem, pressed && styles.pressed]}
+              key={row.key}
+              onPress={row.onPress}
+              style={({ pressed }) => [
+                styles.row,
+                index < upcoming.length - 1 && styles.rowDivider,
+                pressed && styles.pressed,
+              ]}
             >
-              <View style={styles.compactCopy}>
-                <Text style={styles.compactTitle}>{group.name}</Text>
-                <Text style={styles.compactMeta}>
-                  {formatDDay(group.raceDate)} · {group.region} · {group.distances.join(' · ')}
+              <View style={styles.rowBadge}>
+                <Text style={styles.rowBadgeText}>{row.badge}</Text>
+              </View>
+              <View style={styles.rowCopy}>
+                <Text numberOfLines={1} style={styles.rowTitle}>
+                  {row.title}
+                </Text>
+                <Text numberOfLines={1} style={styles.rowMeta}>
+                  {row.meta}
                 </Text>
               </View>
-              <Chip
-                label={group.status}
-                tone={group.status === '접수 중' ? 'positive' : 'warning'}
-              />
             </Pressable>
           ))}
         </View>
       ) : (
         <EmptyState
-          title="지금 접수 중인 대회가 없어요"
-          body="접수 예정 대회가 확인되면 여기에 먼저 올려 드려요. 대회 화면에서는 지역·거리별로 전체 일정을 볼 수 있어요."
-          actionLabel="대회 전체 보기"
-          onAction={() => onOpenRace(undefined)}
+          title="아직 다가오는 일정이 없어요"
+          body="목표로 삼을 대회를 정하거나 캘린더에 러닝 일정을 적어 두면 여기에서 남은 날을 세어 드려요."
+          actionLabel="대회 둘러보기"
+          onAction={openAllRaces}
+          secondaryActionLabel="캘린더에 일정 적기"
+          onSecondaryAction={openCalendar}
           tone="muted"
         />
       )}
 
-      <SectionHeader
-        title="커뮤니티"
-        subtitle="러닝 질문에 답하는 Q&A를 로그인 없이 읽을 수 있어요."
-        action={<Button label="보기" onPress={() => onNavigate('community')} tone="quiet" />}
-      />
-      <EmptyState
-        title="러닝 Q&A로 먼저 도움받기"
-        body="무릎 통증, 러닝화 교체 시기, 인터벌 시작 시점처럼 자주 묻는 질문의 답을 앱 안에 담았어요. 글쓰기·좋아요는 운영 서버가 연결되기 전까지 열리지 않고, 가짜 사용자나 자동 게시물은 만들지 않습니다."
-        actionLabel="Q&A 읽기"
-        onAction={() => onNavigate('community')}
-      />
+      {/* ⑥ 최근 기록 */}
+      {recent.length > 0 ? (
+        <>
+          <SectionHeader
+            title="최근 기록"
+            subtitle="이 기기에 저장된 기록이에요."
+            action={<Button label="전체" onPress={openStats} tone="quiet" />}
+          />
+          <Card style={styles.stackCard}>
+            {recent.map((item, index) => (
+              <RecentRow item={item} key={item.id} showDivider={index > 0} />
+            ))}
+          </Card>
+        </>
+      ) : null}
 
-      <SectionHeader
-        title="러닝화 찾기"
-        subtitle={`러닝화 ${shoeCatalog.length}종의 목적과 국내 구매 경로를 비교해요.`}
-        action={<Button label="전체" onPress={() => onOpenShoe(undefined)} tone="quiet" />}
-      />
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.shoeRow}
-      >
-        {featuredShoes.map((shoe) => (
-          <Pressable
-            key={shoe.id}
-            accessibilityHint="러닝화 상세를 열어요"
-            accessibilityLabel={`${shoe.brand} ${shoe.model}`}
-            accessibilityRole="button"
-            onPress={() => onOpenShoe(shoe.id)}
-            style={({ pressed }) => [styles.shoeCard, pressed && styles.pressed]}
-          >
-            <Text style={styles.shoeBrand}>{shoe.brand}</Text>
-            <Text style={styles.shoeModel}>{shoe.model}</Text>
-            <Text numberOfLines={3} style={styles.shoeMeta}>
+      {/* ⑦ 발견 */}
+      <SectionHeader title="발견" subtitle="오늘 볼 만한 것 두 가지예요." />
+      {shoe ? (
+        <Card style={styles.discoverCard}>
+          <View style={styles.discoverCopy}>
+            <Text style={styles.cardEyebrow}>러닝화 추천</Text>
+            <Text numberOfLines={2} style={styles.cardTitle}>
+              {shoe.brand} {shoe.model}
+            </Text>
+            <Text numberOfLines={2} style={styles.cardBody}>
               {shoe.pick}
             </Text>
-          </Pressable>
-        ))}
-      </ScrollView>
+          </View>
+          <Button label="이 러닝화 보기" onPress={() => onOpenShoe(shoe.id)} tone="quiet" />
+        </Card>
+      ) : null}
+      {knowledge ? (
+        <Card style={styles.discoverCard}>
+          <View style={styles.discoverCopy}>
+            <Text style={styles.cardEyebrow}>러닝 Q&A</Text>
+            <Text numberOfLines={2} style={styles.cardTitle}>
+              {knowledge.question}
+            </Text>
+            <Text numberOfLines={2} style={styles.cardBody}>
+              {knowledge.answer[0] ?? ''}
+            </Text>
+          </View>
+          <Button label="답 읽어보기" onPress={openCommunity} tone="quiet" />
+        </Card>
+      ) : null}
     </ScrollView>
   );
 }
 
-// 목록 행은 별도 컴포넌트로 memo 해 두어 홈이 다시 그려져도 행마다 다시 계산하지 않습니다.
-const ActivityRow = memo(function ActivityRow({ activity }: { activity: ActivityRecord }) {
+// 요일 칸과 최근 기록 행은 memo 해 두어 홈이 다시 그려져도 행마다 다시 계산하지 않습니다.
+const DayCell = memo(function DayCell({ mark }: { mark: HomeDayMark }) {
   return (
-    <View style={styles.recentRow}>
-      <Text style={styles.recentTitle}>
-        {kindLabels[activity.kind] ?? activity.kind} · {activity.durationMinutes}분
-        {activity.distanceKm ? ` · ${formatDistance(activity.distanceKm)}` : ''}
-      </Text>
-      <Text style={styles.recentMeta}>
-        {activitySourceLabels[activity.source]} · {activity.completedAt.slice(0, 10)}
+    <View
+      accessibilityLabel={`${mark.label}요일 ${mark.moved ? '움직임' : '기록 없음'}`}
+      style={[
+        styles.dayCell,
+        mark.moved && styles.dayCellMoved,
+        mark.isToday && !mark.moved && styles.dayCellToday,
+      ]}
+    >
+      <Text
+        style={[
+          styles.dayLabel,
+          mark.isFuture && !mark.moved && styles.dayLabelFuture,
+          mark.moved && styles.dayLabelMoved,
+        ]}
+      >
+        {mark.label}
       </Text>
     </View>
   );
 });
 
+const RecentRow = memo(function RecentRow({
+  item,
+  showDivider,
+}: {
+  item: HomeRecentActivity;
+  showDivider: boolean;
+}) {
+  return (
+    <View style={[styles.recentRow, showDivider && styles.recentRowDivider]}>
+      <Text style={styles.rowTitle}>{item.title}</Text>
+      <Text style={styles.rowMeta}>{item.meta}</Text>
+      <Text style={styles.rowNote}>{item.note}</Text>
+    </View>
+  );
+});
+
 const styles = StyleSheet.create({
-  todayCard: { padding: spacing.xl },
-  eyebrow: {
+  // ── 오늘(히어로) ─────────────────────────────────────────────────────────
+  hero: { padding: spacing.xl, gap: spacing.sm },
+  heroEyebrow: {
     color: palette.onNavyAccent,
     fontSize: typeScale.caption,
     lineHeight: lineHeight.caption,
-    fontWeight: fontWeight.heavy,
-    letterSpacing: 1.4,
-  },
-  todayTitle: {
-    color: palette.onNavy,
-    fontSize: typeScale.display,
-    lineHeight: lineHeight.display,
-    fontWeight: fontWeight.heavy,
-    letterSpacing: -1,
-    marginTop: spacing.md,
-  },
-  todayPlan: {
-    color: palette.onNavy,
-    fontSize: typeScale.titleSmall,
-    lineHeight: lineHeight.titleSmall,
     fontWeight: fontWeight.bold,
-    marginTop: spacing.xxs,
   },
-  todayDescription: {
-    color: palette.onNavySoft,
-    fontSize: typeScale.bodySmall,
-    lineHeight: lineHeight.bodySmall,
-    marginTop: spacing.md,
+  heroHeadline: {
+    color: palette.onNavy,
+    fontSize: typeScale.headline,
+    lineHeight: lineHeight.headline,
+    fontWeight: fontWeight.heavy,
+    letterSpacing: -0.6,
   },
-  todayNote: {
+  heroAction: { marginTop: spacing.xs },
+  heroNote: {
     color: palette.onNavyMuted,
     fontSize: typeScale.caption,
     lineHeight: lineHeight.caption,
-    marginTop: spacing.xs,
   },
-  todayActions: { flexDirection: 'row', gap: spacing.xs, marginTop: spacing.lg },
-  primaryAction: { flex: 2 },
-  secondaryAction: { flex: 1 },
+
+  // ── 카드 공통 ────────────────────────────────────────────────────────────
+  // 섹션 카드는 모두 같은 간격 규칙을 씁니다(제목 → 내용 → 행동).
+  stackCard: { gap: spacing.sm },
   loadingCard: { gap: spacing.sm },
-  goalRaceCard: { gap: spacing.xxs },
-  goalRaceTop: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
-  goalRaceDDay: {
-    minHeight: 30,
-    justifyContent: 'center',
-    borderRadius: radius.pill,
-    backgroundColor: palette.accentStrong,
-    paddingHorizontal: spacing.sm,
-  },
-  goalRaceDDayText: {
-    color: palette.white,
-    fontSize: typeScale.caption,
-    lineHeight: lineHeight.caption,
-    fontWeight: fontWeight.heavy,
-  },
-  goalRaceName: {
-    color: palette.ink,
-    fontSize: typeScale.titleSmall,
-    lineHeight: lineHeight.titleSmall,
-    fontWeight: fontWeight.heavy,
-    marginTop: spacing.xs,
-  },
-  goalRaceMeta: {
-    color: palette.inkSoft,
-    fontSize: typeScale.caption,
-    lineHeight: lineHeight.caption,
-  },
-  recentCard: { gap: spacing.sm },
-  recentRow: { gap: spacing.xxs / 2 },
-  recentTitle: {
-    color: palette.ink,
-    fontSize: typeScale.bodySmall,
-    lineHeight: lineHeight.bodySmall,
-    fontWeight: fontWeight.bold,
-  },
-  recentMeta: {
-    color: palette.muted,
-    fontSize: typeScale.caption,
-    lineHeight: lineHeight.caption,
-  },
-  badgeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
-  goalCard: { gap: spacing.sm },
-  goalHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  goalCopy: { flex: 1, minWidth: 0 },
-  goalTitle: {
-    color: palette.ink,
-    fontSize: typeScale.body,
-    lineHeight: lineHeight.body,
-    fontWeight: fontWeight.heavy,
-  },
-  goalMeta: {
-    color: palette.muted,
-    fontSize: typeScale.caption,
-    lineHeight: lineHeight.caption,
-    marginTop: spacing.xxs / 2,
-  },
-  goalFooter: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  goalFooterText: {
-    flex: 1,
-    minWidth: 0,
-    color: palette.inkSoft,
-    fontSize: typeScale.caption,
-    lineHeight: lineHeight.caption,
-    fontWeight: fontWeight.bold,
-  },
-  planCard: { gap: spacing.xs },
-  sectionMini: {
+  cardHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  cardEyebrow: {
     color: palette.muted,
     fontSize: typeScale.micro,
     lineHeight: lineHeight.micro,
     fontWeight: fontWeight.heavy,
     letterSpacing: 0.6,
   },
-  planRow: { minHeight: layout.touchTarget, justifyContent: 'center' },
-  planTitle: {
+  cardTitle: {
+    flex: 1,
+    minWidth: 0,
     color: palette.ink,
+    fontSize: typeScale.body,
+    lineHeight: lineHeight.body,
+    fontWeight: fontWeight.heavy,
+  },
+  cardBody: {
+    color: palette.inkSoft,
     fontSize: typeScale.bodySmall,
     lineHeight: lineHeight.bodySmall,
-    fontWeight: fontWeight.bold,
   },
-  planMeta: {
+  cardCaption: {
     color: palette.muted,
     fontSize: typeScale.caption,
     lineHeight: lineHeight.caption,
-    marginTop: spacing.xxs / 2,
   },
-  compactList: {
+
+  // ── 이번 주 요일 7칸 ─────────────────────────────────────────────────────
+  dayStrip: { flexDirection: 'row', gap: spacing.xxs },
+  dayCell: {
+    flex: 1,
+    minWidth: 0,
+    // 누르는 칸이 아니라 표시용이라 48px 대신 한 칸이 정사각형에 가깝게 보이는 높이를 씁니다.
+    minHeight: layout.touchTarget - spacing.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: radius.sm,
+    borderWidth: borderWidth.thin,
+    borderColor: palette.surfaceMuted,
+    backgroundColor: palette.surfaceMuted,
+  },
+  dayCellMoved: { borderColor: palette.accentStrong, backgroundColor: palette.accentStrong },
+  dayCellToday: { borderColor: palette.accentStrong, borderWidth: borderWidth.emphasis },
+  dayLabel: {
+    color: palette.inkSoft,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    fontWeight: fontWeight.bold,
+  },
+  dayLabelFuture: { color: palette.muted },
+  dayLabelMoved: { color: palette.white },
+
+  // ── 목록 행(다가오는 것) ─────────────────────────────────────────────────
+  rowList: {
     borderRadius: radius.lg,
     overflow: 'hidden',
     backgroundColor: palette.surface,
     borderColor: palette.line,
     borderWidth: StyleSheet.hairlineWidth,
   },
-  compactItem: {
-    minHeight: 76,
+  row: {
+    minHeight: layout.touchTarget + spacing.lg,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
+  },
+  rowDivider: {
     borderBottomColor: palette.line,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  compactCopy: { flex: 1, minWidth: 0 },
-  compactTitle: {
-    color: palette.ink,
-    fontSize: typeScale.body,
-    lineHeight: lineHeight.body,
-    fontWeight: fontWeight.bold,
+  // 꼬리표 폭을 고정해 제목의 왼쪽 시작점을 모든 행에서 맞춥니다.
+  rowBadge: {
+    minWidth: layout.touchTarget + spacing.md,
+    minHeight: layout.touchTarget - spacing.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: radius.pill,
+    backgroundColor: palette.accentSoft,
+    paddingHorizontal: spacing.xs,
   },
-  compactMeta: {
-    color: palette.muted,
+  rowBadgeText: {
+    color: palette.accentDark,
     fontSize: typeScale.caption,
     lineHeight: lineHeight.caption,
-    marginTop: spacing.xxs,
-  },
-  shoeRow: { gap: spacing.sm, paddingVertical: spacing.xxs },
-  shoeCard: {
-    width: 210,
-    minHeight: 132,
-    borderRadius: radius.lg,
-    backgroundColor: palette.surface,
-    borderColor: palette.line,
-    borderWidth: borderWidth.thin,
-    padding: spacing.md,
-  },
-  shoeBrand: {
-    color: palette.muted,
-    fontSize: typeScale.caption,
-    lineHeight: lineHeight.caption,
-    fontWeight: fontWeight.bold,
-  },
-  shoeModel: {
-    color: palette.ink,
-    fontSize: typeScale.titleSmall,
-    lineHeight: lineHeight.titleSmall,
     fontWeight: fontWeight.heavy,
-    marginTop: spacing.xxs,
   },
-  shoeMeta: {
-    color: palette.inkSoft,
+  rowCopy: { flex: 1, minWidth: 0, gap: spacing.xxs },
+  rowTitle: {
+    color: palette.ink,
+    fontSize: typeScale.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+    fontWeight: fontWeight.bold,
+  },
+  rowMeta: {
+    color: palette.muted,
     fontSize: typeScale.caption,
     lineHeight: lineHeight.caption,
-    marginTop: spacing.sm,
   },
+
+  // ── 최근 기록 ────────────────────────────────────────────────────────────
+  recentRow: { gap: spacing.xxs },
+  recentRowDivider: {
+    borderTopColor: palette.line,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    paddingTop: spacing.sm,
+  },
+  rowNote: {
+    color: palette.accentDark,
+    fontSize: typeScale.caption,
+    lineHeight: lineHeight.caption,
+    fontWeight: fontWeight.bold,
+  },
+
+  // ── 발견 ─────────────────────────────────────────────────────────────────
+  // 두 카드의 최소 높이를 같게 잡아 나란히 봤을 때 들쭉날쭉하지 않게 합니다.
+  discoverCard: { minHeight: layout.touchTarget * 4, gap: spacing.sm },
+  discoverCopy: { flex: 1, gap: spacing.xxs },
+
   pressed: { opacity: pressedOpacity },
 });

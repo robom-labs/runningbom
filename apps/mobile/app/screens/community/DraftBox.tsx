@@ -1,5 +1,5 @@
-// 커뮤니티 글쓰기가 열리기 전까지 질문·메모를 이 기기에만 보관하는 임시 보관함입니다.
-// 서버로 보내지 않고, 자동 게시도 하지 않습니다.
+// 커뮤니티에 글쓰기가 열리기 전까지, 쓰고 싶은 글을 이 기기에만 보관해 두는 곳입니다.
+// 서버로 보내지 않고, 저절로 올라가지도 않습니다. 나중에 커뮤니티가 열리면 그대로 올릴 수 있습니다.
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Crypto from 'expo-crypto';
 import { useCallback, useEffect, useState } from 'react';
@@ -16,7 +16,7 @@ import {
   spacing,
   typeScale,
 } from '../../design-system/theme';
-import type { KnowledgeTopic } from './knowledge';
+import type { KnowledgeTopic } from '../guide/knowledge';
 import {
   COMMUNITY_DRAFT_KEY,
   DRAFT_BODY_MAX,
@@ -85,10 +85,16 @@ export function DraftBox() {
   return (
     <View style={styles.wrap}>
       <SectionHeader
-        title="내 질문 임시 보관함"
-        subtitle="글쓰기가 열릴 때 그대로 올릴 수 있게 이 기기에만 저장해요."
+        title="내 글 보관함"
+        subtitle="나중에 커뮤니티가 열리면 그대로 올릴 수 있게 이 기기에만 저장해 둬요."
         compact
       />
+      <Card style={styles.card} tone="muted">
+        <Text style={styles.note}>
+          지금은 다른 사람에게 보이지 않아요. 여기에 적어 둔 글은 내 폰 안에만 있고, 커뮤니티에
+          글쓰기가 열리면 그때 하나씩 골라 올릴 수 있어요.
+        </Text>
+      </Card>
       <Card style={styles.card}>
         <View accessibilityLabel="글 주제 고르기" style={styles.chipRow}>
           {draftTopics.map((value) => (
@@ -105,7 +111,7 @@ export function DraftBox() {
         </View>
         <TextInput
           accessibilityHint={`${topic} 주제로 이 기기에만 저장돼요. 최대 ${DRAFT_BODY_MAX}자까지 적을 수 있어요.`}
-          accessibilityLabel="질문이나 메모 입력"
+          accessibilityLabel="올리고 싶은 글 적기"
           multiline
           onChangeText={setBody}
           placeholder="예: 10K 대회를 처음 나가는데 페이스를 어떻게 잡을까요?"
@@ -133,7 +139,7 @@ export function DraftBox() {
           {status}
         </Text>
         <Text style={styles.note}>
-          보관한 글은 서버로 전송되지 않고 자동으로 게시되지도 않아요. 앱을 삭제하면 사라집니다.
+          보관한 글은 밖으로 보내지 않고 저절로 올라가지도 않아요. 앱을 지우면 함께 사라져요.
         </Text>
       </Card>
 

@@ -1,8 +1,9 @@
-// 러닝 Q&A 지식 카드 섹션입니다. 서버 없이 앱에 내장된 내용이라 오프라인에서도 읽을 수 있습니다.
+// "러닝 궁금증" 코너의 본문입니다. 검색 → 분류 → 질문 목록 → 펼치면 답변 순서로 읽습니다.
+// 앱 안에 내장된 글이라 서버 없이, 인터넷 없이도 그대로 읽을 수 있습니다.
 import { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { Card, Chip, Disclosure, SearchField } from '../../design-system/components';
+import { Card, Chip, Disclosure, EmptyState, SearchField } from '../../design-system/components';
 import {
   fontWeight,
   lineHeight,
@@ -22,7 +23,7 @@ import {
 } from './knowledge';
 
 type Props = {
-  /** 연결돼 있으면 관련 기능으로 바로 이동하고, 없으면 어디서 열 수 있는지 안내만 합니다. */
+  /** 연결돼 있으면 관련 화면으로 바로 이동하고, 없으면 어디서 열 수 있는지 안내만 합니다. */
   onNavigate?: (route: RouteKey) => void;
 };
 
@@ -37,20 +38,21 @@ export function KnowledgeSection({ onNavigate }: Props) {
   return (
     <View style={styles.wrap}>
       <Card style={styles.introCard}>
-        <Text style={styles.introTitle}>러닝 Q&A {knowledgeCards.length}개</Text>
+        <Text style={styles.introTitle}>궁금한 것 {knowledgeCards.length}가지</Text>
         <Text style={styles.introBody}>
-          초보가 가장 많이 묻는 질문을 앱 안에 담았어요. 검색하거나 주제를 골라 찾아보세요. 답변은
-          일반적인 참고 정보이며 진단이 아니에요.
+          러닝하면서 가장 많이 나오는 궁금증을 앱 안에 담아 뒀어요. 검색하거나 주제를 골라
+          찾아보세요. 사람들이 올린 글이 아니라 러닝봄이 준비한 안내이고, 일반적인 참고 정보이며
+          진단이 아니에요.
         </Text>
       </Card>
 
       <SearchField
-        accessibilityLabel="러닝 질문 검색"
+        accessibilityLabel="궁금한 것 검색"
         onChangeText={(value) => {
           setQuery(value);
           setOpenId(undefined);
         }}
-        placeholder="예: 무릎, 러닝화 교체, 인터벌"
+        placeholder="예: 무릎, 러닝화 교체, 매일 뛰어도"
         value={query}
       />
 
@@ -61,7 +63,7 @@ export function KnowledgeSection({ onNavigate }: Props) {
       >
         {knowledgeCategories.map((value) => (
           <Chip
-            accessibilityLabel={`${value} 주제, 질문 ${counts[value]}개`}
+            accessibilityLabel={`${value} 주제, 글 ${counts[value]}개`}
             accessibilityRole="tab"
             key={value}
             label={`${value} ${counts[value]}`}
@@ -80,61 +82,65 @@ export function KnowledgeSection({ onNavigate }: Props) {
       </Text>
 
       {results.length === 0 ? (
-        <Card style={styles.emptyCard}>
-          <Text style={styles.emptyTitle}>찾는 질문이 아직 없어요</Text>
-          <Text style={styles.emptyBody}>
-            아래 임시 보관함에 질문을 적어 두면, 커뮤니티 글쓰기가 열릴 때 그대로 올릴 수 있어요.
-          </Text>
-        </Card>
+        <EmptyState
+          title="찾는 내용이 아직 없어요"
+          body="다른 낱말로 찾아보거나 주제를 '전체'로 바꿔 보세요. 그래도 없으면 커뮤니티의 내 글 보관함에 적어 두었다가 나중에 물어볼 수 있어요."
+          actionLabel="전체 주제로 보기"
+          onAction={() => {
+            setCategory('전체');
+            setQuery('');
+          }}
+          tone="muted"
+        />
       ) : (
         <View style={styles.list}>
           {results.map((card) => {
             const expanded = openId === card.id;
             return (
-            // 아코디언 머리글의 accessibilityRole="button" + accessibilityState={{ expanded }}와
-            // 48px 이상 터치 높이는 공통 Disclosure(app/design-system/components.tsx)가 보장합니다.
-            <Disclosure
-              badge={<Chip accessibilityLabel={`${card.category} 주제`} label={card.category} />}
-              expanded={expanded}
-              key={card.id}
-              onToggle={() => setOpenId((current) => (current === card.id ? undefined : card.id))}
-              title={card.question}
-            >
-              <View
-                accessibilityLabel={`${card.question} 답변 ${card.answer.length}줄`}
-                accessibilityLiveRegion="polite"
-                accessibilityState={{ expanded }}
-                style={styles.answerList}
+              // 아코디언 머리글의 accessibilityRole="button" + accessibilityState={{ expanded }}와
+              // 48px 이상 터치 높이는 공통 Disclosure(app/design-system/components.tsx)가 보장합니다.
+              <Disclosure
+                badge={<Chip accessibilityLabel={`${card.category} 주제`} label={card.category} />}
+                expanded={expanded}
+                key={card.id}
+                onToggle={() => setOpenId((current) => (current === card.id ? undefined : card.id))}
+                title={card.question}
               >
-                {card.answer.map((line, index) => (
-                  <View key={`${card.id}-${index}`} style={styles.answerRow}>
-                    <Text style={styles.answerDot}>·</Text>
-                    <Text style={styles.answerText}>{line}</Text>
-                  </View>
-                ))}
-              </View>
-              {card.link ? (
-                <View style={styles.linkBox}>
-                  <Text style={styles.linkLabel}>
-                    관련 기능 · {knowledgeLinkLabels[card.link.target]}
-                  </Text>
-                  <Text style={styles.linkHint}>{card.link.hint}</Text>
-                  {onNavigate ? (
-                    <Chip
-                      accessibilityLabel={`${knowledgeLinkLabels[card.link.target]} 화면 열기`}
-                      accessibilityRole="button"
-                      label={`${knowledgeLinkLabels[card.link.target]} 열기`}
-                      onPress={() => onNavigate(card.link!.target)}
-                      tone="accent"
-                    />
-                  ) : (
-                    <Text style={styles.linkHintQuiet}>
-                      왼쪽 위 메뉴에서 {knowledgeLinkLabels[card.link.target]} 화면을 열 수 있어요.
-                    </Text>
-                  )}
+                <View
+                  accessibilityLabel={`${card.question} 답변 ${card.answer.length}줄`}
+                  accessibilityLiveRegion="polite"
+                  accessibilityState={{ expanded }}
+                  style={styles.answerList}
+                >
+                  {card.answer.map((line, index) => (
+                    <View key={`${card.id}-${index}`} style={styles.answerRow}>
+                      <Text style={styles.answerDot}>·</Text>
+                      <Text style={styles.answerText}>{line}</Text>
+                    </View>
+                  ))}
                 </View>
-              ) : null}
-            </Disclosure>
+                {card.link ? (
+                  <View style={styles.linkBox}>
+                    <Text style={styles.linkLabel}>
+                      관련 화면 · {knowledgeLinkLabels[card.link.target]}
+                    </Text>
+                    <Text style={styles.linkHint}>{card.link.hint}</Text>
+                    {onNavigate ? (
+                      <Chip
+                        accessibilityLabel={`${knowledgeLinkLabels[card.link.target]} 화면 열기`}
+                        accessibilityRole="button"
+                        label={`${knowledgeLinkLabels[card.link.target]} 열기`}
+                        onPress={() => onNavigate(card.link!.target)}
+                        tone="accent"
+                      />
+                    ) : (
+                      <Text style={styles.linkHintQuiet}>
+                        왼쪽 위 메뉴에서 {knowledgeLinkLabels[card.link.target]} 화면을 열 수 있어요.
+                      </Text>
+                    )}
+                  </View>
+                ) : null}
+              </Disclosure>
             );
           })}
         </View>
@@ -204,18 +210,5 @@ const styles = StyleSheet.create({
     color: palette.muted,
     fontSize: typeScale.micro,
     lineHeight: lineHeight.micro,
-  },
-  emptyCard: { backgroundColor: palette.surfaceWarm },
-  emptyTitle: {
-    color: palette.ink,
-    fontSize: typeScale.body,
-    lineHeight: lineHeight.body,
-    fontWeight: fontWeight.heavy,
-  },
-  emptyBody: {
-    color: palette.inkSoft,
-    fontSize: typeScale.bodySmall,
-    lineHeight: lineHeight.bodySmall,
-    marginTop: spacing.xs,
   },
 });

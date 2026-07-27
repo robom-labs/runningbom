@@ -1,7 +1,7 @@
 // 커뮤니티 글쓰기가 열리기 전까지 사용자가 쓴 질문·메모를 이 기기에만 보관하는 규칙입니다.
 // 서버로 보내지 않고, 기존 저장 키를 건드리지 않으며, 새 키만 추가합니다.
 
-import type { KnowledgeTopic } from './knowledge';
+import type { KnowledgeTopic } from '../guide/knowledge';
 
 export const COMMUNITY_DRAFT_KEY = 'runningbom:vnext:community-drafts:v1';
 
