@@ -7,6 +7,8 @@ import RunningbomCoachModule from '../../modules/runningbom-coach/src/Runningbom
 import type { ActivityKind } from '../../domains/activities/types';
 import type { CoachSession } from '../../domains/coaching/model';
 import { cueScheduleForNative } from '../../domains/coaching/model';
+import { toSpeech } from '../../domains/coaching/speechText';
+import { loadCoachVoicePick, type CoachVoicePick } from '../../app/screens/voice/voicePickStorage';
 import {
   koreanVoiceAvailability,
   rankKoreanVoices,
@@ -82,6 +84,36 @@ async function availableVoices(): Promise<SpeechVoiceLike[]> {
 /** 기기 음성 목록을 다시 읽습니다(사용자가 음성을 새로 설치한 경우). */
 export function resetVoiceCache(): void {
   cachedVoices = undefined;
+  cachedPick = undefined;
+}
+
+// 사용자가 "목소리 고르기" 화면에서 직접 고른 값입니다. 자동 선택보다 항상 앞섭니다.
+let cachedPick: CoachVoicePick | undefined;
+
+async function currentPick(): Promise<CoachVoicePick> {
+  if (!cachedPick) cachedPick = await loadCoachVoicePick();
+  return cachedPick;
+}
+
+/** 직접 고른 목소리를 우선 적용해 최종 식별자를 정합니다. */
+async function resolveVoice(
+  voices: SpeechVoiceLike[],
+  gender: VoiceGender,
+): Promise<{ identifier?: string; pick: CoachVoicePick }> {
+  const pick = await currentPick();
+  const identifier = selectVoiceIdentifier(voices, gender, pick.identifier);
+  return { ...(identifier ? { identifier } : {}), pick };
+}
+
+/** 직접 고른 빠르기·높낮이를 자동 계산값 위에 덧씌웁니다. */
+function applyPick(
+  tuning: { rate: number; pitch: number },
+  pick: CoachVoicePick,
+): { rate: number; pitch: number } {
+  return {
+    rate: pick.rate ?? tuning.rate,
+    pitch: pick.pitch ?? tuning.pitch,
+  };
 }
 
 export async function coachVoiceStatus(gender: VoiceGender): Promise<CoachVoiceStatus> {
@@ -118,7 +150,8 @@ function drainSpeechQueue() {
 }
 
 function enqueueSpeech(text: string, options: Speech.SpeechOptions) {
-  speechQueue.push({ text, options });
+  // 화면에 쓰는 글과 읽어 줄 글을 분리합니다. 원문은 그대로 두고 말하기 직전에만 다듬습니다.
+  speechQueue.push({ text: toSpeech(text), options });
   // 코치는 지난 이야기를 되풀이하지 않습니다. 밀린 큐는 최신 하나만 유지합니다.
   if (speechQueue.length > 1) speechQueue = speechQueue.slice(-1);
   drainSpeechQueue();
@@ -135,8 +168,8 @@ export async function previewCoachVoice(
   speechRate = 1,
 ): Promise<void> {
   const voices = await availableVoices();
-  const identifier = selectVoiceIdentifier(voices, gender);
-  const tuning = voiceTuning('easy', gender, 'standard', speechRate);
+  const { identifier, pick } = await resolveVoice(voices, gender);
+  const tuning = applyPick(voiceTuning('easy', gender, 'standard', speechRate), pick);
   clearSpeechQueue();
   enqueueSpeech(voicePreviewText[gender], {
     language: 'ko-KR',
@@ -156,8 +189,8 @@ export async function prepareCoachAsideVoice(
 ): Promise<void> {
   try {
     const voices = await availableVoices();
-    const identifier = selectVoiceIdentifier(voices, gender);
-    const tuning = voiceTuning('easy', gender, 'standard', speechRate);
+    const { identifier, pick } = await resolveVoice(voices, gender);
+    const tuning = applyPick(voiceTuning('easy', gender, 'standard', speechRate), pick);
     asideSpeechRate = tuning.rate;
     asideSpeechPitch = tuning.pitch;
     asideVoiceIdentifier = identifier;
@@ -245,8 +278,11 @@ export async function startCoachSession(
   const sessionId = Crypto.randomUUID();
   const startedAtEpochMillis = Date.now();
   const voices = await availableVoices();
-  const voiceIdentifier = selectVoiceIdentifier(voices, gender);
-  const tuning = voiceTuning(session.typeId, gender, session.guidance, speechRate);
+  const { identifier: voiceIdentifier, pick } = await resolveVoice(voices, gender);
+  const tuning = applyPick(
+    voiceTuning(session.typeId, gender, session.guidance, speechRate),
+    pick,
+  );
 
   // 짧은 안내도 코치와 같은 목소리·속도로 말하도록 맞춰 둡니다.
   asideSpeechRate = tuning.rate;

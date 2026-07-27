@@ -46,7 +46,11 @@ export const advisorQuestions: AdvisorQuestion[] = [
     options: [
       { value: '건강조깅', label: '건강·체력 관리', hint: '편안한 페이스로 꾸준히' },
       { value: '대회준비', label: '대회 준비', hint: '목표 대회를 앞두고 훈련 중' },
-      { value: '스피드훈련', label: '스피드 훈련', hint: '템포·인터벌을 정기적으로' },
+      {
+        value: '스피드훈련',
+        label: '빠르게 달리는 훈련',
+        hint: '조금 빠르게 달리거나 짧게 빠르게 반복하는 훈련을 정기적으로',
+      },
     ],
   },
   {

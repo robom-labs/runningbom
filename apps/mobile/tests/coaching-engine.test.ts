@@ -552,27 +552,33 @@ describe('기기 한국어 음성 선택', () => {
     assert.equal(koreanVoices(voices).length, 4);
   });
 
-  it('구글 한국어 음성 식별자로 남성·여성을 구분한다', () => {
-    assert.equal(classifyVoiceGender(voices[0]), 'male');
-    assert.equal(classifyVoiceGender(voices[2]), 'female');
+  it('성별이 적혀 있을 때만 남성·여성을 말한다', () => {
+    // ko-kr-x-kod처럼 성별 표시가 없는 식별자는 추측하지 않습니다.
+    // 잘못 짚은 성별은 "고른 목소리와 다른 목소리가 나온다"는 어색함으로 이어집니다.
+    assert.equal(classifyVoiceGender(voices[0]), 'unknown');
+    assert.equal(
+      classifyVoiceGender({ identifier: 'ko-kr-x-ism#female_1-local', language: 'ko-KR' }),
+      'female',
+    );
     assert.equal(
       classifyVoiceGender({ identifier: 'com.apple.voice.compact.ko-KR.Yuna', language: 'ko-KR' }),
       'female',
     );
   });
 
-  it('성별이 맞고 품질이 높은(network) 음성을 먼저 고른다', () => {
-    assert.equal(selectVoiceIdentifier(voices, 'male'), 'ko-kr-x-kod-network');
+  it('가장 자연스러운 음성을 성별보다 먼저 고른다', () => {
+    // 구글 인터넷 음성이 기기 안에서 가장 사람처럼 들립니다.
+    assert.equal(selectVoiceIdentifier(voices, 'male'), 'ko-kr-x-ism-network');
     assert.equal(selectVoiceIdentifier(voices, 'female'), 'ko-kr-x-ism-network');
     const ranked = rankKoreanVoices(voices, 'male');
-    assert.equal(ranked[0].gender, 'male');
+    assert.equal(ranked[0].tier, 'onlineNatural');
     assert.ok(ranked[0].score > ranked[ranked.length - 1].score);
   });
 
   it('한국어 음성이 없으면 설치 안내를 정직하게 노출하고 선택을 비운다', () => {
     const availability = koreanVoiceAvailability([voices[4]]);
     assert.equal(availability.hasKorean, false);
-    assert.match(availability.notice ?? '', /음성/);
+    assert.match(availability.notice ?? '', /목소리/);
     assert.equal(selectVoiceIdentifier([voices[4]], 'female'), undefined);
   });
 

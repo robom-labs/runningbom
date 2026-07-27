@@ -27,7 +27,7 @@ export function ShoeCompare({
 
   return (
     <View style={styles.container}>
-      <Button label="목록으로" onPress={onBack} tone="quiet" />
+      <Button label="돌아가기" onPress={onBack} tone="quiet" />
 
       <Card style={styles.intro}>
         <Text accessibilityRole="header" style={styles.title}>

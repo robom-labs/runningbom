@@ -2228,12 +2228,13 @@ export function officialSpecItems(entry: ShoeEntry): ShoeSpecItem[] {
     items.push({ key: 'weight', label: '무게', value: `${entry.weightGrams}g` });
   }
   if (typeof entry.dropMm === 'number') {
-    items.push({ key: 'drop', label: '드롭', value: `${entry.dropMm}mm` });
+    // 업계 용어는 그대로 두지 않고 괄호로 짧게 풀어 줍니다.
+    items.push({ key: 'drop', label: '드롭(앞뒤 높이차)', value: `${entry.dropMm}mm` });
   }
   if (entry.stackMm) {
     items.push({
       key: 'stack',
-      label: '스택',
+      label: '스택(바닥 두께)',
       value: `${entry.stackMm.heel}/${entry.stackMm.forefoot}mm`,
     });
   }

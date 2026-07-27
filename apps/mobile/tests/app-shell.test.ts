@@ -340,7 +340,14 @@ describe('드로어 세부 하위메뉴', () => {
     const statsFocuses = children
       .filter((entry) => entry.child.target === 'stats')
       .map((entry) => entry.child.focus);
-    assert.deepEqual(statsFocuses, ['week', 'badges', 'records']);
+    assert.deepEqual(statsFocuses, ['week', 'records']);
+  });
+
+  it('배지는 전용 화면이 생겨 구획 이동이 아니라 별도 라우트로 간다', () => {
+    const badgeChild = children.find((entry) => entry.child.key === 'stats-badges');
+    assert.ok(badgeChild, '배지 하위 항목이 있어야 합니다');
+    assert.equal(badgeChild?.child.target, 'badges');
+    assert.equal(badgeChild?.child.focus, undefined);
   });
 });
 

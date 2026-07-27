@@ -11,13 +11,18 @@ export type ExploreRequest = {
 export type RouteKey =
   | 'home'
   | 'start'
+  | 'programs'
   | 'calendar'
   | 'races'
   | 'shoes'
+  | 'challenges'
   | 'community'
+  | 'guide'
   | 'stats'
+  | 'badges'
   | 'profile'
   | 'settings'
+  | 'voice'
   | 'help';
 
 /**

@@ -4,13 +4,18 @@ import type { MenuGroup, RouteKey } from './types';
 export const routeTitles: Record<RouteKey, string> = {
   home: '홈',
   start: '러닝 시작',
+  programs: '연습 계획',
   calendar: '캘린더',
   races: '대회',
   shoes: '러닝화',
+  challenges: '도전',
   community: '커뮤니티',
+  guide: '러닝 궁금증',
   stats: '기록·통계',
+  badges: '배지',
   profile: '프로필',
   settings: '설정',
+  voice: '목소리 고르기',
   help: '도움말·문의',
 };
 
@@ -21,6 +26,16 @@ export const menuGroups: MenuGroup[] = [
     items: [
       { key: 'home', label: '홈', icon: 'home-outline', hint: '오늘의 러닝 한 장' },
       { key: 'start', label: '러닝 시작', icon: 'play-circle-outline', hint: '음성 코칭으로 바로 시작' },
+      {
+        key: 'programs',
+        label: '연습 계획',
+        icon: 'list-outline',
+        hint: '9주 달리기 시작과 대회 준비',
+        children: [
+          { key: 'programs-beginner', label: '9주 달리기 시작', target: 'programs' },
+          { key: 'programs-race', label: '대회 준비 계획', target: 'programs' },
+        ],
+      },
       {
         key: 'calendar',
         label: '캘린더',
@@ -48,13 +63,15 @@ export const menuGroups: MenuGroup[] = [
         icon: 'walk-outline',
         hint: '국내 구매 경로 비교',
         children: [
-          { key: 'shoes-category', label: '카테고리별', target: 'shoes' },
-          { key: 'shoes-brand', label: '브랜드별', target: 'shoes' },
+          { key: 'shoes-category', label: '갈래별', target: 'shoes' },
+          { key: 'shoes-distance', label: '거리별', target: 'shoes' },
           { key: 'shoes-advisor', label: '추천 받기', target: 'shoes' },
           { key: 'shoes-compare', label: '비교함', target: 'shoes' },
         ],
       },
-      { key: 'community', label: '커뮤니티', icon: 'people-outline', hint: '공개 피드 읽기' },
+      { key: 'challenges', label: '도전', icon: 'flame-outline', hint: '이번 달 목표에 참가하기' },
+      { key: 'community', label: '커뮤니티', icon: 'people-outline', hint: '기록 카드 만들기와 나눔' },
+      { key: 'guide', label: '러닝 궁금증', icon: 'help-buoy-outline', hint: '궁금한 것 130가지' },
       {
         key: 'stats',
         label: '기록·통계',
@@ -62,7 +79,7 @@ export const menuGroups: MenuGroup[] = [
         hint: '주간·월간 요약과 배지',
         children: [
           { key: 'stats-week', label: '주간 요약', target: 'stats', focus: 'week' },
-          { key: 'stats-badges', label: '배지', target: 'stats', focus: 'badges' },
+          { key: 'stats-badges', label: '배지', target: 'badges' },
           { key: 'stats-records', label: '최고기록', target: 'stats', focus: 'records' },
         ],
       },
@@ -72,7 +89,13 @@ export const menuGroups: MenuGroup[] = [
     id: 'system',
     title: '그 밖에',
     items: [
-      { key: 'settings', label: '설정', icon: 'settings-outline', hint: '음성·알림·연동·계정' },
+      {
+        key: 'settings',
+        label: '설정',
+        icon: 'settings-outline',
+        hint: '목소리·달리는 중·알림·계정',
+        children: [{ key: 'settings-voice', label: '목소리 고르기', target: 'voice' }],
+      },
       { key: 'help', label: '도움말·문의', icon: 'help-circle-outline', hint: '문의와 개인정보 안내' },
     ],
   },

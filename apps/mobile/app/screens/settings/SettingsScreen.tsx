@@ -24,6 +24,7 @@ import {
   typeScale,
 } from '../../design-system/theme';
 import { PermissionSettingsCard } from '../../permissions';
+import { RunSettingsSection } from './RunSettingsSection';
 import { BADGE_RULE_VERSION } from '../../../domains/badges/rules';
 import { COACH_CONTENT_VERSION } from '../../../domains/coaching/model';
 import { voiceGenderLabels, type VoiceGender } from '../../../domains/coaching/voice';
@@ -343,6 +344,8 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
           ))}
         </View>
       </Card>
+
+      <RunSettingsSection />
 
       <SectionHeader
         title="알림·위치·배터리"
