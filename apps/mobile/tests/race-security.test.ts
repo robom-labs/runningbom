@@ -13,10 +13,13 @@ import {
 describe('외부 URL 공통 방어', () => {
   it('공개 HTTPS만 허용하고 로컬·사설망·자격정보 주소는 거부한다', () => {
     assert.equal(safeHttpsUrl('https://example.com/path'), 'https://example.com/path');
+    assert.equal(safeHttpsUrl('https://fc.example.com/path'), 'https://fc.example.com/path');
     assert.equal(safeHttpsUrl('http://example.com/path'), undefined);
     assert.equal(safeHttpsUrl('https://localhost/path'), undefined);
     assert.equal(safeHttpsUrl('https://127.0.0.1/path'), undefined);
     assert.equal(safeHttpsUrl('https://192.168.0.1/path'), undefined);
+    assert.equal(safeHttpsUrl('https://[fd00::1]/path'), undefined);
+    assert.equal(safeHttpsUrl('https://[fe80::1]/path'), undefined);
     assert.equal(safeHttpsUrl('https://user:pass@example.com/path'), undefined);
     assert.equal(safeHttpsUrl('https://example.com/\u0000bad'), undefined);
   });
