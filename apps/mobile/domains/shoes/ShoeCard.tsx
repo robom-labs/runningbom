@@ -5,7 +5,7 @@
 //   남긴 것: 브랜드 컬러바 · 브랜드 · 모델명 · 핵심 한 줄 · 가격대 · 용도 칩 1~2개 · 비교 담기.
 //   뺀 것: 이니셜 배지, 영문 모델명, 실력·거리 칩 나열, 플레이트 칩, 장점 2줄.
 // - 뺀 정보는 없애는 게 아니라 상세 화면(ShoeDetail)에서 그대로 봅니다.
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Chip } from '../../app/design-system/components';
@@ -15,7 +15,12 @@ import { ShoeArt } from './ShoeArt';
 import { priceDisplay } from './price';
 import type { ShoeEntry } from './catalog';
 
-export function ShoeCard({
+/**
+ * 목록 한 줄입니다. **memo를 씌운 이유:**
+ * V4에서 카드마다 신발 그림(SVG 여섯 층)이 들어갔습니다. 비교함에 담거나 관심을 누를 때마다
+ * 화면에 있는 카드가 전부 다시 그려지면, 그때마다 SVG를 스무 장씩 새로 그리게 됩니다.
+ */
+export const ShoeCard = memo(function ShoeCard({
   shoe,
   focused = false,
   saved = false,
@@ -98,7 +103,7 @@ export function ShoeCard({
       </View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   card: {
