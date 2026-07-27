@@ -41,6 +41,8 @@ import { kstDayKey } from '../../../domains/activities/summary';
 import { upcomingPlans } from '../../../domains/activities/plans';
 import { shoeCatalog } from '../../../domains/shoes/catalog';
 import { knowledgeCards } from '../community/knowledge';
+import { usePrograms } from '../../../domains/programs/usePrograms';
+import { TodayCard } from '../programs/TodayCard';
 import type { RouteKey } from '../../navigation/types';
 import {
   dayCountLabel,
@@ -64,6 +66,12 @@ type Props = {
   onNavigate: (route: RouteKey) => void;
   onOpenRace: (raceId?: string) => void;
   onOpenShoe: (shoeId?: string) => void;
+  /**
+   * 오늘 카드에서 바로 시작을 눌렀을 때입니다.
+   * 훈련 탭으로 넘어가면서 그 회차·훈련을 곧바로 켭니다.
+   * 없으면 훈련 탭으로 넘기기만 합니다.
+   */
+  onStartTraining?: (intent: { kind: 'plan' | 'workout'; workoutId?: string }) => void;
 };
 
 /** '다가오는 것' 한 줄입니다. 목표 대회·내 일정·접수 마감을 같은 모양으로 세웁니다. */
@@ -78,8 +86,9 @@ type UpcomingRow = {
 
 const UPCOMING_LIMIT = 4;
 
-export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe }: Props) {
+export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe, onStartTraining }: Props) {
   const { preferences, streak, storageError, activities, weeklyGoal, plans } = useAppState();
+  const { progress } = usePrograms();
   const { feed, loading } = useRaceState();
   const { goalRace } = useGoalRace();
 
@@ -215,6 +224,23 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe }: Props) {
           시간과 유형은 시작 화면에서 바꿀 수 있어요. 몸 상태가 우선이에요.
         </Text>
       </Card>
+
+      {/*
+        오늘 하나만 고른 제안입니다. 위 카드가 "그냥 뛰기"라면 이건 "오늘 뭘 하면 좋은지"입니다.
+        최근 기록을 보고 정해지므로, 많이 뛴 다음 날에는 쉬라고 말합니다.
+      */}
+      <TodayCard
+        activities={activities}
+        hasPlanSessionLeft={Boolean(progress.current)}
+        onStartPlanSession={() => {
+          onStartTraining?.({ kind: 'plan' });
+          onNavigate('programs');
+        }}
+        onStartWorkout={(template) => {
+          onStartTraining?.({ kind: 'workout', workoutId: template.id });
+          onNavigate('programs');
+        }}
+      />
 
       {/* ③+④ 이번 주 진행과 요일 7칸. 기록이 0건이면 숫자 카드 대신 첫 러닝 안내를 둡니다. */}
       {stage === 'new' ? (
