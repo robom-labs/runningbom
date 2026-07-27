@@ -29,7 +29,19 @@ jobs:
         run: npm test
       - name: Web compatibility build
         run: npm run build
-      - name: Mobile rule tests
+      - name: Critical onboarding flow
+        working-directory: apps/mobile
+        run: npx tsx --test tests/onboarding.test.ts tests/permission-priming.test.ts
+      - name: Critical program activity flow
+        working-directory: apps/mobile
+        run: npx tsx --test tests/program-activity.test.ts
+      - name: Critical race and static-data trust
+        working-directory: apps/mobile
+        run: npx tsx --test tests/race-security.test.ts tests/static-data.test.ts
+      - name: Critical share growth flow
+        working-directory: apps/mobile
+        run: npx tsx --test tests/share-growth.test.ts
+      - name: Full mobile rule tests
         run: npm --prefix apps/mobile test
       - name: Mobile TypeScript
         run: npm --prefix apps/mobile run typecheck
