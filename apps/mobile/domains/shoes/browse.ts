@@ -12,6 +12,7 @@
 // - 업계 용어(슈퍼 트레이너·플레이트·드롭·스택)는 반드시 괄호로 짧은 설명을 붙입니다.
 import { shoeCatalog, type ShoeEntry } from './catalog';
 import { emptyShoeFilterState, type ShoeFilterState, type ShoeSort } from './filters';
+import { bandRangeLabel } from './price';
 import {
   shoeCategories,
   shoeLevels,
@@ -19,6 +20,7 @@ import {
   type ShoeCategory,
   type ShoeDistance,
   type ShoeLevel,
+  type ShoePriceBand,
   type ShoeSubCategory,
 } from './taxonomy';
 
@@ -348,6 +350,14 @@ export type ShoeListSource =
   | { type: 'category'; category: ShoeCategory }
   | { type: 'distance'; key: ShoeDistanceKey }
   | { type: 'level'; level: ShoeLevel }
+  /**
+   * 가격대로 바로 들어오는 길입니다.
+   *
+   * 예전에는 가격이 "전체 보기" 안쪽 상세 필터에만 있었습니다.
+   * 그런데 신발을 고를 때 사람들이 가장 먼저 부딪히는 벽이 가격입니다.
+   * 그래서 갈래·거리·실력과 **같은 층**으로 끌어올렸습니다.
+   */
+  | { type: 'price'; band: ShoePriceBand }
   | { type: 'all' };
 
 export type ShoeBrowseView =
@@ -368,6 +378,7 @@ export function shoeListTitle(source: ShoeListSource): string {
     return guide ? guide.title : source.subCategory;
   }
   if (source.type === 'distance') return `${shoeDistanceEntry(source.key).label} 러닝화`;
+  if (source.type === 'price') return `${bandRangeLabel(source.band)} 러닝화`;
   return `${shoeLevelEntry(source.level).label}`;
 }
 
@@ -384,6 +395,9 @@ export function shoeListLead(source: ShoeListSource): string {
     return guide ? guide.forWhom : shoeCategoryGuide(source.category).forWhom;
   }
   if (source.type === 'distance') return shoeDistanceEntry(source.key).lead;
+  if (source.type === 'price') {
+    return '이 가격대 안에서만 보여 드려요. 값은 카드마다 함께 나와요.';
+  }
   return shoeLevelEntry(source.level).lead;
 }
 
@@ -406,7 +420,16 @@ export function filtersForSource(
   if (source.type === 'distance') {
     return { ...base, distances: [...shoeDistanceEntry(source.key).distances] };
   }
+  if (source.type === 'price') return { ...base, priceBands: [source.band] };
   return { ...base, levels: [source.level] };
+}
+
+/** 가격대별로 몇 켤레인지입니다. 눌러 보고 비어 있으면 신뢰를 잃습니다. */
+export function countPriceBandShoes(
+  band: ShoePriceBand,
+  values: ShoeEntry[] = shoeCatalog,
+): number {
+  return values.filter((entry) => entry.priceBand === band).length;
 }
 
 /** 뒤로 가기 한 칸. 목록에서 세부 갈래로, 세부 갈래에서 첫 화면으로 돌아갑니다. */

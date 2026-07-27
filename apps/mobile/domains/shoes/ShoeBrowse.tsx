@@ -10,6 +10,7 @@ import {
   countCategoryShoes,
   countDistanceShoes,
   countLevelShoes,
+  countPriceBandShoes,
   countSubCategoryShoes,
   shoeCategoryGuide,
   shoeCategoryGuides,
@@ -18,6 +19,7 @@ import {
   shoeSubCategoryGuidesOf,
   type ShoeListSource,
 } from './browse';
+import { bandRangeLabel, priceFilterBands } from './price';
 import type { ShoeEntry } from './catalog';
 import type { ShoeCategory } from './taxonomy';
 
@@ -96,6 +98,30 @@ export function ShoeBrowseHome({
           );
         })}
       </View>
+
+      {/*
+        가격대는 갈래·거리·실력과 같은 층에 둡니다.
+        신발을 고를 때 가장 먼저 부딪히는 벽이 가격이라, 상세 필터 안에 숨기면 안 됩니다.
+      */}
+      <Card style={styles.block}>
+        <Text accessibilityRole="header" style={styles.blockTitle}>
+          예산이 정해져 있다면
+        </Text>
+        <Text style={styles.note}>
+          고른 가격대 안에서만 보여 드려요. 값은 카드마다 함께 나와요.
+        </Text>
+        <View style={styles.rowList}>
+          {priceFilterBands.map((entry) => (
+            <PickRow
+              key={entry.band}
+              label={entry.label}
+              lead={bandRangeLabel(entry.band)}
+              count={countPriceBandShoes(entry.band, values)}
+              onPress={() => onOpenList({ type: 'price', band: entry.band })}
+            />
+          ))}
+        </View>
+      </Card>
 
       <Card style={styles.block}>
         <Text accessibilityRole="header" style={styles.blockTitle}>
