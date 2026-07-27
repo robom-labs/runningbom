@@ -15,6 +15,7 @@ import {
 import type { ActivityRecord } from '../../../domains/activities/types';
 import {
   onboardingDoneCopy,
+  onboardingLoginCopy,
   permissionPriming,
 } from '../../permissions/copy';
 
@@ -22,6 +23,7 @@ export type OnboardingStepId =
   | 'intro'
   | 'goal'
   | 'voice'
+  | 'login'
   | 'notification'
   | 'location'
   | 'battery'
@@ -78,6 +80,7 @@ export const onboardingStepTitles: Record<OnboardingStepId, string> = {
   intro: '오늘부터 달리기 쉽게 시작해요',
   goal: '이번 주 목표를 정해 볼까요',
   voice: '어떤 목소리로 들을까요',
+  login: onboardingLoginCopy.title,
   notification: permissionPriming.notification.title,
   location: permissionPriming.location.title,
   battery: permissionPriming.battery.title,
@@ -88,6 +91,7 @@ export const onboardingStepSubtitles: Record<OnboardingStepId, string> = {
   intro: '로그인 없이 바로 쓸 수 있어요. 기록은 이 기기에 저장돼요.',
   goal: '처음부터 무리하지 않도록, 지킬 수 있는 목표 하나만 고르면 돼요.',
   voice: '달리는 동안 들을 한국어 코치예요. 설정에서 언제든 바꿀 수 있어요.',
+  login: onboardingLoginCopy.body,
   notification: permissionPriming.notification.body,
   location: permissionPriming.location.body,
   battery: permissionPriming.battery.body,
