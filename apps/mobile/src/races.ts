@@ -21,16 +21,116 @@ const raceDateFormatter = new Intl.DateTimeFormat('ko-KR', {
 });
 
 export const bundledRevision = bundledData.revision;
-const REMOTE_RACES_URL =
-  process.env.EXPO_PUBLIC_RACE_DATA_URL ??
+
+const defaultRemoteRacesUrl =
   'https://raw.githubusercontent.com/robom-labs/runningbom/main/apps/mobile/src/data/races.json';
 
-// 포매터를 만드는 일은 아주 비쌉니다. 예전에는 대회 한 건마다 새로 만들어(183번) 앱을 켤 때
+function isPrivateIpv4(hostname: string): boolean {
+  const match = hostname.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (!match) return false;
+  const parts = match.slice(1).map(Number);
+  if (parts.some((part) => part < 0 || part > 255)) return true;
+  const [a, b] = parts;
+  return (
+    a === 0 ||
+    a === 10 ||
+    a === 127 ||
+    (a === 169 && b === 254) ||
+    (a === 172 && b !== undefined && b >= 16 && b <= 31) ||
+    (a === 192 && b === 168) ||
+    a >= 224
+  );
+}
+
+function isPublicHostname(hostname: string): boolean {
+  const normalized = hostname.toLowerCase().replace(/^\[|\]$/g, '');
+  if (
+    !normalized ||
+    normalized === 'localhost' ||
+    normalized.endsWith('.localhost') ||
+    normalized.endsWith('.local') ||
+    normalized === '::1' ||
+    normalized.startsWith('fc') ||
+    normalized.startsWith('fd') ||
+    normalized.startsWith('fe80:') ||
+    isPrivateIpv4(normalized)
+  ) {
+    return false;
+  }
+  return normalized.includes('.');
+}
+
+/** 외부에서 받은 주소를 열기 전에 적용하는 최소 공통 안전 규칙입니다. */
+export function safeHttpsUrl(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined;
+  const raw = value.trim();
+  if (!raw || raw.length > 2_048 || /[\u0000-\u001f\u007f]/u.test(raw)) return undefined;
+  try {
+    const url = new URL(raw);
+    if (
+      url.protocol !== 'https:' ||
+      url.username ||
+      url.password ||
+      !isPublicHostname(url.hostname)
+    ) {
+      return undefined;
+    }
+    return url.toString();
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * 앱이 읽을 수 있는 원격 대회 피드 위치를 로봄이 관리하는 두 공개 경로로 제한합니다.
+ * 잘못된 환경변수나 탈취된 빌드 설정은 마지막 검증 기본값으로 되돌립니다.
+ */
+export function resolveRaceFeedUrl(value?: string): string {
+  const safe = safeHttpsUrl(value);
+  if (!safe) return defaultRemoteRacesUrl;
+  const url = new URL(safe);
+  const trusted =
+    (url.hostname === 'raw.githubusercontent.com' &&
+      url.pathname.startsWith('/robom-labs/runningbom/')) ||
+    (url.hostname === 'robom-labs.github.io' && url.pathname.startsWith('/runningbom/'));
+  return trusted ? url.toString() : defaultRemoteRacesUrl;
+}
+
+const REMOTE_RACES_URL = resolveRaceFeedUrl(process.env.EXPO_PUBLIC_RACE_DATA_URL);
+
+// 포매터를 만드는 일은 아주 비쌉니다. 예전에는 대회 한 건마다 새로 만들어 앱을 켤 때
 // 그만큼 시간을 썼습니다. 하나만 만들어 두고 계속 씁니다. 돌려주는 값은 그대로입니다.
 const kstDayFormatter = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' });
 
 function todayKst(now = Date.now()): string {
   return kstDayFormatter.format(new Date(now));
+}
+
+type BundledRaceReference = { id?: unknown; officialUrl?: unknown };
+const bundledRaceReferences = (bundledData.races as BundledRaceReference[]).filter(
+  (race) => typeof race.id === 'string',
+);
+const bundledOfficialUrlByRaceId = new Map<string, string>();
+const bundledOfficialHosts = new Set<string>();
+for (const race of bundledRaceReferences) {
+  const safe = safeHttpsUrl(race.officialUrl);
+  if (typeof race.id !== 'string' || !safe) continue;
+  bundledOfficialUrlByRaceId.set(race.id, safe);
+  bundledOfficialHosts.add(new URL(safe).hostname.toLowerCase());
+}
+
+/**
+ * 원격 피드가 임의 피싱 도메인을 앱의 "공식 페이지"로 바꾸지 못하게 합니다.
+ * 기존 대회는 번들에 검증된 동일 도메인만, 새 대회는 이미 검증된 운영 도메인만 허용합니다.
+ */
+export function isTrustedRaceOfficialUrl(raceId: string, value: unknown): boolean {
+  if (value === undefined) return true;
+  const safe = safeHttpsUrl(value);
+  if (!safe) return false;
+  const hostname = new URL(safe).hostname.toLowerCase();
+  const expected = bundledOfficialUrlByRaceId.get(raceId);
+  if (expected) return new URL(expected).hostname.toLowerCase() === hostname;
+  return bundledOfficialHosts.has(hostname);
 }
 
 function isRace(value: unknown): value is Race {
@@ -45,7 +145,7 @@ function isRace(value: unknown): value is Race {
     Array.isArray(race.distances) &&
     typeof race.registrationOpensAt === 'string' &&
     typeof race.registrationTimeConfirmed === 'boolean' &&
-    (race.officialUrl === undefined || (typeof race.officialUrl === 'string' && race.officialUrl.startsWith('https://'))) &&
+    isTrustedRaceOfficialUrl(race.id, race.officialUrl) &&
     typeof race.sourceName === 'string'
   );
 }
@@ -122,7 +222,7 @@ export function shouldReplaceRaceFeed(current: RaceFeed, next: RaceFeed): boolea
   return current.revision !== next.revision;
 }
 
-// 운영 Pages의 검증된 JSON을 읽되 실패하면 번들 데이터를 그대로 사용합니다.
+// 운영 저장소의 검증된 JSON을 읽되 실패하면 번들 데이터를 그대로 사용합니다.
 export async function fetchLatestRaces(signal?: AbortSignal): Promise<RaceFeed> {
   const response = await fetch(REMOTE_RACES_URL, {
     headers: { Accept: 'application/json' },
