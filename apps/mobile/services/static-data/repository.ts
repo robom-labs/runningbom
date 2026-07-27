@@ -15,12 +15,34 @@ import {
 } from './types';
 
 const ACTIVE_MANIFEST_PATH = 'active-manifest.json';
+const DEFAULT_STATIC_DATA_BASE_URL = 'https://robom-labs.github.io/runningbom/data/';
 
 function safeVersionPath(contentVersion: string): string {
   if (!/^static-[a-f0-9]{20}$/.test(contentVersion)) {
     throw new Error('unsafe static contentVersion');
   }
   return `versions/${contentVersion}`;
+}
+
+/**
+ * 빌드 환경값이 바뀌어도 러닝봄이 관리하는 공개 데이터 경로 밖으로 요청하지 않습니다.
+ * 테스트·향후 전용 CDN을 위해 static.robom.kr/runningbom 경로도 같은 계약으로 허용합니다.
+ */
+export function resolveStaticDataBaseUrl(value?: string): string | undefined {
+  if (value === undefined) return undefined;
+  try {
+    const url = new URL(value);
+    if (url.protocol !== 'https:' || url.username || url.password || url.search || url.hash) {
+      return DEFAULT_STATIC_DATA_BASE_URL;
+    }
+    const normalizedPath = `${url.pathname.replace(/\/+$/, '')}/`;
+    const allowed =
+      (url.hostname === 'robom-labs.github.io' && normalizedPath === '/runningbom/data/') ||
+      (url.hostname === 'static.robom.kr' && normalizedPath === '/runningbom/');
+    return allowed ? `${url.origin}${normalizedPath}` : DEFAULT_STATIC_DATA_BASE_URL;
+  } catch {
+    return DEFAULT_STATIC_DATA_BASE_URL;
+  }
 }
 
 async function defaultRequest(url: string, signal?: AbortSignal): Promise<string> {
@@ -114,10 +136,11 @@ export async function refreshStaticData(
   }
 
   try {
-    const baseUrl = new URL(options.baseUrl);
-    if (baseUrl.protocol !== 'https:') throw new Error('static data URL must use HTTPS');
+    const resolvedBaseUrl = resolveStaticDataBaseUrl(options.baseUrl);
+    if (!resolvedBaseUrl) throw new Error('static data URL unavailable');
+    const baseUrl = new URL(resolvedBaseUrl);
     const request = options.request ?? defaultRequest;
-    const manifestUrl = new URL('manifest.json', `${baseUrl.toString().replace(/\/?$/, '/')}`);
+    const manifestUrl = new URL('manifest.json', baseUrl);
     const manifestText = await request(manifestUrl.toString(), options.signal);
     const manifest = parseStaticDataManifest(JSON.parse(manifestText));
     if (!appSupportsMinimumVersion(options.appVersion, manifest.minimumAppVersion)) {

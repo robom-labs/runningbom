@@ -7,7 +7,10 @@ import {
   bundledStaticManifest,
   bundledStaticPayloadTexts,
 } from '../services/static-data/bundled';
-import { refreshStaticData } from '../services/static-data/repository';
+import {
+  refreshStaticData,
+  resolveStaticDataBaseUrl,
+} from '../services/static-data/repository';
 import type {
   StaticDataTextStorage,
 } from '../services/static-data/types';
@@ -39,6 +42,28 @@ function remotePayloads() {
     ] as [string, string]),
   ]);
 }
+
+describe('정적 데이터 원격 주소', () => {
+  it('로봄이 관리하는 두 공개 경로만 그대로 허용한다', () => {
+    assert.equal(
+      resolveStaticDataBaseUrl('https://robom-labs.github.io/runningbom/data'),
+      'https://robom-labs.github.io/runningbom/data/',
+    );
+    assert.equal(
+      resolveStaticDataBaseUrl('https://static.robom.kr/runningbom/'),
+      'https://static.robom.kr/runningbom/',
+    );
+  });
+
+  it('외부·HTTP·자격정보·다른 경로는 공식 기본 주소로 되돌린다', () => {
+    const fallback = 'https://robom-labs.github.io/runningbom/data/';
+    assert.equal(resolveStaticDataBaseUrl('https://evil.example/data/'), fallback);
+    assert.equal(resolveStaticDataBaseUrl('http://static.robom.kr/runningbom/'), fallback);
+    assert.equal(resolveStaticDataBaseUrl('https://user:pass@static.robom.kr/runningbom/'), fallback);
+    assert.equal(resolveStaticDataBaseUrl('https://static.robom.kr/other/'), fallback);
+    assert.equal(resolveStaticDataBaseUrl('not-a-url'), fallback);
+  });
+});
 
 describe('정적 데이터 manifest와 LKG', () => {
   it('원격 URL이 없으면 네트워크를 호출하지 않고 번들을 사용한다', async () => {

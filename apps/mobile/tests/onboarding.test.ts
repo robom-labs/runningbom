@@ -42,22 +42,22 @@ function activity(completedAt: string): ActivityRecord {
 }
 
 describe('온보딩 단계', () => {
-  it('소개·목표·음성 다음에 로그인 자리와 허락 안내가 이어진다', () => {
+  it('첫 실행은 로그인 준비 화면 없이 목표·음성·필요한 허락만 거친다', () => {
     assert.deepEqual(onboardingStepIds, [
       'intro',
       'goal',
       'voice',
-      'login',
       'notification',
       'location',
       'battery',
       'done',
     ]);
-    assert.equal(onboardingStepCount, 8);
+    assert.equal(onboardingStepCount, 7);
+    assert.equal(onboardingStepIds.includes('login'), false);
     assert.equal(onboardingStepIndex('goal'), 1);
     assert.equal(nextOnboardingStep('intro'), 'goal');
     assert.equal(nextOnboardingStep('goal'), 'voice');
-    assert.equal(nextOnboardingStep('voice'), 'login');
+    assert.equal(nextOnboardingStep('voice'), 'notification');
     assert.equal(nextOnboardingStep('done'), undefined);
     assert.equal(previousOnboardingStep('intro'), undefined);
     assert.equal(previousOnboardingStep('voice'), 'goal');
@@ -74,7 +74,7 @@ describe('온보딩 단계', () => {
     assert.equal(isLastOnboardingStep('battery', steps), false);
   });
 
-  it('모든 단계에 제목과 안내 문구가 있다', () => {
+  it('모든 실제 단계에 제목과 안내 문구가 있다', () => {
     for (const step of onboardingStepIds) {
       assert.ok(onboardingStepTitles[step].length > 0, `${step} 제목 누락`);
       assert.ok(onboardingStepSubtitles[step].length > 0, `${step} 안내 누락`);
@@ -86,12 +86,14 @@ describe('온보딩 단계', () => {
     assert.ok(onboardingStepSubtitles.voice.includes('설정'));
   });
 
-  it('소개 문구는 앱이 실제로 가진 개수를 그대로 쓴다', () => {
+  it('소개 문구는 기능 개수보다 사용 결과를 먼저 말하고 실제 개수만 보조 근거로 쓴다', () => {
     const highlights = introHighlights({ coachSentences: 744, shoes: 123, races: 125 });
     assert.equal(highlights.length, 3);
-    assert.ok(highlights[0]?.body.includes('744'));
-    assert.ok(highlights[1]?.title.includes('123'));
-    assert.ok(highlights[2]?.title.includes('125'));
+    assert.ok(highlights[0]?.title.includes('오늘'));
+    assert.ok(highlights[0]?.body.includes('9주'));
+    assert.ok(highlights[1]?.body.includes('744'));
+    assert.ok(highlights[2]?.body.includes('123'));
+    assert.ok(highlights[2]?.body.includes('125'));
   });
 
   it('코치 문장 수는 실제 문장 풀에서 세고 넉넉히 많다', () => {
