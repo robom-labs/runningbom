@@ -12,6 +12,7 @@ import { Chip } from '../../app/design-system/components';
 import { palette, radius, spacing, typeScale } from '../../app/design-system/theme';
 import { shoeArtSpec } from './art';
 import { ShoeArt } from './ShoeArt';
+import { ArtImage } from '../media/ArtImage';
 import { priceDisplay } from './price';
 import type { ShoeEntry } from './catalog';
 
@@ -57,7 +58,13 @@ export const ShoeCard = memo(function ShoeCard({
           style={({ pressed }) => [styles.main, pressed && styles.pressed]}
         >
           <View style={styles.headRow}>
-            <ShoeArt spec={art} width={84} />
+            {/* 공식 사진이 들어오면 사진이, 아직이면 우리 그림이 나옵니다. 빈 칸은 없습니다. */}
+            <ArtImage
+              fallback={<ShoeArt spec={art} width={84} />}
+              height={52}
+              id={shoe.id}
+              width={84}
+            />
             <View style={styles.headCopy}>
               <View style={styles.titleRow}>
                 <Text numberOfLines={1} style={styles.brand}>

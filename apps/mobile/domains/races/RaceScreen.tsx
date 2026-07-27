@@ -496,6 +496,7 @@ export function RaceScreen({ focusedRaceId }: Props) {
                 우리가 조판한 것입니다. 글자만 있던 목록이 이 한 장으로 달라집니다(기획서 §4.7.3).
               */}
               <RacePoster
+                raceId={group.primary.id}
                 raceName={group.name}
                 spec={racePosterSpec({
                   raceDate: group.raceDate,

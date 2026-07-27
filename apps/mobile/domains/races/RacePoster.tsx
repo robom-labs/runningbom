@@ -2,11 +2,12 @@
 //
 // 주최 측 실제 포스터가 아닙니다. 대회 정보(거리·지역·날짜·계절)로 우리가 조판한 것입니다.
 // 무엇을 그릴지는 `poster.ts`의 `racePosterSpec`이 정합니다(순수 함수, 테스트가 봅니다).
-import { memo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { memo, useState } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 import { fontWeight, radius, spacing, typeScale } from '../../app/design-system/theme';
+import { officialImage } from '../media/officialImages';
 import { posterAccessibilityLabel, type RacePosterSpec } from './poster';
 
 export type RacePosterProps = {
@@ -14,14 +15,24 @@ export type RacePosterProps = {
   raceName: string;
   /** 리스트에서는 96, 상세에서는 180을 씁니다. */
   height?: number;
+  /**
+   * 대회 id입니다. 주최 측 공식 페이지가 공개한 포스터가 있으면 그걸 씁니다.
+   * 없으면(대부분) 우리가 조판한 포스터가 그대로 나갑니다.
+   */
+  raceId?: string;
 };
 
 export const RacePoster = memo(function RacePoster({
   height = 96,
+  raceId,
   raceName,
   spec,
 }: RacePosterProps) {
   const gradientId = `poster-${spec.season}`;
+  const photo = raceId ? officialImage(raceId) : undefined;
+  // 주최 측 포스터를 못 받아 오면(만료·차단) 조용히 우리 포스터로 되돌아갑니다.
+  const [failed, setFailed] = useState(false);
+  const showPhoto = Boolean(photo) && !failed;
 
   return (
     <View
@@ -49,6 +60,17 @@ export const RacePoster = memo(function RacePoster({
         />
       </Svg>
 
+      {/* 주최 측 공식 포스터가 있으면 우리 조판 위에 덮습니다. 실패하면 아래가 그대로 보입니다. */}
+      {showPhoto && photo ? (
+        <Image
+          onError={() => setFailed(true)}
+          resizeMode="cover"
+          source={{ uri: photo.url }}
+          style={StyleSheet.absoluteFill}
+        />
+      ) : null}
+
+      {showPhoto ? null : (
       <View style={styles.copy}>
         <Text
           style={[
@@ -62,6 +84,7 @@ export const RacePoster = memo(function RacePoster({
           {spec.subline}
         </Text>
       </View>
+      )}
     </View>
   );
 });

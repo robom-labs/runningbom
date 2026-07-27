@@ -1,0 +1,86 @@
+# 대회·러닝화의 공식 대표 이미지(og:image) 주소를 주 1회 모은다.
+#
+# 왜 워크플로에서 도는가: 개발 컨테이너는 외부 접속이 막혀 있다. 여기는 열려 있다.
+#
+# 지키는 것
+# - 페이지를 뒤지지 않는다. <meta property="og:image"> 하나만 읽는다.
+#   그 태그는 "다른 곳에서 이 페이지를 소개할 때 이 그림을 써라"고 페이지가 스스로 밝힌 값이다.
+# - 이미지를 우리 쪽에 복사하지 않는다. 주소만 담는다(저장·전송 비용 0).
+# - 한 항목당 요청 한 번, 사이에 쉬어 간다.
+# - main에 직접 push하지 않는다. 변경이 있으면 PR을 만든다.
+name: Refresh official images
+
+on:
+  schedule:
+    # 매주 월요일 KST 08:40 (UTC 일요일 23:40) — 러닝화 점검 20분 뒤
+    - cron: "40 23 * * 0"
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: '이번에 확인할 개수(기본 60)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: official-images-refresh
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: main
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+
+      - name: 공식 대표 이미지 수집
+        run: |
+          node scripts/collect-official-images.mjs --write --limit "${{ inputs.limit || '60' }}"
+
+      - name: 모바일 의존성 설치
+        run: npm --prefix apps/mobile ci
+
+      - name: 이미지 데이터 형식 검사
+        run: npm --prefix apps/mobile test
+
+      - name: 변경이 있으면 PR 생성
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- apps/mobile/src/data/official-images.json; then
+            echo "새로 얻은 이미지가 없습니다. 조용히 종료합니다."
+            exit 0
+          fi
+          BRANCH="chore/official-images-$(date -u +%Y%m%d)"
+          git config user.name "robom-data-bot"
+          git config user.email "actions@github.com"
+          git checkout -b "$BRANCH"
+          git add apps/mobile/src/data/official-images.json
+          git commit -m "chore(images): 공식 대표 이미지 주소 갱신"
+          git push --force-with-lease origin "$BRANCH"
+          if gh pr view "$BRANCH" --json number >/dev/null 2>&1; then
+            echo "이미 열린 PR이 있습니다. 브랜치만 갱신했습니다."
+            exit 0
+          fi
+          {
+            echo "공식 페이지가 스스로 공개한 대표 이미지(og:image) 주소를 모았습니다."
+            echo
+            echo "- 이미지를 우리 쪽에 복사하지 않습니다. 주소만 담습니다."
+            echo "- 못 가져온 항목은 우리가 조판한 포스터·그림이 그대로 나갑니다(빈 칸 없음)."
+            echo
+            node scripts/collect-official-images.mjs
+          } > /tmp/image-pr-body.md
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "chore(images): 공식 대표 이미지 주소 갱신" \
+            --body-file /tmp/image-pr-body.md

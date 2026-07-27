@@ -1,0 +1,6 @@
+{
+  "note": "공식 페이지가 스스로 공개한 대표 이미지(og:image) 주소만 담습니다. 사람이 만들지 않고 scripts/collect-official-images.mjs가 채웁니다.",
+  "revision": 0,
+  "checkedAt": "",
+  "images": {}
+}
