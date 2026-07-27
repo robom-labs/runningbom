@@ -29,8 +29,9 @@ describe('기록 공유 성장 경로', () => {
   });
 
   it('개인 기록과 유입 주소 사이를 줄바꿈으로 분리해 읽기 쉽게 유지한다', () => {
-    const text = shareCardText(buildShareCard(activity));
-    assert.ok(text.includes("달리기 · 5km · 30분"));
+    const card = buildShareCard(activity);
+    const text = shareCardText(card);
+    assert.ok(text.includes(`달리기 · ${card.distanceLabel} · ${card.durationLabel}`));
     assert.ok(text.endsWith(shareCardLandingUrl));
     assert.ok(text.includes(`\n\n러닝봄에서 함께 기록하기\n${shareCardLandingUrl}`));
   });
