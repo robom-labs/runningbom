@@ -1,0 +1,128 @@
+name: PR36 one-time onboarding contract patch
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pr36-test-contract-patch.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'codex/runningbom-product-audit-v1')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: codex/runningbom-product-audit-v1
+          fetch-depth: 0
+      - name: Update the stale onboarding permission contract
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('apps/mobile/tests/permission-priming.test.ts')
+          text = path.read_text()
+          old = """describe('온보딩 단계 편성', () => {
+            it('소개 → 목표 → 음성 → 로그인 → 알림 → 위치 → 배터리 → 완료 순서다', () => {
+              assert.deepEqual(onboardingStepIds, [
+                'intro',
+                'goal',
+                'voice',
+                'login',
+                'notification',
+                'location',
+                'battery',
+                'done',
+              ]);
+              assert.ok(
+                onboardingStepIds.indexOf('notification') < onboardingStepIds.indexOf('location'),
+                '거부감이 적은 알림을 먼저 물어야 합니다.',
+              );
+              assert.ok(onboardingStepIds.indexOf('location') < onboardingStepIds.indexOf('battery'));
+            });
+
+            it('사전 설명이 붙는 단계는 알림·위치·배터리뿐이다', () => {
+              assert.deepEqual([...permissionStepIds], ['notification', 'location', 'battery']);
+              assert.equal(isPermissionStep('notification'), true);
+              assert.equal(isPermissionStep('intro'), false);
+              assert.equal(isPermissionStep('login'), false);
+            });
+
+            it('정식 빌드에서는 위치 단계를 아예 만들지 않는다', () => {
+              const production = buildOnboardingSteps({ locationStep: false, batteryStep: true });
+              assert.equal(production.includes('location'), false);
+              assert.equal(production.length, 7, '진행 점 개수가 실제 단계 수와 같아야 합니다.');
+
+              const preview = buildOnboardingSteps({ locationStep: true, batteryStep: true });
+              assert.equal(preview.length, 8);
+              assert.equal(preview.includes('location'), true);
+            });
+
+            it('배터리 설정이 없는 기기에서는 배터리 단계를 빼고 진행 점도 줄인다', () => {
+              const ios = buildOnboardingSteps({ locationStep: true, batteryStep: false });
+              assert.equal(ios.includes('battery'), false);
+              assert.equal(ios.length, 7);
+
+              const minimal = buildOnboardingSteps({ locationStep: false, batteryStep: false });
+              assert.deepEqual(minimal, ['intro', 'goal', 'voice', 'login', 'notification', 'done']);
+            });
+          });"""
+          new = """describe('온보딩 단계 편성', () => {
+            it('소개 → 목표 → 음성 → 알림 → 위치 → 배터리 → 완료 순서다', () => {
+              assert.deepEqual(onboardingStepIds, [
+                'intro',
+                'goal',
+                'voice',
+                'notification',
+                'location',
+                'battery',
+                'done',
+              ]);
+              assert.equal(onboardingStepIds.includes('login'), false, '첫 러닝 전에 계정 연결을 강제하지 않습니다.');
+              assert.ok(
+                onboardingStepIds.indexOf('notification') < onboardingStepIds.indexOf('location'),
+                '거부감이 적은 알림을 먼저 물어야 합니다.',
+              );
+              assert.ok(onboardingStepIds.indexOf('location') < onboardingStepIds.indexOf('battery'));
+            });
+
+            it('사전 설명이 붙는 단계는 알림·위치·배터리뿐이다', () => {
+              assert.deepEqual([...permissionStepIds], ['notification', 'location', 'battery']);
+              assert.equal(isPermissionStep('notification'), true);
+              assert.equal(isPermissionStep('intro'), false);
+              assert.equal(isPermissionStep('login'), false);
+            });
+
+            it('정식 빌드에서는 위치 단계를 아예 만들지 않는다', () => {
+              const production = buildOnboardingSteps({ locationStep: false, batteryStep: true });
+              assert.equal(production.includes('location'), false);
+              assert.equal(production.length, 6, '진행 점 개수가 실제 단계 수와 같아야 합니다.');
+
+              const preview = buildOnboardingSteps({ locationStep: true, batteryStep: true });
+              assert.equal(preview.length, 7);
+              assert.equal(preview.includes('location'), true);
+            });
+
+            it('배터리 설정이 없는 기기에서는 배터리 단계를 빼고 진행 점도 줄인다', () => {
+              const ios = buildOnboardingSteps({ locationStep: true, batteryStep: false });
+              assert.equal(ios.includes('battery'), false);
+              assert.equal(ios.length, 6);
+
+              const minimal = buildOnboardingSteps({ locationStep: false, batteryStep: false });
+              assert.deepEqual(minimal, ['intro', 'goal', 'voice', 'notification', 'done']);
+            });
+          });"""
+          if old not in text:
+              raise SystemExit('Expected stale onboarding contract block was not found')
+          path.write_text(text.replace(old, new))
+      - name: Commit the contract update
+        shell: bash
+        run: |
+          git add apps/mobile/tests/permission-priming.test.ts
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'test(onboarding): align permission flow with optional account'
+          git push origin HEAD:codex/runningbom-product-audit-v1
