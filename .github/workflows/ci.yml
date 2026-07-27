@@ -47,23 +47,35 @@ jobs:
         run: |
           mapfile -t files < <(find tests -type f -name '*.test.ts' -printf '%f %p\n' | sort | awk '$1 ~ /^[a-b]/ {print $2}')
           if ((${#files[@]} > 0)); then npx tsx --test "${files[@]}"; fi
-      - name: Mobile tests CA
+      - name: Mobile tests CA-CH
         working-directory: apps/mobile
         shell: bash
         run: |
-          mapfile -t files < <(find tests -type f -name '*.test.ts' -printf '%f %p\n' | sort | awk '$1 ~ /^ca/ {print $2}')
+          mapfile -t files < <(find tests -type f -name '*.test.ts' -printf '%f %p\n' | sort | awk '$1 ~ /^ca/ || $1 ~ /^ch/ {print $2}')
           if ((${#files[@]} > 0)); then npx tsx --test "${files[@]}"; fi
-      - name: Mobile tests CH
+      - name: Mobile tests COA
         working-directory: apps/mobile
         shell: bash
         run: |
-          mapfile -t files < <(find tests -type f -name '*.test.ts' -printf '%f %p\n' | sort | awk '$1 ~ /^ch/ {print $2}')
+          mapfile -t files < <(find tests -type f -name '*.test.ts' -printf '%f %p\n' | sort | awk '$1 ~ /^coa/ {print $2}')
           if ((${#files[@]} > 0)); then npx tsx --test "${files[@]}"; fi
-      - name: Mobile tests CO
+      - name: Mobile tests COM
         working-directory: apps/mobile
         shell: bash
         run: |
-          mapfile -t files < <(find tests -type f -name '*.test.ts' -printf '%f %p\n' | sort | awk '$1 ~ /^co/ {print $2}')
+          mapfile -t files < <(find tests -type f -name '*.test.ts' -printf '%f %p\n' | sort | awk '$1 ~ /^com/ {print $2}')
+          if ((${#files[@]} > 0)); then npx tsx --test "${files[@]}"; fi
+      - name: Mobile tests CON
+        working-directory: apps/mobile
+        shell: bash
+        run: |
+          mapfile -t files < <(find tests -type f -name '*.test.ts' -printf '%f %p\n' | sort | awk '$1 ~ /^con/ {print $2}')
+          if ((${#files[@]} > 0)); then npx tsx --test "${files[@]}"; fi
+      - name: Mobile tests CO other
+        working-directory: apps/mobile
+        shell: bash
+        run: |
+          mapfile -t files < <(find tests -type f -name '*.test.ts' -printf '%f %p\n' | sort | awk '$1 ~ /^co/ && $1 !~ /^coa/ && $1 !~ /^com/ && $1 !~ /^con/ {print $2}')
           if ((${#files[@]} > 0)); then npx tsx --test "${files[@]}"; fi
       - name: Mobile tests C other
         working-directory: apps/mobile
