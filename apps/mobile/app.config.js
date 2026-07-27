@@ -79,6 +79,23 @@ const EAS_PROJECT_ID = '5be5e57e-a1a7-4d08-adf1-2218f38b32a5';
 const UPDATES_URL = `https://u.expo.dev/${EAS_PROJECT_ID}`;
 
 /**
+ * 네이티브 구성이 바뀌었는지 판단하는 값입니다.
+ * 설치된 라이브러리 목록과 버전만 해싱하므로 **바깥과 통신하지 않고 그 자리에서 계산**됩니다.
+ * (Expo의 fingerprint 정책은 빌드 중 외부 조회가 끼어들어 멈춘 적이 있어 쓰지 않습니다.)
+ * 라이브러리가 하나라도 바뀌면 값이 달라져, 예전 APK가 자기와 맞지 않는
+ * 새 내용을 받아 깨지는 일이 생기지 않습니다.
+ */
+function resolveRuntimeVersion() {
+  const crypto = require('node:crypto');
+  const { dependencies } = require('./package.json');
+  const fingerprint = Object.keys(dependencies)
+    .sort()
+    .map((name) => `${name}@${dependencies[name]}`)
+    .join('\n');
+  return crypto.createHash('sha256').update(fingerprint).digest('hex').slice(0, 12);
+}
+
+/**
  * Preview에서만 자동 내려받기를 켭니다.
  * 정식 앱은 Play 심사 대상이라 지금 단계에서 원격 업데이트를 켜지 않습니다.
  * runtimeVersion은 fingerprint 정책이라 네이티브 구성이 바뀌면 값이 달라집니다.
@@ -105,7 +122,7 @@ function resolveRunningbomConfig(config, requestedVariant = process.env.RUNNINGB
     name: isPreview ? '러닝봄 Preview' : '러닝봄',
     scheme,
     updates: resolveUpdates(isPreview),
-    runtimeVersion: { policy: 'fingerprint' },
+    runtimeVersion: resolveRuntimeVersion(),
     ios: {
       ...config.ios,
       bundleIdentifier: isPreview ? 'kr.robom.runningbom.preview' : 'kr.robom.runningbom',
