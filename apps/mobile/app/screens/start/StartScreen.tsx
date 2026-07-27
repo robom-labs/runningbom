@@ -96,6 +96,7 @@ import {
 } from '../../../domains/tracking';
 import { attachActivityTrack } from '../../../services/storage/localDatabase';
 import { parseWeightInput, weightRangeNotice } from '../../../services/storage/runPreferences';
+import { setRunInProgress } from '../../../services/updates';
 import { countdownHelpText, countdownStep } from './countdown';
 import { shouldUseNightMode } from './nightMode';
 
@@ -177,6 +178,13 @@ export function StartScreen() {
     [kind, minutes, preferences.coachGuidance],
   );
   const active = runtime.state === 'running' || runtime.state === 'paused';
+
+  // 달리는 동안에는 새 내용을 적용하지 않도록 알려 둡니다.
+  // 적용은 앱을 다시 시작하는 일이라, 달리는 중에 하면 그날 기록이 사라집니다.
+  useEffect(() => {
+    setRunInProgress(active);
+    return () => setRunInProgress(false);
+  }, [active]);
 
   // GPS 추적은 Preview 빌드에서만 켜지며, 권한을 거부해도 코칭은 그대로 진행됩니다.
   // 화면 꺼짐 방지는 "진행 중"일 때 켜고, 스스로 멈춘 동안에도 유지합니다.

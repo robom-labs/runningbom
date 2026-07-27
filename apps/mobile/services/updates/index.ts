@@ -14,4 +14,10 @@ export {
   type UpdateCheckStatus,
 } from './checkForUpdate';
 export { UpdateBanner, type UpdateBannerProps } from './UpdateBanner';
-export { OtaBanner } from './OtaBanner';
+export { AutoUpdater } from './AutoUpdater';
+export {
+  isRunInProgress,
+  resetRunInProgress,
+  setRunInProgress,
+  subscribeRunInProgress,
+} from './runInProgress';
