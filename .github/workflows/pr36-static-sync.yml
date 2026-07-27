@@ -26,11 +26,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-        with:
-          ref: codex/runningbom-product-audit-v1
-          fetch-depth: 1
-          show-progress: false
+      - name: Fetch the audit branch quietly
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git init -q
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git fetch -q --depth=1 origin codex/runningbom-product-audit-v1
+          git checkout -q -B codex/runningbom-product-audit-v1 FETCH_HEAD
       - name: Generate deterministic sidecars
         shell: bash
         run: |
