@@ -76,6 +76,23 @@ function readOgImage(html) {
   return undefined;
 }
 
+/**
+ * 그림이 아니라 **사이트 표시**인 주소를 걸러 냅니다.
+ *
+ * 처음 돌렸을 때 favicon.ico가 포스터 자리에 들어왔습니다.
+ * 파비콘을 포스터 배너에 늘려 놓으면 우리가 그린 포스터보다 훨씬 못합니다.
+ * 사진을 넣는 목적이 "더 좋아 보이게"인데 더 나빠지면 넣을 이유가 없습니다.
+ */
+function looksLikeSiteMark(url) {
+  const lower = url.toLowerCase();
+  if (lower.endsWith('.ico')) return true;
+  if (lower.includes('favicon')) return true;
+  if (lower.includes('apple-touch-icon')) return true;
+  // 로고 파일명이 그대로 드러나는 경우입니다.
+  if (/\/(logo|symbol|ci)[-_.]/.test(lower)) return true;
+  return false;
+}
+
 /** 상대 주소를 절대 주소로 폅니다. https가 아니면 버립니다(안드로이드가 http를 막습니다). */
 function normalizeImageUrl(raw, pageUrl) {
   if (!raw) return undefined;
@@ -119,6 +136,7 @@ async function fetchOgImage(pageUrl) {
     const raw = readOgImage(html);
     const url = normalizeImageUrl(raw, response.url || pageUrl);
     if (!url) return { ok: false, reason: 'og:image 없음' };
+    if (looksLikeSiteMark(url)) return { ok: false, reason: '포스터가 아니라 사이트 아이콘' };
     return { ok: true, url };
   } catch (error) {
     return { ok: false, reason: error?.name === 'AbortError' ? '시간 초과' : '연결 실패' };
@@ -194,6 +212,30 @@ for (const item of targets) {
   await sleep(GAP_MS);
 }
 
+// --- 공용 이미지 걷어 내기 --------------------------------------------------
+//
+// 처음 모아 놓고 보니 `marathongo.co.kr/thumbnail.png` 하나가 대회 24개에 똑같이 붙어 있었습니다.
+// 그건 그 대회의 포스터가 아니라 **그 사이트의 대문 그림**입니다.
+// 서로 다른 대회 카드에 같은 그림이 스물네 번 나오면, 사진이 없느니만 못합니다.
+//
+// 판단 기준은 단순합니다: **같은 주소가 여러 항목에 붙으면 그 항목의 그림이 아닙니다.**
+
+const SHARED_LIMIT = 2;
+const urlUses = new Map();
+for (const value of Object.values(images)) {
+  urlUses.set(value.url, (urlUses.get(value.url) ?? 0) + 1);
+}
+const sharedUrls = new Set(
+  [...urlUses.entries()].filter(([, count]) => count > SHARED_LIMIT).map(([url]) => url),
+);
+let dropped = 0;
+for (const [id, value] of Object.entries(images)) {
+  if (sharedUrls.has(value.url) || looksLikeSiteMark(value.url)) {
+    delete images[id];
+    dropped += 1;
+  }
+}
+
 // --- 결과 -----------------------------------------------------------------
 
 const total = Object.keys(images).length;
@@ -204,6 +246,9 @@ const raceCoverage = races.length === 0 ? 0 : Math.round((raceHave / races.lengt
 
 console.log(`- 이번에 새로 얻음: ${added}개`);
 console.log(`- 못 얻음: ${failures.length}개`);
+if (dropped > 0) {
+  console.log(`- 걷어 냄: ${dropped}개 (여러 항목에 같은 그림 = 그 사이트 대문 그림, 또는 아이콘)`);
+}
 console.log(`- **대회 이미지: ${raceHave}/${races.length} (${raceCoverage}%)**`);
 console.log(`- **러닝화 이미지: ${shoeHave}/${shoeTargets.length} (공식 제품 페이지가 있는 것 기준)**`);
 console.log('');

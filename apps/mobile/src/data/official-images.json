@@ -1,6 +1,302 @@
 {
   "note": "공식 페이지가 스스로 공개한 대표 이미지(og:image) 주소만 담습니다. 사람이 만들지 않고 scripts/collect-official-images.mjs가 채웁니다.",
-  "revision": 0,
-  "checkedAt": "",
-  "images": {}
+  "revision": 2,
+  "checkedAt": "2026-07-27",
+  "images": {
+    "gyeongju-marathon": {
+      "url": "https://cdn.imweb.me/upload/S2022062363fb5e0b6e96f/14f061771b38b.png",
+      "source": "gyeongjumarathon.com",
+      "checkedAt": "2026-07-27"
+    },
+    "mbn-seoul": {
+      "url": "https://www.mbn-seoulmarathon.com/images/web/og_image.jpg",
+      "source": "mbn-seoulmarathon.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-072dd0d48e95": {
+      "url": "https://scontent-dfw6-1.xx.fbcdn.net/v/t39.30808-6/655626609_1441563441332892_3046456024742647151_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1179x786&amp;ctp=p600x600&amp;_nc_cat=101&amp;ccb=1-7&amp;_nc_sid=cae128&amp;_nc_ohc=3lDtqSOwuTkQ7kNvwGx1Ppg&amp;_nc_oc=Adr78P02Mt7BC8MZqqSltGjR32p8FiXU4LXGStalnX9oKCDaA0tDSbuKzTQQq3haIrs&amp;_nc_zt=23&amp;_nc_ht=scontent-dfw6-1.xx&amp;_nc_gid=uQ9B8MfCkvsSru4WX9vClQ&amp;_nc_ss=7f289&amp;oh=00_AQBpZVnVdQeFcJFz9aDSccl_cmwCuIwFPNCDiFCu0_ij5g&amp;oe=6A6DAB0E",
+      "source": "facebook.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-15e101b84778": {
+      "url": "https://www.smilerun.co.kr/main/%EC%8A%A4%EB%A7%88%EC%9D%BC%EB%9F%B0%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C/images/inc/image.png",
+      "source": "smilerun.co.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-1b8d7f7833f7": {
+      "url": "https://bjlee.casports.or.kr/title_img.jpg",
+      "source": "bjlee.casports.or.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-1ddd3b56e1dd": {
+      "url": "https://storage.googleapis.com/cr-resource/image/a5e7d71783ddc98b29857ebc97c85165/speedagencytrailrun/650/30a9ef85df9009ad838dccf1140f8b76.png?_1785192224",
+      "source": "speedtrailrun.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-1ef05642b1de": {
+      "url": "https://runmusicfestival.localvibehub.com/og-image.png",
+      "source": "runmusicfestival.localvibehub.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-1f8fde4aa658": {
+      "url": "https://cdn.sixshop.io/commerce/public/stores/saunarun/products/%EC%84%9D%EC%B4%8C%ED%98%B8%EC%88%98-%EB%A1%9C%EA%B3%A0_1783570503903.png",
+      "source": "saunarun.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-1fb6211ae2da": {
+      "url": "https://gmrun.kr/title_img2026.jpg",
+      "source": "gmrun.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-20532f12abdb": {
+      "url": "https://storage.runable.me/main/2df10388-76d1-4ce3-b1a5-88ba049bbb3c_%EB%B3%B8%EC%A0%91%EC%88%98%20%EC%8D%B8%EB%84%A4%EC%9D%BC.jpg?v=undefined",
+      "source": "runable.me",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-2b0bdb610bbf": {
+      "url": "https://cdn.imweb.me/upload/S202509238dd548dc951b6/779aa2f8c2c7a.png",
+      "source": "insiderun.me",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-2cbbdd4fd8c9": {
+      "url": "https://cdn.imweb.me/upload/S2025070404142d7141064/1d20adeb3461b.png",
+      "source": "samsamis.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-320f17393a81": {
+      "url": "https://urfesta.com/images/thumb.jpg",
+      "source": "urfesta.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-367895c0a879": {
+      "url": "https://cdn.imweb.me/upload/S20260623e6c1838697a1e/8f7071189c21d.png",
+      "source": "runsense.co.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-3e9a087dea40": {
+      "url": "https://www.herorace.kr/opengraph-image.png?opengraph-image.3qcxshozulk9a.png",
+      "source": "herorace.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-4630dd861837": {
+      "url": "https://cdn.imweb.me/upload/S202212018302e57ef05c1/f7406b0c5a154.png",
+      "source": "seoul-marathon.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-4a641ff8075e": {
+      "url": "https://cdn.imweb.me/upload/S2025070404142d7141064/1d20adeb3461b.png",
+      "source": "samsamis.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-4c1a70609360": {
+      "url": "https://sejongrun26.com/image/og.jpg",
+      "source": "sejongrun26.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-4f097c0f766d": {
+      "url": "https://cdn.imweb.me/upload/S202505223af215b29cb1f/f942705ebbbfd.png",
+      "source": "dtrail.co.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-51d8319f0085": {
+      "url": "https://storage.runable.me/main/6319c293-7d11-43c9-b9b8-e74787cfbc86_260527-26_%EA%B0%80%EB%AF%BC%EB%9F%B0-%EC%9D%BC%EB%B0%98%EC%A0%91%EC%88%98-%EC%9D%B8%EC%95%B1-%EC%A0%95%EB%B0%A9%ED%98%95%20%EC%8D%B8%EB%84%A4%EC%9D%BC.jpg?v=undefined",
+      "source": "runable.me",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-523be9afb917": {
+      "url": "https://cdn.imweb.me/upload/S202202286603eb04cf447/e43350e0b68bd.png",
+      "source": "seoul-race.co.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-57b64bb58f18": {
+      "url": "https://hnrun.kr/img/2026/sns_hanam.jpg",
+      "source": "hnrun.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-58037fa20177": {
+      "url": "https://storage.googleapis.com/cr-resource/image/1f10dee023623c289ff8e4051b0fa4f3/jyd/650/ef635d7e98be58e9313676a83901218f.png?_1785192130",
+      "source": "jyd.creatorlink.net",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-5cef32af5784": {
+      "url": "https://www.xn--289av7rnxbd06bmrc.com/img/s_img2.jpg",
+      "source": "xn--289av7rnxbd06bmrc.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-64715512af85": {
+      "url": "https://ecimg.cafe24img.com/pg2019b04190869056/runbookcity/web/upload/share-image-1-00cb43fc579754c8067067c402cba481.png",
+      "source": "runbookcity.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-7da72e16c401": {
+      "url": "https://cdn.imweb.me/upload/S2022061529e4e17bafaeb/e73a027cbc4f0.png",
+      "source": "gongjumarathon.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-7dbc3d7f7966": {
+      "url": "https://mastershalf.kr/img/2026/sns_master.jpg",
+      "source": "mastershalf.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-7fd6ab4b1a61": {
+      "url": "https://hangeulrun.com/img/meta-img.png?v=202607",
+      "source": "hangeulrun.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-844e99e0c0f3": {
+      "url": "https://www.sgicaaf.co.kr/myimage.jpg",
+      "source": "sgicaaf.co.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-855bdb82c78e": {
+      "url": "https://cdn.imweb.me/upload/S202605193c952706d27dc/318005b049445.png",
+      "source": "n-runplus.co.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-880c11adf6cb": {
+      "url": "https://lh6.googleusercontent.com/c3L5XNlLjikM8u_xs8xmHwWjp3kUt29bL1Zo29InrL-I3BwRTHGqN6m54OnaNlYMHBIN4wJNIt8vSJg=w1200-h630-p",
+      "source": "docs.google.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-8891279c7263": {
+      "url": "https://emarathon.or.kr/marathon/code/8047/images/og_main.jpg?ver=26062924",
+      "source": "handonrun.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-8c3f292820ae": {
+      "url": "https://cdn.imweb.me/upload/S20260102e8f00c9d853e7/6c15b1ed7729f.png",
+      "source": "kgseasiderun.co.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-8e0185d61bdf": {
+      "url": "https://cdn.imweb.me/upload/S20240606fb90d79969e70/b5e9d0dcec56f.png",
+      "source": "daegwallyeongrun.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-927bdfd654e6": {
+      "url": "https://2026.bbangtrailrun.co.kr/images/share/home-share-image-v4.png",
+      "source": "2026.bbangtrailrun.co.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-9380fdbc1788": {
+      "url": "https://najumarathon.com/images/banner.png",
+      "source": "najumarathon.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-a1b2f00df0c5": {
+      "url": "https://www.yonma.kr/assets/img/og_card.png",
+      "source": "yonma.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-a5818d8e2731": {
+      "url": "https://cdn.imweb.me/upload/S20250429f8bb90b3fb627/3abaea731a8cc.png",
+      "source": "runseoulrun.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-a752ddb8accb": {
+      "url": "https://ansanrun.com/title_img3.jpg",
+      "source": "ansanrun.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-a93891cd3a26": {
+      "url": "https://cdn.imweb.me/upload/S20250219ae5cff921758e/b1b5b0b5d73e2.png",
+      "source": "gmaf.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-ac9fd43989e5": {
+      "url": "https://cdn.imweb.me/upload/S2024030609ef9de72fe46/bfc60be913e34.png",
+      "source": "taebaektrail.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-b0b742754601": {
+      "url": "https://cdn.sixshop.io/commerce/public/stores/saunarun/products/%EB%9A%9D%EC%84%AC%ED%95%9C%EA%B0%95%EA%B3%B5%EC%9B%90_%ED%94%84%EB%A1%9C%ED%95%84_%EC%9D%B4%EB%AF%B8%EC%A7%80_%EB%B8%94%EB%A3%A8_1783571541028.png",
+      "source": "saunarun.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-b614486615d9": {
+      "url": "https://global6kforwater.com/resource/frt/images/og_image_202604.jpg",
+      "source": "global6kforwater.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-c0e2f01b26d3": {
+      "url": "https://www.badarun.co.kr/meta_images.png",
+      "source": "badarun.co.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-c59fad5366bc": {
+      "url": "https://ggcrun.kr/title_img.jpg",
+      "source": "ggcrun.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-c69900191f42": {
+      "url": "https://cdn.sixshop.io/sf-gateway/public/stores/mokyok/website/%EC%96%91%EB%A8%B8%EB%A6%AC-%EC%9D%B4%EB%AF%B8%EC%A7%80_%EB%AA%A9%EC%9A%95%EB%9F%B0-%EB%A1%9C%EA%B3%A0_1783478326634.png",
+      "source": "mokyokrun.shop",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-c992ddd49d2a": {
+      "url": "https://jsrun.kr/title_img2026.jpg",
+      "source": "jsrun.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-cbfd72be3e0c": {
+      "url": "https://songdorun.net/assets/imgs/main_top.jpg",
+      "source": "songdorun.net",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-cd4cd11e5f81": {
+      "url": "https://storage.googleapis.com/cr-resource/image/97dc9c2b10eb5860ca00292efc7e7e10/ucksports/650/9dd45a6326f68eb47f0333f64cee8fe5.png?_1785192492",
+      "source": "cuk-sports.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-e385f7c91b05": {
+      "url": "https://cdn.imweb.me/upload/S202004134291ef7e7f84c/834e5bb94363d.png",
+      "source": "runnerking.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-e6cfec9d7f53": {
+      "url": "https://aychalf.kr/img/2025/og_img_2026.jpg",
+      "source": "aychalf.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-e7f54f0af73e": {
+      "url": "https://cdn.imweb.me/upload/S202604209f7249c761e78/17a02226acc57.png",
+      "source": "iksangiverun.or.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-e8f43de34ee3": {
+      "url": "https://www.cyber-run.com/main/2026%20%EC%A0%9C18%ED%9A%8C%20%EC%82%AC%EC%9D%B4%EB%B2%84%20%EC%98%81%ED%86%A0%20%EC%88%98%ED%98%B8%20%EB%A7%88%EB%9D%BC%ED%86%A4%EB%8C%80%ED%9A%8C/images/inc/image.png",
+      "source": "cyber-run.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-eb76dc56f7fa": {
+      "url": "https://modern-infinity-9e6.notion.site/image/attachment%3A3f5b5058-8d62-4ac9-8ec5-c0b03f1b951f%3ASocialMediaPreviewImage.png?table=block&id=39591881-0cc2-8075-b602-c0e076d8d3ea&spaceId=d6d91881-0cc2-8155-9239-00031697df5e&width=2000&userId=&cache=v2&imgBuildSrc=pageMetadataCover",
+      "source": "modern-infinity-9e6.notion.site",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-efb159d38156": {
+      "url": "https://cdn.imweb.me/upload/S20260610235da01dda75a/59f84054f5791.png",
+      "source": "jejuwindmillrun.com",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-f6b181b3fe7c": {
+      "url": "https://seoulopen.or.kr/images/common/metaLogo02.png",
+      "source": "seoulopen.or.kr",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-f8f677880cad": {
+      "url": "https://cdn.imweb.me/upload/S2026022776ba5b4d45c1d/0745c9fe70b5d.png",
+      "source": "korearun01.imweb.me",
+      "checkedAt": "2026-07-27"
+    },
+    "schedule-f90bbb8b2a18": {
+      "url": "https://ecimg.cafe24img.com/pg2202b22042083010/sharinghope119/web/upload/share-image-1-bfe90946b798adb582b918e1547e0440.png",
+      "source": "119memorial.com",
+      "checkedAt": "2026-07-27"
+    },
+    "ytn-seoul-tour": {
+      "url": "https://run.ytn.co.kr/img/common/meta-img-2026.png",
+      "source": "run.ytn.co.kr",
+      "checkedAt": "2026-07-27"
+    }
+  }
 }
