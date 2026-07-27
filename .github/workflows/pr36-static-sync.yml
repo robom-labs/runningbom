@@ -24,19 +24,13 @@ jobs:
   sync:
     if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'codex/runningbom-product-audit-v1')
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: codex/runningbom-product-audit-v1
           fetch-depth: 1
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: apps/mobile/package-lock.json
-      - name: Install mobile dependencies quietly
-        run: npm --prefix apps/mobile ci --silent
+          show-progress: false
       - name: Generate deterministic sidecars
         shell: bash
         run: |
