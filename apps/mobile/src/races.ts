@@ -44,19 +44,22 @@ function isPrivateIpv4(hostname: string): boolean {
 
 function isPublicHostname(hostname: string): boolean {
   const normalized = hostname.toLowerCase().replace(/^\[|\]$/g, '');
+  const ipv6 = normalized.includes(':');
   if (
     !normalized ||
     normalized === 'localhost' ||
     normalized.endsWith('.localhost') ||
     normalized.endsWith('.local') ||
-    normalized === '::1' ||
-    normalized.startsWith('fc') ||
-    normalized.startsWith('fd') ||
-    normalized.startsWith('fe80:') ||
+    (ipv6 &&
+      (normalized === '::1' ||
+        normalized.startsWith('fc') ||
+        normalized.startsWith('fd') ||
+        normalized.startsWith('fe80:'))) ||
     isPrivateIpv4(normalized)
   ) {
     return false;
   }
+  // 대회·접수 링크는 현재 DNS 이름만 허용합니다. 공개 IPv6 직접 주소도 링크로 받지 않습니다.
   return normalized.includes('.');
 }
 
