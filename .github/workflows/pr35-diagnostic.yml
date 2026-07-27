@@ -31,6 +31,12 @@ jobs:
       - name: Mobile race sync
         if: always()
         run: node scripts/sync-mobile-races.mjs --check
+      - name: Import shoe catalog with Node strip-types
+        if: always()
+        run: node --experimental-strip-types -e "import('./apps/mobile/domains/shoes/catalog.ts').then((m) => { if (!Array.isArray(m.shoes)) process.exit(1); })"
+      - name: Import coaching model with Node strip-types
+        if: always()
+        run: node --experimental-strip-types -e "import('./apps/mobile/domains/coaching/model.ts').then((m) => { if (typeof m.createCoachSession !== 'function') process.exit(1); })"
       - name: Static data generation check
         if: always()
         run: node --experimental-strip-types scripts/static-data-generate.mjs --check
