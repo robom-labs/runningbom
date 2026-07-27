@@ -52,7 +52,7 @@ export function ManualActivityCard({ onSave }: ManualActivityCardProps) {
       setMessage(
         result.movementCounts
           ? '기기 개인 기록에 저장했어요. 직접 입력은 리그 점수에 포함되지 않아요.'
-          : '기기 개인 기록에 저장했어요. 인정 기준보다 짧아 스트릭에는 포함되지 않아요.',
+          : '기기 개인 기록에 저장했어요. 인정 기준보다 짧아 연속 기록에는 포함되지 않아요.',
       );
       setDistanceText('');
     } catch {
@@ -67,7 +67,7 @@ export function ManualActivityCard({ onSave }: ManualActivityCardProps) {
       <View style={styles.header}>
         <View style={styles.copy}>
           <Text style={styles.title}>직접 기록</Text>
-          <Text style={styles.caption}>개인 스트릭용이며 공식 인증이나 리그 점수가 아니에요.</Text>
+          <Text style={styles.caption}>내 연속 기록용이며 공식 인증이나 리그 점수가 아니에요.</Text>
         </View>
         <Button
           label={expanded ? '접기' : '입력'}

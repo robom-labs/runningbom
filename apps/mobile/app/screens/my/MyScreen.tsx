@@ -378,10 +378,10 @@ export function MyScreen({ onOpenCalendar, focus }: MyScreenProps) {
         </Text>
       </Card>
 
-      <SectionHeader title="스트릭" subtitle="새벽 4시를 하루 경계로 계산해요." />
+      <SectionHeader title="연속 기록" subtitle="새벽 4시를 하루 경계로 계산해요." />
       <View style={styles.metricsRow}>
-        <Metric label="현재 스트릭" value={`${streak.current}일`} style={styles.metric} />
-        <Metric label="최고 스트릭" value={`${streak.best}일`} style={styles.metric} />
+        <Metric label="지금 연속" value={`${streak.current}일`} style={styles.metric} />
+        <Metric label="가장 길게" value={`${streak.best}일`} style={styles.metric} />
         <Metric label="등급" value={streak.tier} style={styles.metric} />
       </View>
 

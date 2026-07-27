@@ -157,7 +157,7 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
   function confirmLocalDelete() {
     Alert.alert(
       '기기 기록을 삭제할까요?',
-      '이 기기의 활동·스트릭·배지 진행을 삭제합니다. 이 작업은 되돌릴 수 없어요.',
+      '이 기기의 활동·연속 기록·배지 진행을 삭제합니다. 이 작업은 되돌릴 수 없어요.',
       [
         { text: '취소', style: 'cancel' },
         {
@@ -486,7 +486,7 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
         <Button label="기기 데이터 내보내기" onPress={() => void shareExport()} tone="secondary" />
         <SettingLabel
           title="기기 활동 기록 삭제"
-          description="이 기기의 활동·스트릭·배지 진행을 지워요. 되돌릴 수 없어요."
+          description="이 기기의 활동·연속 기록·배지 진행을 지워요. 되돌릴 수 없어요."
         />
         <Button label="기기 활동 기록 삭제" onPress={confirmLocalDelete} tone="danger" />
         <Button

@@ -1164,8 +1164,8 @@ export function StartScreen() {
                   <Text style={styles.kindTitle}>{value.title}</Text>
                   <Text style={styles.kindSummary}>{value.summary}</Text>
                   <Text style={styles.kindMeta}>
-                    {value.intensityLabel} · RPE {value.rpe.min}~{value.rpe.max} · 추천{' '}
-                    {value.defaultMinutes}분
+                    {value.intensityLabel} · 힘든 정도 {value.rpe.min}~{value.rpe.max}
+                    (10점 만점) · 추천 {value.defaultMinutes}분
                   </Text>
                 </Pressable>
               ))}
