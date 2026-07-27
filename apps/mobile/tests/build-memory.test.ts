@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 import { describe, it } from 'node:test';
 
 import appJson from '../app.json';
+import easJson from '../eas.json';
 
 type GradleProperty = { type: 'property'; key: string; value: string };
 type GradleEntry = GradleProperty | { type: 'comment'; value: string };
@@ -75,5 +76,22 @@ describe('Android 빌드 메모리', () => {
   it('앱 설정에 이 플러그인이 실제로 연결돼 있다', () => {
     // 플러그인을 만들어 놓고 등록을 잊으면 아무 일도 일어나지 않습니다.
     assert.ok(appJson.expo.plugins.includes('./plugins/withBuildMemory'));
+  });
+
+  it('빌드 설정 어디에도 오류 이름을 닮은 글자를 두지 않는다', () => {
+    // CI가 빌드 로그에서 `java.lang.OutOfMemoryError`를 보면 즉시 빌드를 끊습니다.
+    // 그런데 빌드 도구가 설정을 로그에 그대로 찍기 때문에, 설정값 안에 비슷한 글자가
+    // 있으면 멀쩡한 빌드가 잘못 끊깁니다(실제로 35초 만에 끊긴 적이 있습니다).
+    const settings = [
+      ...MEMORY_PROPERTIES.map((property) => property.value),
+      JSON.stringify(easJson),
+    ];
+
+    for (const setting of settings) {
+      assert.ok(
+        !setting.includes('OutOfMemoryError'),
+        `빌드 설정에 'OutOfMemoryError'가 들어 있습니다: ${setting}`,
+      );
+    }
   });
 });

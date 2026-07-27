@@ -13,9 +13,11 @@ const { withGradleProperties } = require('@expo/config-plugins');
 /** 빌드를 도는 JVM들에게 줄 메모리입니다. GitHub 러너(메모리 16GB) 기준으로 잡았습니다. */
 const MEMORY_PROPERTIES = [
   // Gradle 데몬 본체. 힙 4GB, Metaspace 2GB(기본값의 4배).
+  // 힙덤프 옵션은 일부러 넣지 않습니다. 그 옵션 이름 안에 오류 이름이 들어 있어서,
+  // 빌드 로그를 지켜보는 CI가 멀쩡한 설정 줄을 진짜 오류로 잘못 읽은 적이 있습니다.
   {
     key: 'org.gradle.jvmargs',
-    value: '-Xmx4096m -XX:MaxMetaspaceSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8',
+    value: '-Xmx4096m -XX:MaxMetaspaceSize=2048m -Dfile.encoding=UTF-8',
   },
   // Kotlin/KSP는 별도 데몬에서 돌아 Gradle 값을 물려받지 않으므로 따로 줍니다.
   {

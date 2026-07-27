@@ -11,7 +11,7 @@
         "EXPO_PUBLIC_RELEASE_CHANNEL": "development",
         "EXPO_PUBLIC_COMMUNITY_MODE": "CORE_ONLY",
         "EXPO_PUBLIC_SOCIAL_ENABLED": "false",
-        "GRADLE_OPTS": "-Xmx6g -XX:MaxMetaspaceSize=2g -XX:+HeapDumpOnOutOfMemoryError"
+        "GRADLE_OPTS": "-Xmx4096m -XX:MaxMetaspaceSize=2048m"
       }
     },
     "preview": {
@@ -25,7 +25,7 @@
         "EXPO_PUBLIC_AUTH_KAKAO_ENABLED": "false",
         "EXPO_PUBLIC_AUTH_NAVER_ENABLED": "false",
         "EXPO_PUBLIC_AUTH_APPLE_ENABLED": "false",
-        "GRADLE_OPTS": "-Xmx6g -XX:MaxMetaspaceSize=2g -XX:+HeapDumpOnOutOfMemoryError"
+        "GRADLE_OPTS": "-Xmx4096m -XX:MaxMetaspaceSize=2048m"
       },
       "android": {
         "buildType": "apk"
