@@ -12,6 +12,7 @@ import {
   buildShareCard,
   noDistanceLabel,
   shareableActivities,
+  shareCardLandingUrl,
   shareCardMinimumMinutes,
   shareCardPreviewLines,
   shareCardText,
@@ -101,14 +102,16 @@ describe('내 기록 공유 카드', () => {
     assert.equal(card.shortDateLabel, '날짜 모름');
   });
 
-  it('공유 글에 카드에 있는 값만 들어간다', () => {
+  it('공유 글에 카드 값과 공식 러닝봄 유입 주소가 함께 들어간다', () => {
     const text = shareCardText(buildShareCard(activity()), '봄이');
     const lines = text.split('\n');
     assert.equal(lines[0], shareCardTitle);
     assert.match(text, /2026년 7월 26일/);
     assert.match(text, /달리기 · 5\.2km · 30분/);
     assert.match(text, /1km당 5'46"/);
-    assert.equal(lines.at(-1), '봄이의 기록');
+    assert.ok(lines.includes('봄이의 기록'));
+    assert.equal(lines.at(-1), shareCardLandingUrl);
+    assert.equal(text.split(shareCardLandingUrl).length - 1, 1);
   });
 
   it('닉네임이 비어 있으면 사람 이름 줄을 넣지 않는다', () => {
