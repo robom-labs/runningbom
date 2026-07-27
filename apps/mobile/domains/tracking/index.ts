@@ -1,4 +1,25 @@
 // GPS 러닝 추적 도메인의 공개 진입점입니다.
+export {
+  AUTO_PAUSE_HOLD_SECONDS,
+  AUTO_PAUSE_SIGNAL_GAP_SECONDS,
+  AUTO_RESUME_HOLD_SECONDS,
+  autoPauseAnnouncements,
+  autoPauseLevels,
+  autoPauseSpeedSummary,
+  autoPauseStatus,
+  autoPauseTunings,
+  formatSpeedKmh,
+  initialAutoPauseState,
+  isAutoPauseLevel,
+  sameAutoPauseState,
+  speedKmhFromFixes,
+  updateAutoPause,
+  type AutoPauseEvent,
+  type AutoPauseLevel,
+  type AutoPauseState,
+  type AutoPauseStatus,
+  type AutoPauseTuning,
+} from './autoPause';
 export { gpsTrackingEnabled, gpsUnavailableNotice } from './availability';
 export {
   advanceDistanceCueState,
@@ -77,6 +98,9 @@ export {
 } from './splits';
 export {
   useRunTracking,
+  type RunAutoPause,
   type RunTracking,
+  type RunTrackingOptions,
   type TrackedActivityExtras,
 } from './useRunTracking';
+export { useRunPreferences, type RunPreferencesController } from './useRunPreferences';

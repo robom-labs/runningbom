@@ -58,6 +58,11 @@ let fallbackVoiceIdentifier: string | undefined;
 
 let cachedVoices: SpeechVoiceLike[] | undefined;
 
+// 코치 대사 사이에 끼워 넣는 짧은 안내(자동 멈춤·지금 기록·카운트다운)가 쓸 목소리 설정입니다.
+let asideSpeechRate = 1;
+let asideSpeechPitch = 1;
+let asideVoiceIdentifier: string | undefined;
+
 async function availableVoices(): Promise<SpeechVoiceLike[]> {
   if (cachedVoices) return cachedVoices;
   try {
@@ -141,6 +146,42 @@ export async function previewCoachVoice(
   });
 }
 
+/**
+ * 카운트다운처럼 세션이 시작되기 전에 말해야 할 때 목소리를 미리 준비합니다.
+ * 실패해도 기기 기본 한국어 음성으로 말하면 되므로 예외를 삼킵니다.
+ */
+export async function prepareCoachAsideVoice(
+  gender: VoiceGender,
+  speechRate = 1,
+): Promise<void> {
+  try {
+    const voices = await availableVoices();
+    const identifier = selectVoiceIdentifier(voices, gender);
+    const tuning = voiceTuning('easy', gender, 'standard', speechRate);
+    asideSpeechRate = tuning.rate;
+    asideSpeechPitch = tuning.pitch;
+    asideVoiceIdentifier = identifier;
+  } catch {
+    asideSpeechRate = speechRate;
+  }
+}
+
+/**
+ * 코치 대사와 겹치지 않게 같은 발화 큐에 짧은 안내를 넣습니다.
+ * 큐는 한 번에 하나만 말하고 밀린 문장은 최신 하나만 남기므로, 안내가 겹쳐 들리지 않습니다.
+ * (Android 네이티브 코치가 말하는 동안에는 그 대사와 순서를 맞출 수 없어, 아주 짧은 문장만 씁니다.)
+ */
+export function speakCoachAside(text: string): void {
+  const trimmed = text.trim();
+  if (!trimmed) return;
+  enqueueSpeech(trimmed, {
+    language: 'ko-KR',
+    rate: asideSpeechRate,
+    pitch: asideSpeechPitch,
+    ...(asideVoiceIdentifier ? { voice: asideVoiceIdentifier } : {}),
+  });
+}
+
 function clearFallbackCueTimer() {
   if (fallbackCueTimer) clearTimeout(fallbackCueTimer);
   fallbackCueTimer = undefined;
@@ -207,6 +248,11 @@ export async function startCoachSession(
   const voiceIdentifier = selectVoiceIdentifier(voices, gender);
   const tuning = voiceTuning(session.typeId, gender, session.guidance, speechRate);
 
+  // 짧은 안내도 코치와 같은 목소리·속도로 말하도록 맞춰 둡니다.
+  asideSpeechRate = tuning.rate;
+  asideSpeechPitch = tuning.pitch;
+  asideVoiceIdentifier = voiceIdentifier;
+
   if (nativeCoachAvailable()) {
     try {
       await RunningbomCoachModule.startSession(
@@ -248,11 +294,12 @@ export async function startCoachSession(
 }
 
 export async function pauseCoachSession(): Promise<CoachRuntimeState> {
+  // 멈추는 순간에는 짧은 안내도 함께 끊습니다(네이티브 코치를 쓸 때도 마찬가지입니다).
+  clearSpeechQueue();
   if (nativeCoachAvailable() && !fallbackInUse) {
     await RunningbomCoachModule.pauseSession();
     return getCoachState();
   }
-  clearSpeechQueue();
   clearFallbackCueTimer();
   fallbackState = pauseFallbackClock(fallbackState, Date.now());
   return runtimeFromFallback(fallbackState);
@@ -269,11 +316,11 @@ export async function resumeCoachSession(): Promise<CoachRuntimeState> {
 }
 
 export async function stopCoachSession(): Promise<CoachRuntimeState> {
+  clearSpeechQueue();
   if (nativeCoachAvailable() && !fallbackInUse) {
     await RunningbomCoachModule.stopSession();
     return getCoachState();
   }
-  clearSpeechQueue();
   clearFallbackCueTimer();
   fallbackSession = undefined;
   fallbackState = stopFallbackClock(fallbackState, Date.now());

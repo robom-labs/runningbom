@@ -173,7 +173,7 @@ export function trackingNotice(input: {
         tone: 'warning',
         title: '기기 위치 서비스가 꺼져 있어요',
         body: '위치 서비스가 꺼져 있으면 거리를 측정할 수 없어요. 코칭은 계속돼요.',
-        action: '기기 설정에서 위치(GPS)를 켠 뒤 세션을 다시 시작해 주세요.',
+        action: '기기 설정에서 위치(GPS)를 켠 뒤 러닝을 다시 시작해 주세요.',
       };
     case 'granted':
       break;
