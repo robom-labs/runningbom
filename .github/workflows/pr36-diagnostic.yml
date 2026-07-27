@@ -1,0 +1,57 @@
+name: PR36 diagnostic
+
+on:
+  pull_request:
+    paths:
+      - '**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - name: Install mobile dependencies
+        run: npm --prefix apps/mobile ci
+      - name: Family lock
+        if: always()
+        run: node scripts/verify-family.mjs generated/robom-family family.lock.json
+      - name: Static family sync
+        if: always()
+        run: node scripts/sync-family-static.mjs --check
+      - name: Mobile race sync
+        if: always()
+        run: node scripts/sync-mobile-races.mjs --check
+      - name: Static data generation check
+        if: always()
+        run: node --experimental-strip-types scripts/static-data-generate.mjs --check
+      - name: Static data validation
+        if: always()
+        run: node scripts/static-data-validate.mjs
+      - name: Static UI contract
+        if: always()
+        run: node scripts/validate-static.mjs
+      - name: Root script tests
+        if: always()
+        run: node --test "scripts/*.test.mjs"
+      - name: Mobile tests
+        if: always()
+        run: npm --prefix apps/mobile test
+      - name: Mobile typecheck
+        if: always()
+        run: npm --prefix apps/mobile run typecheck
+      - name: Mobile release config
+        if: always()
+        run: npm --prefix apps/mobile run verify
+      - name: Expo public config
+        if: always()
+        run: npm --prefix apps/mobile run config
