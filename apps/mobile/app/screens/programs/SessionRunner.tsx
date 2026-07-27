@@ -2,7 +2,7 @@
 //
 // 위에서부터: 구간 띠 → 큰 원(남은 시간·지금 할 일) → 전체 경과 시간·남은 구간 수 → 버튼.
 // 시간 계산은 domains/programs/session.ts의 순수 함수가 하고, 여기서는 1초마다 세기만 합니다.
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Button, Card, SectionHeader, screenStyles } from '../../design-system/components';
@@ -53,12 +53,15 @@ export function SessionRunner({ session, onClose, onFinish }: SessionRunnerProps
   const [elapsed, setElapsed] = useState(0);
   const [paused, setPaused] = useState(false);
   const [ended, setEnded] = useState(false);
+  /** 음성 엔진에 마지막으로 알려 준 멈춤 상태입니다. 처음에는 아직 알려 준 적이 없습니다. */
+  const pausedSentRef = useRef<boolean | undefined>(undefined);
 
   // 회차를 메인 음성 코치 엔진에 그대로 넘깁니다.
   // 이 화면이 직접 말하지 않고, 자유 러닝과 같은 엔진이 읽어 줍니다.
   // 덕분에 화면을 잠그고 주머니에 넣어도 걷기·달리기 전환이 귀로 들립니다.
   useEffect(() => {
     let cancelled = false;
+    pausedSentRef.current = undefined;
     void startCoachSession(programCoachSession(session)).catch(() => {
       // 음성이 준비되지 않아도 회차 자체는 그대로 진행합니다(화면 안내는 남아 있습니다).
     });
@@ -70,8 +73,17 @@ export function SessionRunner({ session, onClose, onFinish }: SessionRunnerProps
   }, [session]);
 
   // 화면의 일시정지·재개를 음성 엔진에도 그대로 전달합니다.
+  //
+  // 처음 그려질 때는 보내지 않습니다. 시작은 위 effect가 이미 맡고 있고,
+  // 시작이 준비되는 동안 재개 신호가 먼저 도착하면 엔진이 시작 전 상태에서 그 신호를 받습니다.
+  // 실제로 멈춤 상태가 바뀐 순간에만 알려 줍니다.
   useEffect(() => {
     if (ended) return;
+    if (pausedSentRef.current === undefined || pausedSentRef.current === paused) {
+      pausedSentRef.current = paused;
+      return;
+    }
+    pausedSentRef.current = paused;
     void (paused ? pauseCoachSession() : resumeCoachSession()).catch(() => undefined);
   }, [ended, paused]);
 
