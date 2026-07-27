@@ -33,7 +33,10 @@ test("앱 시작 데이터 갱신은 AbortController와 한 번의 effect로 제
 test("접수 상태 검색과 예약 알림 취소 흐름을 제공한다", () => {
   assert.match(raceScreenSource, /registrationFilter/);
   assert.match(raceScreenSource, /const \[query, setQuery\]/);
-  assert.match(raceScreenSource, /scheduled \? cancelAlert\(race\) : scheduleAlert\(race\)/);
+  // 변수 이름이 아니라 "같은 대회를 켜고 끈다"는 규칙을 검사합니다.
+  // 카드가 여러 종목을 묶게 되면서 race -> primary로 이름만 바뀌었는데,
+  // 기능은 멀쩡한데 이 검사만 깨져서 CI 전체가 막혀 있었습니다.
+  assert.match(raceScreenSource, /scheduled \? cancelAlert\((\w+)\) : scheduleAlert\(\1\)/);
   assert.match(raceStateSource, /cancelRegistrationNotification/);
   assert.match(raceStateSource, /reconcileRegistrationNotifications/);
 });
