@@ -30,15 +30,16 @@ export type OnboardingStepId =
   | 'done';
 
 /**
- * 온보딩 전체 순서입니다.
- * 소개 → 목표 → 음성 → 로그인 → 알림 → 위치 → 배터리 → 완료.
- * 거부감이 적은 알림을 먼저 묻고, 그다음 위치, 마지막에 배터리를 안내합니다.
+ * 첫 실행의 실제 순서입니다.
+ * 소개 → 목표 → 음성 → 알림 → 위치(Preview) → 배터리 → 완료.
+ *
+ * 계정 연결은 핵심 가치를 경험하기 전의 필수 단계가 아닙니다. 실제 로그인 제공자가 준비된 뒤에도
+ * 설정에서 선택적으로 연결할 수 있으므로 첫 실행에서는 빼고, 가능한 한 빨리 첫 러닝으로 보냅니다.
  */
 export const onboardingStepIds: OnboardingStepId[] = [
   'intro',
   'goal',
   'voice',
-  'login',
   'notification',
   'location',
   'battery',
@@ -151,7 +152,10 @@ export type IntroHighlight = {
   body: string;
 };
 
-/** 1화면 소개 문구입니다. 숫자는 호출부가 실제 데이터에서 세어 넘깁니다. */
+/**
+ * 첫 화면은 기능 개수 자랑보다 사용자가 얻게 될 결과를 먼저 말합니다.
+ * 숫자는 실제 데이터에서 받은 값만 보조 근거로 씁니다.
+ */
 export function introHighlights(counts: {
   coachSentences: number;
   shoes: number;
@@ -159,19 +163,19 @@ export function introHighlights(counts: {
 }): IntroHighlight[] {
   return [
     {
+      id: 'plan',
+      title: '오늘 무엇을 할지 바로 정해요',
+      body: '처음이라면 9주 달리기 시작을 따라가고, 목표 대회가 있다면 날짜에 맞춘 준비 계획을 볼 수 있어요.',
+    },
+    {
       id: 'coach',
-      title: '코치가 러닝 내내 말해 줘요',
-      body: `준비 문장 ${counts.coachSentences}개로 워밍업부터 마무리까지 이어서 안내해요. 기기 음성으로 읽어 주기 때문에 데이터 요금이 들지 않아요.`,
+      title: '달리는 동안 코치가 함께해요',
+      body: `준비된 한국어 안내 ${counts.coachSentences}개에서 상황에 맞는 말을 골라 워밍업부터 마무리까지 이어 줘요. 기기 음성을 써서 데이터 요금이 들지 않아요.`,
     },
     {
-      id: 'shoes',
-      title: `러닝화 ${counts.shoes}종을 비교해요`,
-      body: '목적과 국내 구매 경로를 정리해 뒀어요. 지금 신는 러닝화를 저장해 둘 수도 있어요.',
-    },
-    {
-      id: 'races',
-      title: `국내 대회 ${counts.races}개를 모아 뒀어요`,
-      body: '접수 일정과 지역을 확인하고, 원하는 대회는 접수 시작 알림을 예약할 수 있어요.',
+      id: 'discover',
+      title: '대회와 러닝화도 한곳에서 찾아요',
+      body: `검증된 국내 대회 ${counts.races}개와 러닝화 ${counts.shoes}종을 목적에 맞게 찾고, 관심 항목을 저장할 수 있어요.`,
     },
   ];
 }
