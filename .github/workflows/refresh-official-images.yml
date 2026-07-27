@@ -79,8 +79,17 @@ jobs:
             echo
             node scripts/collect-official-images.mjs
           } > /tmp/image-pr-body.md
-          gh pr create \
+          # 조직 설정에 따라 Actions가 PR을 못 만드는 경우가 있습니다.
+          # 그때도 브랜치는 이미 올라가 있으므로 **작업을 실패로 만들지 않습니다.**
+          # 모아 온 결과를 버리는 것이 PR 하나 못 여는 것보다 훨씬 나쁩니다.
+          if gh pr create \
             --base main \
             --head "$BRANCH" \
             --title "chore(images): 공식 대표 이미지 주소 갱신" \
-            --body-file /tmp/image-pr-body.md
+            --body-file /tmp/image-pr-body.md; then
+            echo "PR을 만들었습니다."
+          else
+            echo "::warning::Actions가 PR을 만들지 못했습니다(조직 설정). 브랜치는 올라가 있습니다: $BRANCH"
+            echo "다음 주소에서 PR을 열면 됩니다:"
+            echo "https://github.com/${GITHUB_REPOSITORY}/pull/new/$BRANCH"
+          fi

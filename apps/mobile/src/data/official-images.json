@@ -1,6 +1,6 @@
 {
   "note": "공식 페이지가 스스로 공개한 대표 이미지(og:image) 주소만 담습니다. 사람이 만들지 않고 scripts/collect-official-images.mjs가 채웁니다.",
-  "revision": 1,
+  "revision": 2,
   "checkedAt": "2026-07-27",
   "images": {
     "gyeongju-marathon": {
@@ -8,19 +8,9 @@
       "source": "gyeongjumarathon.com",
       "checkedAt": "2026-07-27"
     },
-    "jtbc-seoul": {
-      "url": "https://runable.me/assets/favicon.ico",
-      "source": "runable.me",
-      "checkedAt": "2026-07-27"
-    },
     "mbn-seoul": {
       "url": "https://www.mbn-seoulmarathon.com/images/web/og_image.jpg",
       "source": "mbn-seoulmarathon.com",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-04f5e475a10f": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
       "checkedAt": "2026-07-27"
     },
     "schedule-072dd0d48e95": {
@@ -28,44 +18,14 @@
       "source": "facebook.com",
       "checkedAt": "2026-07-27"
     },
-    "schedule-083391df052c": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-0b78b0cbd95f": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-131f1dcdf8d7": {
-      "url": "https://www.busanmarathon.com/images/logo_kakao.png?ver=1.4",
-      "source": "busanmarathon.com",
-      "checkedAt": "2026-07-27"
-    },
     "schedule-15e101b84778": {
       "url": "https://www.smilerun.co.kr/main/%EC%8A%A4%EB%A7%88%EC%9D%BC%EB%9F%B0%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C/images/inc/image.png",
       "source": "smilerun.co.kr",
       "checkedAt": "2026-07-27"
     },
-    "schedule-1a89c5db9208": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
     "schedule-1b8d7f7833f7": {
       "url": "https://bjlee.casports.or.kr/title_img.jpg",
       "source": "bjlee.casports.or.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-1cbc5c5cac91": {
-      "url": "https://cdn.imweb.me/upload/S2023060511d467df56b65/3cfa0641fdea7.png",
-      "source": "rocknrun.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-1cf7cf30fbfa": {
-      "url": "https://runten.co.kr/images/og-image.jpg",
-      "source": "runten.co.kr",
       "checkedAt": "2026-07-27"
     },
     "schedule-1ddd3b56e1dd": {
@@ -93,24 +53,9 @@
       "source": "runable.me",
       "checkedAt": "2026-07-27"
     },
-    "schedule-25da2243f5e1": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-28efbb7b42bc": {
-      "url": "https://cdn.imweb.me/upload/S2023060511d467df56b65/3cfa0641fdea7.png",
-      "source": "rocknrun.kr",
-      "checkedAt": "2026-07-27"
-    },
     "schedule-2b0bdb610bbf": {
       "url": "https://cdn.imweb.me/upload/S202509238dd548dc951b6/779aa2f8c2c7a.png",
       "source": "insiderun.me",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-2c34315e37b5": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
       "checkedAt": "2026-07-27"
     },
     "schedule-2cbbdd4fd8c9": {
@@ -123,34 +68,14 @@
       "source": "urfesta.com",
       "checkedAt": "2026-07-27"
     },
-    "schedule-33d3fa60ce84": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-351a498e737d": {
-      "url": "https://cdn.imweb.me/upload/S2023060511d467df56b65/3cfa0641fdea7.png",
-      "source": "rocknrun.kr",
-      "checkedAt": "2026-07-27"
-    },
     "schedule-367895c0a879": {
       "url": "https://cdn.imweb.me/upload/S20260623e6c1838697a1e/8f7071189c21d.png",
       "source": "runsense.co.kr",
       "checkedAt": "2026-07-27"
     },
-    "schedule-39b76f7063f4": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
     "schedule-3e9a087dea40": {
       "url": "https://www.herorace.kr/opengraph-image.png?opengraph-image.3qcxshozulk9a.png",
       "source": "herorace.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-425e39d9d6c8": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
       "checkedAt": "2026-07-27"
     },
     "schedule-4630dd861837": {
@@ -168,19 +93,9 @@
       "source": "sejongrun26.com",
       "checkedAt": "2026-07-27"
     },
-    "schedule-4d50d9f6ad3f": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
     "schedule-4f097c0f766d": {
       "url": "https://cdn.imweb.me/upload/S202505223af215b29cb1f/f942705ebbbfd.png",
       "source": "dtrail.co.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-51a59efe9157": {
-      "url": "https://cdn.imweb.me/upload/S2023060511d467df56b65/3cfa0641fdea7.png",
-      "source": "rocknrun.kr",
       "checkedAt": "2026-07-27"
     },
     "schedule-51d8319f0085": {
@@ -191,11 +106,6 @@
     "schedule-523be9afb917": {
       "url": "https://cdn.imweb.me/upload/S202202286603eb04cf447/e43350e0b68bd.png",
       "source": "seoul-race.co.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-53f2b853fa3c": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
       "checkedAt": "2026-07-27"
     },
     "schedule-57b64bb58f18": {
@@ -216,21 +126,6 @@
     "schedule-64715512af85": {
       "url": "https://ecimg.cafe24img.com/pg2019b04190869056/runbookcity/web/upload/share-image-1-00cb43fc579754c8067067c402cba481.png",
       "source": "runbookcity.com",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-6a11c939f2bc": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-6c2207a87d4d": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-72d2610a0217": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
       "checkedAt": "2026-07-27"
     },
     "schedule-7da72e16c401": {
@@ -258,11 +153,6 @@
       "source": "n-runplus.co.kr",
       "checkedAt": "2026-07-27"
     },
-    "schedule-861b5601ce3b": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
     "schedule-880c11adf6cb": {
       "url": "https://lh6.googleusercontent.com/c3L5XNlLjikM8u_xs8xmHwWjp3kUt29bL1Zo29InrL-I3BwRTHGqN6m54OnaNlYMHBIN4wJNIt8vSJg=w1200-h630-p",
       "source": "docs.google.com",
@@ -283,11 +173,6 @@
       "source": "daegwallyeongrun.com",
       "checkedAt": "2026-07-27"
     },
-    "schedule-8f2b258d89c6": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
     "schedule-927bdfd654e6": {
       "url": "https://2026.bbangtrailrun.co.kr/images/share/home-share-image-v4.png",
       "source": "2026.bbangtrailrun.co.kr",
@@ -298,24 +183,9 @@
       "source": "najumarathon.com",
       "checkedAt": "2026-07-27"
     },
-    "schedule-94de4adc31dc": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-a1acb5209782": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
     "schedule-a1b2f00df0c5": {
       "url": "https://www.yonma.kr/assets/img/og_card.png",
       "source": "yonma.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-a4b65a121d5f": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
       "checkedAt": "2026-07-27"
     },
     "schedule-a5818d8e2731": {
@@ -326,11 +196,6 @@
     "schedule-a752ddb8accb": {
       "url": "https://ansanrun.com/title_img3.jpg",
       "source": "ansanrun.com",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-a8b801884a6f": {
-      "url": "https://runten.co.kr/images/og-image.jpg",
-      "source": "runten.co.kr",
       "checkedAt": "2026-07-27"
     },
     "schedule-a93891cd3a26": {
@@ -348,24 +213,9 @@
       "source": "saunarun.com",
       "checkedAt": "2026-07-27"
     },
-    "schedule-b3d2035893b5": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
     "schedule-b614486615d9": {
       "url": "https://global6kforwater.com/resource/frt/images/og_image_202604.jpg",
       "source": "global6kforwater.com",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-b94c08230354": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-bd6cd6e2d155": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
       "checkedAt": "2026-07-27"
     },
     "schedule-c0e2f01b26d3": {
@@ -418,29 +268,14 @@
       "source": "cyber-run.com",
       "checkedAt": "2026-07-27"
     },
-    "schedule-eb19f6e99dcb": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
-      "checkedAt": "2026-07-27"
-    },
     "schedule-eb76dc56f7fa": {
       "url": "https://modern-infinity-9e6.notion.site/image/attachment%3A3f5b5058-8d62-4ac9-8ec5-c0b03f1b951f%3ASocialMediaPreviewImage.png?table=block&id=39591881-0cc2-8075-b602-c0e076d8d3ea&spaceId=d6d91881-0cc2-8155-9239-00031697df5e&width=2000&userId=&cache=v2&imgBuildSrc=pageMetadataCover",
       "source": "modern-infinity-9e6.notion.site",
       "checkedAt": "2026-07-27"
     },
-    "schedule-ec5590a31316": {
-      "url": "https://runten.co.kr/images/og-image.jpg",
-      "source": "runten.co.kr",
-      "checkedAt": "2026-07-27"
-    },
     "schedule-efb159d38156": {
       "url": "https://cdn.imweb.me/upload/S20260610235da01dda75a/59f84054f5791.png",
       "source": "jejuwindmillrun.com",
-      "checkedAt": "2026-07-27"
-    },
-    "schedule-f647363aac8e": {
-      "url": "https://marathongo.co.kr/thumbnail.png",
-      "source": "marathongo.co.kr",
       "checkedAt": "2026-07-27"
     },
     "schedule-f6b181b3fe7c": {
