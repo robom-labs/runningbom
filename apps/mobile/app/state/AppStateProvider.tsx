@@ -40,6 +40,8 @@ import {
   savePreferences,
 } from '../../services/storage/preferences';
 import { saveCoachVoicePreference } from '../../domains/coaching/voicePreference';
+import { onboardingPlanId, type StartingPointId } from '../../domains/programs/onboardingPlan';
+import { PROGRAM_STORE_KEY, parseProgramStore, seedPlan } from '../../domains/programs/store';
 import { goalFromPreset, type OnboardingResult } from '../screens/onboarding/steps';
 import { loadOnboardingStatus, saveOnboardingStatus } from '../screens/onboarding/storage';
 import {
@@ -138,6 +140,26 @@ async function getOrCreateLocalUuid(): Promise<string> {
   const next = Crypto.randomUUID();
   await AsyncStorage.setItem(LOCAL_UUID_KEY, next);
   return next;
+}
+
+
+/**
+ * 온보딩에서 고른 지금 상태에 맞는 계획을 깔아 둡니다.
+ *
+ * 저장 값을 읽어서 **이미 하던 계획이 있으면 그대로 둡니다**(seedPlan이 판단합니다).
+ * 진행 중인 사람의 이력을 지우는 것은 되돌릴 수 없습니다.
+ * 저장에 실패해도 온보딩은 계속 끝납니다. 계획이 없다고 앱을 못 쓰게 만들 이유가 없습니다.
+ */
+async function applyOnboardingPlan(startingPointId: StartingPointId): Promise<void> {
+  try {
+    const raw = await AsyncStorage.getItem(PROGRAM_STORE_KEY);
+    const store = raw ? parseProgramStore(JSON.parse(raw)) : { completedSessionIds: [], attempts: [] };
+    const next = seedPlan(store, onboardingPlanId(startingPointId));
+    if (next === store) return;
+    await AsyncStorage.setItem(PROGRAM_STORE_KEY, JSON.stringify(next));
+  } catch {
+    // 계획을 못 깔아도 온보딩은 끝납니다. 훈련 화면에서 직접 고를 수 있습니다.
+  }
 }
 
 export function AppStateProvider({ children }: PropsWithChildren) {
@@ -341,6 +363,11 @@ export function AppStateProvider({ children }: PropsWithChildren) {
         }
         if (result.voiceGender) {
           await saveCoachVoicePreference({ gender: result.voiceGender });
+        }
+        // 온보딩이 끝나는 순간 계획 하나가 **이미 깔려 있어야** 합니다.
+        // 묻기만 하고 아무것도 해 주지 않으면, 물어본 것이 오히려 부담이 됩니다.
+        if (result.startingPointId) {
+          await applyOnboardingPlan(result.startingPointId);
         }
       }
       await saveOnboardingStatus({

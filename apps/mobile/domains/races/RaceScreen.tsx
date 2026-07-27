@@ -41,6 +41,8 @@ import {
   type RaceSort,
 } from './aggregate';
 import { goalRaceChecklist, goalRaceCountdown, goalRaceDisclaimer, goalRacePhaseLabels } from './goalRace';
+import { racePosterSpec } from './poster';
+import { RacePoster } from './RacePoster';
 import { RaceCalendarView } from './RaceCalendarView';
 import { useGoalRace } from './useGoalRace';
 
@@ -489,6 +491,19 @@ export function RaceScreen({ focusedRaceId }: Props) {
                 focused && styles.raceCardFocused,
               ]}
             >
+              {/*
+                포스터 — 주최 측 이미지가 아니라, 대회 정보(거리·지역·날짜·계절)로
+                우리가 조판한 것입니다. 글자만 있던 목록이 이 한 장으로 달라집니다(기획서 §4.7.3).
+              */}
+              <RacePoster
+                raceName={group.name}
+                spec={racePosterSpec({
+                  raceDate: group.raceDate,
+                  region: group.region,
+                  distances: group.distances.map((value) => distanceLabels[value] ?? value),
+                })}
+              />
+
               <View style={styles.raceTopline}>
                 <View style={styles.dDay}>
                   <Text style={styles.dDayText}>{formatDDay(group.raceDate)}</Text>

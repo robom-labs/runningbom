@@ -73,6 +73,18 @@ export function switchPlan(store: ProgramStore, planId: string): ProgramStore {
   return { ...store, activePlanId: planId };
 }
 
+
+/**
+ * 온보딩이 끝날 때 계획 하나를 깔아 둡니다.
+ *
+ * **이미 하던 계획이 있으면 덮어쓰지 않습니다.** 온보딩을 다시 본 사람(앱 재설치가 아니라
+ * 저장 값이 부분적으로 남은 경우)의 진행을 지우면 되돌릴 수 없습니다.
+ */
+export function seedPlan(store: ProgramStore, planId: string): ProgramStore {
+  if (store.activePlanId) return store;
+  return switchPlan(store, planId);
+}
+
 /**
  * 회차를 마친 기록을 남깁니다.
  * markComplete가 true일 때만 완료 목록에 넣습니다(한 번 더 하기를 고르면 기록만 남아요).

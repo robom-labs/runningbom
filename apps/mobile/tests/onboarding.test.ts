@@ -42,10 +42,12 @@ function activity(completedAt: string): ActivityRecord {
 }
 
 describe('온보딩 단계', () => {
-  it('소개·목표·음성 다음에 로그인 자리와 허락 안내가 이어진다', () => {
+  it('소개·목표·지금 상태·음성 다음에 로그인 자리와 허락 안내가 이어진다', () => {
     assert.deepEqual(onboardingStepIds, [
       'intro',
       'goal',
+      // 지금 상태는 목표 바로 뒤입니다. 이 답 하나로 온보딩 끝에 계획이 깔립니다.
+      'start',
       'voice',
       'login',
       'notification',
@@ -53,14 +55,15 @@ describe('온보딩 단계', () => {
       'battery',
       'done',
     ]);
-    assert.equal(onboardingStepCount, 8);
+    assert.equal(onboardingStepCount, 9);
     assert.equal(onboardingStepIndex('goal'), 1);
     assert.equal(nextOnboardingStep('intro'), 'goal');
-    assert.equal(nextOnboardingStep('goal'), 'voice');
+    assert.equal(nextOnboardingStep('goal'), 'start');
+    assert.equal(nextOnboardingStep('start'), 'voice');
     assert.equal(nextOnboardingStep('voice'), 'login');
     assert.equal(nextOnboardingStep('done'), undefined);
     assert.equal(previousOnboardingStep('intro'), undefined);
-    assert.equal(previousOnboardingStep('voice'), 'goal');
+    assert.equal(previousOnboardingStep('voice'), 'start');
     assert.equal(isLastOnboardingStep('done'), true);
     assert.equal(isLastOnboardingStep('goal'), false);
   });
