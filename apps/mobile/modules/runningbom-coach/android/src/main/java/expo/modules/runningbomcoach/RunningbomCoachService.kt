@@ -53,6 +53,9 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
     private const val CHANNEL_ID = "runningbom-coach"
     private const val NOTIFICATION_ID = 7301
     private const val TICK_MILLIS = 500L
+
+    /** 한 번의 틱에서 실제로 읽어 줄 최대 대사 수입니다(JS 쪽 MAX_SPOKEN_CUES_PER_TICK과 같은 값). */
+    private const val MAX_SPOKEN_PER_TICK = 2
   }
 
   private val handler = Handler(Looper.getMainLooper())
@@ -251,20 +254,34 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
       .coerceIn(0, durationSeconds)
   }
 
+  /**
+   * 지금 시각까지 도달한 대사를 읽습니다.
+   *
+   * 예전에는 밀린 대사 중 **마지막 하나만** 읽고 나머지를 버렸습니다.
+   * 그래서 같은 순간에 놓인 대사가 여러 개면 한 마디만 들렸습니다.
+   * (실제로 회차 시작 0초에 세 마디를 놨더니 한 마디만 들린다는 신고가 있었습니다.)
+   *
+   * 이제 밀린 것을 최대 MAX_SPOKEN_PER_TICK개까지 순서대로 읽습니다.
+   * 전부 읽지 않는 이유는, 화면이 오래 꺼져 있다가 깨어났을 때
+   * 지난 이야기를 몇 십 초씩 늘어놓게 되기 때문입니다.
+   * 읽지 않고 건너뛴 대사도 자리는 끝까지 넘겨, 지난 대사가 되살아나지 않게 합니다.
+   */
   private fun deliverDueCue(elapsed: Int) {
     if (!textToSpeechReady || nextCueIndex >= cues.size) return
-    var chosen: CoachCue? = null
+    val due = mutableListOf<CoachCue>()
     while (nextCueIndex < cues.size && cues[nextCueIndex].offsetSeconds <= elapsed) {
-      chosen = cues[nextCueIndex]
+      due.add(cues[nextCueIndex])
       nextCueIndex += 1
     }
-    chosen ?: return
-    textToSpeech?.speak(
-      chosen.text,
-      TextToSpeech.QUEUE_FLUSH,
-      null,
-      "runningbom-cue-${chosen.offsetSeconds}",
-    )
+    if (due.isEmpty()) return
+
+    val spoken = if (due.size <= MAX_SPOKEN_PER_TICK) due else due.takeLast(MAX_SPOKEN_PER_TICK)
+    spoken.forEachIndexed { index, cue ->
+      // 첫 마디는 앞의 말을 끊고 시작하고, 이어지는 마디는 뒤에 붙입니다.
+      // 전부 QUEUE_FLUSH로 넣으면 앞 마디를 자기들끼리 지워 결국 하나만 들립니다.
+      val mode = if (index == 0) TextToSpeech.QUEUE_FLUSH else TextToSpeech.QUEUE_ADD
+      textToSpeech?.speak(cue.text, mode, null, "runningbom-cue-${cue.offsetSeconds}")
+    }
   }
 
   private fun parseCueSchedule(value: String): List<CoachCue> {
