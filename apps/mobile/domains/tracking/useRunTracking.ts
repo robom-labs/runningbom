@@ -33,6 +33,7 @@ import {
   deactivateRunKeepAwake,
   keepAwakeNotice,
 } from './keepAwake';
+import { reanchorTrackWithoutDistance } from './pause';
 import {
   appendRouteFix,
   emptyRouteState,
@@ -116,7 +117,7 @@ export type RunTrackingOptions = {
 
 /**
  * @param active 세션이 살아 있는지(진행 중 + 일시정지). GPS 구독 여부를 정합니다.
- * @param running 지금 실제로 달리는 중인지. 화면 꺼짐 방지는 이 값에만 반응합니다.
+ * @param running 지금 실제로 달리는 중인지. 화면 꺼짐과 수동 일시정지 시간 계산에 사용합니다.
  * @param options 자동 멈춤 같은 사용자 설정입니다.
  */
 export function useRunTracking(
@@ -145,6 +146,15 @@ export function useRunTracking(
   const autoPauseStateRef = useRef<AutoPauseState>(initialAutoPauseState);
   /** 스스로 멈춰 있던 시간입니다. 평균 페이스가 신호등 때문에 나빠지지 않도록 빼 줍니다. */
   const autoPausedMillisRef = useRef(0);
+  /** 사용자가 직접 일시정지한 시간입니다. */
+  const manualPausedMillisRef = useRef(0);
+  const manualPausedAtRef = useRef<number | undefined>(undefined);
+  /** 위치 콜백에서 가장 최신 진행/일시정지 상태를 읽습니다. */
+  const runningRef = useRef(running);
+  /** 멈춘 뒤 첫 좌표는 거리로 더하지 않고 새 기준점으로만 써야 합니다. */
+  const resumeNeedsAnchorRef = useRef(!running);
+  /** 기준점만 옮긴 렌더에서는 경로·구간 파생값을 갱신하지 않습니다. */
+  const skipDerivedTrackUpdateRef = useRef(false);
   const previousFixRef = useRef<LocationFix | undefined>(undefined);
   const speedSampleRef = useRef<{ kmh: number; atMillis: number } | undefined>(undefined);
   const cueStateRef = useRef<DistanceCueState>(initialDistanceCueState);
@@ -163,6 +173,11 @@ export function useRunTracking(
     setAutoPauseChange(undefined);
     autoPauseStateRef.current = initialAutoPauseState;
     autoPausedMillisRef.current = 0;
+    manualPausedMillisRef.current = 0;
+    manualPausedAtRef.current = undefined;
+    runningRef.current = running;
+    resumeNeedsAnchorRef.current = true;
+    skipDerivedTrackUpdateRef.current = false;
     previousFixRef.current = undefined;
     speedSampleRef.current = undefined;
     cueStateRef.current = initialDistanceCueState;
@@ -172,7 +187,26 @@ export function useRunTracking(
     awakeNoticeShownRef.current = false;
     setScreenAwakeNotice(undefined);
     setPermission(supported ? 'undetermined' : 'unsupported');
-  }, [supported]);
+  }, [running, supported]);
+
+  // 사용자가 직접 멈춘 시간은 거리뿐 아니라 평균 페이스 계산에서도 뺍니다.
+  useEffect(() => {
+    runningRef.current = running;
+    if (!active) {
+      manualPausedAtRef.current = undefined;
+      return;
+    }
+    if (!running) {
+      resumeNeedsAnchorRef.current = true;
+      if (manualPausedAtRef.current === undefined) manualPausedAtRef.current = Date.now();
+      return;
+    }
+    const pausedAt = manualPausedAtRef.current;
+    if (pausedAt !== undefined) {
+      manualPausedMillisRef.current += Math.max(0, Date.now() - pausedAt);
+      manualPausedAtRef.current = undefined;
+    }
+  }, [active, running]);
 
   useEffect(() => {
     if (!supported || !active) return;
@@ -191,13 +225,33 @@ export function useRunTracking(
       if (granted !== 'granted') return;
 
       subscription = await watchForegroundPosition((fix: LocationFix) => {
-        // 자동 멈춤은 걸러지기 전 좌표에서 속도만 따로 봅니다(거리 누적 규칙은 그대로 둡니다).
+        // 자동 멈춤 재개 판정은 일시정지 중에도 필요하므로 속도 표본은 계속 받습니다.
         const speedKmh = speedKmhFromFixes(previousFixRef.current, fix);
         previousFixRef.current = fix;
         if (speedKmh !== undefined) {
           speedSampleRef.current = { kmh: speedKmh, atMillis: Date.now() };
         }
-        setAccumulator((current) => acceptFix(current, fix, defaultTrackFilterOptions));
+
+        const shouldRecord =
+          runningRef.current && autoPauseStateRef.current.phase !== 'paused';
+        if (!shouldRecord) {
+          resumeNeedsAnchorRef.current = true;
+          setNowMillis(Date.now());
+          return;
+        }
+
+        if (resumeNeedsAnchorRef.current) {
+          setAccumulator((current) => {
+            const next = reanchorTrackWithoutDistance(current, fix, defaultTrackFilterOptions);
+            if (next.anchor?.timestampMillis === fix.timestampMillis) {
+              resumeNeedsAnchorRef.current = false;
+              skipDerivedTrackUpdateRef.current = true;
+            }
+            return next;
+          });
+        } else {
+          setAccumulator((current) => acceptFix(current, fix, defaultTrackFilterOptions));
+        }
         setNowMillis(Date.now());
       });
       if (cancelled) {
@@ -266,6 +320,7 @@ export function useRunTracking(
         autoPauseStateRef.current = result.state;
         setAutoPauseState(result.state);
       }
+      if (result.event === 'paused') resumeNeedsAnchorRef.current = true;
       if (result.event) setAutoPauseChange({ event: result.event, atMillis: now });
     }, 1_000);
 
@@ -279,10 +334,21 @@ export function useRunTracking(
     return () => clearInterval(timer);
   }, [active, permission, supported]);
 
+  const manualPauseOngoingMillis =
+    manualPausedAtRef.current === undefined
+      ? 0
+      : Math.max(0, nowMillis - manualPausedAtRef.current);
   const elapsedSeconds = startedAtRef.current
     ? Math.max(
         0,
-        Math.floor((nowMillis - startedAtRef.current - autoPausedMillisRef.current) / 1_000),
+        Math.floor(
+          (nowMillis -
+            startedAtRef.current -
+            autoPausedMillisRef.current -
+            manualPausedMillisRef.current -
+            manualPauseOngoingMillis) /
+            1_000,
+        ),
       )
     : 0;
 
@@ -309,9 +375,14 @@ export function useRunTracking(
     setDistanceCueText(cue.text);
   }, [snapshot]);
 
-  // 구간(랩)과 경로 좌표는 잡음 필터를 통과한 좌표(anchor)만 기준으로 쌓습니다.
+  // 구간(랩)과 경로 좌표는 실제 기록 중에 잡음 필터를 통과한 좌표(anchor)만 기준으로 쌓습니다.
   useEffect(() => {
     if (!supported || permission !== 'granted') return;
+    if (!running || autoPauseState.phase === 'paused' || resumeNeedsAnchorRef.current) return;
+    if (skipDerivedTrackUpdateRef.current) {
+      skipDerivedTrackUpdateRef.current = false;
+      return;
+    }
     const startedAt = startedAtRef.current;
     if (!startedAt) return;
 
@@ -324,17 +395,10 @@ export function useRunTracking(
       }
     }
 
-    // 마지막으로 인정된 좌표가 찍힌 시각을 기준으로 구간 시간을 확정합니다.
-    const atMillis = anchor?.timestampMillis ?? Date.now();
-    // 구간 시간도 스스로 멈춰 있던 시간을 뺀 값으로 셉니다.
-    const measuredSeconds = Math.max(
-      0,
-      (atMillis - startedAt - autoPausedMillisRef.current) / 1_000,
-    );
     const nextSplitState = advanceSplits(
       splitStateRef.current,
       accumulator.distanceMeters,
-      measuredSeconds,
+      elapsedSeconds,
     );
     if (nextSplitState !== splitStateRef.current) {
       const changed = nextSplitState.completed !== splitStateRef.current.completed;
@@ -342,9 +406,9 @@ export function useRunTracking(
       if (changed) setSplits(nextSplitState.completed);
     }
     setCurrentSplit(
-      trailingSplit(splitStateRef.current, accumulator.distanceMeters, measuredSeconds),
+      trailingSplit(splitStateRef.current, accumulator.distanceMeters, elapsedSeconds),
     );
-  }, [accumulator, permission, supported]);
+  }, [accumulator, autoPauseState.phase, elapsedSeconds, permission, running, supported]);
 
   const notice = useMemo(
     () => trackingNotice({ supported, permission, signal: snapshot.signal }),

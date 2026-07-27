@@ -53,6 +53,7 @@
     "config": "expo config --type public",
     "verify": "node scripts/verify-config.mjs",
     "check": "npm test && npm run typecheck && npm run verify && npm run config",
+    "static-data:generate": "tsx ../../scripts/static-data-generate.mjs",
     "export:native": "expo export --platform android --output-dir dist/android && expo export --platform ios --output-dir dist/ios"
   },
   "private": true
