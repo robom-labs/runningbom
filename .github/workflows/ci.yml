@@ -88,4 +88,7 @@ jobs:
           cache-dependency-path: apps/mobile/package-lock.json
       - run: npm --prefix apps/mobile ci
       - working-directory: apps/mobile
-        run: npx tsx --test "${{ matrix.file#apps/mobile/ }}"
+        shell: bash
+        run: |
+          file="${{ matrix.file }}"
+          npx tsx --test "${file#apps/mobile/}"
