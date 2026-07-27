@@ -132,16 +132,43 @@ jobs:
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           EAS_NO_VCS: '1'
-          # 메모리 부족(OutOfMemoryError: Metaspace)으로 실패한 적이 있어 넉넉히 준다.
-          GRADLE_OPTS: '-Xmx6g -XX:MaxMetaspaceSize=2g -XX:+HeapDumpOnOutOfMemoryError'
+          # 여기 GRADLE_OPTS는 Gradle을 "시작하는" 쪽에만 걸린다. 실제로 컴파일하는 데몬의
+          # 메모리는 apps/mobile/plugins/withBuildMemory.js가 gradle.properties에 써 준다.
+          GRADLE_OPTS: '-Xmx1g -XX:MaxMetaspaceSize=512m'
         run: |
           set -euo pipefail
-          if ! npx --yes eas-cli@latest build \
+          # OutOfMemoryError가 나면 Gradle 데몬만 죽고 EAS는 계속 기다려서, 실패를 실패로
+          # 알아채지 못한 채 timeout까지 20분 넘게 흘려보낸 적이 있다. 로그에서 그 문구를
+          # 보는 즉시 끊도록 파이프로 감시한다(PIPESTATUS로 빌드 자체의 종료 코드를 지킨다).
+          OOM_MARK="$RUNNER_TEMP/gradle-oom.mark"
+          rm -f "$OOM_MARK"
+          set +e
+          npx --yes eas-cli@latest build \
               --platform android \
               --profile preview \
               --local \
               --non-interactive \
-              --output "$APK_NAME"; then
+              --output "$APK_NAME" 2>&1 \
+            | while IFS= read -r line; do
+                printf '%s\n' "$line"
+                case "$line" in
+                  *OutOfMemoryError*)
+                    if [ ! -f "$OOM_MARK" ]; then
+                      printf '%s\n' "$line" > "$OOM_MARK"
+                      echo "::error::Gradle이 메모리 부족으로 죽었습니다. 더 기다리지 않고 끊습니다."
+                      pkill -f 'eas-cli-local-build-plugin' || true
+                      pkill -f 'GradleDaemon' || true
+                    fi
+                    ;;
+                esac
+              done
+          BUILD_STATUS="${PIPESTATUS[0]}"
+          set -e
+          if [ -f "$OOM_MARK" ]; then
+            echo "::error::메모리 부족으로 빌드를 중단했습니다: $(cat "$OOM_MARK")"
+            exit 1
+          fi
+          if [ "$BUILD_STATUS" -ne 0 ]; then
             echo "::error::EAS 로컬 빌드가 실패했습니다. 위 Gradle/EAS 로그에서 원인을 확인하세요."
             exit 1
           fi

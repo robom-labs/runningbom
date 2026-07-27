@@ -68,7 +68,8 @@
       ],
       "expo-sqlite",
       "expo-secure-store",
-      "expo-web-browser"
+      "expo-web-browser",
+      "./plugins/withBuildMemory"
     ],
     "owner": "robom-labs",
     "extra": {
