@@ -43,6 +43,12 @@ jobs:
       - name: Root script tests
         if: always()
         run: node --test "scripts/*.test.mjs"
+      - name: Changed onboarding test
+        if: always()
+        run: cd apps/mobile && npx tsx --test tests/onboarding.test.ts
+      - name: New program activity test
+        if: always()
+        run: cd apps/mobile && npx tsx --test tests/program-activity.test.ts
       - name: Mobile tests
         if: always()
         run: npm --prefix apps/mobile test
@@ -55,3 +61,35 @@ jobs:
       - name: Expo public config
         if: always()
         run: npm --prefix apps/mobile run config
+
+  discover-root-tests:
+    runs-on: ubuntu-latest
+    outputs:
+      files: ${{ steps.list.outputs.files }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - id: list
+        name: Find root script tests
+        shell: bash
+        run: |
+          files=$(find scripts -maxdepth 1 -name '*.test.mjs' -print | sort | jq -R -s -c 'split("\n")[:-1]')
+          echo "files=$files" >> "$GITHUB_OUTPUT"
+
+  root-test-file:
+    needs: discover-root-tests
+    name: root ${{ matrix.file }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        file: ${{ fromJSON(needs.discover-root-tests.outputs.files) }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - run: npm --prefix apps/mobile ci
+      - run: node --test "${{ matrix.file }}"
