@@ -40,13 +40,9 @@ jobs:
         run: npx tsx --test tests/race-security.test.ts tests/static-data.test.ts
       - name: Critical share growth flow
         working-directory: apps/mobile
-        run: npx tsx --test tests/share-growth.test.ts
-      - name: Mobile tests excluding COM diagnostic set
-        working-directory: apps/mobile
-        shell: bash
-        run: |
-          mapfile -t files < <(find tests -type f -name '*.test.ts' ! -name 'com*.test.ts' | sort)
-          if ((${#files[@]} > 0)); then npx tsx --test "${files[@]}"; fi
+        run: npx tsx --test tests/share-growth.test.ts tests/community-share.test.ts
+      - name: Full mobile rule tests
+        run: npm --prefix apps/mobile test
       - name: Mobile TypeScript
         run: npm --prefix apps/mobile run typecheck
       - name: Mobile release contract
@@ -55,40 +51,3 @@ jobs:
         run: npm --prefix apps/mobile run config
       - name: Production dependency audit
         run: npm run audit:prod
-
-  discover-com-tests:
-    runs-on: ubuntu-latest
-    outputs:
-      files: ${{ steps.matrix.outputs.files }}
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-      - id: matrix
-        name: Discover COM test files
-        shell: bash
-        run: |
-          files=$(find apps/mobile/tests -type f -name 'com*.test.ts' | sort | jq -R -s -c 'split("\n")[:-1]')
-          echo "files=$files" >> "$GITHUB_OUTPUT"
-
-  verify-com-file:
-    needs: discover-com-tests
-    if: ${{ needs.discover-com-tests.outputs.files != '[]' }}
-    strategy:
-      fail-fast: false
-      matrix:
-        file: ${{ fromJson(needs.discover-com-tests.outputs.files) }}
-    name: Test ${{ matrix.file }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: apps/mobile/package-lock.json
-      - run: npm --prefix apps/mobile ci
-      - working-directory: apps/mobile
-        shell: bash
-        run: |
-          file="${{ matrix.file }}"
-          npx tsx --test "${file#apps/mobile/}"
