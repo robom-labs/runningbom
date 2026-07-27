@@ -133,9 +133,34 @@ describe('회차 화면과 음성 엔진 연결', () => {
   it('회차 화면이 메인 코치 엔진을 실제로 시작한다', () => {
     // 이 줄이 사라지면 프로그램 회차가 다시 무음이 됩니다.
     assert.ok(
-      runnerSource.includes('startCoachSession(programCoachSession(session))'),
+      runnerSource.includes('startCoachSession(programCoachSession(session)'),
       '회차 화면이 음성 엔진을 시작하지 않습니다',
     );
+  });
+
+  it('회차 음성은 앱이 직접 말한다', () => {
+    // 기기 서비스의 대사표에만 의존하던 동안 첫 대사만 들리고 조용해지는 일이 두 번 있었습니다.
+    // 그 서비스 안은 앱에서 볼 수 없고 원격 수정도 안 됩니다. 들리는 것이 확인된 경로를 씁니다.
+    assert.ok(
+      runnerSource.includes("speechOwner: 'app'"),
+      '회차 음성이 다시 기기 서비스에만 맡겨졌습니다',
+    );
+  });
+
+  it('두 곳이 같이 말하지 않는다', () => {
+    // 앱이 말할 때 기기 서비스에도 대사표를 주면 같은 문장이 두 번 들립니다.
+    assert.ok(
+      serviceSource.includes("speechOwner === 'app' ? '' : cueScheduleForNative(session)"),
+      '앱이 말할 때 기기 서비스에도 대사표가 넘어갑니다',
+    );
+  });
+
+  it('멈춤·재개·정지가 앱 음성에도 전달된다', () => {
+    // 멈췄는데 앱이 계속 말하면 더 나쁩니다.
+    for (const guard of ['if (appSpeechActive)']) {
+      const count = serviceSource.split(guard).length - 1;
+      assert.ok(count >= 3, `앱 음성 정리가 ${count}곳에만 있습니다(멈춤·재개·정지 3곳 필요)`);
+    }
   });
 
   it('화면을 벗어나면 음성을 정리한다', () => {
