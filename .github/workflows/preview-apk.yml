@@ -126,9 +126,14 @@ jobs:
       - name: EAS 로컬 Preview APK 빌드 (기존 서명 유지)
         if: steps.signing.outputs.mode == 'eas'
         working-directory: apps/mobile
+        # Gradle이 메모리 부족으로 죽어도 프로세스가 매달려 한 시간 가까이 "진행 중"으로
+        # 보인 적이 있다. 정상 빌드는 20분 안에 끝나므로 여기서 끊고 원인을 로그로 남긴다.
+        timeout-minutes: 35
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           EAS_NO_VCS: '1'
+          # 메모리 부족(OutOfMemoryError: Metaspace)으로 실패한 적이 있어 넉넉히 준다.
+          GRADLE_OPTS: '-Xmx6g -XX:MaxMetaspaceSize=2g -XX:+HeapDumpOnOutOfMemoryError'
         run: |
           set -euo pipefail
           if ! npx --yes eas-cli@latest build \
