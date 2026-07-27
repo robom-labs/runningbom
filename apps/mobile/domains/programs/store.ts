@@ -14,6 +14,12 @@ export type ProgramStore = {
   attempts: SessionAttempt[];
   /** 프로그램을 처음 시작한 시각입니다. */
   startedAt?: string;
+  /**
+   * 지금 하고 있는 계획의 ID입니다.
+   * 예전 저장 값에는 없습니다. 없으면 9주 프로그램으로 봅니다(기존 사용자 보호).
+   * 값을 지우지 않고 새로 더하기만 하므로 되돌릴 수 있습니다.
+   */
+  activePlanId?: string;
 };
 
 export const emptyProgramStore: ProgramStore = {
@@ -52,7 +58,19 @@ export function parseProgramStore(value: unknown): ProgramStore {
     completedSessionIds: stringList(store.completedSessionIds),
     attempts,
     ...(typeof store.startedAt === 'string' ? { startedAt: store.startedAt } : {}),
+    ...(typeof store.activePlanId === 'string' && store.activePlanId
+      ? { activePlanId: store.activePlanId }
+      : {}),
   };
+}
+
+/**
+ * 지금 하고 있는 계획을 바꿉니다.
+ * 지난 기록은 지우지 않습니다. 다른 계획을 하다 돌아와도 완료한 회차가 남아 있어야 합니다.
+ */
+export function switchPlan(store: ProgramStore, planId: string): ProgramStore {
+  if (!planId || store.activePlanId === planId) return store;
+  return { ...store, activePlanId: planId };
 }
 
 /**
@@ -70,6 +88,7 @@ export function saveAttempt(
       ? [...store.completedSessionIds, attempt.sessionId]
       : store.completedSessionIds;
   return {
+    ...store,
     completedSessionIds,
     attempts,
     startedAt: store.startedAt ?? attempt.finishedAt,
