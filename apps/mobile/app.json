@@ -3,7 +3,7 @@
     "name": "러닝봄",
     "slug": "runningbom",
     "version": "0.19.0",
-    "description": "지역·거리·접수 상태로 러닝 대회를 찾고 공식 접수 시작 알림을 준비하는 러닝봄",
+    "description": "오늘 할 운동을 정하고 한국어 음성 코칭과 함께 실행하며 기록·국내 대회·러닝화를 한곳에서 관리하는 러닝 앱",
     "platforms": [
       "ios",
       "android"
