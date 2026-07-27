@@ -27,11 +27,14 @@ jobs:
           git checkout -q -B codex/runningbom-product-audit-v1 FETCH_HEAD
       - name: Install quietly
         run: npm --prefix apps/mobile ci --silent
-      - name: Show only the mobile test result tail
+      - name: Show only failures and final summary
         shell: bash
         run: |
           set +e
           npm --prefix apps/mobile test > /tmp/mobile-tests.log 2>&1
           status=$?
-          tail -n 180 /tmp/mobile-tests.log
+          echo '--- failure markers ---'
+          grep -n -E 'not ok|AssertionError|ERR_ASSERTION|actual:|expected:|error:' /tmp/mobile-tests.log | tail -n 100 || true
+          echo '--- final summary ---'
+          tail -n 45 /tmp/mobile-tests.log
           exit "$status"
