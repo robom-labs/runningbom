@@ -40,6 +40,9 @@ import { capabilityFromActivities, decideLevel } from '../../../domains/programs
 import { buildWorkoutSession } from '../../../domains/workouts/library';
 import { WorkoutPicker } from './WorkoutPicker';
 import { ChallengeBoard } from './ChallengeBoard';
+import { TodayCard } from './TodayCard';
+import { ProjectBoard } from './ProjectBoard';
+import { useProjects } from '../../../domains/projects/useProjects';
 import { planPaceSecondsPerKm, planRunToSession } from '../../../domains/programs/racePlanSession';
 import { TrainingPlanCard } from './TrainingPlanCard';
 
@@ -54,6 +57,7 @@ export function ProgramsScreen({ onBack, onOpenRaces }: ProgramsScreenProps) {
   const { activities, ready: activitiesReady } = useAppState();
   const { goalRace } = useGoalRace();
   const { ready, progress, finishSession, activePlanId, choosePlan } = usePrograms();
+  const projects = useProjects();
   const [running, setRunning] = useState<ProgramSession | undefined>(undefined);
   /**
    * 지금 하는 것이 "오늘 한 번만"인지입니다.
@@ -141,6 +145,22 @@ export function ProgramsScreen({ onBack, onOpenRaces }: ProgramsScreenProps) {
           onChoose={(planId) => {
             void choosePlan(planId);
             setOpenWeeks(false);
+          }}
+        />
+      ) : null}
+
+      {!loading ? (
+        <TodayCard
+          activities={activities}
+          hasPlanSessionLeft={Boolean(progress.current)}
+          onStartPlanSession={() => {
+            if (!progress.current) return;
+            setRunningIsWorkout(false);
+            setRunning(progress.current);
+          }}
+          onStartWorkout={(template) => {
+            setRunningIsWorkout(true);
+            setRunning(buildWorkoutSession(template));
           }}
         />
       ) : null}
@@ -266,6 +286,10 @@ export function ProgramsScreen({ onBack, onOpenRaces }: ProgramsScreenProps) {
           raceName={goalRace.name}
           remainingLabel={countdown.remainingLabel}
         />
+      ) : null}
+
+      {!loading && projects.ready ? (
+        <ProjectBoard items={projects.shown} onToggleStep={(id) => void projects.toggle(id)} />
       ) : null}
 
       {!loading && !goalRace ? (
