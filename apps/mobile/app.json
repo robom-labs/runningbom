@@ -15,7 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "kr.robom.runningbom",
-      "buildNumber": "6",
+      "buildNumber": "7",
       "infoPlist": {
         "CFBundleDisplayName": "러닝봄"
       },
@@ -23,7 +23,7 @@
     },
     "android": {
       "package": "kr.robom.runningbom",
-      "versionCode": 7,
+      "versionCode": 8,
       "permissions": [
         "android.permission.POST_NOTIFICATIONS"
       ],
