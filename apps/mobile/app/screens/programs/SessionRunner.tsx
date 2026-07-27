@@ -33,8 +33,10 @@ import {
   type CoachSpeechDiagnostics,
   pauseCoachSession,
   resumeCoachSession,
+  seekCoachSpeech,
   startCoachSession,
   stopCoachSession,
+  syncCoachSpeech,
 } from '../../../services/audio/coachService';
 import { CountdownRing } from './CountdownRing';
 import { SegmentRibbon } from './SegmentRibbon';
@@ -108,7 +110,13 @@ export function SessionRunner({ session, onClose, onFinish }: SessionRunnerProps
   useEffect(() => {
     if (paused || ended) return undefined;
     const id = setInterval(() => {
-      setElapsed((value) => value + 1);
+      setElapsed((value) => {
+        const next = value + 1;
+        // 화면 시계가 정본입니다. 음성이 어긋나 있으면 화면에 맞춥니다.
+        // 두 시계를 따로 두면 "다음 구간으로"를 눌렀을 때 음성만 옛날 자리에 남습니다.
+        syncCoachSpeech(next);
+        return next;
+      });
       // 음성이 실제로 나가고 있는지 화면에서 바로 확인할 수 있게 합니다.
       // "안 들린다"를 짐작이 아니라 사실로 좁히기 위한 값입니다.
       setVoiceStatus(coachSpeechDiagnostics());
@@ -147,8 +155,27 @@ export function SessionRunner({ session, onClose, onFinish }: SessionRunnerProps
   );
 
   const skip = useCallback(() => {
-    setElapsed((value) => skipToNextSegment(timeline, value));
+    setElapsed((value) => {
+      const next = skipToNextSegment(timeline, value);
+      // 구간을 건너뛰면 음성도 그 자리로 함께 옮기고, 새 구간 안내를 바로 말합니다.
+      // 건너뛰었는데 아무 말이 없으면 지금 무엇을 할 차례인지 알 수 없습니다.
+      seekCoachSpeech(next);
+      return next;
+    });
   }, [timeline]);
+
+  /** 음성이 안 켜졌을 때 회차를 그대로 둔 채 음성만 다시 시작합니다. */
+  const restartVoice = useCallback(() => {
+    void startCoachSession(programCoachSession(session), 1, 'female', {
+      speechOwner: 'app',
+    })
+      .then(() => {
+        // 다시 켠 음성을 지금 화면 시각으로 옮깁니다. 처음부터 다시 말하면 안 됩니다.
+        seekCoachSpeech(elapsed);
+        setVoiceStatus(coachSpeechDiagnostics());
+      })
+      .catch(() => undefined);
+  }, [elapsed, session]);
 
   const stopNow = useCallback(() => {
     setPaused(true);
@@ -237,11 +264,19 @@ export function SessionRunner({ session, onClose, onFinish }: SessionRunnerProps
         나갔는데 소리가 안 들린 것인지를 짐작이 아니라 사실로 가릅니다.
       */}
       {voiceStatus ? (
-        <Text style={styles.voiceStatus}>
-          {voiceStatus.lastSpokenOffsetSeconds === undefined
-            ? `음성 준비 중 · 남은 안내 ${voiceStatus.remainingCues}개`
-            : `방금 안내 ${formatClock(voiceStatus.lastSpokenOffsetSeconds)} · 남은 안내 ${voiceStatus.remainingCues}개`}
-        </Text>
+        <View style={styles.voiceSlot}>
+          <Text style={styles.voiceStatus}>
+            {voiceStatus.owner === 'none'
+              ? '음성이 아직 안 켜졌어요.'
+              : voiceStatus.lastSpokenOffsetSeconds === undefined
+                ? `음성 준비 중 · 남은 안내 ${voiceStatus.remainingCues}개`
+                : `방금 안내 ${formatClock(voiceStatus.lastSpokenOffsetSeconds)} · 남은 안내 ${voiceStatus.remainingCues}개`}
+          </Text>
+          {voiceStatus.owner === 'none' ? (
+            // 음성이 안 켜졌을 때 회차를 처음부터 다시 하지 않고 여기서 되살립니다.
+            <Button label="음성 다시 켜기" onPress={restartVoice} tone="secondary" />
+          ) : null}
+        </View>
       ) : null}
 
       <View style={styles.controls}>
@@ -326,6 +361,7 @@ const styles = StyleSheet.create({
     fontSize: typeScale.caption,
     lineHeight: lineHeight.caption,
   },
+  voiceSlot: { gap: spacing.xs },
   voiceStatus: {
     color: palette.muted,
     fontSize: typeScale.caption,

@@ -349,7 +349,9 @@ export type CoachSpeechDiagnostics = {
 let lastSpokenOffsetSeconds: number | undefined;
 
 export function coachSpeechDiagnostics(): CoachSpeechDiagnostics {
-  if (!fallbackSession) return { owner: 'native', remainingCues: 0 };
+  // 대사표를 들고 있지 않으면 앱은 아직 말할 준비가 안 된 것입니다.
+  // 이 경우를 'native'로 뭉뚱그리면 "왜 조용한지" 화면에서 알 수 없습니다.
+  if (!fallbackSession) return { owner: 'none', remainingCues: 0 };
   return {
     // 앱 시계와 대사표를 들고 있으면 말하는 주체는 앱입니다(네이티브 실패로 넘어온 경우 포함).
     owner: 'app',
@@ -365,14 +367,32 @@ export async function startCoachSession(
   options: CoachStartOptions = {},
 ): Promise<CoachRuntimeState> {
   const speechOwner: CoachSpeechOwner = options.speechOwner ?? 'native';
-  const sessionId = Crypto.randomUUID();
   const startedAtEpochMillis = Date.now();
-  const voices = await availableVoices();
-  const { identifier: voiceIdentifier, pick } = await resolveVoice(voices, gender);
-  const tuning = applyPick(
-    voiceTuning(session.typeId, gender, session.guidance, speechRate),
-    pick,
-  );
+
+  // 여기서 실패하면 음성이 통째로 안 켜집니다. 그런데 실패해도 기기 기본 목소리로 말할 수 있습니다.
+  // 예전에는 목소리를 고르다 예외가 나면 startCoachSession 전체가 거절되고,
+  // 화면은 그 예외를 조용히 삼켜서 "아무 말도 안 하는데 이유도 모르는" 상태가 됐습니다.
+  // 목소리 고르기는 있으면 좋은 것이지, 말하기의 전제 조건이 아닙니다.
+  let sessionId: string;
+  try {
+    sessionId = Crypto.randomUUID();
+  } catch {
+    sessionId = `coach-${startedAtEpochMillis}`;
+  }
+
+  let voiceIdentifier: string | undefined;
+  let tuning = { rate: speechRate, pitch: 1 };
+  try {
+    const voices = await availableVoices();
+    const resolved = await resolveVoice(voices, gender);
+    voiceIdentifier = resolved.identifier;
+    tuning = applyPick(
+      voiceTuning(session.typeId, gender, session.guidance, speechRate),
+      resolved.pick,
+    );
+  } catch {
+    // 기기 기본 한국어 음성으로 말합니다. 안 들리는 것보다 낫습니다.
+  }
 
   // 짧은 안내도 코치와 같은 목소리·속도로 말하도록 맞춰 둡니다.
   asideSpeechRate = tuning.rate;
@@ -433,6 +453,61 @@ export async function startCoachSession(
   appSpeechActive = false;
   armAppSpeech();
   return runtimeFromFallback(fallbackState);
+}
+
+/**
+ * 음성을 화면의 시각에 맞춥니다.
+ *
+ * 왜 필요한가:
+ *   회차 화면에는 "다음 구간으로" 버튼이 있습니다. 누르면 화면 시간이 훌쩍 뜁니다.
+ *   그런데 음성은 자기 시계로만 돌고 있어서, 화면은 달리기 구간인데 음성은
+ *   아직 걷기 구간을 안내하고 있었습니다. 두 시계가 따로 놀던 것입니다.
+ *
+ * 하는 일:
+ *   1) 음성 시계를 그 시각으로 옮기고
+ *   2) 이미 지나간 안내는 말하지 않고 건너뛰되
+ *   3) **그 시점에 해당하는 안내 한 마디는 지금 바로 말합니다.**
+ *      구간을 건너뛰었는데 아무 말이 없으면 무엇을 할 차례인지 알 수 없습니다.
+ */
+export function seekCoachSpeech(elapsedSeconds: number): void {
+  if (!fallbackSession) return;
+  const target = Math.max(0, Math.round(elapsedSeconds));
+
+  // 시계를 옮깁니다. 흐르던 상태는 그대로 두고 경과만 바꿉니다.
+  fallbackState = {
+    ...fallbackState,
+    elapsedSeconds: Math.min(fallbackState.durationSeconds, target),
+    ...(fallbackState.state === 'running' ? { runningSinceEpochMillis: Date.now() } : {}),
+  };
+
+  // 그 시각까지의 안내 중 마지막 한 마디만 지금 말합니다.
+  const { spoken, nextIndex } = dueCues(fallbackSession.cues, 0, target, 1);
+  fallbackCueIndex = nextIndex;
+  const cue = spoken[spoken.length - 1];
+  if (cue && cue.offsetSeconds !== lastSpokenOffsetSeconds) {
+    lastSpokenOffsetSeconds = cue.offsetSeconds;
+    clearSpeechQueue();
+    enqueueSpeech(cue.text, {
+      language: 'ko-KR',
+      rate: fallbackSpeechRate,
+      pitch: fallbackSpeechPitch,
+      ...(fallbackVoiceIdentifier ? { voice: fallbackVoiceIdentifier } : {}),
+    });
+  }
+  scheduleFallbackCuePump();
+}
+
+/**
+ * 화면의 시각과 음성 시계가 어긋났으면 맞춥니다.
+ * 어긋남이 작으면 아무것도 하지 않습니다(매초 다시 맞추면 말이 끊깁니다).
+ */
+export const COACH_DRIFT_TOLERANCE_SECONDS = 3;
+
+export function syncCoachSpeech(elapsedSeconds: number): void {
+  if (!fallbackSession) return;
+  const drift = Math.abs(fallbackState.elapsedSeconds - elapsedSeconds);
+  if (drift <= COACH_DRIFT_TOLERANCE_SECONDS) return;
+  seekCoachSpeech(elapsedSeconds);
 }
 
 export async function pauseCoachSession(): Promise<CoachRuntimeState> {
