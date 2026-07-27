@@ -41,8 +41,30 @@ jobs:
       - name: Critical share growth flow
         working-directory: apps/mobile
         run: npx tsx --test tests/share-growth.test.ts
-      - name: Full mobile rule tests
-        run: npm --prefix apps/mobile test
+      - name: Mobile tests A-F
+        working-directory: apps/mobile
+        shell: bash
+        run: |
+          mapfile -t files < <(find tests -type f -name '*.test.ts' -printf '%f %p\n' | sort | awk '$1 ~ /^[a-f]/ {print $2}')
+          if ((${#files[@]} > 0)); then npx tsx --test "${files[@]}"; fi
+      - name: Mobile tests G-L
+        working-directory: apps/mobile
+        shell: bash
+        run: |
+          mapfile -t files < <(find tests -type f -name '*.test.ts' -printf '%f %p\n' | sort | awk '$1 ~ /^[g-l]/ {print $2}')
+          if ((${#files[@]} > 0)); then npx tsx --test "${files[@]}"; fi
+      - name: Mobile tests M-R
+        working-directory: apps/mobile
+        shell: bash
+        run: |
+          mapfile -t files < <(find tests -type f -name '*.test.ts' -printf '%f %p\n' | sort | awk '$1 ~ /^[m-r]/ {print $2}')
+          if ((${#files[@]} > 0)); then npx tsx --test "${files[@]}"; fi
+      - name: Mobile tests S-Z
+        working-directory: apps/mobile
+        shell: bash
+        run: |
+          mapfile -t files < <(find tests -type f -name '*.test.ts' -printf '%f %p\n' | sort | awk '$1 ~ /^[s-z]/ {print $2}')
+          if ((${#files[@]} > 0)); then npx tsx --test "${files[@]}"; fi
       - name: Mobile TypeScript
         run: npm --prefix apps/mobile run typecheck
       - name: Mobile release contract
