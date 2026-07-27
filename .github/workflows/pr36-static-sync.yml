@@ -1,0 +1,52 @@
+name: PR36 one-time static data sync
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/static-data-*.mjs'
+      - 'apps/mobile/domains/shoes/**'
+      - 'apps/mobile/domains/coaching/**'
+      - 'apps/mobile/src/data/races.json'
+      - 'outputs/pushrun-site/races.json'
+      - 'data/**'
+      - 'apps/mobile/data/fallback/**'
+      - '.github/workflows/pr36-static-sync.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pr36-static-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'codex/runningbom-product-audit-v1')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: codex/runningbom-product-audit-v1
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - run: npm --prefix apps/mobile ci
+      - name: Generate deterministic sidecars
+        run: node --experimental-strip-types scripts/static-data-generate.mjs
+      - name: Commit only generated data when changed
+        shell: bash
+        run: |
+          git add data apps/mobile/data/fallback
+          if git diff --cached --quiet; then
+            echo 'Static data already matches the source of truth.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore(data): refresh deterministic static sidecars'
+          git push origin HEAD:codex/runningbom-product-audit-v1
