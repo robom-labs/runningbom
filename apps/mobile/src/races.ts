@@ -25,8 +25,12 @@ const REMOTE_RACES_URL =
   process.env.EXPO_PUBLIC_RACE_DATA_URL ??
   'https://raw.githubusercontent.com/robom-labs/runningbom/main/apps/mobile/src/data/races.json';
 
+// 포매터를 만드는 일은 아주 비쌉니다. 예전에는 대회 한 건마다 새로 만들어(183번) 앱을 켤 때
+// 그만큼 시간을 썼습니다. 하나만 만들어 두고 계속 씁니다. 돌려주는 값은 그대로입니다.
+const kstDayFormatter = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' });
+
 function todayKst(now = Date.now()): string {
-  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date(now));
+  return kstDayFormatter.format(new Date(now));
 }
 
 function isRace(value: unknown): value is Race {
@@ -46,20 +50,25 @@ function isRace(value: unknown): value is Race {
   );
 }
 
-function isVisibleRace(race: Race, now = Date.now()): boolean {
+/** 목록에서 감추는 접수 상태입니다. 매번 배열을 새로 만들지 않도록 한곳에 둡니다. */
+const hiddenRegistrationStatuses = new Set(['cancelled', 'postponed', 'sold_out', 'closed']);
+
+function isVisibleRace(race: Race, now = Date.now(), today = todayKst(now)): boolean {
   const status = race.registrationStatus ?? '';
   const closesAt = race.registrationClosesAt ? new Date(race.registrationClosesAt).getTime() : Number.NaN;
   return (
-    race.raceDate >= todayKst(now) &&
-    !['cancelled', 'postponed', 'sold_out', 'closed'].includes(status) &&
+    race.raceDate >= today &&
+    !hiddenRegistrationStatuses.has(status) &&
     (!Number.isFinite(closesAt) || closesAt >= now)
   );
 }
 
 function visibleRaces(values: Race[], now = Date.now()): Race[] {
+  // '오늘'은 목록 전체에 대해 한 번만 구하면 됩니다(예전에는 대회 한 건마다 다시 구했습니다).
+  const today = todayKst(now);
   const seen = new Set<string>();
   return values.filter((race) => {
-    if (!isRace(race) || seen.has(race.id) || !isVisibleRace(race, now)) return false;
+    if (!isRace(race) || seen.has(race.id) || !isVisibleRace(race, now, today)) return false;
     seen.add(race.id);
     return true;
   });

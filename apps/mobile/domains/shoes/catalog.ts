@@ -2248,8 +2248,18 @@ export function hasOfficialSpec(entry: ShoeEntry): boolean {
   return officialSpecItems(entry).length > 0;
 }
 
+/**
+ * 검색용 문자열은 항목마다 늘 같은 값이라, 소문자로 바꾸는 일을 검색할 때마다 되풀이할 이유가
+ * 없습니다. 항목별로 한 번만 만들어 두고 다시 씁니다(항목이 새로 생기면 값도 새로 만듭니다).
+ */
+const shoeSearchTextCache = new WeakMap<ShoeEntry, string>();
+
 export function shoeSearchText(entry: ShoeEntry): string {
-  return `${entry.brand} ${entry.model} ${entry.modelEn}`.toLocaleLowerCase('ko-KR');
+  const cached = shoeSearchTextCache.get(entry);
+  if (cached !== undefined) return cached;
+  const text = `${entry.brand} ${entry.model} ${entry.modelEn}`.toLocaleLowerCase('ko-KR');
+  shoeSearchTextCache.set(entry, text);
+  return text;
 }
 
 export const shoeCatalogInternals = {

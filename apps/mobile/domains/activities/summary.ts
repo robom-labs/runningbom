@@ -18,10 +18,24 @@ export const emptyTotals: PeriodTotals = {
 
 const kstDayFormatter = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' });
 
+/**
+ * 같은 시각의 날짜 키를 몇 번이고 다시 묻습니다(주간 합계·월별 추이·홈 문장 …).
+ * Intl 포매팅은 하는 일에 비해 아주 비싸서, "시각이 같으면 답도 같다"는 점을 이용해 기억해 둡니다.
+ * 캐시가 있든 없든 돌려주는 값은 완전히 같습니다.
+ */
+const kstDayKeyCache = new Map<number, string>();
+/** 기억해 둘 최대 개수입니다. 넘으면 통째로 비워 메모리가 무한정 늘지 않게 합니다. */
+const KST_DAY_KEY_CACHE_LIMIT = 20_000;
+
 export function kstDayKey(value: string | Date): string {
-  const input = typeof value === 'string' ? new Date(value) : value;
-  if (Number.isNaN(input.valueOf())) return '';
-  return kstDayFormatter.format(input);
+  const time = typeof value === 'string' ? Date.parse(value) : value.valueOf();
+  if (Number.isNaN(time)) return '';
+  const cached = kstDayKeyCache.get(time);
+  if (cached !== undefined) return cached;
+  const formatted = kstDayFormatter.format(new Date(time));
+  if (kstDayKeyCache.size >= KST_DAY_KEY_CACHE_LIMIT) kstDayKeyCache.clear();
+  kstDayKeyCache.set(time, formatted);
+  return formatted;
 }
 
 // 월요일을 주의 시작으로 봅니다.

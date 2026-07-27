@@ -93,12 +93,24 @@ function matchesPlate(entry: ShoeEntry, filters: ShoePlateFilter[]): boolean {
   });
 }
 
-function matchesQuery(entry: ShoeEntry, query: string): boolean {
+/**
+ * 검색어를 낱말로 자르는 일은 목록 전체에 대해 한 번만 하면 됩니다.
+ * 예전에는 신발 한 켤레마다 다시 잘라서 123번씩 같은 일을 했습니다.
+ */
+function queryTokens(query: string): string[] {
   const normalized = query.trim().toLocaleLowerCase('ko-KR');
-  if (!normalized) return true;
-  return normalized
-    .split(/\s+/)
-    .every((token) => shoeSearchText(entry).includes(token));
+  if (!normalized) return [];
+  return normalized.split(/\s+/);
+}
+
+function matchesTokens(entry: ShoeEntry, tokens: string[]): boolean {
+  if (tokens.length === 0) return true;
+  const haystack = shoeSearchText(entry);
+  return tokens.every((token) => haystack.includes(token));
+}
+
+function matchesQuery(entry: ShoeEntry, query: string): boolean {
+  return matchesTokens(entry, queryTokens(query));
 }
 
 const brandOrder = new Map<ShoeBrand, number>(shoeBrands.map((brand, index) => [brand, index]));
@@ -135,17 +147,22 @@ export function filterShoes(
   options: { pinnedId?: string } = {},
 ): ShoeEntry[] {
   const order = new Map(values.map((entry, index) => [entry.id, index] as const));
+  // 켜져 있는 축만 미리 사전(Set)으로 바꿔 둡니다. 신발 한 켤레마다 배열을 훑지 않게 됩니다.
+  const tokens = queryTokens(state.query);
+  const subCategorySet = state.subCategories.length > 0 ? new Set<string>(state.subCategories) : undefined;
+  const brandSet = state.brands.length > 0 ? new Set<string>(state.brands) : undefined;
+  const priceBandSet = state.priceBands.length > 0 ? new Set<string>(state.priceBands) : undefined;
   const matched = values.filter((entry) => {
     if (state.category && entry.category !== state.category) return false;
-    if (state.subCategories.length > 0 && !state.subCategories.includes(entry.subCategory)) return false;
-    if (state.brands.length > 0 && !state.brands.includes(entry.brand)) return false;
+    if (subCategorySet && !subCategorySet.has(entry.subCategory)) return false;
+    if (brandSet && !brandSet.has(entry.brand)) return false;
     if (state.levels.length > 0 && !state.levels.some((level) => entry.levels.includes(level))) return false;
     if (state.distances.length > 0 && !state.distances.some((distance) => entry.distances.includes(distance))) {
       return false;
     }
-    if (state.priceBands.length > 0 && !state.priceBands.includes(entry.priceBand)) return false;
+    if (priceBandSet && !priceBandSet.has(entry.priceBand)) return false;
     if (!matchesPlate(entry, state.plates)) return false;
-    return matchesQuery(entry, state.query);
+    return matchesTokens(entry, tokens);
   });
 
   const sorted = [...matched].sort((left, right) => compare(left, right, state.sort, order));

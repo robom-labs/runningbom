@@ -42,3 +42,6 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# 성능 측정 결과(scripts/benchmark.mts --save)
+scripts/.bench/

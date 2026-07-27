@@ -918,17 +918,29 @@ export type CueContext = {
  * 상황에 맞는 문장만 남긴 큐 풀입니다.
  * 진행 문장은 경과 비율에 해당하는 구간 풀에서만 뽑아 "2분 15초에 거의 다 왔다" 같은 모순을 막습니다.
  */
+/**
+ * 같은 풀을 세션 하나에서만 수십~수백 번 다시 만듭니다(30분 세션이면 큐 자리마다 한 번).
+ * 그런데 결과는 (유형·분류·경과 구간·허용 조건 3개)만으로 완전히 정해집니다.
+ * 그래서 그 조합을 열쇠 삼아 한 번 만든 풀을 다시 씁니다. 돌려주는 내용은 그대로입니다.
+ * (돌려받은 배열은 읽기만 합니다. 고치면 다른 곳에도 영향이 갑니다.)
+ */
+const contextualPoolCache = new Map<string, string[]>();
+
 export function contextualCuePool(
   id: RunningTypeId,
   category: CueCategory,
   context: CueContext,
 ): string[] {
+  const stage = progressStageFor(context.ratio);
+  const cacheKey = `${id}|${category}|${stage}|${context.allowEasyIntensity ? 1 : 0}${
+    context.allowSpeedUp ? 1 : 0
+  }${context.isWarmup ? 1 : 0}`;
+  const cached = contextualPoolCache.get(cacheKey);
+  if (cached) return cached;
+
   const base =
     category === 'progress'
-      ? [
-          ...(typeCues[id]?.progress ?? []),
-          ...progressCuesByStage[progressStageFor(context.ratio)],
-        ]
+      ? [...(typeCues[id]?.progress ?? []), ...progressCuesByStage[stage]]
       : cuePoolFor(id, category);
 
   const filtered = base.filter(
@@ -937,7 +949,9 @@ export function contextualCuePool(
       (context.allowSpeedUp || !runningOnly.has(line)) &&
       (!context.isWarmup || !afterWarmupOnly.has(line)),
   );
-  return filtered.length > 0 ? filtered : base;
+  const pool = filtered.length > 0 ? filtered : base;
+  contextualPoolCache.set(cacheKey, pool);
+  return pool;
 }
 
 /** 유형 전용 문장의 총 개수입니다(검증·문서용). */

@@ -204,7 +204,10 @@ function pickWithCooldown(
     }
   }
 
-  picker.byPool.set(poolKey, [...usedInPool, chosen]);
+  // 예전에는 문장을 하나 고를 때마다 이력 배열을 통째로 새로 만들었습니다(고른 횟수의 제곱).
+  // 있는 배열에 그대로 덧붙입니다. 담기는 내용과 순서는 같습니다.
+  if (picker.byPool.has(poolKey)) usedInPool.push(chosen);
+  else picker.byPool.set(poolKey, [chosen]);
   return chosen;
 }
 
@@ -340,14 +343,34 @@ export function createCoachSession(
   });
 
   // 우선순위가 높은 큐를 먼저 확보하고, 너무 가까운 낮은 우선순위 큐는 버립니다.
+  //
+  // 예전에는 큐 하나를 넣을 때마다 이미 넣은 큐 전부와 거리를 견줬습니다(긴 세션이면 수만~수십만 번).
+  // 넣은 시각을 정렬된 채로 들고 다니면 "바로 앞·바로 뒤" 둘만 보면 되므로 결과는 같고 훨씬 빠릅니다.
   const kept: CueSlot[] = [];
+  const keptOffsets: number[] = [];
+  /** 정렬된 배열에서 offset이 들어갈 자리를 찾습니다. */
+  const insertionIndex = (offset: number): number => {
+    let low = 0;
+    let high = keptOffsets.length;
+    while (low < high) {
+      const mid = (low + high) >> 1;
+      if (keptOffsets[mid] < offset) low = mid + 1;
+      else high = mid;
+    }
+    return low;
+  };
   const ordered = [...slots].sort(
     (left, right) => right.priority - left.priority || left.offsetSeconds - right.offsetSeconds,
   );
   for (const slot of ordered) {
     const gap = slot.priority >= 70 ? 5 : minGap;
-    if (kept.some((other) => Math.abs(other.offsetSeconds - slot.offsetSeconds) < gap)) continue;
+    const at = insertionIndex(slot.offsetSeconds);
+    const after = keptOffsets[at];
+    const before = keptOffsets[at - 1];
+    if (after !== undefined && Math.abs(after - slot.offsetSeconds) < gap) continue;
+    if (before !== undefined && Math.abs(before - slot.offsetSeconds) < gap) continue;
     kept.push(slot);
+    keptOffsets.splice(at, 0, slot.offsetSeconds);
   }
 
   const picker = createPicker();

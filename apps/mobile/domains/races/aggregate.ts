@@ -4,17 +4,35 @@ import type { DistanceFilter, Race, RaceDistance, RegionFilter } from '../../src
 
 const distanceOrder: RaceDistance[] = ['5K', '10K', 'Half', 'Full', 'Trail'];
 
+// 이름을 다듬는 정규식들입니다. 매번 새로 만들지 않도록 한곳에 둡니다.
+const bracketPattern = /[([{][^)\]}]*[)\]}]/g;
+const distanceWordPattern = /\d+(?:\.\d+)?\s*(?:k|km|킬로미터|킬로)(?![a-z가-힣])/g;
+const eventWordPattern = /하프코스|하프마라톤|하프|풀코스|풀마라톤|단축마라톤|건강달리기/g;
+const nonWordPattern = /[^0-9a-z가-힣]+/g;
+
+/**
+ * 대회 이름은 목록을 다시 묶을 때마다 똑같이 다시 다듬게 됩니다(183건 × 정규식 4번).
+ * 이름이 같으면 결과도 같으므로 기억해 두고 다시 씁니다.
+ */
+const normalizedNameCache = new Map<string, string>();
+const NORMALIZED_NAME_CACHE_LIMIT = 5_000;
+
 // 대회명에서 종목(거리) 표기를 걷어내 같은 대회의 다른 종목 행을 식별합니다.
 export function normalizeRaceName(name: string): string {
+  const cached = normalizedNameCache.get(name);
+  if (cached !== undefined) return cached;
   const stripped = name
     .normalize('NFKC')
     .toLocaleLowerCase('ko-KR')
-    .replace(/[([{][^)\]}]*[)\]}]/g, ' ')
-    .replace(/\d+(?:\.\d+)?\s*(?:k|km|킬로미터|킬로)(?![a-z가-힣])/g, ' ')
-    .replace(/하프코스|하프마라톤|하프|풀코스|풀마라톤|단축마라톤|건강달리기/g, ' ')
-    .replace(/[^0-9a-z가-힣]+/g, ' ')
+    .replace(bracketPattern, ' ')
+    .replace(distanceWordPattern, ' ')
+    .replace(eventWordPattern, ' ')
+    .replace(nonWordPattern, ' ')
     .trim();
-  return stripped || name.normalize('NFKC').trim().toLocaleLowerCase('ko-KR');
+  const result = stripped || name.normalize('NFKC').trim().toLocaleLowerCase('ko-KR');
+  if (normalizedNameCache.size >= NORMALIZED_NAME_CACHE_LIMIT) normalizedNameCache.clear();
+  normalizedNameCache.set(name, result);
+  return result;
 }
 
 // 대회 고유 식별자입니다. 이름·날짜·지역이 같으면 종목이 달라도 같은 대회로 봅니다.
@@ -71,7 +89,11 @@ export function groupRaces(values: Race[], now = Date.now()): RaceGroup[] {
     if (seenIds.has(race.id)) continue;
     seenIds.add(race.id);
     const key = raceGroupKey(race);
-    buckets.set(key, [...(buckets.get(key) ?? []), race]);
+    // 예전에는 같은 묶음에 한 건 넣을 때마다 배열을 통째로 새로 만들었습니다(같은 대회가
+    // 여러 종목이면 제곱으로 늘어나는 일). 이제 있는 배열에 그대로 덧붙입니다. 순서는 그대로입니다.
+    const bucket = buckets.get(key);
+    if (bucket) bucket.push(race);
+    else buckets.set(key, [race]);
   }
 
   const groups = [...buckets.entries()].map(([key, entries]) => {
@@ -152,6 +174,22 @@ export type RaceGroupFilter = {
   query: string;
 };
 
+/**
+ * 검색용 문자열은 묶음마다 늘 같은 값이라, 글자를 칠 때마다 183건을 다시 이어 붙이고 소문자로
+ * 바꿀 이유가 없습니다. 묶음 하나당 한 번만 만들어 두고 다시 씁니다(만드는 규칙은 그대로).
+ */
+const raceSearchTextCache = new WeakMap<RaceGroup, string>();
+
+function raceSearchText(group: RaceGroup): string {
+  const cached = raceSearchTextCache.get(group);
+  if (cached !== undefined) return cached;
+  const text = `${group.name} ${group.region} ${group.venue} ${group.distances.join(' ')}`.toLocaleLowerCase(
+    'ko-KR',
+  );
+  raceSearchTextCache.set(group, text);
+  return text;
+}
+
 export function filterRaceGroups(
   groups: RaceGroup[],
   filter: RaceGroupFilter,
@@ -165,9 +203,7 @@ export function filterRaceGroups(
     if (filter.registration !== '전체' && group.status !== filter.registration) return false;
     if (limit && group.raceDate > limit) return false;
     if (!normalizedQuery) return true;
-    return `${group.name} ${group.region} ${group.venue} ${group.distances.join(' ')}`
-      .toLocaleLowerCase('ko-KR')
-      .includes(normalizedQuery);
+    return raceSearchText(group).includes(normalizedQuery);
   });
 }
 
@@ -252,13 +288,17 @@ export type RaceMonthBucket = {
   groups: RaceGroup[];
 };
 
+const monthPattern = /^\d{4}-\d{2}$/;
+
 /** 달력 뷰용으로 대회를 월별로 묶습니다. 대회가 없는 달은 만들지 않습니다. */
 export function raceMonthBuckets(groups: RaceGroup[]): RaceMonthBucket[] {
   const buckets = new Map<string, RaceGroup[]>();
   for (const group of groups) {
     const month = group.raceDate.slice(0, 7);
-    if (!/^\d{4}-\d{2}$/.test(month)) continue;
-    buckets.set(month, [...(buckets.get(month) ?? []), group]);
+    if (!monthPattern.test(month)) continue;
+    const bucket = buckets.get(month);
+    if (bucket) bucket.push(group);
+    else buckets.set(month, [group]);
   }
   return [...buckets.entries()]
     .map(([month, values]) => ({

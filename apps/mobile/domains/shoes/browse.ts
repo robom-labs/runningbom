@@ -261,11 +261,60 @@ export function shoeLevelEntry(level: ShoeLevel): ShoeLevelEntry {
 // 개수는 언제나 카탈로그에서 실측합니다. 화면에 숫자를 하드코딩하지 않습니다.
 // ---------------------------------------------------------------------------
 
+/**
+ * 탐색 첫 화면은 갈래 3개·세부 갈래 10개·거리 5개·실력 3개, 모두 21개의 개수를 함께 보여 줍니다.
+ * 예전에는 화면을 그릴 때마다 그 21개를 각각 목록 전체를 훑어 세었습니다(123종 × 21번).
+ * 목록을 한 번만 훑어도 21개를 전부 낼 수 있으므로, 목록별로 딱 한 번 세어 두고 다시 씁니다.
+ * 세는 규칙도 결과도 예전과 완전히 같습니다.
+ */
+type ShoeCountIndex = {
+  byCategory: Map<string, number>;
+  bySubCategory: Map<string, number>;
+  byDistanceKey: Map<string, number>;
+  byLevel: Map<string, number>;
+};
+
+const countIndexCache = new WeakMap<readonly ShoeEntry[], ShoeCountIndex>();
+
+function buildCountIndex(values: ShoeEntry[]): ShoeCountIndex {
+  const byCategory = new Map<string, number>();
+  const bySubCategory = new Map<string, number>();
+  const byDistanceKey = new Map<string, number>();
+  const byLevel = new Map<string, number>();
+  // 거리 진입(5km 이하·10km …)마다 어떤 taxonomy 거리값을 묶어 보는지 미리 펴 둡니다.
+  const distanceGroups = shoeDistanceEntries.map((entry) => ({
+    key: entry.key as string,
+    wanted: new Set<string>(entry.distances),
+  }));
+
+  for (const entry of values) {
+    byCategory.set(entry.category, (byCategory.get(entry.category) ?? 0) + 1);
+    const subKey = `${entry.category}|${entry.subCategory}`;
+    bySubCategory.set(subKey, (bySubCategory.get(subKey) ?? 0) + 1);
+    // 같은 실력·거리가 한 항목에 두 번 적혀 있어도 한 번만 셉니다(예전 filter와 같은 결과).
+    for (const level of new Set(entry.levels)) byLevel.set(level, (byLevel.get(level) ?? 0) + 1);
+    for (const group of distanceGroups) {
+      if (entry.distances.some((distance) => group.wanted.has(distance))) {
+        byDistanceKey.set(group.key, (byDistanceKey.get(group.key) ?? 0) + 1);
+      }
+    }
+  }
+  return { byCategory, bySubCategory, byDistanceKey, byLevel };
+}
+
+function countIndex(values: ShoeEntry[]): ShoeCountIndex {
+  const cached = countIndexCache.get(values);
+  if (cached) return cached;
+  const built = buildCountIndex(values);
+  countIndexCache.set(values, built);
+  return built;
+}
+
 export function countCategoryShoes(
   category: ShoeCategory,
   values: ShoeEntry[] = shoeCatalog,
 ): number {
-  return values.filter((entry) => entry.category === category).length;
+  return countIndex(values).byCategory.get(category) ?? 0;
 }
 
 export function countSubCategoryShoes(
@@ -273,22 +322,20 @@ export function countSubCategoryShoes(
   subCategory: ShoeSubCategory,
   values: ShoeEntry[] = shoeCatalog,
 ): number {
-  return values.filter(
-    (entry) => entry.category === category && entry.subCategory === subCategory,
-  ).length;
+  return countIndex(values).bySubCategory.get(`${category}|${subCategory}`) ?? 0;
 }
 
 export function countDistanceShoes(
   key: ShoeDistanceKey,
   values: ShoeEntry[] = shoeCatalog,
 ): number {
-  const wanted = shoeDistanceEntry(key).distances;
-  return values.filter((entry) => entry.distances.some((distance) => wanted.includes(distance)))
-    .length;
+  // 모르는 진입 값이면 예전처럼 이 자리에서 곧바로 오류를 냅니다.
+  shoeDistanceEntry(key);
+  return countIndex(values).byDistanceKey.get(key) ?? 0;
 }
 
 export function countLevelShoes(level: ShoeLevel, values: ShoeEntry[] = shoeCatalog): number {
-  return values.filter((entry) => entry.levels.includes(level)).length;
+  return countIndex(values).byLevel.get(level) ?? 0;
 }
 
 // ---------------------------------------------------------------------------

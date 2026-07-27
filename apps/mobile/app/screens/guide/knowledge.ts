@@ -1886,10 +1886,32 @@ export function filterKnowledgeByCategory(
   return cards.filter((card) => card.category === category);
 }
 
+/**
+ * 검색용 본문은 글마다 늘 같은 값입니다. 예전에는 글자를 칠 때마다 130건 전부를 다시 이어 붙이고
+ * 소문자로 바꿨습니다. 글 하나당 한 번만 만들어 두고 다시 씁니다(만드는 규칙은 그대로입니다).
+ */
+const searchableTextCache = new WeakMap<KnowledgeCard, string>();
+
 function searchableText(card: KnowledgeCard): string {
-  return `${card.question} ${card.answer.join(' ')} ${card.keywords.join(' ')} ${card.category}`.toLocaleLowerCase(
-    'ko-KR',
-  );
+  const cached = searchableTextCache.get(card);
+  if (cached !== undefined) return cached;
+  const text =
+    `${card.question} ${card.answer.join(' ')} ${card.keywords.join(' ')} ${card.category}`.toLocaleLowerCase(
+      'ko-KR',
+    );
+  searchableTextCache.set(card, text);
+  return text;
+}
+
+/** 질문만 소문자로 바꾼 값입니다. 비슷한 질문 찾기·미리보기에서 되풀이해 씁니다. */
+const questionTextCache = new WeakMap<KnowledgeCard, string>();
+
+function questionText(card: KnowledgeCard): string {
+  const cached = questionTextCache.get(card);
+  if (cached !== undefined) return cached;
+  const text = card.question.toLocaleLowerCase('ko-KR');
+  questionTextCache.set(card, text);
+  return text;
 }
 
 /** 검색창에 적은 말을 낱말 단위로 자릅니다. 화면의 강조 표시도 이 낱말을 씁니다. */
@@ -1941,7 +1963,7 @@ export function suggestKnowledge(
   const scored = cards
     .map((card) => {
       const haystack = searchableText(card);
-      const question = card.question.toLocaleLowerCase('ko-KR');
+      const question = questionText(card);
       let score = 0;
       for (const piece of pieces) {
         if (haystack.includes(piece)) score += 1;
@@ -1963,12 +1985,17 @@ export function suggestKnowledge(
 export function knowledgeSnippet(card: KnowledgeCard, query: string, width = 46): string | undefined {
   const terms = knowledgeSearchTerms(query);
   if (terms.length === 0) return undefined;
-  const question = card.question.toLocaleLowerCase('ko-KR');
-  const term = terms.find((value) => !question.includes(value) && card.answer.some((line) => line.toLocaleLowerCase('ko-KR').includes(value)));
+  const question = questionText(card);
+  // 답변 줄을 소문자로 바꾸는 일도 한 번만 합니다(예전에는 같은 줄을 세 번씩 다시 바꿨습니다).
+  const lowerAnswer = card.answer.map((line) => line.toLocaleLowerCase('ko-KR'));
+  const term = terms.find(
+    (value) => !question.includes(value) && lowerAnswer.some((line) => line.includes(value)),
+  );
   if (!term) return undefined;
-  const line = card.answer.find((value) => value.toLocaleLowerCase('ko-KR').includes(term));
-  if (!line) return undefined;
-  const at = line.toLocaleLowerCase('ko-KR').indexOf(term);
+  const lineIndex = lowerAnswer.findIndex((line) => line.includes(term));
+  if (lineIndex === -1) return undefined;
+  const line = card.answer[lineIndex];
+  const at = lowerAnswer[lineIndex].indexOf(term);
   const from = Math.max(0, at - Math.floor(width / 3));
   const to = Math.min(line.length, from + width);
   return `${from > 0 ? '…' : ''}${line.slice(from, to).trim()}${to < line.length ? '…' : ''}`;

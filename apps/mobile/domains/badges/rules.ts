@@ -206,15 +206,47 @@ export type StreakSummary = {
   protectedDays: string[];
 };
 
-function dateKeyAtFourAm(value: string | Date, timezoneId = 'Asia/Seoul'): string {
-  const input = typeof value === 'string' ? new Date(value) : value;
-  const shifted = new Date(input.getTime() - 4 * 60 * 60 * 1000);
-  return new Intl.DateTimeFormat('en-CA', {
+/**
+ * Intl.DateTimeFormat을 만드는 일은 아주 비쌉니다(활동 1000건이면 1000번 만들던 자리였습니다).
+ * 시간대별로 딱 하나만 만들어 두고 계속 씁니다. 만드는 방법과 결과는 그대로입니다.
+ */
+const dayKeyFormatters = new Map<string, Intl.DateTimeFormat>();
+
+function dayKeyFormatter(timezoneId: string): Intl.DateTimeFormat {
+  const cached = dayKeyFormatters.get(timezoneId);
+  if (cached) return cached;
+  const created = new Intl.DateTimeFormat('en-CA', {
     timeZone: timezoneId,
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
-  }).format(shifted);
+  });
+  dayKeyFormatters.set(timezoneId, created);
+  return created;
+}
+
+/**
+ * 같은 시각을 몇 번이고 다시 묻기 때문에(진행률·연속 기록·되짚기) 결과를 기억해 둡니다.
+ * 시각과 시간대가 같으면 답도 항상 같으므로 값이 달라질 일은 없습니다.
+ */
+const dateKeyCache = new Map<string, string>();
+/** 기억해 둘 최대 개수입니다. 넘으면 통째로 비워 메모리가 무한정 늘지 않게 합니다. */
+const DATE_KEY_CACHE_LIMIT = 20_000;
+
+function dateKeyAtFourAm(value: string | Date, timezoneId = 'Asia/Seoul'): string {
+  const time = typeof value === 'string' ? Date.parse(value) : value.getTime();
+  if (!Number.isFinite(time)) {
+    // 파싱할 수 없는 값은 예전과 똑같이 Date에게 그대로 맡깁니다(Invalid Date 표기 유지).
+    const input = typeof value === 'string' ? new Date(value) : value;
+    return dayKeyFormatter(timezoneId).format(new Date(input.getTime() - 4 * 60 * 60 * 1000));
+  }
+  const cacheKey = `${timezoneId}|${time}`;
+  const cached = dateKeyCache.get(cacheKey);
+  if (cached !== undefined) return cached;
+  const formatted = dayKeyFormatter(timezoneId).format(new Date(time - 4 * 60 * 60 * 1000));
+  if (dateKeyCache.size >= DATE_KEY_CACHE_LIMIT) dateKeyCache.clear();
+  dateKeyCache.set(cacheKey, formatted);
+  return formatted;
 }
 
 function dayDifference(left: string, right: string): number {
@@ -337,16 +369,36 @@ export type BadgeContext = {
   interestedRaceCount?: number;
 };
 
-function hourInKst(value: string, timezoneId = 'Asia/Seoul'): number {
-  const parsed = new Date(value);
-  if (Number.isNaN(parsed.valueOf())) return -1;
-  const formatted = new Intl.DateTimeFormat('en-GB', {
+/** 시(hour) 계산도 시간대별로 포매터 하나만 만들어 씁니다. */
+const hourFormatters = new Map<string, Intl.DateTimeFormat>();
+
+function hourFormatter(timezoneId: string): Intl.DateTimeFormat {
+  const cached = hourFormatters.get(timezoneId);
+  if (cached) return cached;
+  const created = new Intl.DateTimeFormat('en-GB', {
     timeZone: timezoneId,
     hour: '2-digit',
     hour12: false,
-  }).format(parsed);
-  const hour = Number(formatted);
-  return Number.isFinite(hour) ? hour % 24 : -1;
+  });
+  hourFormatters.set(timezoneId, created);
+  return created;
+}
+
+const hourCache = new Map<string, number>();
+const HOUR_CACHE_LIMIT = 20_000;
+
+function hourInKst(value: string, timezoneId = 'Asia/Seoul'): number {
+  const time = Date.parse(value);
+  if (!Number.isFinite(time)) return -1;
+  const cacheKey = `${timezoneId}|${time}`;
+  const cached = hourCache.get(cacheKey);
+  if (cached !== undefined) return cached;
+  const formatted = hourFormatter(timezoneId).format(new Date(time));
+  const parsedHour = Number(formatted);
+  const hour = Number.isFinite(parsedHour) ? parsedHour % 24 : -1;
+  if (hourCache.size >= HOUR_CACHE_LIMIT) hourCache.clear();
+  hourCache.set(cacheKey, hour);
+  return hour;
 }
 
 // 배지 지표를 한 번만 계산해 획득 여부와 진행률에 함께 씁니다.
@@ -355,28 +407,45 @@ export function badgeMetricValues(
   streak: StreakSummary,
   context: BadgeContext = {},
 ): Record<BadgeMetric, number> {
+  // 예전에는 지표마다 목록을 한 번씩 훑어(filter·map·reduce가 9번) 기록 수만큼 9배 일했습니다.
+  // 세는 값은 모두 한 번의 훑기로 낼 수 있어 아래 반복문 하나로 합쳤습니다. 값은 그대로입니다.
   let morning = 0;
   let night = 0;
+  let coachCount = 0;
+  let runCount = 0;
+  let longestRun = 0;
+  let tenKCount = 0;
+  let totalDistance = 0;
+  let totalMinutes = 0;
+  let recoveryCount = 0;
+  let intervalCount = 0;
   for (const activity of activities) {
     const hour = hourInKst(activity.completedAt, activity.timezoneId || 'Asia/Seoul');
     if (hour >= 4 && hour < 9) morning += 1;
     if (hour >= 20 || (hour >= 0 && hour < 4)) night += 1;
+    if (activity.source === 'COACH_COMPLETED') coachCount += 1;
+    if (activity.kind === 'run') runCount += 1;
+    if (activity.kind === 'recovery') recoveryCount += 1;
+    const distance = activity.distanceKm ?? 0;
+    if (distance > longestRun) longestRun = distance;
+    if (distance >= 10) tenKCount += 1;
+    totalDistance += distance;
+    totalMinutes += activity.durationMinutes;
+    if (activity.id.startsWith('coach:인터벌')) intervalCount += 1;
   }
   return {
-    coach_count: activities.filter((activity) => activity.source === 'COACH_COMPLETED').length,
+    coach_count: coachCount,
     movement_streak: streak.best,
     weekly_run_weeks: streak.totalRunWeeks,
-    run_count: activities.filter((activity) => activity.kind === 'run').length,
-    run_distance: Math.max(0, ...activities.map((activity) => activity.distanceKm ?? 0)),
-    ten_k_count: activities.filter((activity) => (activity.distanceKm ?? 0) >= 10).length,
-    total_distance:
-      Math.round(activities.reduce((total, activity) => total + (activity.distanceKm ?? 0), 0) * 100) /
-      100,
-    total_minutes: activities.reduce((total, activity) => total + activity.durationMinutes, 0),
+    run_count: runCount,
+    run_distance: Math.max(0, longestRun),
+    ten_k_count: tenKCount,
+    total_distance: Math.round(totalDistance * 100) / 100,
+    total_minutes: totalMinutes,
     morning_run_count: morning,
     night_run_count: night,
-    recovery_count: activities.filter((activity) => activity.kind === 'recovery').length,
-    interval_count: activities.filter((activity) => activity.id.startsWith('coach:인터벌')).length,
+    recovery_count: recoveryCount,
+    interval_count: intervalCount,
     race_interest: Math.max(0, context.interestedRaceCount ?? 0),
     server_event: 0,
   };

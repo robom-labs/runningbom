@@ -7,7 +7,7 @@
 // - 그래서 앱이 알려 주는 쪽은 이 화면으로, 사람이 올리는 쪽은 커뮤니티로 나눴습니다.
 //
 // 라우팅은 부모가 합니다. 이 화면은 onBack·onNavigate를 받기만 합니다.
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { Button, Card, screenStyles, SectionHeader } from '../../design-system/components';
 import { fontWeight, layout, lineHeight, palette, spacing, typeScale } from '../../design-system/theme';
@@ -27,12 +27,11 @@ type Props = {
 };
 
 export function GuideScreen({ onBack, onNavigate }: Props) {
-  return (
-    <ScrollView
-      contentContainerStyle={screenStyles.content}
-      showsVerticalScrollIndicator={false}
-      style={screenStyles.root}
-    >
+  // 글이 130개라 화면을 통째로 스크롤 통에 담으면 열 때 130줄을 한꺼번에 그리게 됩니다.
+  // 목록은 KnowledgeSection이 직접 굴리고(보이는 만큼만 그리기), 이 화면의 머리말만 얹어 줍니다.
+  // 보이는 글과 순서는 예전과 똑같습니다.
+  const header = (
+    <View style={styles.header}>
       {onBack ? (
         <View style={styles.backRow}>
           <Button
@@ -62,13 +61,21 @@ export function GuideScreen({ onBack, onNavigate }: Props) {
           치료법을 정해 주지 않으니, 아픈 곳이 있으면 의료 전문가와 상담해 주세요.
         </Text>
       </Card>
+    </View>
+  );
 
-      <KnowledgeSection {...(onNavigate ? { onNavigate } : {})} />
-    </ScrollView>
+  return (
+    <KnowledgeSection
+      contentContainerStyle={screenStyles.content}
+      header={header}
+      style={screenStyles.root}
+      {...(onNavigate ? { onNavigate } : {})}
+    />
   );
 }
 
 const styles = StyleSheet.create({
+  header: { gap: spacing.sm },
   backRow: { alignItems: 'flex-start' },
   backButton: { minHeight: layout.touchTarget },
   noteCard: { gap: spacing.xs },
