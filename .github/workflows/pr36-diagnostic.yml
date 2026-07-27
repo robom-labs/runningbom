@@ -93,3 +93,36 @@ jobs:
           cache-dependency-path: apps/mobile/package-lock.json
       - run: npm --prefix apps/mobile ci
       - run: node --test "${{ matrix.file }}"
+
+  discover-mobile-tests:
+    runs-on: ubuntu-latest
+    outputs:
+      files: ${{ steps.list.outputs.files }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - id: list
+        name: Find mobile test files
+        shell: bash
+        run: |
+          files=$(find apps/mobile/tests -name '*.test.ts' -print | sed 's#^apps/mobile/##' | sort | jq -R -s -c 'split("\n")[:-1]')
+          echo "files=$files" >> "$GITHUB_OUTPUT"
+
+  mobile-test-file:
+    needs: discover-mobile-tests
+    name: mobile ${{ matrix.file }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        file: ${{ fromJSON(needs.discover-mobile-tests.outputs.files) }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - run: npm --prefix apps/mobile ci
+      - run: cd apps/mobile && npx tsx --test "${{ matrix.file }}"
