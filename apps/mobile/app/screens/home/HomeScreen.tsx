@@ -43,7 +43,9 @@ import { shoeCatalog } from '../../../domains/shoes/catalog';
 import { ShoeRankingCard } from '../../../domains/shoes/ShoeRankingCard';
 import { knowledgeCards } from '../community/knowledge';
 import { usePrograms } from '../../../domains/programs/usePrograms';
+import { useRetrospects } from '../../../domains/activities/retrospectStore';
 import { TodayCard } from '../programs/TodayCard';
+import { MonthMapCard } from './MonthMapCard';
 import type { RouteKey } from '../../navigation/types';
 import {
   dayCountLabel,
@@ -90,6 +92,8 @@ const UPCOMING_LIMIT = 4;
 export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe, onStartTraining }: Props) {
   const { preferences, streak, storageError, activities, weeklyGoal, plans } = useAppState();
   const { progress } = usePrograms();
+  // 최근 회고. 이 값이 오늘 제안을 바꿉니다(§9.3).
+  const retrospects = useRetrospects();
   const { feed, loading } = useRaceState();
   const { goalRace } = useGoalRace();
 
@@ -229,6 +233,7 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe, onStartTraining
       */}
       <TodayCard
         activities={activities}
+        adjust={retrospects.adjust}
         hasPlanSessionLeft={Boolean(progress.current)}
         onStartPlanSession={() => {
           onStartTraining?.({ kind: 'plan' });
@@ -348,7 +353,14 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe, onStartTraining
       ) : null}
 
       {/*
-        ⑦ 러닝화 순위 — 화면 아래쪽입니다.
+        이번 달 지도 — 알(egg) 대신 쓰는 성장 표시입니다(기획서 §8).
+        알은 깨지면 끝이라 "연속으로 안 하면 잃는다"는 장치가 붙고, 그건 아픈 날에도 뛰게 만듭니다.
+        지도는 쉰다고 사라지지 않습니다.
+      */}
+      {stage !== 'new' ? <MonthMapCard activities={activities} /> : null}
+
+      {/*
+        ⑧ 러닝화 순위 — 화면 아래쪽입니다.
         오늘 뛰러 나가려고 켠 사람을 방해하지 않으면서, 신발을 고민하는 사람은 반드시 만납니다.
         모든 줄에 값이 있습니다(정가를 알면 정가, 모르면 가격대 범위).
       */}
