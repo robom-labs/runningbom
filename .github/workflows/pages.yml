@@ -33,8 +33,16 @@ jobs:
         run: node --check outputs/pushrun-site/app.js && node --check outputs/pushrun-site/family-analytics.js && node --check outputs/pushrun-site/family-shell.js && node --check outputs/pushrun-site/sw.js && node --check outputs/pushrun-site/alerts-core.js && node --check outputs/pushrun-site/race-calendar-core.js
       - name: 정적 자산·대회 데이터 검사
         run: npm test
-      - name: Android·iOS 네이티브 검증
-        run: npm --prefix apps/mobile run check && npm --prefix apps/mobile run export:native
+      - name: 모바일 테스트
+        run: npm --prefix apps/mobile test
+      - name: 모바일 타입 검사
+        run: npm --prefix apps/mobile run typecheck
+      - name: 모바일 출시 설정 검사
+        run: npm --prefix apps/mobile run verify
+      - name: Expo 공개 설정 검사
+        run: npm --prefix apps/mobile run config
+      - name: Android·iOS 번들 내보내기
+        run: npm --prefix apps/mobile run export:native
       - name: Production dependency audit
         run: npm run audit:prod
 
