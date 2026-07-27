@@ -35,9 +35,20 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: apps/mobile/package-lock.json
-      - run: npm --prefix apps/mobile ci
+      - name: Install mobile dependencies quietly
+        run: npm --prefix apps/mobile ci --silent
       - name: Generate deterministic sidecars
-        run: node --experimental-strip-types scripts/static-data-generate.mjs
+        shell: bash
+        run: |
+          set +e
+          node --experimental-strip-types scripts/static-data-generate.mjs > /tmp/static-generate.log 2>&1
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            echo '--- static generator failure (last 80 lines) ---'
+            tail -n 80 /tmp/static-generate.log
+            exit "$status"
+          fi
+          cat /tmp/static-generate.log
       - name: Commit only generated data when changed
         shell: bash
         run: |
