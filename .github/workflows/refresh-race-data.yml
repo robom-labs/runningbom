@@ -24,6 +24,10 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
+      # 정적 데이터 생성기가 TypeScript 정본을 읽습니다.
+      # 이 단계가 없어서 6시간마다 돌던 대회 일정 갱신이 계속 실패하고 있었습니다.
+      - name: 모바일 의존성 설치 (TypeScript 정본 로딩용)
+        run: npm --prefix apps/mobile ci
       - name: 공개 일정 수집 및 정규화
         run: npm run data:refresh
       - name: 모바일 원격 번들 동기화
