@@ -27,6 +27,13 @@ import {
   skipToNextSegment,
 } from '../../../domains/programs/session';
 import { formatClock, type ProgramSession } from '../../../domains/programs/types';
+import { programCoachSession } from '../../../domains/programs/coachSession';
+import {
+  pauseCoachSession,
+  resumeCoachSession,
+  startCoachSession,
+  stopCoachSession,
+} from '../../../services/audio/coachService';
 import { CountdownRing } from './CountdownRing';
 import { SegmentRibbon } from './SegmentRibbon';
 
@@ -46,6 +53,33 @@ export function SessionRunner({ session, onClose, onFinish }: SessionRunnerProps
   const [elapsed, setElapsed] = useState(0);
   const [paused, setPaused] = useState(false);
   const [ended, setEnded] = useState(false);
+
+  // 회차를 메인 음성 코치 엔진에 그대로 넘깁니다.
+  // 이 화면이 직접 말하지 않고, 자유 러닝과 같은 엔진이 읽어 줍니다.
+  // 덕분에 화면을 잠그고 주머니에 넣어도 걷기·달리기 전환이 귀로 들립니다.
+  useEffect(() => {
+    let cancelled = false;
+    void startCoachSession(programCoachSession(session)).catch(() => {
+      // 음성이 준비되지 않아도 회차 자체는 그대로 진행합니다(화면 안내는 남아 있습니다).
+    });
+    return () => {
+      cancelled = true;
+      void stopCoachSession().catch(() => undefined);
+      void cancelled;
+    };
+  }, [session]);
+
+  // 화면의 일시정지·재개를 음성 엔진에도 그대로 전달합니다.
+  useEffect(() => {
+    if (ended) return;
+    void (paused ? pauseCoachSession() : resumeCoachSession()).catch(() => undefined);
+  }, [ended, paused]);
+
+  // 회차가 끝나면 음성도 함께 정리합니다.
+  useEffect(() => {
+    if (!ended) return;
+    void stopCoachSession().catch(() => undefined);
+  }, [ended]);
 
   useEffect(() => {
     if (paused || ended) return undefined;
