@@ -25,6 +25,8 @@ jobs:
           git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git fetch -q --depth=1 origin codex/runningbom-product-audit-v1
           git checkout -q -B codex/runningbom-product-audit-v1 FETCH_HEAD
+      - name: Locate the stale share contract
+        run: grep -R -n -F '공유 글에 카드에 있는 값만 들어간다' apps/mobile/tests
       - name: Install quietly
         run: npm --prefix apps/mobile ci --silent
       - name: Show only failures and final summary
