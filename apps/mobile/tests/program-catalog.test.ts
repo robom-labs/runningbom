@@ -28,6 +28,16 @@ describe('계획 목록', () => {
     assert.deepEqual(validateCatalog(), []);
   });
 
+  it('계획 수와 갈래가 줄어들지 않는다', () => {
+    // 리팩터링하다 계획이 사라지는 일을 막습니다.
+    assert.ok(
+      programFamilies.length >= 24,
+      `계획이 ${programFamilies.length}개로 줄었습니다`,
+    );
+    const categories = new Set(programFamilies.map((family) => family.category));
+    assert.ok(categories.size >= 6, `갈래가 ${categories.size}개뿐입니다`);
+  });
+
   it('계획 ID가 겹치지 않는다', () => {
     const ids = new Set(programFamilies.map((family) => family.id));
     assert.equal(ids.size, programFamilies.length);
