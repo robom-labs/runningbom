@@ -38,6 +38,7 @@ import {
   stopCoachSession,
   syncCoachSpeech,
 } from '../../../services/audio/coachService';
+import { appContentStatus } from '../../../services/updates/updateStatus';
 import { CountdownRing } from './CountdownRing';
 import { SegmentRibbon } from './SegmentRibbon';
 
@@ -61,6 +62,9 @@ export function SessionRunner({ session, onClose, onFinish }: SessionRunnerProps
   const pausedSentRef = useRef<boolean | undefined>(undefined);
   /** 음성이 실제로 나가고 있는지 화면에 보여 주는 값입니다. */
   const [voiceStatus, setVoiceStatus] = useState<CoachSpeechDiagnostics | undefined>(undefined);
+  // 지금 폰에서 무엇이 돌고 있는지도 함께 보여 줍니다.
+  // "고쳤다는데 그대로다"일 때, 고친 내용이 폰에 왔는지부터 가려야 합니다.
+  const contentLabel = useMemo(() => appContentStatus().label, []);
 
   // 회차를 메인 음성 코치 엔진에 그대로 넘깁니다.
   // 이 화면이 직접 말하지 않고, 자유 러닝과 같은 엔진이 읽어 줍니다.
@@ -272,6 +276,7 @@ export function SessionRunner({ session, onClose, onFinish }: SessionRunnerProps
                 ? `음성 준비 중 · 남은 안내 ${voiceStatus.remainingCues}개`
                 : `방금 안내 ${formatClock(voiceStatus.lastSpokenOffsetSeconds)} · 남은 안내 ${voiceStatus.remainingCues}개`}
           </Text>
+          <Text style={styles.voiceStatus}>{contentLabel}</Text>
           {voiceStatus.owner === 'none' ? (
             // 음성이 안 켜졌을 때 회차를 처음부터 다시 하지 않고 여기서 되살립니다.
             <Button label="음성 다시 켜기" onPress={restartVoice} tone="secondary" />

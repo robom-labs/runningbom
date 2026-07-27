@@ -25,6 +25,7 @@ import {
 } from '../../design-system/theme';
 import { PermissionSettingsCard } from '../../permissions';
 import { RunSettingsSection } from './RunSettingsSection';
+import { AppContentCard } from './AppContentCard';
 import { BADGE_RULE_VERSION } from '../../../domains/badges/rules';
 import { COACH_CONTENT_VERSION } from '../../../domains/coaching/model';
 import { voiceGenderLabels, type VoiceGender } from '../../../domains/coaching/voice';
@@ -496,6 +497,12 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
         />
         <Button label="문의하기" onPress={() => void Linking.openURL(SUPPORT_URL)} tone="quiet" />
       </Card>
+
+      <SectionHeader
+        subtitle="새 내용이 폰에 도달했는지 여기서 바로 확인할 수 있어요."
+        title="앱 업데이트"
+      />
+      <AppContentCard />
 
       <SectionHeader title="앱 정보" subtitle="문의할 때 아래 값을 함께 알려 주시면 빨라요." />
       <Card style={styles.info}>
