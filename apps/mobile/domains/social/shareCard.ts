@@ -16,6 +16,12 @@ export const shareCardMinimumMinutes = 5;
 /** 고르는 목록에 한 번에 보여 주는 최대 개수입니다. */
 export const shareCardListLimit = 30;
 
+/**
+ * 공유받은 사람이 러닝봄을 다시 찾을 수 있는 공식 랜딩 주소입니다.
+ * 비공개 테스트 중인 Play 링크를 억지로 넣지 않고 누구나 열 수 있는 공식 웹 주소를 씁니다.
+ */
+export const shareCardLandingUrl = 'https://robom-labs.github.io/runningbom/';
+
 export const shareCardKindLabels: Record<ActivityKind, string> = {
   run: '달리기',
   walk: '걷기',
@@ -105,7 +111,7 @@ export const shareCardTitle = '러닝봄 기록 카드';
 
 /**
  * 폰의 공유 기능으로 내보낼 글입니다.
- * 이미지가 아니라 글이라서, 어느 앱에 붙여도 그대로 읽힙니다.
+ * 이미지가 아니라 글이라서 어느 앱에 붙여도 그대로 읽히고, 마지막 공식 주소로 러닝봄을 다시 찾을 수 있습니다.
  */
 export function shareCardText(card: ShareCard, nickname?: string): string {
   const who = (nickname ?? '').trim();
@@ -118,6 +124,7 @@ export function shareCardText(card: ShareCard, nickname?: string): string {
   );
   lines.push(card.hasDistance ? card.paceLabel : noDistanceLabel);
   if (who) lines.push(`${who}의 기록`);
+  lines.push('', '러닝봄에서 함께 기록하기', shareCardLandingUrl);
 
   return lines.join('\n');
 }
