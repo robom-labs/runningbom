@@ -24,18 +24,14 @@ test('풀토크가 예전 최대치보다 확실히 말이 많습니다', () => 
   // 예전 최대치는 0.50이었습니다. 측정값입니다.
   assert.ok(before < 0.55, `예전 값이 달라졌습니다: ${before.toFixed(2)}`);
 
-  // 지금은 0.60 이상입니다. 50분 기준 실측 0.63입니다.
+  // 지금은 0.70 이상입니다. 50분 기준 실측 0.72입니다.
   //
-  // 목표는 0.75~0.95입니다. 아직 닿지 않았고, 이유는 엔진이 아니라 **글의 양**입니다.
-  //   - 긴 덩어리가 28개(설명 16, 이야기 12)뿐입니다.
-  //   - 설명과 이야기를 번갈아 가므로 실제로 쓸 수 있는 건 짝이 맞는 24개입니다.
-  //   - 한 러닝에서 같은 이야기를 두 번 하지 않으므로 그 이상은 채울 수 없습니다.
-  //
-  // 반복해서 0.85를 만드는 건 쉽습니다. 그런데 사람은 같은 이야기를 두 번 하면 바로 알아챕니다.
+  // 목표 하한 0.75에 거의 닿았습니다. 남은 차이는 엔진이 아니라 **글의 양**입니다.
+  // 덩어리 46개(설명 23, 이야기 23)를 한 번씩만 씁니다.
+  // 반복하면 숫자는 쉽게 오릅니다. 그런데 사람은 같은 이야기를 두 번 하면 바로 알아챕니다.
   // 그 순간 "사람 같은 코치"가 "녹음기"가 됩니다. 그래서 숫자 대신 정직함을 골랐습니다.
-  // 50분 0.85에는 덩어리 약 45개, 세 시간에는 약 90개가 필요합니다. 글 쓰는 일이지 코드 일이 아닙니다.
-  assert.ok(after >= 0.6, `풀토크 점유율이 ${after.toFixed(2)}입니다`);
-  assert.ok(after > before + 0.1, '풀토크가 충분히 늘지 않았습니다');
+  assert.ok(after >= 0.7, `풀토크 점유율이 ${after.toFixed(2)}입니다`);
+  assert.ok(after > before + 0.15, '풀토크가 충분히 늘지 않았습니다');
 });
 
 test('말수를 올릴수록 실제로 말이 많아집니다', () => {
@@ -51,8 +47,10 @@ test('길이가 달라져도 말수가 무너지지 않습니다', () => {
   // 반대로 세 시간 러닝에서 이야기가 바닥나면 뒤가 조용해집니다.
   for (const minutes of [5, 12, 20, 50, 180]) {
     const value = occupancy(minutes, 'full-talk');
-    // 세 시간 러닝은 가진 이야기를 다 써도 0.53이 한계입니다. 글이 모자란 것이지 엔진 문제가 아닙니다.
-    const floor = minutes >= 120 ? 0.5 : 0.6;
+    // 세 시간 러닝은 가진 이야기를 다 써도 0.56이 한계입니다.
+    // 46덩어리를 한 번씩 쓰면 약 30분치이고, 나머지 두 시간 반은 짧은 문장이 채웁니다.
+    // 글이 모자란 것이지 엔진 문제가 아닙니다.
+    const floor = minutes >= 120 ? 0.53 : 0.63;
     assert.ok(value >= floor, `${minutes}분에서 ${value.toFixed(2)}입니다`);
     assert.ok(value <= 0.95, `${minutes}분에서 ${value.toFixed(2)}로 쉴 틈이 없습니다`);
   }
@@ -119,11 +117,22 @@ test('자세 커리큘럼이 몸 훑기 순서를 덮습니다', () => {
     assert.ok(themes.has(theme), `${theme} 설명이 없습니다`);
   }
   assert.ok(storyBlocks.length >= 8, `이야기가 ${storyBlocks.length}개뿐입니다`);
+
+  // 설명과 이야기를 번갈아 가므로, 쓸 수 있는 덩어리 수는 **적은 쪽의 두 배**입니다.
+  // 설명만 늘리면 아무 소용이 없습니다. 그래서 양쪽 균형을 테스트가 지킵니다.
+  const teaching = longformBlocks.filter((block) => block.kind === 'teaching').length;
+  const stories = longformBlocks.filter((block) => block.kind === 'story').length;
+  assert.ok(teaching >= 20, `설명이 ${teaching}개뿐입니다`);
+  assert.ok(stories >= 20, `이야기가 ${stories}개뿐입니다`);
+  assert.ok(
+    Math.abs(teaching - stories) <= 4,
+    `설명 ${teaching}개와 이야기 ${stories}개의 균형이 무너졌습니다`,
+  );
 });
 
 test('긴 이야기도 같은 규칙을 지킵니다', () => {
   const lines = longformBlocks.flatMap((block) => block.lines);
-  assert.ok(lines.length > 150, `문장이 ${lines.length}개뿐입니다`);
+  assert.ok(lines.length > 240, `문장이 ${lines.length}개뿐입니다`);
 
   // 봤다고 하는 말, 모두에게 맞는 각도, 부상 보장, 통증 무시가 없어야 합니다.
   assert.deepEqual(lintCoachLines(lines), []);
