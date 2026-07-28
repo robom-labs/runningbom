@@ -1,5 +1,5 @@
 {
-  "revision": "2026.07.28-race-data-17",
+  "revision": "2026.07.29-race-data-18",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -894,6 +894,27 @@
       "verifiedAt": "마라톤GO 공개 일정 상세",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-goodneighbors-race-seoul-charity-running",
       "externalLinkKind": "source",
+      "sourceName": "마라톤GO"
+    },
+    {
+      "id": "schedule-a61c70bb6c42",
+      "name": "2026 나이트런 플러스 청주",
+      "region": "충북",
+      "venue": "무심천 체육공원",
+      "raceDate": "2026-09-12",
+      "distances": [
+        "10K",
+        "5K"
+      ],
+      "registrationOpensAt": "2026-05-21T00:00:00+09:00",
+      "registrationClosesAt": "2026-08-30T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "open",
+      "registrationPeriodLabel": "05/21 - 08/30",
+      "organizer": "나이트런 플러스",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "officialUrl": "https://n-runplus.co.kr/",
+      "externalLinkKind": "official",
       "sourceName": "마라톤GO"
     },
     {

@@ -1,5 +1,5 @@
 {
-  "version": "2026.07.28-race-data-17",
+  "version": "2026.07.29-race-data-18",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -1046,7 +1046,7 @@
     {
       "name": "2026 굿네이버스 레이스",
       "date": "2026-09-12",
-      "time": "오전 9시 00분 집결",
+      "time": "08:00 집결, 09:00 출발",
       "region": "서울",
       "venue": "여의도 한강공원 물빛무대 앞",
       "distances": [
@@ -1061,7 +1061,31 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-goodneighbors-race-seoul-charity-running",
       "sourceName": "마라톤GO",
       "organizer": "굿네이버스",
-      "dataVerifiedAt": "2026-07-28T10:13:36.762Z",
+      "dataVerifiedAt": "2026-07-28T17:47:59.572Z",
+      "status": "open",
+      "courseLabel": "10K,5K",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "2026 나이트런 플러스 청주",
+      "date": "2026-09-12",
+      "time": "18:00",
+      "region": "충북",
+      "venue": "무심천 체육공원",
+      "distances": [
+        "10K",
+        "5K"
+      ],
+      "registrationOpenAt": "2026-05-21T00:00:00+09:00",
+      "registrationCloseAt": "2026-08-30T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "05/21 - 08/30",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "registrationUrl": "https://n-runplus.co.kr/",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-nightrun-plus-chungju",
+      "sourceName": "마라톤GO",
+      "organizer": "나이트런 플러스",
+      "dataVerifiedAt": "2026-07-28T17:47:59.572Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4393,7 +4417,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-07-27T22:17:11.088Z",
+  "lastSuccessfulRefreshAt": "2026-07-28T17:47:59.572Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
