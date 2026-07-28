@@ -20,7 +20,7 @@ import {
   spacing,
   typeScale,
 } from '../../design-system/theme';
-// 러닝화 정본(123종)은 읽기만 합니다. 이 화면에서 카탈로그를 바꾸지 않습니다.
+// 러닝화 정본은 읽기만 합니다. 이 화면에서 카탈로그를 바꾸지 않습니다.
 import {
   findShoeEntry,
   shoeCatalog,
@@ -40,7 +40,7 @@ import {
 } from '../../../services/storage/preferences';
 import { useAppState } from '../../state/AppStateProvider';
 
-/** 검색 결과는 한 번에 이만큼만 그립니다(123종을 한꺼번에 그리지 않기 위해서예요). */
+/** 검색 결과는 한 번에 이만큼만 그립니다(전부 한꺼번에 그리지 않기 위해서예요). */
 const shoeResultLimit = 12;
 
 export function ProfileScreen({ onOpenSettings }: { onOpenSettings: () => void }) {
@@ -200,7 +200,7 @@ export function ProfileScreen({ onOpenSettings }: { onOpenSettings: () => void }
 
       <SectionHeader
         title="보유 러닝화"
-        subtitle={`러닝화 정본 ${shoeCatalog.length}종에서 검색해 하나 골라 둘 수 있어요.`}
+        subtitle="지금 신는 러닝화를 하나 골라 둘 수 있어요."
       />
       <Card style={styles.card}>
         <Text style={styles.rowTitle}>{currentShoeLabel ?? '선택한 러닝화 없음'}</Text>
@@ -218,7 +218,7 @@ export function ProfileScreen({ onOpenSettings }: { onOpenSettings: () => void }
           value={shoeQuery}
         />
         <Text accessibilityLiveRegion="polite" style={styles.rowMeta}>
-          검색 결과 {shoeResults.total}종 중 {shoeResults.entries.length}종을 보여 줘요.
+          검색 결과예요.
         </Text>
         {shoeResults.entries.length === 0 ? (
           <Text style={styles.rowMeta}>

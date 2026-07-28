@@ -106,7 +106,7 @@ export const featureMatrix: FeatureMigration[] = [
   },
   {
     featureId: 'plan-catalog',
-    label: '훈련 계획 40개',
+    label: '훈련 계획',
     oldEntry: '훈련 accordion 1 안의 PlanPicker',
     legacyRoute: 'programs',
     newPrimary: 'training',
@@ -116,7 +116,7 @@ export const featureMatrix: FeatureMigration[] = [
   },
   {
     featureId: 'workout-library',
-    label: '일회성 훈련 103개',
+    label: '일회성 훈련',
     oldEntry: '훈련 accordion 2',
     legacyRoute: 'programs',
     newPrimary: 'training',
@@ -126,7 +126,7 @@ export const featureMatrix: FeatureMigration[] = [
   },
   {
     featureId: 'challenges',
-    label: '도전 40개',
+    label: '도전',
     oldEntry: '훈련 accordion 3',
     legacyRoute: 'challenges',
     newPrimary: 'training',
@@ -136,7 +136,7 @@ export const featureMatrix: FeatureMigration[] = [
   },
   {
     featureId: 'support-projects',
-    label: '보조 프로젝트 20개',
+    label: '보조 프로젝트',
     oldEntry: '훈련 accordion 4',
     legacyRoute: 'programs',
     newPrimary: 'training',
@@ -198,7 +198,7 @@ export const featureMatrix: FeatureMigration[] = [
   },
   {
     featureId: 'run-type',
-    label: '러닝 유형 15종',
+    label: '러닝 유형',
     oldEntry: '시작 화면 유형 모달',
     legacyRoute: 'start',
     newPrimary: 'run',
@@ -208,7 +208,7 @@ export const featureMatrix: FeatureMigration[] = [
   },
   {
     featureId: 'coach-v6',
-    label: 'V6 음성 코치 (성격 7 · 말투 · 말수 · 긴 이야기 46덩어리)',
+    label: 'V6 음성 코치 (성격 · 말투 · 말수 · 긴 이야기)',
     oldEntry: '설정 CoachPersonaCard + 시작 화면 안내 정도',
     legacyRoute: 'start',
     newPrimary: 'run',
@@ -270,7 +270,7 @@ export const featureMatrix: FeatureMigration[] = [
   },
   {
     featureId: 'race-filters',
-    label: '대회 필터 10종 · 달력 보기',
+    label: '대회 필터 · 달력 보기',
     oldEntry: '목록 위에 전부 펼쳐져 있었음',
     legacyRoute: 'races',
     newPrimary: 'explore',
@@ -280,7 +280,7 @@ export const featureMatrix: FeatureMigration[] = [
   },
   {
     featureId: 'shoes',
-    label: '러닝화 123종 · 추천 · 가격 · 순위',
+    label: '러닝화 · 추천 · 가격 · 순위',
     oldEntry: '탭 + 드로어 + 홈 순위 카드',
     legacyRoute: 'shoes',
     newPrimary: 'explore',
@@ -332,7 +332,7 @@ export const featureMatrix: FeatureMigration[] = [
   },
   {
     featureId: 'badges',
-    label: '배지 48개',
+    label: '배지',
     oldEntry: '드로어 + 기록 탭',
     legacyRoute: 'badges',
     newPrimary: 'me',

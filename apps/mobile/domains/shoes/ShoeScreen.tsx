@@ -209,7 +209,6 @@ export function ShoeScreen({
       <View style={styles.container}>
         {compareBar}
         <ShoeBrowseHome
-          catalogSize={shoeCatalog.length}
           values={shoeCatalog}
           onOpenCategory={(category) => setView({ kind: 'category', category })}
           onOpenList={openList}
@@ -253,7 +252,7 @@ export function ShoeScreen({
         </Text>
         <Text style={styles.lead}>{shoeListLead(source)}</Text>
         <Text style={styles.summary}>
-          {results.length}종 / 전체 {shoeCatalog.length}종
+          {results.length > 0 ? `${results.length}켤레` : ''}
         </Text>
       </Card>
 
@@ -431,7 +430,7 @@ export function ShoeScreen({
 
         {results.length > shown.length ? (
           <Button
-            label={`더 보기 (${results.length - shown.length}종 남음)`}
+            label="더 보기"
             onPress={() => setVisibleCount((value) => value + PAGE_SIZE)}
             tone="secondary"
           />

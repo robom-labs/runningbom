@@ -90,11 +90,17 @@ describe('온보딩 단계', () => {
   });
 
   it('소개 문구는 앱이 실제로 가진 개수를 그대로 쓴다', () => {
-    const highlights = introHighlights({ coachSentences: 744, shoes: 123, races: 125 });
+    const highlights = introHighlights({ coachSentences: 744, races: 125 });
     assert.equal(highlights.length, 3);
     assert.ok(highlights[0]?.body.includes('744'));
-    assert.ok(highlights[1]?.title.includes('123'));
     assert.ok(highlights[2]?.title.includes('125'));
+  });
+
+  it('러닝화는 개수를 말하지 않는다', () => {
+    // 사진이 붙은 신발만 등록되므로 개수가 계속 바뀝니다.
+    // 숫자를 적으면 그게 약속이 되고, 아직 사진이 없어 빠진 모델이 결함처럼 보입니다.
+    const highlights = introHighlights({ coachSentences: 744, races: 125 });
+    assert.ok(!/\d/.test(highlights[1]?.title ?? ''), '러닝화 소개에 숫자가 있습니다');
   });
 
   it('코치 문장 수는 실제 문장 풀에서 세고 넉넉히 많다', () => {

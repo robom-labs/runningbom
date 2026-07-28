@@ -51,7 +51,7 @@ export function ShoeAdvisor({
           내게 맞는 러닝화 찾기
         </Text>
         <Text style={styles.note}>
-          아래 {advisorQuestions.length}개 질문에 답하면 카탈로그에서 조건에 맞는 러닝화를 골라 줘요.
+          몇 가지만 답하면 조건에 맞는 러닝화를 골라 줘요.
           추천은 카탈로그 분류(용도·거리·실력·가격대)만 근거로 하고, 발 상태를 진단하지는 않아요.
         </Text>
         <Text style={styles.progress}>

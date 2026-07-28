@@ -13,6 +13,9 @@
     "data:refresh:check": "node scripts/refresh-races.mjs",
     "audit:prod": "node scripts/audit-production.mjs --dir apps/mobile",
     "linkcheck": "node scripts/link-healthcheck.mjs",
-    "links:secure": "node scripts/secure-race-links.mjs --write"
+    "links:secure": "node scripts/secure-race-links.mjs --write",
+    "verify:shoe-photos": "node --import ./apps/mobile/node_modules/tsx/dist/loader.mjs scripts/verify-shoe-photos.mjs",
+    "collect:shoe-images": "node scripts/collect-shoe-images.mjs",
+    "collect:race-images": "node scripts/collect-official-images.mjs"
   }
 }
