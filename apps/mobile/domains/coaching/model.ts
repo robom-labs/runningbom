@@ -38,9 +38,22 @@ export {
   type PhaseKind,
 } from './sessionTypes';
 export type { CueCategory } from './cueLibrary';
-import { hasKnownEnd, presumesKnownEnd, totalSeconds, type SessionExtent } from './extent';
+import {
+  WARMUP_SECONDS,
+  hasKnownEnd,
+  presumesKnownEnd,
+  totalSeconds,
+  type SessionExtent,
+} from './extent';
 import { speakAs } from './register';
-import type { SpeechRegister } from './persona';
+import type { CoachDensity, SpeechRegister } from './persona';
+import {
+  blockLineOffsets,
+  blockedSpans,
+  isInsideBlock,
+  planLongform,
+  usesLongform,
+} from './talkPlan';
 export * from './extent';
 export { speakAs, toCasual } from './register';
 
@@ -462,6 +475,51 @@ export function createCoachSessionForExtent(
       (cue) =>
         cue.kind !== 'progress' && cue.kind !== 'completion' && !presumesKnownEnd(cue.text),
     ),
+  };
+}
+
+/**
+ * 세션에 긴 이야기 덩어리를 끼워 넣습니다. **풀토크의 실체입니다.**
+ *
+ * 짧은 문장만으로는 말 점유율 0.85에 닿을 수 없습니다.
+ * 닿으려면 5초마다 한 문장을 던져야 하고, 그건 계속 말하는 게 아니라 계속 명령하는 것입니다.
+ * 그래서 30~55초씩 이어지는 설명과 이야기를 사이사이에 넣습니다.
+ *
+ * 덩어리 구간 안에 있던 짧은 문장은 버립니다.
+ * 이야기 중간에 "어깨 내려요"가 끼어들면 두 사람이 동시에 말하는 것처럼 들립니다.
+ */
+export function withLongform(
+  session: CoachSession,
+  density: CoachDensity,
+  startCursor = 0,
+): CoachSession {
+  if (!usesLongform(density)) return session;
+
+  const durationSeconds = session.durationMinutes * 60;
+  const planned = planLongform({
+    durationSeconds,
+    shortSpokenSeconds: estimatedSpokenSeconds(session),
+    density,
+    startCursor,
+    warmupSeconds: Math.min(WARMUP_SECONDS, Math.max(60, durationSeconds * 0.1)),
+  });
+  if (planned.length === 0) return session;
+
+  const spans = blockedSpans(planned);
+  const kept = session.cues.filter((cue) => !isInsideBlock(cue.offsetSeconds, spans));
+
+  const blockCues: CoachCue[] = planned.flatMap((entry) =>
+    blockLineOffsets(entry).map((line) => ({
+      offsetSeconds: line.offsetSeconds,
+      text: line.text,
+      kind: entry.block.kind === 'teaching' ? ('instruction' as const) : ('encouragement' as const),
+    })),
+  );
+
+  return {
+    ...session,
+    id: `${session.id}:${density}`,
+    cues: [...kept, ...blockCues].sort((left, right) => left.offsetSeconds - right.offsetSeconds),
   };
 }
 

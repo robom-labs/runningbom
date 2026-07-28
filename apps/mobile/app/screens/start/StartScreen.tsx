@@ -35,6 +35,7 @@ import {
   resolveRunningType,
   runningTypeCategories,
   runningTypesByCategory,
+  withLongform,
   type CoachSessionKind,
   type GuidanceLevel,
   type RunningTypeCategory,
@@ -196,10 +197,13 @@ export function StartScreen() {
   const session = useMemo(
     () =>
       applyRegister(
-        createCoachSessionForExtent(kind, extent, preferences.coachGuidance),
+        withLongform(
+          createCoachSessionForExtent(kind, extent, preferences.coachGuidance),
+          coachSettings.density,
+        ),
         coachSettings.register,
       ),
-    [kind, extent, preferences.coachGuidance, coachSettings.register],
+    [kind, extent, preferences.coachGuidance, coachSettings.density, coachSettings.register],
   );
   /** 끝을 모르면 남은 시간·진행률을 화면에도 띄우지 않습니다. 코치만 입을 다무는 게 아닙니다. */
   const showsRemaining = mayMentionRemaining(extent);

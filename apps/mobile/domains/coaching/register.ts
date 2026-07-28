@@ -26,6 +26,8 @@ const endingRules: EndingRule[] = [
   { from: '두세요', to: '둬' },
   { from: '보세요', to: '봐' },
   { from: '고르세요', to: '골라' },
+  // 금지입니다. `앉지 마세요` → `앉지 마`.
+  { from: '마세요', to: '마' },
 ];
 
 /**
