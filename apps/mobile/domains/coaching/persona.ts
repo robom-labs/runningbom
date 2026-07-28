@@ -264,6 +264,13 @@ export type CoachSettings = {
   focusTheme?: BodyTheme;
   /** 매운맛을 켰는지입니다. 성인 확인을 통과해야만 true가 될 수 있습니다. */
   spicyEnabled: boolean;
+  /**
+   * 자세 커리큘럼을 어디까지 들었는지입니다.
+   *
+   * 이게 없으면 매 러닝이 "머리부터"로 시작합니다.
+   * 20분씩 뛰는 사람은 머리·어깨·팔까지만 듣고, 몇 달을 달려도 발 이야기는 못 듣습니다.
+   */
+  bodyCursor?: number;
 };
 
 export const defaultCoachSettings: CoachSettings = {

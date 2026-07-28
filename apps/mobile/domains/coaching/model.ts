@@ -55,6 +55,7 @@ import {
   usesLongform,
 } from './talkPlan';
 export * from './extent';
+export { nextBodyCursor, targetOccupancy, usesLongform } from './talkPlan';
 export { speakAs, toCasual } from './register';
 
 export type GuidanceLevel = 'minimal' | 'standard' | 'detailed';
@@ -488,12 +489,27 @@ export function createCoachSessionForExtent(
  * 덩어리 구간 안에 있던 짧은 문장은 버립니다.
  * 이야기 중간에 "어깨 내려요"가 끼어들면 두 사람이 동시에 말하는 것처럼 들립니다.
  */
+/**
+ * 마지막으로 만든 세션이 쓴 덩어리 수입니다.
+ *
+ * 화면이 다음 커서를 계산할 때 씁니다. 세션 자체에 넣으면 저장된 기록의 모양이 바뀌므로
+ * 여기 따로 둡니다. 세션을 만든 직후에 읽어야 맞습니다.
+ */
+let lastLongformCount = 0;
+
+export function longformCountOfLastSession(): number {
+  return lastLongformCount;
+}
+
 export function withLongform(
   session: CoachSession,
   density: CoachDensity,
   startCursor = 0,
 ): CoachSession {
-  if (!usesLongform(density)) return session;
+  if (!usesLongform(density)) {
+    lastLongformCount = 0;
+    return session;
+  }
 
   const durationSeconds = session.durationMinutes * 60;
   const planned = planLongform({
@@ -504,6 +520,7 @@ export function withLongform(
     warmupSeconds: Math.min(WARMUP_SECONDS, Math.max(60, durationSeconds * 0.1)),
   });
   if (planned.length === 0) return session;
+  lastLongformCount = planned.length;
 
   const spans = blockedSpans(planned);
   const kept = session.cues.filter((cue) => !isInsideBlock(cue.offsetSeconds, spans));

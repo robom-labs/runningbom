@@ -59,6 +59,7 @@ export function normalizeCoachSettings(input: NormalizeInput = {}): CoachSetting
     return {
       ...defaultCoachSettings,
       density: densityFromGuidanceLevel(input.legacyGuidance),
+      bodyCursor: 0,
     };
   }
 
@@ -72,6 +73,10 @@ export function normalizeCoachSettings(input: NormalizeInput = {}): CoachSetting
       : densityFromGuidanceLevel(input.legacyGuidance),
     ...(isBodyTheme(stored.focusTheme) ? { focusTheme: stored.focusTheme } : {}),
     spicyEnabled: stored.spicyEnabled === true,
+    // 커서가 깨져 있으면 처음부터 듣습니다. 깨진 값으로 엉뚱한 데서 시작하는 것보다 낫습니다.
+    bodyCursor: Number.isFinite(Number(stored.bodyCursor))
+      ? Math.max(0, Math.floor(Number(stored.bodyCursor)))
+      : 0,
   };
 }
 

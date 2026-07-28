@@ -34,6 +34,8 @@ import {
   recentCues,
   resolveRunningType,
   runningTypeCategories,
+  longformCountOfLastSession,
+  nextBodyCursor,
   runningTypesByCategory,
   withLongform,
   type CoachSessionKind,
@@ -150,7 +152,7 @@ export function StartScreen() {
   const { activities, preferences, updatePreferences, completeActivity } = useAppState();
   const runSettings = useRunPreferences();
   // 말투는 코치 설정에서 옵니다. 아직 다 읽지 못했으면 존댓말로 시작합니다.
-  const { settings: coachSettings } = useCoachSettings(preferences.coachGuidance);
+  const { settings: coachSettings, update: updateCoach } = useCoachSettings(preferences.coachGuidance);
   const [minutes, setMinutes] = useState(preferences.coachMinutes);
   const [kind, setKind] = useState<CoachSessionKind>(validKind(preferences.coachType));
   const [directInput, setDirectInput] = useState(String(preferences.coachMinutes));
@@ -200,10 +202,18 @@ export function StartScreen() {
         withLongform(
           createCoachSessionForExtent(kind, extent, preferences.coachGuidance),
           coachSettings.density,
+          coachSettings.bodyCursor ?? 0,
         ),
         coachSettings.register,
       ),
-    [kind, extent, preferences.coachGuidance, coachSettings.density, coachSettings.register],
+    [
+      kind,
+      extent,
+      preferences.coachGuidance,
+      coachSettings.density,
+      coachSettings.register,
+      coachSettings.bodyCursor,
+    ],
   );
   /** 끝을 모르면 남은 시간·진행률을 화면에도 띄우지 않습니다. 코치만 입을 다무는 게 아닙니다. */
   const showsRemaining = mayMentionRemaining(extent);
@@ -534,6 +544,14 @@ export function StartScreen() {
   /** 카운트다운이 끝난 뒤 실제로 코칭을 시작합니다. */
   async function launchSession() {
     await updatePreferences({ coachMinutes: minutes, coachType: kind, coachOpenEnded: openEnded });
+
+    // 이번에 들은 만큼 커리큘럼을 앞으로 옮깁니다.
+    // 시작할 때 옮깁니다 — 끝까지 안 달리고 멈추는 일이 흔한데, 그때마다 커서가 제자리면
+    // 그 사람은 영영 머리·어깨만 듣게 됩니다.
+    const used = longformCountOfLastSession();
+    if (used > 0) {
+      updateCoach({ bodyCursor: nextBodyCursor(coachSettings.bodyCursor ?? 0, used) });
+    }
     try {
       setRuntime(await startCoachSession(session, preferences.speechRate, voiceGender));
     } catch {
