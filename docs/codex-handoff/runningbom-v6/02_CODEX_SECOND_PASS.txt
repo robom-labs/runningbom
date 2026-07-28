@@ -1,0 +1,749 @@
+RUNNINGBOM V6 — CODEX SECOND-PASS AUDIT & CORRECTION PROMPT
+문서 버전: 6.1.0
+대상 저장소: robom-labs/runningbom
+용도: Claude Code 1차 결과에 대한 Codex Remote 독립 감사·직접 수정
+
+======================================================================
+0. 최상위 목표
+======================================================================
+
+너는 Claude Code가 만든 러닝봄 V6 결과를 믿지 않고 처음부터 검증하는 2차 책임 개발자다.
+보고서만 작성하는 리뷰어가 아니라, 결함을 실제 코드에서 재현하고 직접 수정하고 테스트하고 커밋·PR까지 남겨야 한다.
+
+V6의 핵심 제품 목표:
+
+- 사용자가 3분을 뛰든 몇 시간을 뛰든, 직접 정한 시간·거리·프로그램·오픈엔드 조건으로 실행 가능
+- 밀착 코치와 풀토크 코치를 선택하면 러닝 내내 사람 코치처럼 자연스럽게 계속 대화
+- 머리부터 발까지 자세·힘 빼기·리듬·호흡·마음가짐을 순환 코칭
+- 실제 자세를 볼 수 없으므로 감지했다고 거짓말하지 않음
+- 존댓말·반말, 코치 성격, 말의 양, 집중 주제, 목소리, 메트로놈을 독립적으로 선택
+- 음악·팟캐스트·통화·Bluetooth·화면 잠금에서도 기록과 오디오 상태가 깨지지 않음
+- 메트로놈은 장시간에도 박자가 밀리지 않는 오디오 시계 기반
+- 기존 기록·프로그램·저장 키·앱 식별자·보안·CI를 깨지 않음
+
+100만 다운로드와 러닝 앱 1등은 사업 목표이지 완료를 보장하는 문구가 아니다.
+증거 없이 “완벽”, “사람 목소리 완성”, “무제한 실행 검증 완료”라고 보고하지 마라.
+
+======================================================================
+1. 지침 우선순위
+======================================================================
+
+1. ROBOM_HQ_ULTIMATE_CONTROL_TOWER_PROMPT_v1.4.0 — 궁극의 로봄 v1.4
+2. 사용자의 최신 명시적 지시
+3. 실제 설치 앱·Production·Play·EAS·서명·기기 상태
+4. 최신 origin/main과 실제 코드·테스트·실행 결과
+5. 이 문서
+6. 과거 V1~V5 문서
+
+V1~V5에서 정확하게 완료된 기록 무결성, 저장 호환, 대회 데이터 검증, 프로그램, 도전, 러닝화, 보안, CI는 되돌리지 않는다.
+V5의 “음성을 줄여 필요한 순간만 말한다”는 일반 안내 모드에만 적용한다.
+밀착 코치·풀토크 코치는 사용자가 선택한 실행 전체에서 거의 쉬지 않고 계속 말하는 것이 제품 요구다.
+
+======================================================================
+2. 입력과 시작
+======================================================================
+
+사용자가 Claude PR·브랜치·HEAD SHA를 제공하면 그것을 사용한다.
+비어 있으면 저장소에서 최신 continuous coach, full-talk, audio coach, metronome, V6 관련 PR·브랜치를 찾아라.
+오래된 작업을 임의로 선택하지 마라.
+
+첫 응답 형식:
+
+RUNNINGBOM V6 CODEX SECOND PASS: STARTING
+
+- Ultimate ROBOM v1.4 read:
+- This V6 prompt read:
+- Latest origin/main SHA:
+- Claude PR:
+- Claude branch:
+- Claude HEAD SHA:
+- Merge base:
+- Changed files:
+- New dependencies:
+- Native changes:
+- Permission changes:
+- Storage migrations:
+- Voice assets:
+- Voice rights manifests:
+- Existing program IDs:
+- Existing storage keys:
+- Current duration min/max:
+- Current open-ended support:
+- Current personas:
+- Current honorific/casual support:
+- Current full-talk support:
+- Current metronome source clock:
+- Current Android audio-focus policy:
+- Current iOS audio-session policy:
+- Baseline tests:
+- Independent rollback SHA:
+
+모르는 값은 CHECKING이라고 적고 바로 실제 조사·실행을 시작한다.
+
+======================================================================
+3. 독립 감사 원칙
+======================================================================
+
+다음은 자동 FAIL 조건이다.
+
+- Claude의 완료 보고를 실제 증거 없이 사실로 사용
+- 문서에만 있고 코드·UI·runtime에 연결되지 않은 기능
+- 테스트에만 있고 실제 화면에서 시작할 수 없는 기능
+- UI에만 있고 background·저장·복구가 안 되는 기능
+- system TTS를 실제 인간 녹음이라고 표시
+- 특정 50분 예시에 종속된 구현
+- 10~120분 제한이 남아 있음
+- open-ended가 단순히 매우 긴 고정 타이머일 뿐임
+- 사용자가 마무리를 누르기 전에 “거의 끝”, “마지막” 발화
+- 카메라·웨어러블 없이 실제 자세를 봤다고 말함
+- 특정 캐릭터·유튜버·연예인 목소리·대사·말버릇 복제
+- 욕설 모드 기본 ON
+- 성인 동의·허용목록·금지목록 없는 욕설
+- 통증을 참고 뛰게 하거나 모욕·위협으로 강제
+- 새 권한·native dependency를 Play 심사 중 Production에 무단 혼합
+- 실기기 없이 audio·metronome를 DEVICE_PASS 처리
+- 기존 사용자 기록·프로그램 진행·저장 키 파괴
+
+======================================================================
+4. 전체 diff 분류
+======================================================================
+
+Claude PR의 모든 변경을 다음으로 분류한다.
+
+- application source
+- coaching content
+- audio runtime
+- Android native
+- iOS native
+- metronome
+- generated files
+- audio/model assets
+- tests
+- CI
+- documentation
+- store metadata
+- permissions
+- storage migrations
+
+검사:
+
+- 무관한 대규모 리팩터링
+- 생성 파일 개수만 늘린 변경
+- 중복 엔진·죽은 구형 엔진
+- JS와 native의 두 오디오 owner
+- timer·subscription 누수
+- 무한 배열·큐·캐시
+- stale timer·stale cue
+- 숨은 네트워크 호출
+- 비밀키·서명키·모델 토큰
+- 권리 없는 음성·대본
+- 출처 없는 대형 바이너리
+- 라이선스 누락
+- debug endpoint·source map·개인정보 로그
+
+======================================================================
+5. 실행시간·오픈엔드 파괴 테스트
+======================================================================
+
+실제 compiler·runtime·simulator로 다음을 생성하고 실행한다.
+
+3분, 5분, 10분, 20분, 30분, 49분, 50분, 51분, 60분, 90분,
+119분, 120분, 121분, 180분, 360분, 720분, open-ended 12시간 시뮬레이션.
+
+각 실행에서 기록:
+
+- 시작·워밍업·안정·마무리 단계
+- 발화수
+- 실제 합성 오디오 총시간
+- speech occupancy
+- 문장 사이 median·p95·max gap
+- 정확한 반복
+- 의미상 반복
+- false progress·false ending
+- queue peak
+- memory peak
+- cache size
+- generation time
+- pause/resume
+- 앱 재시작 복구
+- 실행 중 +5분, +10분, +30분
+- 사용자의 “마무리 시작”
+- 즉시 종료
+
+필수 불변조건:
+
+- 50분만 정상이고 49·51분이 깨지면 안 됨
+- open-ended에서 사용자가 마무리를 누르기 전 종료성 문구 없음
+- 6시간 뒤 warmup 문구 재등장 없음
+- queue·memory가 실행시간에 따라 무한 증가하지 않음
+- 12시간 시뮬레이션이 O(n²)로 느려지지 않음
+- duration integer overflow 없음
+
+문제는 직접 수정한다.
+
+======================================================================
+6. 코치 성격·말투·밀도
+======================================================================
+
+최소 검증 대상 persona:
+
+- professional: 정석 프로 코치
+- running-buddy: 옆자리 러닝메이트
+- form-nag: 잔소리 폼 코치
+- drill-sergeant: 단호한 교관
+- spicy-drill: 성인 선택 매운맛 교관
+- audiobook-narrator: 오디오북 해설 코치
+- mental-pacer: 멘탈 페이서
+
+독립 선택 축:
+
+- 존댓말 / 반말
+- 필수만 / 균형 / 밀착 / 풀토크
+- 전신 / 머리·시선 / 어깨·팔 / 몸통·골반 / 다리·발 / 케이던스 / 호흡 / 멘탈
+- 목소리
+- 말 빠르기
+- 코치·음악·메트로놈 음량
+- 욕설 강도
+
+검증:
+
+- persona가 단순 어미 변경 clone인지
+- 존댓말·반말 혼용
+- persona 누출
+- 동일 어미·문장 시작 반복
+- 실제 상황을 모르면서 칭찬·단정
+- “잘하고 있어요”, “조금만 더”, “~해 볼게요” filler 과다
+- 엄격 모드에서 갑자기 안내방송 말투
+- 반말 모드에서 존댓말 누출
+- 풀토크에서 문맥·callback·주제 유지
+
+문제를 실제 문장·renderer·planner에서 수정한다.
+
+======================================================================
+7. 밀착 인간 코치 계약
+======================================================================
+
+풀토크 코치는 단순히 9초마다 랜덤 문장 하나를 재생하는 기능이 아니다.
+다음 상태를 가진 대화 엔진이어야 한다.
+
+- 현재 자세 주제
+- 진행 중인 설명 thread
+- 앞에서 약속한 후속 멘트
+- 최근 사용 문장·개념·문장 시작·어미
+- 전신 스캔 위치
+- 마지막 전신 리셋
+- 사용자가 싫다고 한 주제
+- 코치 성격·말투·밀도
+- 현재 훈련 단계와 목적
+
+콘텐츠 단위:
+
+- 짧은 자세 cue
+- 연결 문장
+- 20~60초 교육 블록
+- 30초~3분 이야기 블록
+- 스스로 확인하게 하는 질문
+- 앞의 말을 다시 잇는 callback
+- 주제를 자연스럽게 바꾸는 transition
+
+한 번에 한 가지 자세에 집중한다.
+계속 말한다는 이유로 매 문장마다 머리→발→어깨→호흡으로 튀면 안 된다.
+
+권장 순환:
+
+머리·시선·턱 → 목·어깨 → 손·팔 → 몸통·골반 → 엉덩이·무릎 →
+발목·발 → 보폭·리듬 → 호흡 → 전신 연결.
+
+기술 문장만 계속 강요하지 않는다.
+자세·리듬·훈련 목적·진행·마음가짐·이야기의 비율을 모드별로 검증한다.
+
+======================================================================
+8. 자세 과학·거짓 감지 방어
+======================================================================
+
+금지 표현과 로직:
+
+- “상체는 정확히 15도”
+- “시선은 무조건 15도 아래”
+- “180보가 정답”
+- “170보가 모두의 기본값”
+- “앞꿈치로 착지해”
+- “뒤꿈치 착지하지 마”
+- “발아치가 무너졌어”
+- “무릎이 안으로 들어갔어”
+- “왼쪽 자세가 틀렸어”
+- “이 자세면 부상을 예방한다”
+- “아파도 뛰어”
+- “통증을 무시해”
+
+센서가 없을 때 허용되는 방식:
+
+- 조건형: “발가락에 힘이 들어갔다면 풀어.”
+- 확인형: “어깨가 올라가 있지 않은지 확인해.”
+- 감각형: “발이 몸보다 멀리 나가면 보폭을 조금 줄여.”
+- 실험형: “속도는 그대로 두고 걸음만 3% 빠르게 시험해.”
+
+케이던스:
+
+- 개인 기준 우선
+- +3%, +5%를 우선 실험
+- +7%, +10%는 고급·검수 조건
+- steps per minute와 strides per minute 혼동 금지
+- 불편하면 기준값으로 복귀
+- 부상 예방 보장 금지
+
+착지:
+
+- 자연 착지 존중
+- 조용하고 부드러운 착지는 감각 실험으로만
+- 앞꿈치·뒤꿈치 전환 강요 금지
+
+======================================================================
+9. 매운맛·욕설·저작권
+======================================================================
+
+spicy mode 필수 조건:
+
+- 기본 OFF
+- 명시적 성인 선택
+- 실제 미리듣기
+- 즉시 끄기·순한맛 변경
+- 검수된 allowlist
+- denied list
+- 앱 연령등급·스토어 문답 gate
+- 통증·위험 상태가 항상 persona보다 우선
+
+금지:
+
+- 보호대상 집단 비하
+- 성적·가족 욕설
+- 외모·체중·장애·질병 조롱
+- 위협·자해·죽음 표현
+- 사용자 이름과 욕설 결합
+- 고통을 무시하라는 말
+- 특정 캐릭터·연예인·유튜버 흉내
+- 유명 유행어·대사 복사
+- 동의 없는 voice clone
+
+저장소 전체에서 캐릭터명·실제 코치명·유튜버명·reference audio·voice cloning 모델을 검색한다.
+권리 manifest 없는 인간 음성은 public asset에서 제거하거나 feature gate한다.
+
+======================================================================
+10. 음성 엔진
+======================================================================
+
+검증 항목:
+
+- 설치된 한국어 voice 검색
+- offline·quality·latency
+- 실제 미리듣기
+- premium/enhanced voice 안내
+- TTS missing data
+- 선택 voice가 사라졌을 때 fallback
+- rate·pitch·발음 사전
+- 긴 문장 분할
+- rolling pre-synthesis
+- cache key·LRU·용량 상한
+- atomic cache replacement
+- TTS callbacks
+- queue starvation·underrun
+- double speech
+- stale metric
+
+인간 녹음 pack:
+
+- 실제 파일 존재
+- transcript 일치
+- duration·checksum
+- loudness·clipping
+- persona·말투·버전
+- 사용권·녹음자 동의·기간·지역·2차 편집 범위
+- fallback
+
+사람 녹음이 없으면 “인간 음성 완성”이라고 쓰지 말고 BLOCKED_CEO_AUDIO_RECORDING.
+
+오프라인 neural TTS가 추가됐다면:
+
+- 라이브러리·모델·학습데이터 라이선스
+- voice consent
+- ABI·Android 16KB·iOS
+- 모델 크기
+- 저가폰 첫 발화 지연
+- CPU·메모리·배터리·발열
+- 2시간 누수
+- system premium voice와 blind listening 비교
+
+기준 미달이면 기본 OFF 또는 제거한다.
+
+======================================================================
+11. Android·iOS 오디오 포커스
+======================================================================
+
+Android:
+
+- 전체 세션에 AUDIOFOCUS_GAIN을 잡아두지 않음
+- 짧은 발화는 utterance 직전 transient focus
+- 음악은 may-duck 후보
+- 팟캐스트·오디오북은 pause 정책
+- onDone/onError/onStopped에서 즉시 abandon
+- delayed focus 처리
+- permanent loss 후 자동 재개 금지
+- transient interruption 복구
+- 통화·알람·지도 안내
+- 이어폰 해제·audio route change
+- MediaSession·notification action
+
+현 코드에 focus leak이나 세션 전체 독점이 남으면 직접 수정한다.
+
+이 경우 실기기 검증:
+
+- Spotify
+- YouTube Music
+- Apple Music
+- 팟캐스트
+- 오디오북
+- 전화
+- 알람
+- 지도 안내
+- Bluetooth 이어폰
+- 차량 Bluetooth
+- 스피커
+- 화면 잠금
+
+iOS:
+
+- AVAudioSession category·mode·options
+- spoken audio interrupt
+- music duck
+- notifyOthersOnDeactivation
+- interruption begin/end
+- route change
+- Bluetooth
+- background·lock screen
+
+실제 iPhone 증거 없이는 DEVICE_REQUIRED.
+
+======================================================================
+12. 메트로놈 OS
+======================================================================
+
+검증할 모드:
+
+- 고정 BPM
+- 내 기준 박자
+- 기준 대비 +3%, +5%
+- 고급 +7%, +10%
+- 두 걸음에 한 번
+- 좌우 교대
+- 4박·8박 강조
+- 인터벌 연동
+- 점진적 ramp
+- fade 후 스스로 유지, 다시 확인
+- 진동 보조
+- 직접 패턴
+- 탭으로 기준 입력
+- 오픈엔드 유지
+
+하드룰:
+
+- JS setInterval을 실제 박자 정본으로 사용하지 않음
+- Android Oboe/AAudio/AudioTrack 또는 동등 오디오 clock
+- iOS AVAudioEngine/AVAudioPlayerNode 또는 동등 sample clock
+- callback에서 allocation·JSON·I/O 금지
+- PCM click 사전 준비
+- pause/resume에서 phase 복원
+- voice가 말해도 beat phase 유지
+- Bluetooth offset 선택
+- xrun·underrun 측정
+
+테스트 BPM:
+
+60, 120, 140, 160, 170, 180, 200.
+
+테스트 길이:
+
+30분, 2시간, 6시간.
+
+측정:
+
+- expected/actual beat count
+- skip·duplicate
+- max phase error
+- xrun·underrun
+- CPU·memory
+- pause/resume
+- interval switch
+- voice overlap
+- music mix
+- Bluetooth
+- screen lock
+- incoming call
+
+새 native 변경이 Play 심사와 충돌하면 별도 Track B로 분리하고 Production에 가짜 버튼을 노출하지 않는다.
+
+======================================================================
+13. 프로그램·저장·호환 회귀
+======================================================================
+
+최신 코드에서 실제 수를 다시 센 뒤 전체 compile·실행 검증:
+
+- 여러 주 계획
+- 일회성 훈련
+- 도전
+- 보조 프로젝트
+- 기존 start9
+- 목표 대회 계획
+
+검사:
+
+- 기존 program ID
+- 기존 진행 기록
+- 기존 voice setting migration
+- 기존 guidance migration
+- activity completion
+- pause/resume
+- app restart
+- OTA/runtime compatibility
+- storage keys
+- package/bundle ID
+- static data
+- backup·rollback
+
+모든 계획·훈련은 다음 설정을 동일한 coach engine에 전달해야 한다.
+
+- persona
+- 존댓말/반말
+- density
+- body focus
+- voice pack
+- metronome
+- music policy
+
+화면마다 별도 타이머·TTS·완료 저장을 복제하지 않는다.
+
+======================================================================
+14. 로컬 개인화
+======================================================================
+
+서버 없이 기기 안에서 지원 가능한 피드백:
+
+- 코치 말이 너무 많음/적음
+- 도움 된 주제
+- 싫었던 주제
+- 말투
+- 매운맛 강도
+- 목소리
+- 메트로놈
+- 다음에 더 듣고 싶은 것
+
+실행 중 빠른 행동:
+
+- 이 말 도움 됨
+- 이 얘기 그만
+- 더 세게
+- 더 차분하게
+- 30초 조용히
+- 5분 조용히
+- 자세 얘기 잠깐 그만
+
+원문 음성·건강정보를 외부로 자동 전송하지 않는다.
+사용자는 로컬 적응값을 내보내고 삭제할 수 있어야 한다.
+
+======================================================================
+15. 성능·배터리
+======================================================================
+
+before/after 측정:
+
+- 앱 시작
+- 코치 시작
+- 첫 음성 지연
+- rolling generation
+- cache hit/miss
+- 2시간 memory
+- 6시간 simulation
+- open-ended 12시간 simulation
+- low-end Android
+- background CPU
+- 파일·AAB 크기
+- TTS 모델 크기
+- metronome xrun
+- 배터리 proxy
+
+큐·최근문장·대화기억·캐시가 실행시간에 따라 무한히 증가하면 직접 수정한다.
+
+======================================================================
+16. 자동·사람·실기기 검증 분리
+======================================================================
+
+자동 검증:
+
+- 단위·통합·property test
+- duration matrix
+- persona matrix
+- 금지 문장 lint
+- cue collision·repetition
+- metronome beat count
+- memory/queue bounds
+- typecheck·build·native export·dependency audit
+
+사람 청취가 필요한 조합:
+
+- 10분 초보
+- 30분 easy
+- 50분 full-talk
+- 90분 long
+- 2시간 open-ended
+- interval
+- treadmill
+- professional honorific
+- buddy casual
+- form-nag casual
+- strict
+- spicy opt-in
+- audiobook
+
+사람이 듣지 않았으면 HUMAN_LISTENING_REQUIRED.
+
+실기기가 필요한 항목:
+
+- Android screen off
+- Bluetooth
+- music duck
+- podcast pause
+- phone call
+- navigation audio
+- battery saver
+- native metronome timing
+- iPhone background
+
+실기기 증거가 없으면 DEVICE_REQUIRED.
+
+======================================================================
+17. Codex가 직접 수정할 것
+======================================================================
+
+다음 문제는 발견만 하고 끝내지 않는다.
+
+- duration clamp
+- open-ended false progress
+- cue repetition
+- persona leakage
+- 존댓말·반말 혼용
+- false sensing
+- unsafe profanity
+- unbounded queue·cache·memory
+- stale timer·cue
+- TTS starvation
+- audio focus leak
+- metronome timing 결함
+- 저장 migration 결함
+- 테스트·CI 누락
+- 라이선스·권리 metadata 누락
+- 문서·스토어 설명 불일치
+
+실제 성우 녹음, 실제 휴대폰 조작, Play Console, 법률 판단만 외부 blocker로 남긴다.
+
+======================================================================
+18. 브랜치·PR
+======================================================================
+
+- Claude branch 위에 보완 커밋을 만들거나 최신 main 기반 Codex 보완 branch 생성
+- 다른 active worktree·PR과 충돌 확인
+- 원자적 커밋
+- rollback SHA
+- 불필요한 generated diff 제거
+- 모든 관련 CI 통과
+
+PR 본문:
+
+1. Claude가 구현했다고 주장한 것
+2. Codex가 실제 확인한 것
+3. 설명과 달랐던 것
+4. Codex가 직접 수정한 것
+5. 테스트 증거
+6. 성능 전후
+7. 남은 DEVICE/HUMAN/POLICY/AUDIO gate
+8. rollback
+
+======================================================================
+19. 최종 요구사항 추적표
+======================================================================
+
+각 항목을 다음 상태 중 하나로 표시한다.
+
+PASS
+FAIL_FIXED
+FAIL_OPEN
+DEVICE_REQUIRED
+HUMAN_LISTENING_REQUIRED
+BLOCKED_CEO_AUDIO_RECORDING
+POLICY_REVIEW_REQUIRED
+NOT_APPLICABLE
+
+최소 항목:
+
+- arbitrary fixed duration
+- distance extent
+- program extent
+- open-ended extent
+- extend during run
+- cooldown on demand
+- rolling planner
+- 12h memory bound
+- seven personas
+- honorific/casual
+- density levels
+- full-talk occupancy
+- false sensing guard
+- form curriculum
+- body scan
+- system premium voice
+- human recording pipeline
+- hybrid resolver
+- offline neural experiment
+- Android audio focus
+- iOS audio session
+- music/podcast/call/Bluetooth
+- metronome modes
+- native audio clock
+- program integration
+- local adaptation
+- policy gates
+- CI/tests
+- device evidence
+
+======================================================================
+20. 최종 합격 기준
+======================================================================
+
+P0 = 0
+P1 = 0
+Claude 과장 주장 = 0
+특정 50분 의존 = 0
+10~120분 clamp = 0
+open-ended false ending = 0
+full-talk 의도하지 않은 최대 6초 초과 침묵 = 0(자동 시뮬레이션)
+unbounded memory·queue·cache = 0
+false posture sensing = 0
+보편적 15도 지시 = 0
+보편적 170·180 정답 지시 = 0
+특정 착지 강요 = 0
+spicy gate 밖 욕설 = 0
+저작권·성대모사 침해 = 0
+권리 manifest 없는 public 인간 음성 = 0
+metronome skip·duplicate = 0(자동)
+기존 기록·저장·프로그램 호환 회귀 = 0
+CI/typecheck/build/audit = PASS
+
+최종 상태는 다음 중 하나만 사용한다.
+
+- CODEX_CORRECTED_AUTOMATED_PASS
+- AUTOMATED_PASS_DEVICE_REQUIRED
+- HUMAN_AUDIO_REQUIRED
+- POLICY_REVIEW_REQUIRED
+- FAIL
+
+증거 없이 완성했다고 말하지 마라.
+문제를 직접 고치고 테스트하고 보완 PR 또는 커밋으로 남겨라.
+지금 시작하라.
