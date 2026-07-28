@@ -56,6 +56,8 @@
 - 오픈엔드 계획 지평을 12시간으로 늘리고 네이티브·fallback 모두 사용자 종료 전에는
   자동 완료하지 않게 했다.
 - 복원 시 네이티브 런타임의 `openEnded`를 정본으로 사용한다.
+- 최신 main의 자동 대회 동기화로 번들 대회 수가 바뀌어도 정적 데이터 회귀 테스트가
+  오래된 고정 숫자에 묶이지 않도록 manifest의 실제 `recordCounts`를 검증하게 했다.
 
 ## 풀토크 시간 행렬
 
@@ -108,10 +110,11 @@
 
 ## 자동 검증 증거
 
-- `npm run check` in `apps/mobile`: 1,165 tests PASS, TypeScript PASS,
+- `npm run check` in `apps/mobile`: 1,195 tests PASS, TypeScript PASS,
   config verification PASS, Expo public config PASS
-- root `npm test`: 79 tests PASS
+- root `npm test`: 81 tests PASS
 - root `npm run build`: PASS
+- 정적 데이터: 대회 192건, manifest·checksum·모바일 번들 동기화 PASS
 - `npm run export:native`: Android·iOS export PASS
 - Android `:app:compileReleaseKotlin`: PASS, 301 tasks
 - iOS `swiftc -parse`: PASS

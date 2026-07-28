@@ -56,7 +56,10 @@ describe('정적 데이터 manifest와 LKG', () => {
     });
     assert.equal(requestCount, 0);
     assert.equal(snapshot.source, 'bundle');
-    assert.equal(snapshot.datasets['races.json'].records.length, 183);
+    assert.equal(
+      snapshot.datasets['races.json'].records.length,
+      bundledStaticManifest.recordCounts['races.json'],
+    );
   });
 
   it('모든 원격 파일 검증 후 active manifest를 마지막에 교체한다', async () => {
