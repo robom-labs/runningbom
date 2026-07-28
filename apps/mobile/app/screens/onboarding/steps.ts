@@ -164,7 +164,6 @@ export type IntroHighlight = {
 /** 1화면 소개 문구입니다. 숫자는 호출부가 실제 데이터에서 세어 넘깁니다. */
 export function introHighlights(counts: {
   coachSentences: number;
-  shoes: number;
   races: number;
 }): IntroHighlight[] {
   return [
@@ -175,7 +174,7 @@ export function introHighlights(counts: {
     },
     {
       id: 'shoes',
-      title: `러닝화 ${counts.shoes}종을 비교해요`,
+      title: '러닝화를 비교해요',
       body: '목적과 국내 구매 경로를 정리해 뒀어요. 지금 신는 러닝화를 저장해 둘 수도 있어요.',
     },
     {

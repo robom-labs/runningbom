@@ -34,7 +34,7 @@ test('가격이 확인되지 않아도 카드에 숫자가 나옵니다', () => 
 });
 
 test('카탈로그의 모든 신발이 값을 가집니다', () => {
-  // 123종을 전부 돌려 봅니다. 한 켤레라도 빈칸이면 실패입니다.
+  // 카탈로그를 전부 돌려 봅니다. 한 켤레라도 빈칸이면 실패입니다.
   for (const shoe of shoeCatalog) {
     const shown = priceDisplay(shoe, now);
     assert.notEqual(shown.headline.trim(), '', `${shoe.id}의 가격 줄이 비었습니다`);

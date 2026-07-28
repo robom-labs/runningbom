@@ -1,0 +1,83 @@
+# 대회 포스터와 러닝화 제품 사진을 모읍니다.
+#
+# 왜 워크플로에서 도는가:
+#   개발 컨테이너는 외부 접속이 막혀 있습니다. 여기서만 브랜드·대회 공식 페이지에 닿습니다.
+#
+# 무엇을 하는가:
+#   1) 브랜드 사이트맵에서 각 러닝화의 정확한 모델 페이지를 찾습니다.
+#   2) 그 페이지의 공식 제품 이미지 주소를 읽습니다.
+#   3) 대회 공식 페이지의 포스터를 읽습니다.
+#   4) 결과를 브랜치에 올려 사람이 확인하게 합니다.
+#
+# 사람이 해야 하는 일:
+#   권리 상태(rights)는 자동으로 승인되지 않습니다.
+#   약관을 확인한 사람이 RIGHTS_REVIEW_REQUIRED를 올려야 그 신발이 앱에 등록됩니다.
+name: 이미지 수집
+
+on:
+  workflow_dispatch:
+    inputs:
+      shoeLimit:
+        description: '이번에 볼 러닝화 개수'
+        default: '60'
+      raceLimit:
+        description: '이번에 볼 대회 개수'
+        default: '80'
+  schedule:
+    # 매주 월요일 오전 8시 40분(KST)
+    - cron: '40 23 * * 0'
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+
+      - name: 모바일 의존성 설치
+        run: npm --prefix apps/mobile ci
+
+      - name: 러닝화 공식 모델 페이지 찾기
+        run: |
+          node --import ./apps/mobile/node_modules/tsx/dist/loader.mjs \
+            scripts/discover-shoe-pages.mjs --write || echo "일부 브랜드를 찾지 못했습니다"
+
+      - name: 러닝화 공식 제품 사진 모으기
+        run: |
+          node scripts/collect-shoe-images.mjs --write \
+            --limit "${{ github.event.inputs.shoeLimit || 60 }}" || echo "일부 사진을 찾지 못했습니다"
+
+      - name: 대회 포스터 모으기
+        run: |
+          node scripts/collect-official-images.mjs --write \
+            --limit "${{ github.event.inputs.raceLimit || 80 }}" || echo "일부 포스터를 찾지 못했습니다"
+
+      - name: 결과 확인
+        run: |
+          node --import ./apps/mobile/node_modules/tsx/dist/loader.mjs \
+            scripts/verify-shoe-photos.mjs
+
+      - name: 브랜치에 올리기
+        run: |
+          if git diff --quiet; then
+            echo "새로 찾은 것이 없습니다."
+            exit 0
+          fi
+          BRANCH="chore/images-$(date +%Y%m%d-%H%M)"
+          git config user.name "runningbom-image-bot"
+          git config user.email "noreply@robom.kr"
+          git checkout -b "$BRANCH"
+          git add data/shoe-image-sources.json data/shoe-official-pages.json \
+            apps/mobile/src/data/official-images.json
+          git commit -m "chore(images): 공식 제품 사진·대회 포스터 수집" \
+            -m "주소만 담고 이미지를 복사하지 않습니다." \
+            -m "권리 상태는 사람이 확인해 올려야 앱에 등록됩니다."
+          git push -u origin "$BRANCH"
+          echo "브랜치: $BRANCH"
+          echo "PR 생성은 조직 정책상 사람이 합니다."

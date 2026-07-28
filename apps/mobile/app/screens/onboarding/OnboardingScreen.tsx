@@ -106,7 +106,6 @@ export function OnboardingScreen({ renderLoginStep }: OnboardingScreenProps = {}
     () =>
       introHighlights({
         coachSentences: coachSentenceTotal(),
-        shoes: shoeCatalog.length,
         races: countRaces(feed.races),
       }),
     [feed.races],

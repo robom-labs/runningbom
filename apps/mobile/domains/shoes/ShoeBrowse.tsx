@@ -53,13 +53,11 @@ function PickRow({
 }
 
 export function ShoeBrowseHome({
-  catalogSize,
   values,
   onOpenCategory,
   onOpenList,
   onOpenAdvisor,
 }: {
-  catalogSize: number;
   values: ShoeEntry[];
   onOpenCategory: (category: ShoeCategory) => void;
   onOpenList: (source: ShoeListSource) => void;
@@ -69,7 +67,7 @@ export function ShoeBrowseHome({
     <View style={styles.container}>
       <SectionHeader
         title="어떤 러닝화를 찾으세요?"
-        subtitle={`큰 갈래부터 고르면 ${catalogSize}종이 금방 좁혀져요.`}
+        subtitle="큰 갈래부터 고르면 금방 좁혀져요."
       />
 
       <View style={styles.categoryList}>
@@ -167,7 +165,7 @@ export function ShoeBrowseHome({
           검색과 상세 필터(브랜드·가격대 등)는 전체 보기 안에 모아 두었어요.
         </Text>
         <Button
-          label={`러닝화 ${catalogSize}종 전체 보기`}
+          label="러닝화 전체 보기"
           onPress={() => onOpenList({ type: 'all' })}
           tone="secondary"
         />
