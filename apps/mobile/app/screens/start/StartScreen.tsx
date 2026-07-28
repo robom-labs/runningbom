@@ -19,6 +19,7 @@ import { Button, Card, Chip, Wordmark } from '../../design-system/components';
 import { palette, radius, spacing, typeScale } from '../../design-system/theme';
 import { useAppState } from '../../state/AppStateProvider';
 import {
+  applyRegister,
   createCoachSessionForExtent,
   currentPhase,
   cueDensityPerMinute,
@@ -43,6 +44,7 @@ import {
   MAX_COACH_MINUTES,
   MIN_COACH_MINUTES,
 } from '../../../services/storage/preferences';
+import { useCoachSettings } from '../../../domains/coaching/coachSettingsStore';
 import {
   voiceGenderLabels,
   type VoiceGender,
@@ -146,6 +148,8 @@ function spokenDuration(seconds: number): string {
 export function StartScreen() {
   const { activities, preferences, updatePreferences, completeActivity } = useAppState();
   const runSettings = useRunPreferences();
+  // 말투는 코치 설정에서 옵니다. 아직 다 읽지 못했으면 존댓말로 시작합니다.
+  const { settings: coachSettings } = useCoachSettings(preferences.coachGuidance);
   const [minutes, setMinutes] = useState(preferences.coachMinutes);
   const [kind, setKind] = useState<CoachSessionKind>(validKind(preferences.coachType));
   const [directInput, setDirectInput] = useState(String(preferences.coachMinutes));
@@ -187,9 +191,15 @@ export function StartScreen() {
     () => (openEnded ? { type: 'open-ended' } : { type: 'fixed-time', seconds: minutes * 60 }),
     [openEnded, minutes],
   );
+  // 반말을 골랐으면 여기서 한 번에 옮깁니다.
+  // 기기 서비스에 넘길 대사표, 앱이 말할 문장, 화면에 찍히는 기록이 전부 같은 세션에서 나옵니다.
   const session = useMemo(
-    () => createCoachSessionForExtent(kind, extent, preferences.coachGuidance),
-    [kind, extent, preferences.coachGuidance],
+    () =>
+      applyRegister(
+        createCoachSessionForExtent(kind, extent, preferences.coachGuidance),
+        coachSettings.register,
+      ),
+    [kind, extent, preferences.coachGuidance, coachSettings.register],
   );
   /** 끝을 모르면 남은 시간·진행률을 화면에도 띄우지 않습니다. 코치만 입을 다무는 게 아닙니다. */
   const showsRemaining = mayMentionRemaining(extent);

@@ -39,7 +39,10 @@ export {
 } from './sessionTypes';
 export type { CueCategory } from './cueLibrary';
 import { hasKnownEnd, presumesKnownEnd, totalSeconds, type SessionExtent } from './extent';
+import { speakAs } from './register';
+import type { SpeechRegister } from './persona';
 export * from './extent';
+export { speakAs, toCasual } from './register';
 
 export type GuidanceLevel = 'minimal' | 'standard' | 'detailed';
 
@@ -459,6 +462,24 @@ export function createCoachSessionForExtent(
       (cue) =>
         cue.kind !== 'progress' && cue.kind !== 'completion' && !presumesKnownEnd(cue.text),
     ),
+  };
+}
+
+/**
+ * 세션 전체를 반말로 옮깁니다.
+ *
+ * **왜 재생할 때가 아니라 여기서 옮기는가:**
+ *   말은 세 곳에서 나갑니다 — 기기 백그라운드 서비스에 미리 넘기는 대사표,
+ *   앱이 직접 말하는 경로, 그리고 화면에 찍히는 코치 말 기록.
+ *   재생하는 쪽마다 옮기면 세 곳이 언젠가 어긋납니다.
+ *   화면에는 존댓말, 귀에는 반말이 들리는 날이 옵니다. 그래서 한 곳에서 옮깁니다.
+ */
+export function applyRegister(session: CoachSession, register: SpeechRegister): CoachSession {
+  if (register === 'honorific') return session;
+  return {
+    ...session,
+    id: `${session.id}:casual`,
+    cues: session.cues.map((cue) => ({ ...cue, text: speakAs(cue.text, register) })),
   };
 }
 
