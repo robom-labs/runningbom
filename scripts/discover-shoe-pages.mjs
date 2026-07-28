@@ -5,10 +5,13 @@
 //   지금 등록된 공식 페이지는 두 개뿐이고, 나머지는 비어 있어서 사진을 한 장도 못 가져옵니다.
 //   **컴포넌트가 없어서가 아니라 주소가 없어서** 사진이 안 나오고 있었습니다.
 //
-// 어떻게 찾는가 — 주소를 지어내지 않습니다.
-//   브랜드가 공개한 **사이트맵**을 읽습니다.
-//   사이트맵은 "이 주소들을 색인해도 된다"고 사이트가 스스로 밝힌 목록입니다.
-//   거기에서 모델명이 들어간 제품 주소만 골라냅니다.
+// 어떻게 찾는가 — 주소를 지어내지 않습니다. 두 경로를 씁니다.
+//   1) 브랜드가 공개한 **사이트맵**
+//      "이 주소들을 색인해도 된다"고 사이트가 스스로 밝힌 목록입니다.
+//   2) 브랜드 **공식 사이트 안의 검색**
+//      사이트맵에 없거나 사이트맵이 막힌 브랜드를 위한 두 번째 길입니다.
+//      검색엔진이 아니라 브랜드가 자기 사이트에 제공하는 검색이고,
+//      결과 안의 링크 중 모델명이 정확히 맞는 것만 씁니다.
 //
 // 하지 않는 일
 //   - 검색엔진 결과를 쓰지 않습니다.
@@ -36,6 +39,20 @@ const onlyBrand = brandIndex >= 0 ? args[brandIndex + 1]?.toLowerCase() : undefi
 const TIMEOUT_MS = 20_000;
 const GAP_MS = 1_200;
 const today = new Date().toISOString().slice(0, 10);
+
+/** 브랜드 공식 사이트 안의 검색입니다. 사이트맵에서 못 찾았을 때만 씁니다. */
+const brandSearch = {
+  nike: (q) => `https://www.nike.com/kr/w?q=${encodeURIComponent(q)}`,
+  adidas: (q) => `https://www.adidas.co.kr/search?q=${encodeURIComponent(q)}`,
+  asics: (q) => `https://www.asics.co.kr/search?q=${encodeURIComponent(q)}`,
+  'new balance': (q) => `https://www.nbkorea.com/product/searchResult.action?schWord=${encodeURIComponent(q)}`,
+  saucony: (q) => `https://www.saucony.com/en/search?q=${encodeURIComponent(q)}`,
+  brooks: (q) => `https://www.brooksrunning.com/en_us/search?q=${encodeURIComponent(q)}`,
+  hoka: (q) => `https://www.hoka.com/en/us/search?q=${encodeURIComponent(q)}`,
+  on: (q) => `https://www.on.com/en-us/search?q=${encodeURIComponent(q)}`,
+  puma: (q) => `https://kr.puma.com/kr/ko/search?q=${encodeURIComponent(q)}`,
+  mizuno: (q) => `https://www.mizuno.com/search?q=${encodeURIComponent(q)}`,
+};
 
 /**
  * 브랜드별 사이트맵 진입점입니다.
@@ -139,11 +156,7 @@ async function main() {
   const missing = [];
 
   for (const [brand, shoes] of byBrand) {
-    const robots = brandSitemaps[brand];
-    if (!robots) {
-      for (const shoe of shoes) missing.push({ id: shoe.id, reason: `${brand} 사이트맵 미등록` });
-      continue;
-    }
+    const robots = brandSitemaps[brand] ?? [];
 
     // robots.txt → 사이트맵 목록 → 제품 주소
     const urls = new Set();
@@ -173,14 +186,34 @@ async function main() {
 
     for (const shoe of shoes) {
       const slug = slugify(shoe.modelEn ?? shoe.model);
-      const hit = [...urls].find((url) => matchesModel(url, slug));
+      let hit = [...urls].find((url) => matchesModel(url, slug));
+
+      // 사이트맵에서 못 찾으면 브랜드 **공식 검색 페이지**를 봅니다.
+      // 검색엔진이 아니라 브랜드가 자기 사이트에 제공하는 검색입니다.
+      // 결과 페이지 안의 링크 중 모델명이 맞는 것만 씁니다. 여기서도 주소를 지어내지 않습니다.
+      if (!hit && brandSearch[brand]) {
+        const searchUrl = brandSearch[brand](`${shoe.brand} ${shoe.modelEn ?? shoe.model}`);
+        const { text } = await fetchMaybeGzip(searchUrl);
+        if (text) {
+          const links = [...text.matchAll(/href=["']([^"']+)["']/g)].map((m) => {
+            try {
+              return new URL(m[1], searchUrl).toString();
+            } catch {
+              return '';
+            }
+          });
+          hit = links.find((url) => url && matchesModel(url, slug));
+        }
+        await new Promise((r) => setTimeout(r, GAP_MS));
+      }
+
       if (hit) {
         items[shoe.id] = {
           brand: shoe.brand,
           model: shoe.model,
           modelPage: hit,
           discoveredAt: today,
-          discoveredVia: 'official-sitemap',
+          discoveredVia: urls.has(hit) ? 'official-sitemap' : 'official-site-search',
         };
         found += 1;
       } else {

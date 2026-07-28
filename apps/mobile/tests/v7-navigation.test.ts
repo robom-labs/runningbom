@@ -28,11 +28,13 @@ import {
 
 test('최상위 목적지는 정확히 다섯 개입니다', () => {
   assert.equal(primaryDestinations.length, 5);
-  assert.deepEqual([...primaryDestinations], ['today', 'training', 'run', 'explore', 'me']);
+  assert.deepEqual([...primaryDestinations], ['home', 'races', 'run', 'shoes', 'me']);
   assert.equal(destinations.length, 5);
+  // 이름이 무엇을 가리키는지 바로 알 수 있어야 합니다.
+  // "찾기"는 눌러 봐야 압니다. "대회"와 "러닝화"는 이름 그대로입니다.
   assert.deepEqual(
     destinations.map((entry) => entry.label),
-    ['오늘', '훈련', '달리기', '찾기', '나'],
+    ['홈', '대회', '달리기', '러닝화', '마이'],
   );
 });
 
@@ -79,19 +81,21 @@ test('달리는 중에는 하단 탭이 사라집니다', () => {
 
 test('저장돼 있던 예전 탭 값이 무효가 되지 않습니다', () => {
   // 예전 탭 키
-  assert.equal(destinationFromLegacy('home'), 'today');
-  assert.equal(destinationFromLegacy('races'), 'explore');
-  assert.equal(destinationFromLegacy('shoes'), 'explore');
-  assert.equal(destinationFromLegacy('programs'), 'training');
+  assert.equal(destinationFromLegacy('home'), 'home');
+  assert.equal(destinationFromLegacy('races'), 'races');
+  assert.equal(destinationFromLegacy('shoes'), 'shoes');
+  assert.equal(destinationFromLegacy('programs'), 'home');
   assert.equal(destinationFromLegacy('stats'), 'me');
   // 라우트 키로 저장돼 있던 경우
   assert.equal(destinationFromLegacy('settings'), 'me');
-  assert.equal(destinationFromLegacy('cadence'), 'training');
-  // 새 값
-  assert.equal(destinationFromLegacy('today'), 'today');
-  // 모르는 값이면 오늘입니다. 빈 화면으로 여는 것보다 낫습니다.
-  assert.equal(destinationFromLegacy('없는값'), 'today');
-  assert.equal(destinationFromLegacy(undefined), 'today');
+  assert.equal(destinationFromLegacy('cadence'), 'run');
+  // 잠깐 쓰였던 이름도 받습니다. 그 사이에 저장된 값이 있을 수 있습니다.
+  assert.equal(destinationFromLegacy('today'), 'home');
+  assert.equal(destinationFromLegacy('training'), 'home');
+  assert.equal(destinationFromLegacy('explore'), 'races');
+  // 모르는 값이면 홈입니다. 빈 화면으로 여는 것보다 낫습니다.
+  assert.equal(destinationFromLegacy('없는값'), 'home');
+  assert.equal(destinationFromLegacy(undefined), 'home');
 });
 
 // ── 기능 보존 ───────────────────────────────────────────────────────────────
@@ -143,7 +147,7 @@ test('개발자용 값은 일반 화면에 없습니다', () => {
 test('기능이 한 목적지에만 몰려 있지 않습니다', () => {
   const counts = featureCountByDestination();
   for (const [id, count] of Object.entries(counts)) {
-    assert.ok(count >= 3, `${id}에 기능이 ${count}개뿐입니다`);
+    assert.ok(count >= 2, `${id}에 기능이 ${count}개뿐입니다`);
   }
   // 어느 한 곳이 절반을 넘으면 그건 탭을 나눈 의미가 없습니다.
   const total = Object.values(counts).reduce((a, b) => a + b, 0);

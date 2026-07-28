@@ -1,4 +1,4 @@
-// V7 최상위 목적지입니다. **순수합니다.**
+// 최상위 목적지입니다. **순수합니다.**
 //
 // 왜 바꾸는가 — 코드로 센 증거:
 //   지금 앱에는 전역 내비게이션이 **두 개** 있습니다.
@@ -12,9 +12,15 @@
 //
 // 그래서 최상위를 정확히 다섯 개로 못 박고, 드로어는 런타임에서 걷어냅니다.
 // 드로어에 있던 화면은 사라지지 않습니다. 각각 **자기 집**이 생깁니다.
+//
+// 이름을 "찾기"가 아니라 **대회·러닝화**로 둔 이유:
+//   "찾기"는 무엇을 찾는지 알려 주지 않습니다. 눌러 봐야 압니다.
+//   대회와 러닝화는 러닝봄이 실제로 가진 것이고, 사용자가 찾는 이름 그대로입니다.
+//   "훈련"도 같은 이유로 내렸습니다 — 처음 켠 사람은 오늘 뭘 할지가 궁금하지
+//   훈련 라이브러리가 궁금한 게 아닙니다. 훈련은 홈 안에서 이어집니다.
 
 /** 하단 탭이 가리키는 다섯 곳입니다. 여기 없는 것은 최상위가 아닙니다. */
-export const primaryDestinations = ['today', 'training', 'run', 'explore', 'me'] as const;
+export const primaryDestinations = ['home', 'races', 'run', 'shoes', 'me'] as const;
 export type PrimaryDestination = (typeof primaryDestinations)[number];
 
 export type DestinationDefinition = {
@@ -31,18 +37,19 @@ export type DestinationDefinition = {
 
 export const destinations: DestinationDefinition[] = [
   {
-    id: 'today',
-    label: '오늘',
-    accessibilityLabel: '오늘, 오늘 할 러닝과 이번 주',
-    icon: 'today-outline',
-    activeIcon: 'today',
+    id: 'home',
+    label: '홈',
+    accessibilityLabel: '홈, 오늘 할 러닝과 내 훈련',
+    icon: 'home-outline',
+    activeIcon: 'home',
   },
   {
-    id: 'training',
-    label: '훈련',
-    accessibilityLabel: '훈련, 내 계획과 훈련 라이브러리',
-    icon: 'barbell-outline',
-    activeIcon: 'barbell',
+    // 대회는 러닝봄이 실제로 가진 콘텐츠입니다. "찾기" 안에 묻어 두면 아무도 못 찾습니다.
+    id: 'races',
+    label: '대회',
+    accessibilityLabel: '대회, 일정과 접수와 목표 대회',
+    icon: 'trophy-outline',
+    activeIcon: 'trophy',
   },
   {
     // 가운데입니다. 시각적으로는 강조하지만 **누르면 준비 화면으로 갑니다.**
@@ -56,16 +63,16 @@ export const destinations: DestinationDefinition[] = [
     emphasized: true,
   },
   {
-    id: 'explore',
-    label: '찾기',
-    accessibilityLabel: '찾기, 대회와 러닝화와 러닝 지식',
-    icon: 'search-outline',
-    activeIcon: 'search',
+    id: 'shoes',
+    label: '러닝화',
+    accessibilityLabel: '러닝화, 추천과 비교와 내 신발장',
+    icon: 'footsteps-outline',
+    activeIcon: 'footsteps',
   },
   {
     id: 'me',
-    label: '나',
-    accessibilityLabel: '나, 기록과 성취와 설정',
+    label: '마이',
+    accessibilityLabel: '마이, 기록과 성취와 설정',
     icon: 'person-outline',
     activeIcon: 'person',
   },
@@ -78,24 +85,27 @@ export const destinations: DestinationDefinition[] = [
  * 바꾸는 것은 "그 화면이 어느 탭 아래에 있는가"뿐입니다.
  */
 const destinationByRoute: Record<string, PrimaryDestination> = {
-  // 오늘 — 오늘 할 행동과 맥락만
-  home: 'today',
+  // 홈 — 오늘 할 행동과 내 훈련
+  //
+  // 훈련은 최상위에서 내렸습니다. "훈련" 탭을 눌러 무엇이 나올지 아는 사람은
+  // 이미 이 앱을 아는 사람입니다. 처음 켠 사람은 오늘 뭘 할지가 궁금합니다.
+  home: 'home',
+  programs: 'home',
+  challenges: 'home',
+  guide: 'home',
 
-  // 훈련 — 계획·훈련·도전·프로젝트·박자
-  programs: 'training',
-  challenges: 'training',
-  cadence: 'training',
-  calendar: 'training',
+  // 대회 — 목록·달력·상세·접수 알림
+  races: 'races',
+  calendar: 'races',
 
-  // 달리기 — 준비·실행·완료
+  // 달리기 — 준비·실행·완료. 박자도 여기서 씁니다.
   start: 'run',
+  cadence: 'run',
 
-  // 찾기 — 대회·러닝화·러닝 지식
-  races: 'explore',
-  shoes: 'explore',
-  guide: 'explore',
+  // 러닝화 — 사진으로 고르는 곳
+  shoes: 'shoes',
 
-  // 나 — 기록·성취·보관함·프로필·설정
+  // 마이 — 기록·성취·보관함·프로필·설정
   stats: 'me',
   badges: 'me',
   profile: 'me',
@@ -111,10 +121,10 @@ export function destinationForRoute(route: string): PrimaryDestination | undefin
 
 /** 목적지를 눌렀을 때 실제로 여는 화면입니다. */
 const routeByDestination: Record<PrimaryDestination, string> = {
-  today: 'home',
-  training: 'programs',
+  home: 'home',
+  races: 'races',
   run: 'start',
-  explore: 'races',
+  shoes: 'shoes',
   me: 'stats',
 };
 
@@ -147,23 +157,26 @@ export function tabBarVisible(route: string): boolean {
  * 예전 값에서 옮겨 옵니다. **저장된 lastTab을 무효로 만들지 않습니다.**
  *
  * 예전 탭 키(home·races·programs·shoes·stats)와 라우트 키가 섞여 저장돼 있습니다.
- * 둘 다 받아서 새 목적지로 옮깁니다. 모르는 값이면 오늘로 갑니다 —
+ * 둘 다 받아서 새 목적지로 옮깁니다. 모르는 값이면 홈으로 갑니다 —
  * 앱이 빈 화면으로 열리는 것보다 낫습니다.
  */
 export function destinationFromLegacy(value: string | undefined): PrimaryDestination {
-  if (!value) return 'today';
+  if (!value) return 'home';
+
+  // 예전 탭 키와 라우트 키를 둘 다 받습니다. 라우트 표가 이미 그 둘을 덮습니다.
+  const mapped = destinationForRoute(value);
+  if (mapped) return mapped;
+
   const direct = primaryDestinations.find((id) => id === value);
   if (direct) return direct;
 
-  // 예전 탭 키 다섯 개입니다.
-  const legacyTabs: Record<string, PrimaryDestination> = {
-    home: 'today',
-    races: 'explore',
-    programs: 'training',
-    shoes: 'explore',
-    stats: 'me',
+  // V7에서 잠깐 쓰던 이름도 받아 줍니다. 그 사이에 저장된 값이 있을 수 있습니다.
+  const v7: Record<string, PrimaryDestination> = {
+    today: 'home',
+    training: 'home',
+    explore: 'races',
   };
-  if (legacyTabs[value]) return legacyTabs[value];
+  if (v7[value]) return v7[value];
 
-  return destinationForRoute(value) ?? 'today';
+  return 'home';
 }
