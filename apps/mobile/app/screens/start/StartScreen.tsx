@@ -19,9 +19,13 @@ import { Button, Card, Chip, Wordmark } from '../../design-system/components';
 import { palette, radius, spacing, typeScale } from '../../design-system/theme';
 import { useAppState } from '../../state/AppStateProvider';
 import {
-  createCoachSession,
+  applyRegister,
+  createCoachSessionForExtent,
   currentPhase,
   cueDensityPerMinute,
+  extentLabel,
+  mayMentionRemaining,
+  quickMinutes,
   guidanceDescriptions,
   guidanceLabels,
   isCoachSessionKind,
@@ -31,10 +35,17 @@ import {
   resolveRunningType,
   runningTypeCategories,
   runningTypesByCategory,
+  withLongform,
   type CoachSessionKind,
   type GuidanceLevel,
   type RunningTypeCategory,
+  type SessionExtent,
 } from '../../../domains/coaching/model';
+import {
+  MAX_COACH_MINUTES,
+  MIN_COACH_MINUTES,
+} from '../../../services/storage/preferences';
+import { useCoachSettings } from '../../../domains/coaching/coachSettingsStore';
 import {
   voiceGenderLabels,
   type VoiceGender,
@@ -138,10 +149,14 @@ function spokenDuration(seconds: number): string {
 export function StartScreen() {
   const { activities, preferences, updatePreferences, completeActivity } = useAppState();
   const runSettings = useRunPreferences();
+  // 말투는 코치 설정에서 옵니다. 아직 다 읽지 못했으면 존댓말로 시작합니다.
+  const { settings: coachSettings } = useCoachSettings(preferences.coachGuidance);
   const [minutes, setMinutes] = useState(preferences.coachMinutes);
   const [kind, setKind] = useState<CoachSessionKind>(validKind(preferences.coachType));
   const [directInput, setDirectInput] = useState(String(preferences.coachMinutes));
   const [inputError, setInputError] = useState('');
+  /** 끝을 정하지 않고 뛰는지입니다. 켜면 시간 대신 "끝낼 때까지"가 됩니다. */
+  const [openEnded, setOpenEnded] = useState(preferences.coachOpenEnded === true);
   const [showKinds, setShowKinds] = useState(false);
   const [category, setCategory] = useState<RunningTypeCategory>('기본');
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -173,10 +188,25 @@ export function StartScreen() {
   const [weightError, setWeightError] = useState('');
 
   const type = useMemo(() => resolveRunningType(kind), [kind]);
-  const session = useMemo(
-    () => createCoachSession(kind, minutes, preferences.coachGuidance),
-    [kind, minutes, preferences.coachGuidance],
+  const extent = useMemo<SessionExtent>(
+    () => (openEnded ? { type: 'open-ended' } : { type: 'fixed-time', seconds: minutes * 60 }),
+    [openEnded, minutes],
   );
+  // 반말을 골랐으면 여기서 한 번에 옮깁니다.
+  // 기기 서비스에 넘길 대사표, 앱이 말할 문장, 화면에 찍히는 기록이 전부 같은 세션에서 나옵니다.
+  const session = useMemo(
+    () =>
+      applyRegister(
+        withLongform(
+          createCoachSessionForExtent(kind, extent, preferences.coachGuidance),
+          coachSettings.density,
+        ),
+        coachSettings.register,
+      ),
+    [kind, extent, preferences.coachGuidance, coachSettings.density, coachSettings.register],
+  );
+  /** 끝을 모르면 남은 시간·진행률을 화면에도 띄우지 않습니다. 코치만 입을 다무는 게 아닙니다. */
+  const showsRemaining = mayMentionRemaining(extent);
   const active = runtime.state === 'running' || runtime.state === 'paused';
 
   // 달리는 동안에는 새 내용을 적용하지 않도록 알려 둡니다.
@@ -287,8 +317,16 @@ export function StartScreen() {
       ) {
         const restoredMinutes = Math.max(1, Math.round(next.durationSeconds / 60));
         setKind(validKind(next.title));
-        setMinutes(restoredMinutes);
-        setDirectInput(String(restoredMinutes));
+        // 끝을 정하지 않고 시작했다면 그 사실을 되살립니다.
+        // 되살리지 않으면 앱을 다시 켠 순간 "6시간짜리 러닝"으로 보이고,
+        // 코치가 갑자기 남은 시간을 말하기 시작합니다.
+        if (!preferences.coachOpenEnded) {
+          setOpenEnded(false);
+          setMinutes(restoredMinutes);
+          setDirectInput(String(restoredMinutes));
+        } else {
+          setOpenEnded(true);
+        }
       }
 
       if (
@@ -333,7 +371,7 @@ export function StartScreen() {
     } catch {
       setRuntime((current) => ({ ...current, state: 'stopped' }));
     }
-  }, [completeActivity]);
+  }, [completeActivity, preferences.coachOpenEnded]);
 
   useEffect(() => {
     void refreshRuntime();
@@ -446,12 +484,29 @@ export function StartScreen() {
 
   function applyDirectInput() {
     const value = Number(directInput);
-    if (!Number.isInteger(value) || value < 10 || value > 120) {
-      setInputError('10분부터 120분 사이의 정수를 입력해 주세요.');
+    // 예전에는 10~120분만 받았습니다. 7분 걷기도, 3시간 롱런도 거절당했습니다.
+    // 이제 하루 안이면 받습니다. 막는 것은 사람이 고를 리 없는 값뿐입니다.
+    if (!Number.isInteger(value) || value < MIN_COACH_MINUTES || value > MAX_COACH_MINUTES) {
+      setInputError(`${MIN_COACH_MINUTES}분부터 ${MAX_COACH_MINUTES}분 사이의 정수를 입력해 주세요.`);
       return;
     }
     setInputError('');
+    setOpenEnded(false);
     setMinutes(value);
+  }
+
+  /** 빠른 선택 버튼입니다. 슬라이더로 맞추기 번거로운 길이를 한 번에 고릅니다. */
+  function chooseQuickMinutes(value: number) {
+    setInputError('');
+    setOpenEnded(false);
+    setMinutes(value);
+    setDirectInput(String(value));
+  }
+
+  /** "끝낼 때까지"입니다. 남은 시간을 모르므로 코치가 진행·마무리를 말하지 않습니다. */
+  function chooseOpenEnded() {
+    setInputError('');
+    setOpenEnded(true);
   }
 
   function chooseVoice(gender: VoiceGender) {
@@ -478,7 +533,7 @@ export function StartScreen() {
 
   /** 카운트다운이 끝난 뒤 실제로 코칭을 시작합니다. */
   async function launchSession() {
-    await updatePreferences({ coachMinutes: minutes, coachType: kind });
+    await updatePreferences({ coachMinutes: minutes, coachType: kind, coachOpenEnded: openEnded });
     try {
       setRuntime(await startCoachSession(session, preferences.speechRate, voiceGender));
     } catch {
@@ -570,27 +625,72 @@ export function StartScreen() {
 
           {nightRun ? null : (
           <Card style={styles.timeCard}>
-            <Text accessibilityLiveRegion="polite" style={styles.minutes}>{minutes}분</Text>
-            <Slider
-              accessibilityLabel="코칭 시간"
-              maximumTrackTintColor={palette.line}
-              maximumValue={120}
-              minimumTrackTintColor={palette.accent}
-              minimumValue={10}
-              onValueChange={(value) => {
-                const rounded = Math.round(value / 5) * 5;
-                setMinutes(rounded);
-                setDirectInput(String(rounded));
-                setInputError('');
-              }}
-              step={5}
-              thumbTintColor={palette.accent}
-              value={minutes}
-            />
-            <View style={styles.rangeRow}>
-              <Text style={styles.range}>10분</Text>
-              <Text style={styles.range}>120분</Text>
+            <Text accessibilityLiveRegion="polite" style={styles.minutes}>
+              {openEnded ? extentLabel({ type: 'open-ended' }) : `${minutes}분`}
+            </Text>
+
+            {/* 자주 쓰는 길이를 한 번에 고릅니다. 슬라이더로 5분을 맞추는 것은 성가십니다. */}
+            <View style={styles.quickRow}>
+              {quickMinutes.map((value) => (
+                <Pressable
+                  accessibilityLabel={`${value}분`}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: !openEnded && minutes === value }}
+                  key={value}
+                  onPress={() => chooseQuickMinutes(value)}
+                  style={[styles.quickChip, !openEnded && minutes === value && styles.quickChipOn]}
+                >
+                  <Text
+                    style={[
+                      styles.quickChipText,
+                      !openEnded && minutes === value && styles.quickChipTextOn,
+                    ]}
+                  >
+                    {value}
+                  </Text>
+                </Pressable>
+              ))}
+              <Pressable
+                accessibilityLabel="끝낼 때까지 달리기"
+                accessibilityRole="button"
+                accessibilityState={{ selected: openEnded }}
+                onPress={chooseOpenEnded}
+                style={[styles.quickChip, styles.quickChipWide, openEnded && styles.quickChipOn]}
+              >
+                <Text style={[styles.quickChipText, openEnded && styles.quickChipTextOn]}>
+                  끝낼 때까지
+                </Text>
+              </Pressable>
             </View>
+
+            {openEnded ? (
+              <Text style={styles.range}>
+                끝을 정하지 않았어요. 코치는 남은 시간을 말하지 않고, 멈출 때까지 함께 갑니다.
+              </Text>
+            ) : (
+              <>
+                <Slider
+                  accessibilityLabel="코칭 시간"
+                  maximumTrackTintColor={palette.line}
+                  maximumValue={180}
+                  minimumTrackTintColor={palette.accent}
+                  minimumValue={5}
+                  onValueChange={(value) => {
+                    const rounded = Math.round(value / 5) * 5;
+                    setMinutes(rounded);
+                    setDirectInput(String(rounded));
+                    setInputError('');
+                  }}
+                  step={5}
+                  thumbTintColor={palette.accent}
+                  value={Math.min(180, Math.max(5, minutes))}
+                />
+                <View style={styles.rangeRow}>
+                  <Text style={styles.range}>5분</Text>
+                  <Text style={styles.range}>180분</Text>
+                </View>
+              </>
+            )}
             <View style={styles.inputRow}>
               <TextInput
                 accessibilityLabel="코칭 시간 직접 입력"
@@ -607,6 +707,8 @@ export function StartScreen() {
             {inputError ? <Text style={styles.error}>{inputError}</Text> : null}
             <Text style={styles.range}>
               추천 {type.defaultMinutes}분 · {type.minMinutes}~{type.maxMinutes}분 권장
+              {'\n'}권장 밖도 그대로 갑니다. {MIN_COACH_MINUTES}분부터 {MAX_COACH_MINUTES}분까지
+              직접 입력할 수 있어요.
             </Text>
           </Card>
           )}
@@ -725,24 +827,35 @@ export function StartScreen() {
               >
                 {formatElapsed(runtime.elapsedSeconds)}
               </Text>
-              <View style={styles.timeRow}>
-                <Text
-                  accessibilityLabel={`남은 시간 ${spokenDuration(remainingSeconds)}`}
-                  style={styles.runtimeRemain}
-                >
-                  남은 {formatElapsed(remainingSeconds)}
-                </Text>
-                <Text style={styles.runtimeTotal}>전체 {minutes}분</Text>
-              </View>
+              {/* 끝을 정하지 않았으면 남은 시간도 진행률도 없습니다.
+                  모르는 것을 숫자로 그려 보여 주면 그것도 거짓말입니다. */}
+              {showsRemaining ? (
+                <>
+                  <View style={styles.timeRow}>
+                    <Text
+                      accessibilityLabel={`남은 시간 ${spokenDuration(remainingSeconds)}`}
+                      style={styles.runtimeRemain}
+                    >
+                      남은 {formatElapsed(remainingSeconds)}
+                    </Text>
+                    <Text style={styles.runtimeTotal}>전체 {minutes}분</Text>
+                  </View>
 
-              <View
-                accessibilityLabel={`진행률 ${progressPercent}퍼센트`}
-                accessibilityRole="progressbar"
-                style={styles.progressTrack}
-              >
-                <View style={[styles.progressFill, { width: `${progressPercent}%` }]} />
-              </View>
-              <Text style={styles.progressCaption}>{progressPercent}% 진행</Text>
+                  <View
+                    accessibilityLabel={`진행률 ${progressPercent}퍼센트`}
+                    accessibilityRole="progressbar"
+                    style={styles.progressTrack}
+                  >
+                    <View style={[styles.progressFill, { width: `${progressPercent}%` }]} />
+                  </View>
+                  <Text style={styles.progressCaption}>{progressPercent}% 진행</Text>
+                </>
+              ) : (
+                <View style={styles.timeRow}>
+                  <Text style={styles.runtimeRemain}>끝낼 때까지</Text>
+                  <Text style={styles.runtimeTotal}>멈추면 그때가 끝이에요</Text>
+                </View>
+              )}
 
               {/* 자동 멈춤·다시 시작을 화면에서도 바로 알립니다(음성으로도 함께 말합니다). */}
               {autoPauseNotice || tracking.autoPause.status ? (
@@ -1238,6 +1351,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontVariant: ['tabular-nums'],
   },
+  quickRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs, marginBottom: spacing.sm },
+  quickChip: {
+    minWidth: 48,
+    minHeight: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: spacing.sm,
+    borderColor: palette.line,
+    borderWidth: 1,
+    borderRadius: radius.md,
+  },
+  quickChipWide: { minWidth: 96 },
+  quickChipOn: { backgroundColor: palette.accentStrong, borderColor: palette.accentStrong },
+  quickChipText: { color: palette.ink, fontSize: typeScale.caption, fontWeight: '700' },
+  quickChipTextOn: { color: palette.surface },
   rangeRow: { flexDirection: 'row', justifyContent: 'space-between' },
   range: { color: palette.muted, fontSize: typeScale.caption, fontWeight: '700' },
   inputRow: { flexDirection: 'row', gap: spacing.sm },

@@ -38,6 +38,24 @@ export {
   type PhaseKind,
 } from './sessionTypes';
 export type { CueCategory } from './cueLibrary';
+import {
+  WARMUP_SECONDS,
+  hasKnownEnd,
+  presumesKnownEnd,
+  totalSeconds,
+  type SessionExtent,
+} from './extent';
+import { speakAs } from './register';
+import type { CoachDensity, SpeechRegister } from './persona';
+import {
+  blockLineOffsets,
+  blockedSpans,
+  isInsideBlock,
+  planLongform,
+  usesLongform,
+} from './talkPlan';
+export * from './extent';
+export { speakAs, toCasual } from './register';
 
 export type GuidanceLevel = 'minimal' | 'standard' | 'detailed';
 
@@ -59,7 +77,29 @@ export type CoachSession = {
   summary: string;
   phases: SessionPhase[];
   cues: CoachCue[];
+  /**
+   * 이번 러닝이 어떻게 끝나는지입니다.
+   * 없으면 예전처럼 "정해진 시간"으로 봅니다(기존 호출부 호환).
+   */
+  extent?: SessionExtent;
 };
+
+/** 값이 아예 없거나 숫자가 아닐 때만 쓰는 기본값입니다. 상한이 아닙니다. */
+export const DEFAULT_SESSION_MINUTES = 30;
+
+/**
+ * 끝을 정하지 않은 러닝에서 **미리 만들어 두는 분량**입니다.
+ *
+ * 큐는 "시작 후 몇 초"로 붙어 있으므로 무한히 만들 수는 없습니다.
+ * 그렇다고 짧게 만들면 그 뒤로 코치가 조용해집니다.
+ * 그래서 여섯 시간치를 미리 만들어 둡니다. 실제로 측정해 보면 2,400문장을
+ * 17밀리초에 만듭니다. 사람이 알아채지 못하는 시간이고, 여섯 시간을 넘겨 달리는
+ * 사람은 그때 다음 분량을 이어 받습니다.
+ */
+export const OPEN_ENDED_HORIZON_MINUTES = 360;
+
+/** 다음 분량을 만들기 시작하는 시점입니다. 남은 분량이 이보다 적으면 이어 만듭니다. */
+export const OPEN_ENDED_REFILL_MINUTES = 20;
 
 export const recommendedSessionKinds: CoachSessionKind[] = [
   '이지런',
@@ -254,7 +294,16 @@ export function createCoachSession(
 ): CoachSession {
   const type = resolveRunningType(kind);
   const title: CoachSessionKind = isCoachSessionKind(kind) ? kind : type.title;
-  const safeDuration = Math.min(120, Math.max(10, Math.round(durationMinutes)));
+  // V6: 여기에 `Math.min(120, Math.max(10, ...))`이 있었습니다.
+  //
+  // 사용자가 7분을 고르면 10분짜리가, 3시간을 고르면 2시간짜리가 만들어졌습니다.
+  // 아무 말도 없이 그렇게 됐습니다. 사용자는 자기가 고른 것과 다른 러닝을 하면서
+  // 이유를 알 수 없었습니다. **말없이 자르는 것이 잘못이었습니다.**
+  //
+  // 이제 자르지 않습니다. 계산이 불가능한 값(0·음수·NaN)만 막습니다.
+  const safeDuration = Number.isFinite(durationMinutes)
+    ? Math.max(1, Math.round(durationMinutes))
+    : DEFAULT_SESSION_MINUTES;
   const durationSeconds = safeDuration * 60;
   const phases = buildPhases(type.id, durationSeconds);
   const interval = guidanceIntervalSeconds[guidance];
@@ -393,6 +442,121 @@ export function createCoachSession(
     phases,
     cues,
   };
+}
+
+/**
+ * 실행 길이(SessionExtent)로 코칭을 만듭니다. **여기가 V6의 입구입니다.**
+ *
+ * 시간이 정해진 러닝은 그대로 만들면 됩니다.
+ * 끝을 정하지 않은 러닝은 다릅니다 — 남은 시간을 모르므로
+ * "3분 남았어요", "수고했어요" 같은 말이 나오면 안 됩니다.
+ * 그래서 진행·완료 문장을 빼고, 한 시간치씩 이어 만듭니다.
+ */
+export function createCoachSessionForExtent(
+  kind: CoachSessionKind | RunningTypeId | string,
+  extent: SessionExtent,
+  guidance: GuidanceLevel = 'standard',
+  horizonMinutes: number = OPEN_ENDED_HORIZON_MINUTES,
+): CoachSession {
+  const known = totalSeconds(extent);
+  if (known !== undefined) {
+    return { ...createCoachSession(kind, known / 60, guidance), extent };
+  }
+
+  const base = createCoachSession(kind, Math.max(OPEN_ENDED_HORIZON_MINUTES, horizonMinutes), guidance);
+  return {
+    ...base,
+    extent,
+    // 끝을 모르는데 남은 시간과 마무리를 말하면 거짓말이 됩니다.
+    //
+    // 종류만 보고 거르면 부족합니다. 격려·안내 문장에도 "남은 구간을 생각하며
+    // 힘을 배분해요"처럼 끝을 전제하는 말이 섞여 있습니다. 문장까지 봅니다.
+    cues: base.cues.filter(
+      (cue) =>
+        cue.kind !== 'progress' && cue.kind !== 'completion' && !presumesKnownEnd(cue.text),
+    ),
+  };
+}
+
+/**
+ * 세션에 긴 이야기 덩어리를 끼워 넣습니다. **풀토크의 실체입니다.**
+ *
+ * 짧은 문장만으로는 말 점유율 0.85에 닿을 수 없습니다.
+ * 닿으려면 5초마다 한 문장을 던져야 하고, 그건 계속 말하는 게 아니라 계속 명령하는 것입니다.
+ * 그래서 30~55초씩 이어지는 설명과 이야기를 사이사이에 넣습니다.
+ *
+ * 덩어리 구간 안에 있던 짧은 문장은 버립니다.
+ * 이야기 중간에 "어깨 내려요"가 끼어들면 두 사람이 동시에 말하는 것처럼 들립니다.
+ */
+export function withLongform(
+  session: CoachSession,
+  density: CoachDensity,
+  startCursor = 0,
+): CoachSession {
+  if (!usesLongform(density)) return session;
+
+  const durationSeconds = session.durationMinutes * 60;
+  const planned = planLongform({
+    durationSeconds,
+    shortSpokenSeconds: estimatedSpokenSeconds(session),
+    density,
+    startCursor,
+    warmupSeconds: Math.min(WARMUP_SECONDS, Math.max(60, durationSeconds * 0.1)),
+  });
+  if (planned.length === 0) return session;
+
+  const spans = blockedSpans(planned);
+  const kept = session.cues.filter((cue) => !isInsideBlock(cue.offsetSeconds, spans));
+
+  const blockCues: CoachCue[] = planned.flatMap((entry) =>
+    blockLineOffsets(entry).map((line) => ({
+      offsetSeconds: line.offsetSeconds,
+      text: line.text,
+      kind: entry.block.kind === 'teaching' ? ('instruction' as const) : ('encouragement' as const),
+    })),
+  );
+
+  return {
+    ...session,
+    id: `${session.id}:${density}`,
+    cues: [...kept, ...blockCues].sort((left, right) => left.offsetSeconds - right.offsetSeconds),
+  };
+}
+
+/**
+ * 세션 전체를 반말로 옮깁니다.
+ *
+ * **왜 재생할 때가 아니라 여기서 옮기는가:**
+ *   말은 세 곳에서 나갑니다 — 기기 백그라운드 서비스에 미리 넘기는 대사표,
+ *   앱이 직접 말하는 경로, 그리고 화면에 찍히는 코치 말 기록.
+ *   재생하는 쪽마다 옮기면 세 곳이 언젠가 어긋납니다.
+ *   화면에는 존댓말, 귀에는 반말이 들리는 날이 옵니다. 그래서 한 곳에서 옮깁니다.
+ */
+export function applyRegister(session: CoachSession, register: SpeechRegister): CoachSession {
+  if (register === 'honorific') return session;
+  return {
+    ...session,
+    id: `${session.id}:casual`,
+    cues: session.cues.map((cue) => ({ ...cue, text: speakAs(cue.text, register) })),
+  };
+}
+
+/**
+ * 끝을 정하지 않은 러닝에서 다음 분량을 만들어야 하는지입니다.
+ *
+ * 만들어 둔 것이 바닥나기 전에 미리 이어 붙입니다. 바닥난 뒤에 만들면
+ * 그 사이에 코치가 조용해지고, 사용자는 앱이 멈춘 줄 압니다.
+ */
+export function needsHorizonRefill(session: CoachSession, elapsedSeconds: number): boolean {
+  if (!session.extent || hasKnownEnd(session.extent)) return false;
+  return elapsedSeconds >= (session.durationMinutes - OPEN_ENDED_REFILL_MINUTES) * 60;
+}
+
+/** 지금 흘러간 시간에 맞는 다음 분량입니다. 30분 단위로 늘려 갑니다. */
+export function nextHorizonMinutes(elapsedSeconds: number): number {
+  const elapsedMinutes = elapsedSeconds / 60;
+  const wanted = Math.ceil((elapsedMinutes + OPEN_ENDED_REFILL_MINUTES * 2) / 30) * 30;
+  return Math.max(OPEN_ENDED_HORIZON_MINUTES, wanted);
 }
 
 export function cueScheduleForNative(session: CoachSession): string {

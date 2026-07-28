@@ -28,6 +28,11 @@ export type AppPreferences = {
   currentShoeId?: string;
   interestedRaceIds: string[];
   interestedShoeIds: string[];
+  /**
+   * "끝낼 때까지" 러닝을 골라 뒀는지입니다.
+   * 없으면 예전처럼 시간을 정해 두고 뛰는 것으로 봅니다.
+   */
+  coachOpenEnded?: boolean;
 };
 
 export const defaultPreferences: AppPreferences = {
@@ -42,6 +47,27 @@ export const defaultPreferences: AppPreferences = {
   interestedRaceIds: [],
   interestedShoeIds: [],
 };
+
+/**
+ * 저장된 코칭 시간을 읽을 때 쓰는 범위입니다.
+ *
+ * 예전에는 여기서도 10분~120분으로 다시 잘랐습니다.
+ * 그래서 150분을 골라 달린 사람이 앱을 다시 켜면 120분으로 바뀌어 있었습니다.
+ * 고른 값이 어디에도 남지 않고 사라진 것입니다.
+ *
+ * 이제는 **저장이 깨졌을 때만** 막습니다. 하루(1440분)를 넘는 값은
+ * 사람이 고른 값이 아니라 깨진 데이터로 봅니다.
+ */
+export const MIN_COACH_MINUTES = 1;
+export const MAX_COACH_MINUTES = 24 * 60;
+
+export function sanitizeCoachMinutes(value: unknown): number {
+  const minutes = Math.round(Number(value));
+  if (!Number.isFinite(minutes) || minutes < MIN_COACH_MINUTES) {
+    return defaultPreferences.coachMinutes;
+  }
+  return Math.min(MAX_COACH_MINUTES, minutes);
+}
 
 /**
  * 예전 프로필 화면은 러닝 경력을 profileBio 앞에 "1~3년 · ..." 형태로 붙여 저장했습니다.
@@ -76,7 +102,8 @@ export async function loadPreferences(): Promise<AppPreferences> {
     return {
       ...defaultPreferences,
       ...value,
-      coachMinutes: Math.min(120, Math.max(10, Number(value.coachMinutes) || 30)),
+      coachMinutes: sanitizeCoachMinutes(value.coachMinutes),
+      coachOpenEnded: value.coachOpenEnded === true,
       ...(experienceLevel ? { experienceLevel } : { experienceLevel: undefined }),
       interestedRaceIds: Array.isArray(value.interestedRaceIds) ? value.interestedRaceIds : [],
       interestedShoeIds: Array.isArray(value.interestedShoeIds) ? value.interestedShoeIds : [],
