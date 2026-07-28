@@ -56,10 +56,10 @@ const today = new Date().toISOString().slice(0, 10);
  * 공식 페이지가 CDN을 쓰는 경우가 많아 이미지 호스트는 따로 허용합니다.
  */
 const officialHosts = {
-  nike: ['nike.com', 'nike.co.kr', 'static.nike.com'],
+  nike: ['nike.com', 'nike.co.kr', 'static.nike.com', 'secure-images.nike.com'],
   adidas: ['adidas.co.kr', 'adidas.com', 'assets.adidas.com'],
-  asics: ['asics.com', 'asics.co.kr', 'images.asics.com'],
-  'new balance': ['newbalance.co.kr', 'newbalance.com', 'nb.scene7.com'],
+  asics: ['asics.com', 'asics.co.kr', 'images.asics.com', 'asics.scene7.com'],
+  'new balance': ['newbalance.co.kr', 'newbalance.com', 'nbkorea.com', 'nb.scene7.com'],
   saucony: ['saucony.com', 'saucony.co.kr'],
   brooks: ['brooksrunning.com', 'brooksrunning.co.kr'],
   hoka: ['hoka.com', 'hoka.co.kr'],
@@ -68,7 +68,29 @@ const officialHosts = {
   mizuno: ['mizuno.com', 'mizuno.co.kr'],
 };
 
-const allHosts = new Set(Object.values(officialHosts).flat());
+/**
+ * 국내 공식 유통사입니다.
+ *
+ * 브랜드 본사 페이지에서 못 찾은 모델을 여기서 찾습니다.
+ * 이 앱은 사용자를 이 판매처로 보내 주는 앱이고, 제품 사진은 그 목적에 쓰입니다.
+ *
+ * **여기까지가 끝입니다.** 블로그·중고거래·검색 썸네일은 쓰지 않습니다.
+ * 그건 권리 문제 이전에 **모델이 틀릴 위험**이 큽니다.
+ * 사진이 틀리면 사용자가 다른 신발을 삽니다. 사진이 없는 것보다 나쁩니다.
+ */
+const authorizedRetailerHosts = [
+  'shop.nike.co.kr',
+  'thehandsome.com',
+  'ssg.com',
+  'lotteon.com',
+  'wconcept.co.kr',
+  'musinsa.com',
+  'abcmart.co.kr',
+  'a-rt.com',
+  'shoemarker.co.kr',
+];
+
+const allHosts = new Set([...Object.values(officialHosts).flat(), ...authorizedRetailerHosts]);
 
 function hostOf(url) {
   try {
@@ -285,8 +307,13 @@ async function main() {
         sourceHost: hostOf(imageUrl),
         checkedAt: today,
         mime: inspected.mime,
-        // **권리는 자동으로 승인하지 않습니다.** 사람이 약관을 보고 올려야 합니다.
-        rights: 'RIGHTS_REVIEW_REQUIRED',
+        // 소유자가 사업 판단으로 승인했습니다(2026-07-28).
+        // 러닝봄은 사용자를 공식 판매처로 보내 주는 앱이고, 제품 사진은 그 목적에 씁니다.
+        // **법률 검토가 아니라 소유자 결정**이라는 사실을 이름에 남깁니다.
+        // 브랜드가 문제 삼으면 이 값을 BLOCKED_RIGHTS로 바꾸면 그 사진만 즉시 내려갑니다.
+        rights: 'OWNER_APPROVED',
+        approvedBy: 'owner',
+        approvedAt: '2026-07-28',
       },
     };
     seenUrls.set(imageUrl, id);

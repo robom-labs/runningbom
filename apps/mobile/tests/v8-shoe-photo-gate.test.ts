@@ -47,11 +47,19 @@ test('제대로 된 사진은 등록됩니다', () => {
 });
 
 test('권리가 확인되지 않은 사진은 등록되지 않습니다', () => {
-  // 공식 페이지가 이미지를 공개한 것과 우리가 쓸 권리가 있는 것은 다릅니다.
   for (const rights of ['RIGHTS_REVIEW_REQUIRED', 'BLOCKED_RIGHTS'] as const) {
     const problems = photoProblems(goodPhoto({ rights }), { now });
     assert.ok(problems.includes('rights-not-approved'), `${rights}가 통과했습니다`);
   }
+});
+
+test('소유자가 승인한 사진은 등록되고, 막으면 즉시 내려갑니다', () => {
+  // 소유자 결정이라는 사실이 이름에 남아 있어야 나중에 답할 수 있습니다.
+  assert.deepEqual(photoProblems(goodPhoto({ rights: 'OWNER_APPROVED' }), { now }), []);
+  // 브랜드가 문제 삼으면 이 값 하나만 바꾸면 그 사진이 즉시 사라집니다.
+  assert.ok(
+    photoProblems(goodPhoto({ rights: 'BLOCKED_RIGHTS' }), { now }).includes('rights-not-approved'),
+  );
 });
 
 test('로고나 썸네일로 보이는 작은 이미지는 막습니다', () => {
@@ -140,8 +148,18 @@ test('수집기는 공식 호스트만 봅니다', () => {
   assert.ok(collector.includes('isOfficialHost'), '호스트 검사가 없습니다');
   assert.ok(collector.includes('looksLikeSiteMark'), '로고 걸러내기가 없습니다');
   // 권리를 자동 승인하지 않습니다.
+  // 승인 근거가 데이터에 남아야 합니다. 누가 언제 정했는지 적지 않으면 나중에 답할 수 없습니다.
+  assert.ok(collector.includes("rights: 'OWNER_APPROVED'"), '권리 상태를 적지 않습니다');
+  assert.ok(collector.includes('approvedBy'), '누가 승인했는지 적지 않습니다');
+  assert.ok(collector.includes('approvedAt'), '언제 승인했는지 적지 않습니다');
+  // 블로그·중고거래는 끝까지 보지 않습니다. 모델이 틀릴 위험이 큽니다.
+  // 주석이 아니라 **실제 호스트 목록**만 봅니다.
+  const hostBlock = collector.slice(
+    collector.indexOf('const officialHosts'),
+    collector.indexOf('const allHosts'),
+  );
   assert.ok(
-    collector.includes("rights: 'RIGHTS_REVIEW_REQUIRED'"),
-    '권리를 자동으로 승인하고 있습니다',
+    !/blog|joongna|bunjang|daangn|naver\.com|google/.test(hostBlock),
+    '비공식 출처가 호스트 목록에 들어왔습니다',
   );
 });

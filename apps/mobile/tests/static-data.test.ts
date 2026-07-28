@@ -40,6 +40,12 @@ function remotePayloads() {
   ]);
 }
 
+/** 번들에 실제로 들어 있는 대회 수입니다. 데이터가 늘어도 테스트가 따라갑니다. */
+function bundledRaceCount(): number {
+  const races = require('../src/data/races.json') as { races: unknown[] };
+  return races.races.length;
+}
+
 describe('정적 데이터 manifest와 LKG', () => {
   it('원격 URL이 없으면 네트워크를 호출하지 않고 번들을 사용한다', async () => {
     let requestCount = 0;
@@ -56,7 +62,15 @@ describe('정적 데이터 manifest와 LKG', () => {
     });
     assert.equal(requestCount, 0);
     assert.equal(snapshot.source, 'bundle');
-    assert.equal(snapshot.datasets['races.json'].records.length, 183);
+    // 대회 수는 주기적으로 늘어납니다. 숫자를 박아 두면 데이터가 갱신될 때마다
+    // 아무 잘못이 없는데 테스트가 깨집니다. 실제로 183에서 192가 되면서 깨졌습니다.
+    // 여기서 확인해야 하는 것은 개수가 아니라 **번들을 읽었다는 사실**입니다.
+    assert.equal(
+      snapshot.datasets['races.json'].records.length,
+      bundledRaceCount(),
+      '번들 대회 수와 다릅니다',
+    );
+    assert.ok(snapshot.datasets['races.json'].records.length > 100);
   });
 
   it('모든 원격 파일 검증 후 active manifest를 마지막에 교체한다', async () => {

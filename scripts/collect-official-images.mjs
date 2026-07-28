@@ -175,12 +175,14 @@ const raceTargets = races
   .filter((race) => typeof race.officialUrl === 'string' && race.officialUrl.startsWith('https://'))
   .map((race) => ({ id: race.id, name: race.name, url: race.officialUrl, kind: '대회' }));
 
-const shoeTargets = Object.entries(shoePages)
-  .filter(([, url]) => typeof url === 'string' && url.startsWith('https://'))
-  .map(([id, url]) => ({ id, name: id, url, kind: '러닝화' }));
+// 러닝화는 이제 scripts/collect-shoe-images.mjs가 따로 맡습니다.
+//
+// 왜 나눴는가: 러닝화는 대회와 요건이 다릅니다.
+//   모델 세대가 정확히 맞아야 하고, 같은 사진이 두 모델에 붙으면 안 되고,
+//   최소 해상도와 형식을 봐야 합니다. 한 스크립트에 섞으면 둘 다 어설퍼집니다.
+const shoeTargets = [];
 
-const targets = [...shoeTargets, ...raceTargets]
-  // 신발이 대회보다 앞에 옵니다. 개수가 적어서 먼저 채워집니다.
+const targets = raceTargets
   .filter((item) => daysSince(existing.images?.[item.id]?.checkedAt) > RECHECK_DAYS)
   .slice(0, LIMIT);
 
