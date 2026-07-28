@@ -25,6 +25,9 @@ import {
 } from '../../design-system/theme';
 import { PermissionSettingsCard } from '../../permissions';
 import { RunSettingsSection } from './RunSettingsSection';
+import { CoachPersonaCard } from './CoachPersonaCard';
+import { guidanceLevelFromDensity } from '../../../domains/coaching/persona';
+import { useCoachSettings } from '../../../domains/coaching/coachSettingsStore';
 import { AppContentCard } from './AppContentCard';
 import { BADGE_RULE_VERSION } from '../../../domains/badges/rules';
 import { COACH_CONTENT_VERSION } from '../../../domains/coaching/model';
@@ -67,12 +70,6 @@ const speechRates: Array<[number, string]> = [
   [1.15, '빠르게'],
 ];
 
-const guidanceLevels: Array<[string, string]> = [
-  ['minimal', '최소'],
-  ['standard', '표준'],
-  ['detailed', '자세히'],
-];
-
 const voiceGenders: VoiceGender[] = ['female', 'male'];
 
 const integrations = [
@@ -89,6 +86,12 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
   const [pendingSyncCount, setPendingSyncCount] = useState(0);
   const [accountMessage, setAccountMessage] = useState('');
   const [voiceGender, setVoiceGender] = useState<VoiceGender>(defaultCoachVoicePreference.gender);
+  // 예전 안내 강도를 넘겨 줍니다. 코치 설정을 한 번도 고른 적 없는 사람의 말수를 지켜 줍니다.
+  const {
+    settings: coachSettings,
+    ready: coachReady,
+    update: updateCoach,
+  } = useCoachSettings(preferences.coachGuidance);
 
   // 코치 음성 성별은 coaching 도메인의 기존 키에 그대로 저장합니다(새 키를 만들지 않습니다).
   useEffect(() => {
@@ -325,26 +328,24 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
             />
           ))}
         </View>
-        <SettingLabel
-          title="안내 정도"
-          description="문장을 얼마나 자주 들려줄지예요. 최소는 꼭 필요한 안내만 말해요."
-        />
-        <View accessibilityRole="radiogroup" style={styles.chips}>
-          {guidanceLevels.map(([value, label]) => (
-            <Chip
-              key={value}
-              label={label}
-              onPress={() =>
-                void updatePreferences({
-                  coachGuidance: value as typeof preferences.coachGuidance,
-                })
-              }
-              selected={preferences.coachGuidance === value}
-              tone="accent"
-            />
-          ))}
-        </View>
       </Card>
+
+      {/* 코치의 성격·말투·말수를 한 곳에서 고릅니다.
+          예전에는 "안내 정도" 칩 셋뿐이었고, 그것만으로는 어떤 코치가 붙는지 알 수 없었습니다.
+          말수는 이 카드의 "얼마나 말할까요"가 그대로 이어받습니다. */}
+      {coachReady ? (
+        <CoachPersonaCard
+          adultConfirmed={false}
+          onChange={(patch) => {
+            updateCoach(patch);
+            // 코칭 엔진은 아직 예전 안내 강도로 돕니다. 같이 맞춰 둡니다.
+            if (patch.density) {
+              void updatePreferences({ coachGuidance: guidanceLevelFromDensity(patch.density) });
+            }
+          }}
+          settings={coachSettings}
+        />
+      ) : null}
 
       <RunSettingsSection />
 

@@ -1349,7 +1349,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
   },
   quickChipWide: { minWidth: 96 },
-  quickChipOn: { backgroundColor: palette.accent, borderColor: palette.accent },
+  quickChipOn: { backgroundColor: palette.accentStrong, borderColor: palette.accentStrong },
   quickChipText: { color: palette.ink, fontSize: typeScale.caption, fontWeight: '700' },
   quickChipTextOn: { color: palette.surface },
   rangeRow: { flexDirection: 'row', justifyContent: 'space-between' },

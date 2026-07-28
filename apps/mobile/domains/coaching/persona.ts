@@ -286,6 +286,19 @@ export function densityFromGuidanceLevel(level: string | undefined): CoachDensit
 }
 
 /**
+ * 새 밀도를 코칭 엔진이 아는 안내 강도로 되돌립니다.
+ *
+ * 엔진은 아직 `minimal | standard | detailed` 셋만 압니다.
+ * 풀토크는 지금 가장 촘촘한 쪽에 붙여 둡니다 — **말수는 늘지만 아직 "쉼 없이"는 아닙니다.**
+ * 그 차이를 없애는 것이 다음 단계(대화 상태 엔진)의 일입니다.
+ */
+export function guidanceLevelFromDensity(density: CoachDensity): 'minimal' | 'standard' | 'detailed' {
+  if (density === 'essential') return 'minimal';
+  if (density === 'balanced') return 'standard';
+  return 'detailed';
+}
+
+/**
  * 매운맛을 실제로 쓸 수 있는지입니다.
  *
  * 성격만 골랐다고 켜지지 않습니다. **성인 확인과 설정이 둘 다** 있어야 합니다.
