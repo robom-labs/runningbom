@@ -12,6 +12,16 @@ import { join } from 'node:path';
 import test from 'node:test';
 
 import {
+  MAX_COACH_MINUTES,
+  sanitizeCoachMinutes,
+} from '../services/storage/preferences';
+import {
+  createCoachSession,
+  createCoachSessionForExtent,
+  needsHorizonRefill,
+  nextHorizonMinutes,
+} from '../domains/coaching/model';
+import {
   SHORT_SESSION_SECONDS,
   WARMUP_SECONDS,
   extendExtent,
@@ -328,4 +338,82 @@ test('몸을 머리부터 발끝까지 순서대로 돕니다', () => {
 test('모르는 코치 id를 넘겨도 기본 코치로 돌아옵니다', () => {
   assert.equal(findPersona('없는값'), undefined);
   assert.equal(resolvePersona({ ...defaultCoachSettings, personaId: '없는값' as never }, false).id, 'professional');
+});
+
+// ── 길이 자유: 세 곳에 있던 clamp가 전부 사라졌는지 ─────────────────────────
+
+test('코칭 엔진이 고른 시간을 자르지 않습니다', () => {
+  // 예전에는 7분 → 10분, 180분 → 120분으로 조용히 바뀌었습니다.
+  for (const minutes of [1, 3, 7, 121, 180, 360, 720]) {
+    const session = createCoachSession('이지런', minutes, 'standard');
+    assert.equal(session.durationMinutes, minutes, `${minutes}분이 바뀌었습니다`);
+    assert.ok(session.cues.length > 0, `${minutes}분에 안내가 없습니다`);
+  }
+});
+
+test('계산할 수 없는 값만 막습니다', () => {
+  assert.equal(createCoachSession('이지런', 0, 'standard').durationMinutes, 1);
+  assert.equal(createCoachSession('이지런', -5, 'standard').durationMinutes, 1);
+  assert.equal(createCoachSession('이지런', Number.NaN, 'standard').durationMinutes, 30);
+});
+
+test('저장된 코칭 시간이 다시 켤 때 줄어들지 않습니다', () => {
+  // 이게 가장 조용한 버그였습니다. 150분으로 달린 사람이 앱을 다시 켜면 120분이 돼 있었습니다.
+  assert.equal(sanitizeCoachMinutes(7), 7);
+  assert.equal(sanitizeCoachMinutes(150), 150);
+  assert.equal(sanitizeCoachMinutes(360), 360);
+  // 저장이 깨졌을 때만 막습니다.
+  assert.equal(sanitizeCoachMinutes(0), 30);
+  assert.equal(sanitizeCoachMinutes(-1), 30);
+  assert.equal(sanitizeCoachMinutes('아무 글자'), 30);
+  assert.equal(sanitizeCoachMinutes(undefined), 30);
+  assert.equal(sanitizeCoachMinutes(99_999), MAX_COACH_MINUTES);
+});
+
+test('끝을 정하지 않으면 남은 시간과 마무리를 말하지 않습니다', () => {
+  const open = createCoachSessionForExtent('이지런', { type: 'open-ended' }, 'standard');
+  assert.equal(open.extent?.type, 'open-ended');
+  assert.equal(open.cues.filter((cue) => cue.kind === 'progress').length, 0);
+  assert.equal(open.cues.filter((cue) => cue.kind === 'completion').length, 0);
+  // 그래도 할 말은 많아야 합니다. 조용해지면 그건 코치가 아닙니다.
+  assert.ok(open.cues.length > 500, `안내가 ${open.cues.length}개뿐입니다`);
+  for (const cue of open.cues) {
+    assert.ok(!/남았|남은|마무리하겠|수고했/.test(cue.text), `끝을 예고합니다: ${cue.text}`);
+  }
+});
+
+test('시간을 정한 러닝은 예전 그대로입니다', () => {
+  const fixed = createCoachSessionForExtent('이지런', { type: 'fixed-time', seconds: 1800 }, 'standard');
+  const legacy = createCoachSession('이지런', 30, 'standard');
+  assert.equal(fixed.durationMinutes, 30);
+  assert.deepEqual(fixed.cues, legacy.cues);
+});
+
+test('여섯 시간을 넘겨 달리면 다음 분량을 이어 받습니다', () => {
+  const open = createCoachSessionForExtent('이지런', { type: 'open-ended' }, 'standard');
+  assert.equal(needsHorizonRefill(open, 60 * 60), false);
+  assert.equal(needsHorizonRefill(open, (360 - 10) * 60), true);
+  // 시간이 정해진 러닝은 이어 만들 것이 없습니다.
+  const fixed = createCoachSessionForExtent('이지런', { type: 'fixed-time', seconds: 1800 }, 'standard');
+  assert.equal(needsHorizonRefill(fixed, 1800), false);
+  // 다음 분량은 지금 흘러간 시간보다 넉넉해야 합니다.
+  assert.ok(nextHorizonMinutes(7 * 3600) > 7 * 60);
+  assert.equal(nextHorizonMinutes(60) >= 360, true);
+});
+
+test('시작 화면이 10~120분 밖을 거절하지 않습니다', () => {
+  const source = readFileSync(join(__dirname, '..', 'app/screens/start/StartScreen.tsx'), 'utf8');
+  assert.ok(!source.includes('value < 10 || value > 120'), '옛 입력 제한이 남아 있습니다');
+  assert.ok(!source.includes('10분부터 120분 사이'), '옛 안내 문구가 남아 있습니다');
+  assert.ok(source.includes('quickMinutes'), '빠른 선택이 없습니다');
+  assert.ok(source.includes('끝낼 때까지'), '끝을 정하지 않는 선택이 없습니다');
+  assert.ok(source.includes('mayMentionRemaining'), '남은 시간 노출 판단이 없습니다');
+});
+
+test('저장 설정에도 옛 상한이 남아 있지 않습니다', () => {
+  const source = readFileSync(join(__dirname, '..', 'services/storage/preferences.ts'), 'utf8');
+  assert.ok(
+    !source.includes('Math.min(120, Math.max(10,'),
+    '저장할 때 다시 자르고 있습니다',
+  );
 });

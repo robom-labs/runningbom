@@ -170,6 +170,18 @@ export function extendExtent(extent: SessionExtent, addSeconds: number): Session
   return extent;
 }
 
+/**
+ * 끝이 정해져 있다고 전제하는 말인지입니다.
+ *
+ * 큐 종류가 'progress'나 'completion'이 아니어도 새어 나옵니다.
+ * "남은 구간을 생각하며 힘을 배분해요" 같은 격려는 시간이 정해진 러닝에서는
+ * 좋은 말이지만, 끝을 정하지 않은 러닝에서는 **없는 것을 있다고 말하는 것**입니다.
+ * 사용자는 코치가 자기 계획을 안다고 믿게 됩니다.
+ */
+export function presumesKnownEnd(text: string): boolean {
+  return /남은|남았|얼마\s*안\s*남|곧\s*끝|거의\s*다\s*왔|마무리하겠|수고했/.test(text);
+}
+
 /** 화면에 쓰는 이름입니다. */
 export function extentLabel(extent: SessionExtent): string {
   if (extent.type === 'fixed-time') return `${Math.round(extent.seconds / 60)}분`;

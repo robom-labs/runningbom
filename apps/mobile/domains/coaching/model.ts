@@ -38,7 +38,7 @@ export {
   type PhaseKind,
 } from './sessionTypes';
 export type { CueCategory } from './cueLibrary';
-import { hasKnownEnd, totalSeconds, type SessionExtent } from './extent';
+import { hasKnownEnd, presumesKnownEnd, totalSeconds, type SessionExtent } from './extent';
 export * from './extent';
 
 export type GuidanceLevel = 'minimal' | 'standard' | 'detailed';
@@ -76,9 +76,11 @@ export const DEFAULT_SESSION_MINUTES = 30;
  *
  * 큐는 "시작 후 몇 초"로 붙어 있으므로 무한히 만들 수는 없습니다.
  * 그렇다고 짧게 만들면 그 뒤로 코치가 조용해집니다.
- * 그래서 한 시간치를 만들어 두고, 다 써 갈 때쯤 다음 분량을 이어 만듭니다.
+ * 그래서 여섯 시간치를 미리 만들어 둡니다. 실제로 측정해 보면 2,400문장을
+ * 17밀리초에 만듭니다. 사람이 알아채지 못하는 시간이고, 여섯 시간을 넘겨 달리는
+ * 사람은 그때 다음 분량을 이어 받습니다.
  */
-export const OPEN_ENDED_HORIZON_MINUTES = 60;
+export const OPEN_ENDED_HORIZON_MINUTES = 360;
 
 /** 다음 분량을 만들기 시작하는 시점입니다. 남은 분량이 이보다 적으면 이어 만듭니다. */
 export const OPEN_ENDED_REFILL_MINUTES = 20;
@@ -450,7 +452,13 @@ export function createCoachSessionForExtent(
     ...base,
     extent,
     // 끝을 모르는데 남은 시간과 마무리를 말하면 거짓말이 됩니다.
-    cues: base.cues.filter((cue) => cue.kind !== 'progress' && cue.kind !== 'completion'),
+    //
+    // 종류만 보고 거르면 부족합니다. 격려·안내 문장에도 "남은 구간을 생각하며
+    // 힘을 배분해요"처럼 끝을 전제하는 말이 섞여 있습니다. 문장까지 봅니다.
+    cues: base.cues.filter(
+      (cue) =>
+        cue.kind !== 'progress' && cue.kind !== 'completion' && !presumesKnownEnd(cue.text),
+    ),
   };
 }
 
