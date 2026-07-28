@@ -1,0 +1,45 @@
+# 어느 사이트가 실제로 응답하는지 확인합니다.
+#
+# 왜 필요한가:
+#   첫 수집이 0장이었습니다. 사진이 없어서가 아니라 사이트가 막았기 때문입니다.
+#   nike 404, adidas 403. 추측하지 말고 어디가 열려 있는지 숫자로 확인합니다.
+name: 이미지 출처 확인
+
+on:
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: 응답 확인
+        run: |
+          probe() {
+            code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 15 \
+              -A "runningbom-image-collector/1.0 (+https://robom.kr)" "$1" 2>/dev/null || echo "ERR")
+            echo "$code  $1"
+          }
+          echo "=== 브랜드 공식 ==="
+          probe "https://www.nike.com/robots.txt"
+          probe "https://www.nike.com/kr/w?q=pegasus"
+          probe "https://www.adidas.co.kr/robots.txt"
+          probe "https://www.asics.co.kr/robots.txt"
+          probe "https://www.newbalance.co.kr/robots.txt"
+          probe "https://www.hoka.com/robots.txt"
+          probe "https://www.on.com/robots.txt"
+          probe "https://www.brooksrunning.com/robots.txt"
+          probe "https://www.saucony.com/robots.txt"
+          probe "https://kr.puma.com/robots.txt"
+          probe "https://www.mizuno.com/robots.txt"
+          echo "=== 국내 유통 ==="
+          probe "https://www.musinsa.com/robots.txt"
+          probe "https://www.abcmart.co.kr/robots.txt"
+          probe "https://www.ssg.com/robots.txt"
+          echo "=== 공개 데이터 ==="
+          probe "https://commons.wikimedia.org/robots.txt"
+          probe "https://ko.wikipedia.org/robots.txt"
+          echo "=== 대회 표본 ==="
+          probe "https://www.marathon.pe.kr"
+          probe "https://www.roadrun.co.kr"
