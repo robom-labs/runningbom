@@ -75,10 +75,9 @@ jobs:
           git checkout -b "$BRANCH"
           git add data/shoe-image-sources.json data/shoe-official-pages.json \
             apps/mobile/src/data/official-images.json
-          git commit -m "chore(images): 공식 제품 사진·대회 포스터 수집
-
-주소만 담고 이미지를 복사하지 않습니다.
-권리 상태는 사람이 확인해 올려야 앱에 등록됩니다."
+          git commit -m "chore(images): 공식 제품 사진·대회 포스터 수집" \
+            -m "주소만 담고 이미지를 복사하지 않습니다." \
+            -m "권리 상태는 사람이 확인해 올려야 앱에 등록됩니다."
           git push -u origin "$BRANCH"
           echo "브랜치: $BRANCH"
           echo "PR 생성은 조직 정책상 사람이 합니다."
