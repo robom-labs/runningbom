@@ -27,10 +27,13 @@ import { palette } from '../design-system/theme';
 import { useAppState } from '../state/AppStateProvider';
 import { currentWeekStart, formatDistance, totalsForWeek } from '../../domains/activities/summary';
 import { raceIdFromDeepLink } from '../../src/races';
-import { tabBarVisible, tabForRoute } from '../../domains/navigation/tabs';
-import { AppHeader } from './AppHeader';
-import { BottomTabs } from './BottomTabs';
-import { DrawerMenu } from './DrawerMenu';
+import {
+  destinationForRoute,
+  isTopLevelRoute,
+  tabBarVisible,
+} from '../../domains/navigation/destinations';
+import { PrimaryTabBar } from './PrimaryTabBar';
+import { TopBar } from './TopBar';
 import { routeFromStoredValue, routeTitles } from './routes';
 import { isStatsFocus, type RouteKey, type StatsFocus } from './types';
 
@@ -238,21 +241,19 @@ export function AppNavigator() {
 
   return (
     <SafeAreaView edges={['top']} style={styles.root}>
-      <AppHeader onMenu={() => setDrawerOpen(true)} title={routeTitles[route]} />
+      {/* V7: 햄버거와 드로어를 걷어냈습니다. 전역 이동은 아래 탭 하나뿐입니다.
+          최상위 화면에는 뒤로가기가 없고, 하위 화면에는 있습니다.
+          그 구분이 없으면 "지금 어디쯤인지"를 알 수 없습니다. */}
+      <TopBar
+        onBack={() => goBack()}
+        title={routeTitles[route]}
+        topLevel={isTopLevelRoute(route)}
+      />
       <View style={styles.body}>{screen}</View>
       {/* 달리는 중에는 탭을 감춥니다. 뛰면서 잘못 누르면 코칭이 끊깁니다. */}
       {tabBarVisible(route) ? (
-        <BottomTabs active={tabForRoute(route)} onSelect={navigate} />
+        <PrimaryTabBar active={destinationForRoute(route)} onSelect={navigate} />
       ) : null}
-      <DrawerMenu
-        activeRoute={route}
-        nickname={preferences.nickname}
-        onClose={() => setDrawerOpen(false)}
-        onSelect={navigate}
-        summary={weekSummary}
-        tier={streak.tier}
-        visible={drawerOpen}
-      />
     </SafeAreaView>
   );
 }
