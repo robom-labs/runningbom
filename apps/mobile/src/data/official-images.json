@@ -1,7 +1,7 @@
 {
   "note": "공식 페이지가 스스로 공개한 대표 이미지(og:image) 주소만 담습니다. 사람이 만들지 않고 scripts/collect-official-images.mjs가 채웁니다.",
-  "revision": 2,
-  "checkedAt": "2026-07-27",
+  "revision": 3,
+  "checkedAt": "2026-07-28",
   "images": {
     "gyeongju-marathon": {
       "url": "https://cdn.imweb.me/upload/S2022062363fb5e0b6e96f/14f061771b38b.png",
