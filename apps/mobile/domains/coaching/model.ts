@@ -38,6 +38,8 @@ export {
   type PhaseKind,
 } from './sessionTypes';
 export type { CueCategory } from './cueLibrary';
+import { hasKnownEnd, totalSeconds, type SessionExtent } from './extent';
+export * from './extent';
 
 export type GuidanceLevel = 'minimal' | 'standard' | 'detailed';
 
@@ -59,7 +61,27 @@ export type CoachSession = {
   summary: string;
   phases: SessionPhase[];
   cues: CoachCue[];
+  /**
+   * 이번 러닝이 어떻게 끝나는지입니다.
+   * 없으면 예전처럼 "정해진 시간"으로 봅니다(기존 호출부 호환).
+   */
+  extent?: SessionExtent;
 };
+
+/** 값이 아예 없거나 숫자가 아닐 때만 쓰는 기본값입니다. 상한이 아닙니다. */
+export const DEFAULT_SESSION_MINUTES = 30;
+
+/**
+ * 끝을 정하지 않은 러닝에서 **미리 만들어 두는 분량**입니다.
+ *
+ * 큐는 "시작 후 몇 초"로 붙어 있으므로 무한히 만들 수는 없습니다.
+ * 그렇다고 짧게 만들면 그 뒤로 코치가 조용해집니다.
+ * 그래서 한 시간치를 만들어 두고, 다 써 갈 때쯤 다음 분량을 이어 만듭니다.
+ */
+export const OPEN_ENDED_HORIZON_MINUTES = 60;
+
+/** 다음 분량을 만들기 시작하는 시점입니다. 남은 분량이 이보다 적으면 이어 만듭니다. */
+export const OPEN_ENDED_REFILL_MINUTES = 20;
 
 export const recommendedSessionKinds: CoachSessionKind[] = [
   '이지런',
@@ -254,7 +276,16 @@ export function createCoachSession(
 ): CoachSession {
   const type = resolveRunningType(kind);
   const title: CoachSessionKind = isCoachSessionKind(kind) ? kind : type.title;
-  const safeDuration = Math.min(120, Math.max(10, Math.round(durationMinutes)));
+  // V6: 여기에 `Math.min(120, Math.max(10, ...))`이 있었습니다.
+  //
+  // 사용자가 7분을 고르면 10분짜리가, 3시간을 고르면 2시간짜리가 만들어졌습니다.
+  // 아무 말도 없이 그렇게 됐습니다. 사용자는 자기가 고른 것과 다른 러닝을 하면서
+  // 이유를 알 수 없었습니다. **말없이 자르는 것이 잘못이었습니다.**
+  //
+  // 이제 자르지 않습니다. 계산이 불가능한 값(0·음수·NaN)만 막습니다.
+  const safeDuration = Number.isFinite(durationMinutes)
+    ? Math.max(1, Math.round(durationMinutes))
+    : DEFAULT_SESSION_MINUTES;
   const durationSeconds = safeDuration * 60;
   const phases = buildPhases(type.id, durationSeconds);
   const interval = guidanceIntervalSeconds[guidance];
@@ -393,6 +424,52 @@ export function createCoachSession(
     phases,
     cues,
   };
+}
+
+/**
+ * 실행 길이(SessionExtent)로 코칭을 만듭니다. **여기가 V6의 입구입니다.**
+ *
+ * 시간이 정해진 러닝은 그대로 만들면 됩니다.
+ * 끝을 정하지 않은 러닝은 다릅니다 — 남은 시간을 모르므로
+ * "3분 남았어요", "수고했어요" 같은 말이 나오면 안 됩니다.
+ * 그래서 진행·완료 문장을 빼고, 한 시간치씩 이어 만듭니다.
+ */
+export function createCoachSessionForExtent(
+  kind: CoachSessionKind | RunningTypeId | string,
+  extent: SessionExtent,
+  guidance: GuidanceLevel = 'standard',
+  horizonMinutes: number = OPEN_ENDED_HORIZON_MINUTES,
+): CoachSession {
+  const known = totalSeconds(extent);
+  if (known !== undefined) {
+    return { ...createCoachSession(kind, known / 60, guidance), extent };
+  }
+
+  const base = createCoachSession(kind, Math.max(OPEN_ENDED_HORIZON_MINUTES, horizonMinutes), guidance);
+  return {
+    ...base,
+    extent,
+    // 끝을 모르는데 남은 시간과 마무리를 말하면 거짓말이 됩니다.
+    cues: base.cues.filter((cue) => cue.kind !== 'progress' && cue.kind !== 'completion'),
+  };
+}
+
+/**
+ * 끝을 정하지 않은 러닝에서 다음 분량을 만들어야 하는지입니다.
+ *
+ * 만들어 둔 것이 바닥나기 전에 미리 이어 붙입니다. 바닥난 뒤에 만들면
+ * 그 사이에 코치가 조용해지고, 사용자는 앱이 멈춘 줄 압니다.
+ */
+export function needsHorizonRefill(session: CoachSession, elapsedSeconds: number): boolean {
+  if (!session.extent || hasKnownEnd(session.extent)) return false;
+  return elapsedSeconds >= (session.durationMinutes - OPEN_ENDED_REFILL_MINUTES) * 60;
+}
+
+/** 지금 흘러간 시간에 맞는 다음 분량입니다. 30분 단위로 늘려 갑니다. */
+export function nextHorizonMinutes(elapsedSeconds: number): number {
+  const elapsedMinutes = elapsedSeconds / 60;
+  const wanted = Math.ceil((elapsedMinutes + OPEN_ENDED_REFILL_MINUTES * 2) / 30) * 30;
+  return Math.max(OPEN_ENDED_HORIZON_MINUTES, wanted);
 }
 
 export function cueScheduleForNative(session: CoachSession): string {
