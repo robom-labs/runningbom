@@ -55,3 +55,23 @@ test('fallback 코칭을 일찍 종료하면 완료가 아닌 중단 상태다',
   assert.equal(stopped.elapsedSeconds, 90);
   assert.equal(stopped.completedAtEpochMillis, undefined);
 });
+
+test('끝을 정하지 않은 코칭은 열두 시간이 지나도 자동 완료되지 않는다', () => {
+  const openEnded = startFallbackClock(
+    {
+      sessionId: 'open-session',
+      definitionId: '이지런:open-ended:standard',
+      title: '끝낼 때까지',
+      countsAs: 'run',
+      durationSeconds: 12 * 60 * 60,
+      openEnded: true,
+    },
+    startedAt,
+  );
+  const snapshot = snapshotFallbackClock(openEnded, startedAt + 13 * 60 * 60 * 1_000);
+
+  assert.equal(snapshot.state, 'running');
+  assert.equal(snapshot.openEnded, true);
+  assert.equal(snapshot.elapsedSeconds, 13 * 60 * 60);
+  assert.equal(snapshot.completedAtEpochMillis, undefined);
+});

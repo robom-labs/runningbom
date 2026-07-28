@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { normalizeCoachSettings } from '../domains/coaching/personaNormalize';
+import { createCoachSession, planLongformSession } from '../domains/coaching/model';
 import { nextBodyCursor, planLongform } from '../domains/coaching/talkPlan';
 
 function plan(cursor: number, minutes = 20) {
@@ -80,4 +81,22 @@ test('시작 화면이 커서를 넘기고 앞으로 옮깁니다', async () => 
   const source = readFileSync(join(__dirname, '..', 'app/screens/start/StartScreen.tsx'), 'utf8');
   assert.ok(source.includes('coachSettings.bodyCursor'), '커서를 넘기지 않습니다');
   assert.ok(source.includes('nextBodyCursor'), '커서를 앞으로 옮기지 않습니다');
+  assert.ok(source.includes('planLongformSession'), '계획과 커서 이동량을 함께 만들지 않습니다');
+  const launchSession = source.slice(
+    source.indexOf('async function launchSession()'),
+    source.indexOf('async function begin()'),
+  );
+  assert.ok(
+    launchSession.indexOf('await startCoachSession') < launchSession.indexOf('updateCoach({'),
+    '세션 시작에 실패해도 자세 커서를 먼저 소비합니다',
+  );
+});
+
+test('자세 커리큘럼 계획은 이전 렌더의 전역 상태에 의존하지 않습니다', () => {
+  const session = createCoachSession('이지런', 20, 'standard');
+  const first = planLongformSession(session, 'full-talk', 0);
+  const second = planLongformSession(session, 'full-talk', 0);
+
+  assert.equal(first.plannedCount, second.plannedCount);
+  assert.deepEqual(first.session.cues, second.session.cues);
 });

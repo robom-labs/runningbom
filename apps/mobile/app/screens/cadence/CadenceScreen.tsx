@@ -9,8 +9,8 @@
 //
 // 소리를 언제 낼지·얼마나 기다릴지는 전부 `domains/cadence/metronome.ts`가 정합니다
 // (순수 함수, 테스트가 봅니다). 이 파일은 그 값을 화면과 소리로 옮기기만 합니다.
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Platform, Pressable, ScrollView, StyleSheet, Text, Vibration, View } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Button, Card, SectionHeader, screenStyles } from '../../design-system/components';
 import {
@@ -34,9 +34,14 @@ import {
   cadenceNotes,
   changeCadence,
   commonCadences,
-  nextBeatDelay,
   suggestedTarget,
 } from '../../../domains/cadence/metronome';
+import {
+  getNativeMetronomeState,
+  nativeMetronomeAvailable,
+  startNativeMetronome,
+  stopNativeMetronome,
+} from '../../../services/audio/metronomeService';
 
 export type CadenceScreenProps = {
   onBack?: () => void;
@@ -48,54 +53,62 @@ export function CadenceScreen({ onBack }: CadenceScreenProps) {
   const [note, setNote] = useState<string | undefined>(undefined);
   const [showAll, setShowAll] = useState(false);
   const [beat, setBeat] = useState(0);
+  const nativeAvailable = nativeMetronomeAvailable();
 
-  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const startedAtRef = useRef(0);
-  const cadenceRef = useRef(cadence);
-  cadenceRef.current = cadence;
-
-  const stop = useCallback(() => {
+  const stop = useCallback(async () => {
+    if (nativeAvailable) await stopNativeMetronome();
     setRunning(false);
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = undefined;
-  }, []);
+  }, [nativeAvailable]);
+
+  useEffect(() => {
+    let mounted = true;
+    void getNativeMetronomeState().then((state) => {
+      if (!mounted || !nativeAvailable) return;
+      setRunning(state.playing);
+      setCadence(state.cadence);
+      setBeat(state.beatCount);
+    });
+    return () => {
+      mounted = false;
+    };
+  }, [nativeAvailable]);
 
   useEffect(() => {
     if (!running) return undefined;
-    startedAtRef.current = Date.now();
 
-    /**
-     * 흘러간 시간을 매번 보정합니다.
-     * setInterval만 쓰면 30분 달리는 동안 발과 소리가 눈에 띄게 어긋납니다.
-     */
-    const tick = () => {
-      setBeat((value) => value + 1);
-      // 소리 파일을 번들에 넣지 않습니다(용량·저작권). 짧은 진동으로 박자를 냅니다.
-      // 진동은 배경음악을 끊지 않아서, 음악과 같이 쓰기에도 오히려 낫습니다.
-      if (Platform.OS !== 'web') Vibration.vibrate(28);
-      const delay = nextBeatDelay(startedAtRef.current, Date.now(), cadenceRef.current);
-      timerRef.current = setTimeout(tick, delay);
-    };
-
-    timerRef.current = setTimeout(tick, nextBeatDelay(startedAtRef.current, Date.now(), cadence));
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-    // cadence가 바뀌면 다음 박자부터 새 간격이 적용됩니다(위 tick이 ref를 봅니다).
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [running]);
-
-  // 화면을 벗어나면 반드시 멈춥니다. 주머니에서 계속 울리면 최악입니다.
-  useEffect(() => stop, [stop]);
+    // Android에서는 오디오의 박자 수를 화면에만 반영합니다. 이 타이머는 소리를 만들지 않습니다.
+    // 웹 미리보기에서는 실제 오디오 대신 점의 움직임만 보여 줍니다.
+    const visual = setInterval(() => {
+      if (nativeAvailable) {
+        void getNativeMetronomeState().then((state) => {
+          setRunning(state.playing);
+          setBeat(state.beatCount);
+        });
+      } else {
+        setBeat((value) => value + 1);
+      }
+    }, nativeAvailable ? 250 : Math.round(60_000 / cadence));
+    return () => clearInterval(visual);
+  }, [cadence, nativeAvailable, running]);
 
   const apply = useCallback((wanted: number) => {
     setCadence((current) => {
       const result = changeCadence(current, wanted);
       // 깎였으면 반드시 말해 줍니다. 조용히 깎으면 고장으로 보입니다.
       setNote(result.note);
+      if (running && nativeAvailable) void startNativeMetronome(result.next);
       return result.next;
     });
-  }, []);
+  }, [nativeAvailable, running]);
+
+  const toggle = useCallback(async () => {
+    if (running) {
+      await stop();
+      return;
+    }
+    if (nativeAvailable) await startNativeMetronome(cadence);
+    setRunning(true);
+  }, [cadence, nativeAvailable, running, stop]);
 
   return (
     <ScrollView contentContainerStyle={screenStyles.content} style={screenStyles.root}>
@@ -118,11 +131,16 @@ export function CadenceScreen({ onBack }: CadenceScreenProps) {
 
         <Button
           label={running ? '멈추기' : '시작하기'}
-          onPress={() => (running ? stop() : setRunning(true))}
+          onPress={() => void toggle()}
           size="lg"
           testID="cadence-toggle"
         />
         <Text style={styles.musicNote}>{MUSIC_NOTE}</Text>
+        <Text style={styles.musicNote}>
+          {nativeAvailable
+            ? '앱을 닫거나 화면을 잠가도 알림에서 멈출 때까지 이어져요.'
+            : '웹 미리보기에서는 화면 동작만 확인할 수 있어요. 실제 박자 소리는 Android 앱에서 들려요.'}
+        </Text>
       </Card>
 
       {/* 자주 쓰는 값 셋을 먼저. 스물한 개를 늘어놓으면 고르다 지칩니다(기획서 §4.6). */}

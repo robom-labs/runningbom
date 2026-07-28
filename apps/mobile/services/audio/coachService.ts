@@ -43,6 +43,7 @@ export type CoachRuntimeState = {
   countsAs?: ActivityKind;
   elapsedSeconds: number;
   durationSeconds: number;
+  openEnded?: boolean;
   startedAtEpochMillis?: number;
   completedAtEpochMillis?: number;
   native: boolean;
@@ -299,6 +300,7 @@ function runtimeFromFallback(clock: FallbackCoachClock): CoachRuntimeState {
     ...(clock.countsAs ? { countsAs: clock.countsAs } : {}),
     elapsedSeconds: clock.elapsedSeconds,
     durationSeconds: clock.durationSeconds,
+    ...(clock.openEnded ? { openEnded: true } : {}),
     ...(clock.startedAtEpochMillis
       ? { startedAtEpochMillis: clock.startedAtEpochMillis }
       : {}),
@@ -310,7 +312,8 @@ function runtimeFromFallback(clock: FallbackCoachClock): CoachRuntimeState {
 }
 
 export function nativeCoachAvailable(): boolean {
-  return Platform.OS === 'android' && RunningbomCoachModule.isAvailable();
+  return (Platform.OS === 'android' || Platform.OS === 'ios')
+    && RunningbomCoachModule.isAvailable();
 }
 
 /**
@@ -408,6 +411,7 @@ export async function startCoachSession(
       title: session.title,
       countsAs: session.countsAs,
       durationSeconds: session.durationMinutes * 60,
+      openEnded: session.extent?.type === 'open-ended',
     }, startedAtEpochMillis);
     fallbackSession = session;
     fallbackCueIndex = 0;
@@ -428,7 +432,12 @@ export async function startCoachSession(
         session.durationMinutes * 60,
         // 앱이 말할 때는 서비스에 대사를 주지 않습니다. 두 곳이 같이 말하면 겹칩니다.
         speechOwner === 'app' ? '' : cueScheduleForNative(session),
-        { rate: tuning.rate, voiceId: voiceIdentifier ?? '', pitch: tuning.pitch },
+        {
+          rate: tuning.rate,
+          voiceId: voiceIdentifier ?? '',
+          pitch: tuning.pitch,
+          openEnded: session.extent?.type === 'open-ended',
+        },
       );
       fallbackInUse = false;
       if (speechOwner === 'app') {
@@ -476,7 +485,9 @@ export function seekCoachSpeech(elapsedSeconds: number): void {
   // 시계를 옮깁니다. 흐르던 상태는 그대로 두고 경과만 바꿉니다.
   fallbackState = {
     ...fallbackState,
-    elapsedSeconds: Math.min(fallbackState.durationSeconds, target),
+    elapsedSeconds: fallbackState.openEnded
+      ? target
+      : Math.min(fallbackState.durationSeconds, target),
     ...(fallbackState.state === 'running' ? { runningSinceEpochMillis: Date.now() } : {}),
   };
 
@@ -573,6 +584,7 @@ export async function getCoachState(): Promise<CoachRuntimeState> {
     ...(value.countsAs ? { countsAs: value.countsAs } : {}),
     elapsedSeconds: value.elapsedSeconds,
     durationSeconds: value.durationSeconds,
+    ...(value.openEnded ? { openEnded: true } : {}),
     ...(value.startedAtEpochMillis
       ? { startedAtEpochMillis: value.startedAtEpochMillis }
       : {}),

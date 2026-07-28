@@ -7,6 +7,15 @@ export type NativeCoachState = {
   countsAs?: 'run' | 'walk' | 'recovery';
   elapsedSeconds: number;
   durationSeconds: number;
+  openEnded?: boolean;
   startedAtEpochMillis?: number;
   completedAtEpochMillis?: number;
+};
+
+export type NativeMetronomeState = {
+  playing: boolean;
+  cadence: number;
+  beatCount: number;
+  startedAtEpochMillis?: number;
+  underrunCount?: number;
 };
