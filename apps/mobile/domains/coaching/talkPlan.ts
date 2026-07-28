@@ -152,3 +152,19 @@ export function plannedSeconds(planned: PlannedBlock[]): number {
 }
 
 export { longformBlocks };
+
+/**
+ * 다음 러닝이 이어받을 커서입니다.
+ *
+ * **왜 필요한가:** 커서가 없으면 매 러닝이 "머리부터"로 시작합니다.
+ * 20분씩 뛰는 사람은 머리·어깨·팔까지만 듣고 끝납니다.
+ * 몇 달을 달려도 **발 이야기는 한 번도 못 듣습니다.** 커리큘럼이 있으나 마나입니다.
+ *
+ * 그래서 이번에 어디까지 갔는지 기억했다가 다음에 거기서 이어 갑니다.
+ * 설명과 이야기를 한 쌍씩 쓰므로, 쓴 개수의 절반만큼 나아갑니다.
+ */
+export function nextBodyCursor(cursor: number, plannedCount: number): number {
+  const pairs = Math.ceil(Math.max(0, plannedCount) / 2);
+  // 커서는 계속 커집니다. 쓰는 쪽에서 나머지 연산으로 자리를 찾으므로 되감을 필요가 없습니다.
+  return cursor + pairs;
+}
