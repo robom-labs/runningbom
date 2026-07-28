@@ -1,0 +1,2171 @@
+# RUNNINGBOM V7 — SIMPLE SURFACE, DEEP CAPABILITY
+## 러닝봄 기능 보존형 전면 UX·정보구조·스포티 디자인·코드구조 재설계 실행 프롬프트
+### 문서 버전: 7.0.0
+### 대상: Claude Code 또는 Codex
+### 대상 저장소: robom-labs/runningbom
+### 작성 기준일: 2026-07-28
+
+이 문서 전체를 처음부터 끝까지 전문으로 읽고 실제 구현·테스트·시각검증·원자 커밋·PR까지 수행하라.
+
+이 작업은 기능을 줄이는 작업이 아니다.
+
+> **현재 러닝봄의 기능은 전부 살리되, 처음 보이는 화면은 단순하고, 사용자가 필요한 순간에만 해당 기능이 자연스럽게 펼쳐지도록 다시 설계한다.**
+
+기능을 삭제해서 단순해 보이게 만들면 실패다.
+모든 기능을 첫 화면에 늘어놓아 “다 있습니다”라고 보여 주는 것도 실패다.
+
+최종 제품은 다음 경험을 제공해야 한다.
+
+1. 처음 켠 사람은 10초 안에 오늘 무엇을 할지 안다.
+2. 추천 러닝은 한 번 눌러 시작한다.
+3. 직접 고르는 러닝은 두세 번 안에 시작한다.
+4. 대회·러닝화·러닝 지식은 하나의 “찾기” 안에서 명확히 나뉜다.
+5. 기록·분석·배지·보관함·프로필·설정은 “나” 안에서 찾는다.
+6. 설정 첫 화면에는 세부 조절값이 쏟아지지 않는다.
+7. 기존 40개 훈련계획, 103개 일회성 훈련, 40개 도전, 20개 보조 프로젝트, 대회, 러닝화, 배지, 커뮤니티 준비 코드, 음성코치, 메트로놈, GPS Preview 기능은 모두 새 구조에서 도달 가능하다.
+8. 사용자는 기능 수를 느끼지 않고, 필요할 때 기능의 깊이를 느낀다.
+
+---
+
+# 0. 지침 우선순위
+
+실행 정책의 우선순위:
+
+1. `ROBOM_HQ_ULTIMATE_CONTROL_TOWER_PROMPT_v1.4.0` — 궁극의 로봄 v1.4
+2. 사용자의 현재 명시적 지시
+3. 실제 설치 앱·Production·Google Play·EAS·서명·실기기 상태
+4. 실행 시점의 최신 `origin/main`, 실제 코드, 실제 테스트와 빌드
+5. 이 V7 문서
+6. V6 및 과거 V1~V5 문서와 오래된 PR
+
+V7과 과거 문서가 충돌하면 다음을 따른다.
+
+- 기록 무결성·보안·저장 호환·권한 보호는 기존 완료분을 유지한다.
+- 정보구조·화면 노출·디자인·설정 구조는 V7을 우선한다.
+- 최신 코드가 과거 문서보다 앞서면 최신 코드를 사실 정본으로 사용한다.
+- 최신 코드에 실제 UX 결함이 있으면 재현 증거를 만든 뒤 수정한다.
+
+---
+
+# 1. 절대 하드룰
+
+## 1.1 기능 보존
+
+다음을 삭제하지 않는다.
+
+- 음성 코치와 V6 코치 성격·말투·밀도·긴 이야기
+- 시간·거리·오픈엔드 러닝
+- GPS Preview 추적, 자동 멈춤, 구간, 경로
+- 40개 이상의 훈련계획
+- 100개 이상의 일회성 훈련
+- 도전
+- 보조 프로젝트
+- 목표 대회
+- 대회 접수 알림
+- 대회 달력·필터·상세
+- 러닝화 탐색·추천·비교·저장
+- 러닝 지식
+- 활동 기록·통계·최고기록
+- 배지
+- 월간 지도
+- 프로필
+- 데이터 내보내기·삭제
+- 계정·연동 기반 코드
+- 커뮤니티·크루·리그 준비 코드
+- 도움말·개인정보·앱 정보
+- 메트로놈·케이던스
+- 기존 딥링크·알림 진입
+- 기존 저장 데이터
+
+기능은 “삭제”가 아니라 다음 중 하나로 처리한다.
+
+```text
+PRIMARY            항상 보이는 핵심 기능
+CONTEXTUAL         관련 상황에서 자동 노출
+SECONDARY          해당 허브 안에서 한 번 더 들어가면 노출
+ADVANCED           상세 설정 안에서만 노출
+FEATURE_GATED      준비가 끝난 경우에만 노출
+DEVELOPER_ONLY     일반 사용자에게 숨기고 진단 화면에서만 노출
+```
+
+## 1.2 사용자 데이터·ID 보호
+
+- 기존 저장 키 변경 금지
+- 기존 활동 ID 변경 금지
+- 기존 프로그램 ID와 진행 기록 변경 금지
+- 기존 배지 ID 변경 금지
+- 대회·러닝화 ID 변경 금지
+- 패키지·번들 ID 변경 금지
+- 딥링크를 깨뜨리는 파괴적 route rename 금지
+- migration 없이 lastTab·route 값을 무효화하지 않음
+- forward-only migration
+- migration 전 backup
+- rollback 가능
+
+## 1.3 현재 Play 심사 보호
+
+- 새 Android 권한을 Production에 임의 추가 금지
+- 새 foreground service type 임의 추가 금지
+- 새 네이티브 의존성을 심사 중 artifact에 섞지 않음
+- 현재 Production과 Preview의 기능 차이를 보존
+- 새 권한·native dependency가 필요하면 `POST_REVIEW` branch와 feature gate
+- 실제 Play Console 변경은 CEO 승인 전 금지
+
+## 1.4 UX 진실성
+
+- 없는 기능을 메뉴에 “준비 중” 카드로 계속 홍보하지 않음
+- 비활성 기능은 기본 탐색에서 숨김
+- 실제 사용자가 없는 커뮤니티를 핵심 메뉴로 노출하지 않음
+- 실제 데이터가 없으면 가짜 차트·가짜 후기·가짜 사람 금지
+- 사용자가 이해하지 못할 내부 용어 금지
+- “완벽”, “AI가 알아서”, “최적”을 증거 없이 쓰지 않음
+- 기술 정보·SHA·스키마를 일반 설정 첫 화면에 노출하지 않음
+
+---
+
+# 2. 최신 코드에서 반드시 재검증할 실제 출발점
+
+아래는 2026-07-28의 최신 `main` 후보를 읽고 확인한 내용이다.
+실행 시점에는 직접 다시 읽고, 값이 다르면 최신 실측을 따른다.
+
+## 2.1 중복된 전역 내비게이션
+
+현재 후보:
+
+```text
+AppHeader의 좌상단 햄버거
++ DrawerMenu
++ BottomTabs 5개
+```
+
+관련 파일:
+
+- `apps/mobile/app/navigation/AppNavigator.tsx`
+- `apps/mobile/app/navigation/AppHeader.tsx`
+- `apps/mobile/app/navigation/BottomTabs.tsx`
+- `apps/mobile/app/navigation/DrawerMenu.tsx`
+- `apps/mobile/app/navigation/routes.ts`
+- `apps/mobile/domains/navigation/tabs.ts`
+- `apps/mobile/app/navigation/types.ts`
+
+현재 라우트 후보 16개:
+
+```text
+home
+start
+programs
+calendar
+races
+shoes
+cadence
+challenges
+community
+guide
+stats
+badges
+profile
+settings
+voice
+help
+```
+
+현재 drawer 후보:
+
+- 상위 항목 13개
+- 하위 항목 15개
+- 하단 탭 5개와 여러 목적지가 중복
+- 도움말·커뮤니티·설정이 “나” 탭 활성 상태로 매핑
+- 박자 맞추기·러닝 지식이 “훈련” 탭에 함께 매핑
+- 모든 화면에 햄버거가 있어 top-level과 child screen의 구분이 약함
+
+**이중 내비게이션은 V7의 P0 UX 결함이다.**
+
+## 2.2 홈 과밀
+
+관련 파일:
+
+- `apps/mobile/app/screens/home/HomeScreen.tsx`
+- `apps/mobile/app/screens/home/model.ts`
+- `TodayCard`
+- `MonthMapCard`
+- `ShoeRankingCard`
+
+현재 후보 모듈:
+
+1. 오늘 hero + 시작 버튼
+2. TodayCard
+3. 신규 사용자 카드 또는 이번 주 목표
+4. 목표 대회·일정·접수마감
+5. 최근 기록
+6. 이번 달 지도
+7. 러닝화 순위
+8. 러닝 Q&A 발견
+9. 저장 오류 배너
+
+오늘 행동을 말하는 카드가 두 개이고, 앱의 거의 모든 기능이 홈에 진열된다.
+
+## 2.3 시작 화면 과밀
+
+관련 파일:
+
+- `apps/mobile/app/screens/start/StartScreen.tsx`
+- coaching
+- tracking
+- run preferences
+- audio service
+
+시작 전 후보:
+
+- 빠른 시간 칩
+- 오픈엔드
+- 5~180분 slider
+- 직접 입력
+- 추천 범위
+- 러닝 유형
+- 카테고리
+- 힘든 정도
+- 음성 안내 수준
+- 목소리
+- 강도
+- 목적
+- 추천 대상
+- 피해야 할 날
+- 세션 구성
+- 발화 밀도
+- 카운트다운
+- 안전 경고
+- GPS 상태
+- 몸무게·칼로리 관련 설정
+- 고급 설정
+
+설정·실행·진행·완료가 한 파일에 몰려 있을 가능성이 높다.
+
+## 2.4 훈련 화면 과밀
+
+관련 파일:
+
+- `ProgramsScreen.tsx`
+- `TrainingSection.tsx`
+- `PlanPicker.tsx`
+- `WorkoutPicker.tsx`
+- `ChallengeBoard.tsx`
+- `ProjectBoard.tsx`
+- `TrainingPlanCard.tsx`
+
+현재 네 개 accordion:
+
+```text
+지금 하는 계획
+오늘 한 번만
+도전
+챙길 것
+```
+
+한 번에 하나만 열도록 개선됐지만, 현재 계획·계획 선택·전체 주차·목표 대회 계획이 같은 section 안에 있고, TodayCard가 section 바깥에 다시 있다.
+
+## 2.5 설정 과밀
+
+관련 파일:
+
+- `SettingsScreen.tsx`
+- `RunSettingsSection.tsx`
+- `CoachPersonaCard.tsx`
+- `PermissionSettingsCard`
+- `AppContentCard`
+
+현재 한 scroll에 들어 있는 후보:
+
+- 목소리
+- 말하기 속도
+- 코치 성격 7종
+- 존댓말·반말
+- 말의 양 4단계
+- 자동 멈춤과 모든 내부 속도값
+- 몸무게
+- 현재 기록 음성
+- 음성 간격
+- 야간 모드
+- 카운트다운
+- 알림·위치·배터리
+- 대회 알림 안내
+- 연결되지 않은 외부 연동
+- 비활성 로그인 공급자
+- 커뮤니티 모드
+- 로그인·연결·동기화·삭제
+- 프로필
+- 데이터 내보내기
+- 데이터 삭제
+- 개인정보·문의
+- 콘텐츠 업데이트
+- 앱 버전·versionCode·SHA·데이터 revision·DB schema
+
+**설정은 기능 설명서가 아니다.**
+일반 사용자가 자주 바꾸는 값과 운영자 진단정보를 한 화면에 놓지 않는다.
+
+## 2.6 “나” 화면 과밀
+
+관련 파일:
+
+- `MyScreen.tsx`
+- `ProfileScreen.tsx`
+- `BadgesScreen.tsx`
+- activity/badge domains
+
+현재 `MyScreen` 후보:
+
+- 이번 주
+- 이번 달
+- 월별 추이
+- 주간 목표 편집
+- 연속 기록
+- 최고 기록
+- 배지 전체
+- 수동 기록
+- 활동 목록과 필터
+
+현재 `ProfileScreen` 후보:
+
+- 닉네임·소개
+- 러닝 경력
+- 123종 러닝화 검색과 선택
+- 동네
+- 설정
+
+프로필 편집 안에 신발 카탈로그가 들어가는 것은 정보구조가 잘못된 후보이다.
+
+## 2.7 대회 필터벽
+
+관련 파일:
+
+- `domains/races/RaceScreen.tsx`
+
+목록보다 먼저 보이는 후보:
+
+- 검색
+- 새로고침
+- 지역
+- 빠른 필터
+- 정렬
+- 거리
+- 접수상태
+- 시기
+- 지역 전체 선택
+- 목록·달력
+
+기능은 유지하되 기본화면에서 전부 펼치지 않는다.
+
+## 2.8 준비 중인 커뮤니티가 전역 메뉴에 있음
+
+관련 파일:
+
+- `CommunityScreen.tsx`
+
+현재 후보:
+
+- 내 프로필 요약
+- 설명 배너
+- 러닝 궁금증 버튼
+- 기록 카드
+- 내 글 보관함
+- 사람들 소식 준비 중
+- 크루 준비 중
+- 리그 준비 중
+- 서버·모드 상태
+
+기록 공유는 실제 기능이지만, 준비 중인 사회 기능은 top-level destination이 되어서는 안 된다.
+
+## 2.9 디자인 문법 과잉
+
+관련 파일:
+
+- `app/design-system/theme.ts`
+- `app/design-system/components.tsx`
+
+현재 문법:
+
+```text
+모든 것 = Card
+상태 = Chip
+행동 = Button
+안내 = Banner
+```
+
+큰 radius, warm beige, warm surface, 주황, navy가 섞여 있어 따뜻한 생활앱 느낌이 강하다.
+사용자가 원하는 것은 깔끔하고 운동감 있는 sport-tech 느낌이다.
+
+---
+
+# 3. 외부 앱·플랫폼에서 가져올 원칙
+
+실행 시점에 공식 문서를 다시 확인한다.
+디자인을 복사하지 말고 정보구조와 행동 원칙만 가져온다.
+
+## 3.1 Nike Run Club
+
+공식 출처:
+
+- https://www.nike.com/running/training-plans/
+- https://www.nike.com/jp/help/a/nrc-plan
+- https://about.nike.com/ko/newsroom/releases/nike-run-club-app-delivers-new-features-to-prepare-support-and-empower-runners
+
+가져올 원칙:
+
+- 훈련계획 수와 guided run 수가 많아도, 사용자는 현재 plan과 이번 run을 먼저 본다.
+- 각 계획은 주간 목표와 각 run의 목적을 설명한다.
+- 계획 회차에서 바로 audio-guided run을 시작한다.
+- 콘텐츠 라이브러리의 크기를 홈에 모두 진열하지 않는다.
+- coaching, plans, run, activity를 명확한 목적지로 구분한다.
+
+가져오지 않을 것:
+
+- Nike의 아이콘·색·카피·레이아웃 복제
+- 현재 러닝봄에 없는 위치공유·웨어러블을 있는 것처럼 표시
+
+## 3.2 Runna
+
+공식 출처:
+
+- https://support.runna.com/
+- https://support.runna.com/en/articles/8159780-setting-up-and-managing-your-audio-cues
+
+가져올 원칙:
+
+- 설정은 관련 행동 안에서 찾을 수 있어야 한다.
+- 오디오 cue 간격·볼륨 같은 값은 실제 run recording 맥락에서 변경 가능하다.
+- 현재 plan과 week가 첫 화면의 중심이다.
+- 고급값을 global settings에 전부 펼치지 않는다.
+
+## 3.3 Android·Apple 내비게이션
+
+공식 출처:
+
+- https://developer.android.com/design/ui/mobile/guides/layout-and-content/app-anatomy
+- https://developer.android.com/guide/navigation
+- https://developer.android.com/guide/navigation/integrations/ui
+- https://developer.apple.com/design/human-interface-guidelines/tab-bars
+
+가져올 원칙:
+
+- 탭은 최상위 목적지 이동에 사용한다.
+- top-level과 child destination을 구분한다.
+- child screen은 back/up을 보여 준다.
+- tab 수는 적을수록 단순하다.
+- 동일한 top-level 기능을 drawer와 tab에 동시에 중복하지 않는다.
+- Help·Privacy 같은 기능은 secondary navigation 또는 settings에 둔다.
+
+## 3.4 Samsung Health
+
+공식 지원 흐름에서 가져올 원칙:
+
+- 운동 시작 시 목표 종류를 한 번에 전부 설명하지 않는다.
+- 현재 activity를 고른 뒤 시간·거리 같은 목표를 작은 흐름으로 설정한다.
+- 빠른 시작과 세부 설정을 분리한다.
+
+---
+
+# 4. V7 제품 원칙
+
+## 4.1 표면은 단순하고 깊이는 유지
+
+```text
+첫 화면: 3~5개 목적
+두 번째 화면: 해당 목적의 핵심 선택
+세 번째 화면 또는 sheet: 고급 기능
+```
+
+## 4.2 기능은 장소가 하나
+
+같은 기능을 여러 메뉴에 중복시키지 않는다.
+
+예:
+
+- 러닝 시작은 `달리기`
+- 계획과 훈련 라이브러리는 `훈련`
+- 대회·러닝화·지식은 `찾기`
+- 기록·분석·배지·저장 목록은 `나`
+- 설정은 `나 > 설정`
+- 공유는 `러닝 완료`와 `나 > 공유 기록`
+- 도움말은 `설정 > 도움말`
+
+홈은 기능 목록이 아니라 오늘 행동과 맥락을 보여 준다.
+
+## 4.3 한 화면에 하나의 주 행동
+
+첫 viewport에는 primary CTA가 최대 하나다.
+
+## 4.4 점진적 공개
+
+- 기본값은 추천값
+- 고급값은 접기
+- 기술 내부값은 일반 사용자에게 숨김
+- 사용자가 관련 행동을 하는 순간에만 해당 설정 진입 제공
+
+## 4.5 상태가 우선
+
+비어 있는 기능보다 현재 사용자의 상태를 먼저 보여 준다.
+
+```text
+오늘 할 것
+현재 plan
+목표 대회
+이번 주
+최근 완료
+```
+
+---
+
+# 5. 새 최상위 정보구조 — 5개 목적지
+
+Bottom Navigation은 정확히 다섯 개다.
+
+```text
+오늘
+훈련
+달리기
+찾기
+나
+```
+
+## 5.1 오늘
+
+역할:
+
+- 오늘 할 행동 한 개
+- 이번 주 진행
+- 목표 대회·다음 일정
+- 최근 완료 요약
+
+넣지 않을 것:
+
+- 러닝화 순위 5개
+- Q&A 전체
+- 배지 전체
+- 모든 접수 중 대회
+- 상세 목표 편집
+- 설정
+- 준비 중 커뮤니티
+
+## 5.2 훈련
+
+상단 segmented navigation:
+
+```text
+오늘
+내 계획
+라이브러리
+```
+
+하위 secondary:
+
+```text
+박자 맞추기
+도전
+챙길 것
+일정
+```
+
+## 5.3 달리기
+
+Bottom tab의 가운데 강조 목적지다.
+
+중요:
+
+- tab을 누르면 즉시 기록 시작이 아니라 `Run Setup` destination으로 이동
+- 탭은 navigation 역할을 지킨다
+- setup에서 큰 Start를 한 번 누름
+- active run에는 bottom navigation을 숨김
+
+## 5.4 찾기
+
+상단 segmented navigation:
+
+```text
+대회
+러닝화
+러닝 지식
+```
+
+필요하면 `저장한 것` shortcut 제공.
+
+## 5.5 나
+
+첫 화면:
+
+- 이번 주·이번 달 간단 요약
+- 최근 활동
+- 성취
+- 저장한 대회·신발
+- 프로필
+- 설정
+
+하위:
+
+```text
+활동 기록
+분석
+배지
+보관함
+프로필
+설정
+```
+
+---
+
+# 6. 기존 기능 새 위치 매핑
+
+| 기존 기능 | 새 위치 | 노출 등급 |
+|---|---|---|
+| Home hero | 오늘의 첫 카드로 통합 | PRIMARY |
+| TodayCard | Home hero와 합침 | PRIMARY |
+| 이번 주 목표 | 오늘 compact strip, 상세는 나 > 분석 | CONTEXTUAL |
+| 목표 대회 | 오늘 compact rail, 찾기 > 대회 상세 | CONTEXTUAL |
+| 접수마감 | 오늘에는 가장 중요한 1개, 전체는 찾기 > 대회 | CONTEXTUAL |
+| 최근 기록 | 오늘 1개, 전체는 나 > 활동 기록 | CONTEXTUAL |
+| 월간 지도 | 나 > 성취 또는 오늘 compact | SECONDARY |
+| 러닝화 순위 | 찾기 > 러닝화 | SECONDARY |
+| Q&A 발견 | 찾기 > 러닝 지식 | SECONDARY |
+| 러닝 시작 | 달리기 | PRIMARY |
+| 시간·거리·오픈엔드 | 달리기 setup sheet | PRIMARY |
+| 러닝 유형 | 달리기 setup row | PRIMARY |
+| 코치 preset | 달리기 setup row | PRIMARY |
+| 상세 코치 설정 | 달리기 setup > 코치 sheet, 나 > 설정 | ADVANCED |
+| 자동 멈춤 | 달리기 setup > 고급, 설정 > 달리는 중 | ADVANCED |
+| 몸무게 | 설정 > 달리는 중 > 칼로리 | ADVANCED |
+| 실시간 기록 음성 | 달리기 setup > 코치·기록 | ADVANCED |
+| 야간 모드 | 자동 기본, 설정 > 달리는 중 | ADVANCED |
+| 카운트다운 | setup에서 현재값만, 상세는 sheet | SECONDARY |
+| 40개 계획 | 훈련 > 내 계획 > 계획 찾기 | SECONDARY |
+| 현재 계획 | 훈련 > 내 계획 첫 화면 | PRIMARY |
+| 103개 훈련 | 훈련 > 라이브러리 | SECONDARY |
+| 도전 | 훈련 > 더보기 또는 나 > 성취 | SECONDARY |
+| 보조 프로젝트 | 훈련 > 더보기 | SECONDARY |
+| 메트로놈 | 훈련 > 박자 맞추기, run setup shortcut | SECONDARY |
+| 대회 목록 | 찾기 > 대회 | PRIMARY |
+| 대회 필터 | 찾기 > 대회 > filter sheet | SECONDARY |
+| 대회 달력 | 찾기 > 대회 view toggle | SECONDARY |
+| 러닝화 | 찾기 > 러닝화 | PRIMARY |
+| 러닝화 비교 | 찾기 > 러닝화 > 비교 tray | SECONDARY |
+| 기록·통계 | 나 | PRIMARY |
+| 최고기록 | 나 > 분석 | SECONDARY |
+| 배지 | 나 > 성취 | SECONDARY |
+| 수동 기록 | 나 > 활동 기록 > 추가 | SECONDARY |
+| 프로필 | 나 > 프로필 | SECONDARY |
+| 현재 신발 선택 | 나 > 보관함 > 내 장비 | SECONDARY |
+| 커뮤니티 record share | 완료 화면, 나 > 공유 기록 | CONTEXTUAL |
+| draft 글 | 나 > 보관함 또는 feature gated social | SECONDARY |
+| 사람들 소식·크루·리그 | social server가 준비된 경우만 찾기 또는 나에 노출 | FEATURE_GATED |
+| 계정·연동 | 설정 > 계정·백업 | ADVANCED |
+| 비활성 integrations | 일반 설정에서 숨김 | FEATURE_GATED |
+| 데이터 export/delete | 설정 > 개인정보·데이터 | ADVANCED |
+| 앱 업데이트 | 설정 > 앱 정보 | SECONDARY |
+| SHA·schema·revision | 설정 > 앱 정보 > 진단 | DEVELOPER_ONLY |
+| 도움말·문의 | 설정 > 도움말 | SECONDARY |
+
+모든 현재 기능에 새 목적지가 있어야 한다.
+기능 보존 matrix에서 `UNMAPPED`는 0이어야 한다.
+
+---
+
+# 7. 새 내비게이션 셸
+
+## 7.1 제거
+
+runtime에서 제거:
+
+- top-level 화면의 햄버거 버튼
+- DrawerMenu
+- drawer + bottom tabs 동시 사용
+- 같은 목적지의 중복 global entry
+- top-level과 child의 동일 header
+
+코드는 migration 완료 후 삭제한다.
+초기 단계에는 legacy adapter를 둘 수 있다.
+
+## 7.2 새 shell
+
+후보 구조:
+
+```ts
+type PrimaryDestination =
+  | 'today'
+  | 'training'
+  | 'run'
+  | 'explore'
+  | 'me';
+```
+
+Bottom tab:
+
+- 오늘
+- 훈련
+- 달리기
+- 찾기
+- 나
+
+중앙 `달리기`는 시각적으로 조금 강조하지만, navigation destination이다.
+
+## 7.3 Header 규칙
+
+Top-level:
+
+- 햄버거 없음
+- Today는 wordmark 또는 인사
+- 다른 top-level은 짧은 제목
+- 필요한 오른쪽 action 하나만
+
+Child screen:
+
+- 왼쪽 back
+- 현재 title
+- 오른쪽 optional action
+- bottom tab은 child의 parent destination 상태를 유지
+
+Modal / active run:
+
+- self-contained
+- bottom tab 숨김
+- 명확한 닫기 또는 완료
+
+## 7.4 Back stack
+
+기존 수동 `historyRef`를 계속 쓰더라도 다음을 보장한다.
+
+- top-level tab을 바꾸면 각 tab의 child state 복원
+- child에서 back은 parent로
+- Android back predictability
+- deep link에서 back은 적절한 parent
+- 알림 진입에서 back은 대회 목록
+- active run 중 accidental back 방지
+- lastTab legacy value migration
+
+가능하면 최신 안정적인 React Navigation 구조를 검토하되, 새 dependency가 현재 출시 계약을 위험하게 하면 custom typed navigation을 개선한다.
+
+---
+
+# 8. 새로운 대표 UI 개념 — RUN RAIL + RUN DOCK
+
+기존 앱과 다른 고유 구조를 만든다.
+
+## 8.1 Run Rail
+
+오늘 화면에 얇은 vertical 또는 horizontal progress rail을 둔다.
+
+```text
+지금
+↓
+이번 주
+↓
+목표 대회
+```
+
+각 node는 작은 상태와 한 줄 의미만 보여 준다.
+
+예:
+
+```text
+지금        25분 편하게 달리기
+이번 주     3회 중 1회 완료
+목표 대회   서울 10K · 42일 남음
+```
+
+사용자가 node를 누르면 상세로 들어간다.
+
+Rail은 세 개의 큰 카드 대신 하나의 연결된 맥락을 만든다.
+과도한 타임라인 장식은 금지한다.
+
+## 8.2 Run Dock
+
+달리기 setup의 첫 화면:
+
+```text
+오늘 추천
+25분 편하게 달리기
+
+시간       25분             >
+코치       러닝메이트·밀착   >
+박자       사용 안 함        >
+
+[달리기 시작]
+
+다른 훈련 고르기
+고급 설정
+```
+
+각 row를 누르면 한 가지 결정만 하는 bottom sheet가 열린다.
+
+## 8.3 Command Sheet
+
+- 시간 sheet
+- 유형 sheet
+- 코치 sheet
+- 메트로놈 sheet
+- 기록 안내 sheet
+- advanced sheet
+
+한 sheet에 unrelated 설정을 섞지 않는다.
+
+새 native bottom sheet dependency를 추가하지 않아도 React Native `Modal`, `Animated`, `Pressable`로 구현 가능하면 재사용한다.
+기기 접근성·back·keyboard를 검증한다.
+
+---
+
+# 9. 화면별 상세 요구
+
+## 9.1 오늘 화면
+
+### 첫 viewport
+
+1. greeting 또는 wordmark
+2. 통합된 Today Action
+3. 큰 start CTA
+4. Run Rail 일부
+
+Hero와 TodayCard를 합친다.
+
+예:
+
+```text
+오늘은 25분 편하게
+어제 조금 힘들었으니 속도보다 리듬에 집중해요.
+
+[달리기 시작]
+계획 회차 · 25분 · 러닝메이트 코치
+```
+
+### 그 아래
+
+- 이번 주 compact strip
+- 목표 대회 또는 가장 중요한 일정 1개
+- 최근 완료 1개
+
+### “더 보기”
+
+아래 기능은 한 compact “둘러보기” module 또는 찾기로 이동:
+
+- 대회 전체
+- 러닝화
+- 러닝 지식
+
+### 합격
+
+- typical user home은 2.5 화면 높이 안
+- 첫 viewport primary CTA 1개
+- 오늘 행동 설명 카드 1개
+- 모든 기능 marketing 금지
+- urgent 정보가 없을 때 빈 공간을 억지로 채우지 않음
+
+## 9.2 훈련
+
+상단 segmented:
+
+```text
+오늘 | 내 계획 | 라이브러리
+```
+
+### 오늘
+
+- 오늘 추천 1개
+- 대안 최대 2개
+- 몸 상태로 가볍게 바꾸기
+- 시작
+
+### 내 계획
+
+- 현재 plan만 먼저
+- 이번 주 회차
+- 다음 회차
+- 일정
+- plan 관리
+- “새 계획 찾기”는 secondary
+
+전체 40개 계획은 별도 catalog screen.
+
+### 라이브러리
+
+- 추천
+- 편한 달리기
+- 속도
+- 긴 거리
+- 러닝머신
+- 회복
+- 직접 만들기
+- 검색
+
+103개 카드를 세로로 쌓지 않는다.
+
+### 도전·프로젝트·박자
+
+훈련 첫 화면의 “더 활용하기” section:
+
+- 박자 맞추기
+- 도전
+- 자세·호흡·장비 챙기기
+
+사용자가 진행 중이면 badge와 shortcut을 더 위로 올린다.
+
+## 9.3 달리기 setup
+
+### 기본 노출
+
+- 선택한 run
+- 시간·거리·오픈엔드
+- 코치 preset
+- start
+
+### 현재값 summary
+
+- GPS 지원 여부
+- 자동 멈춤
+- 카운트다운
+- 메트로놈
+
+한 줄 summary만 보여 주고 탭하면 advanced.
+
+### 제거
+
+기본 화면에서 제거:
+
+- 모든 강도 설명
+- 추천 대상 목록
+- 피해야 할 날 목록
+- 구조 전체
+- 발화 밀도 숫자
+- auto-pause 내부 시속표
+- 몸무게 입력
+- 개발 fallback 문구
+
+이 정보는 `이 훈련 자세히`와 `고급 설정`에 둔다.
+
+### active run
+
+별도 `ActiveRunScreen`.
+
+보이는 것:
+
+- 경과 또는 남은 시간
+- 현재 단계
+- 다음 단계
+- 거리·페이스가 실제로 있을 때
+- pause
+- finish
+- 코치 빠른 조절
+- 30초 조용히
+
+숨길 것:
+
+- global header
+- bottom tabs
+- 설정 목록
+- 전체 cue history
+- 모든 split 6개 기본 노출
+
+split·route·log는 swipe 또는 상세 drawer.
+
+### complete
+
+- 핵심 결과
+- 한 줄 회고
+- 다음 행동
+- 공유
+- 저장 상태
+
+## 9.4 찾기
+
+segmented:
+
+```text
+대회 | 러닝화 | 러닝 지식
+```
+
+### 대회 기본
+
+첫 화면:
+
+1. 목표 대회
+2. 접수 중·곧 시작
+3. 가까운 날짜 목록
+4. search
+5. filter button
+6. 목록·달력 toggle
+
+필터는 sheet:
+
+- 지역
+- 거리
+- 접수 상태
+- 시기
+- 정렬
+- quick filter
+
+`새로고침`은 pull-to-refresh 또는 overflow.
+영구 버튼으로 검색 옆에 두지 않는다.
+
+필터 적용 시:
+
+- compact active filter chips
+- 초기화
+- 결과 수
+
+### 러닝화
+
+현재 guided browse의 장점은 유지.
+
+첫 화면:
+
+- 추천 받기
+- 용도별
+- 거리별
+- 저장한 신발
+- 비교함
+- 검색
+
+상세 필터는 전체 목록 안.
+
+### 러닝 지식
+
+- 검색
+- 주제
+- 최근 읽음 또는 추천
+- Q&A
+- 프로그램·러닝화·대회로 context link
+
+## 9.5 나
+
+첫 화면:
+
+```text
+프로필 summary
+이번 주·이번 달
+최근 활동
+성취
+보관함
+설정
+```
+
+큰 stats 전체를 한 scroll에 넣지 않는다.
+
+### 활동 기록
+
+- activity list
+- filter
+- manual add
+- calendar
+
+### 분석
+
+- week/month
+- trend
+- goals
+- personal best
+- pace
+- disclaimer
+
+### 성취
+
+- 배지
+- 월간 지도
+- 도전 결과
+
+### 보관함
+
+- 관심 대회
+- 목표 대회
+- 관심 러닝화
+- 현재 신발
+- 공유 카드
+- draft
+
+### 프로필
+
+- 닉네임
+- 소개
+- 러닝 경험
+- 선택적 동네
+
+123개 신발 검색은 프로필에서 제거하고 보관함 > 내 장비로 이동한다.
+
+## 9.6 설정
+
+Settings index는 최대 6개 row다.
+
+```text
+코치·소리
+달리는 중
+알림·권한
+계정·백업
+개인정보·데이터
+앱 정보·도움말
+```
+
+각 row:
+
+- title
+- 현재 summary
+- chevron
+
+설정 index에 radio, chip list, text input, debug table을 직접 노출하지 않는다.
+
+### 코치·소리
+
+첫 화면:
+
+- 현재 코치 preset
+- 실제 sample
+- quick presets 3개
+
+후보:
+
+```text
+가볍게 안내
+코치와 함께
+풀토크
+```
+
+상세:
+
+- persona
+- 존댓말/반말
+- density
+- voice
+- rate
+- music
+- metronome balance
+
+### 달리는 중
+
+기본:
+
+- 자동 멈춤 on/off/추천
+- 기록 음성
+- countdown
+- 화면 mode
+
+`고급`:
+
+- auto-pause 내부 threshold
+- 상세 간격
+- calories/weight
+- night behavior
+
+### 알림·권한
+
+현재 상태 요약과 OS settings 링크.
+
+### 계정·백업
+
+사용 가능한 기능만 보여 준다.
+
+- 로그인 provider가 모두 disabled면 provider list와 blocker를 일반 사용자에게 나열하지 않음
+- `계정 연결 준비 중` 한 줄은 app info 또는 help
+- local export
+- import
+- sync
+- delete account
+
+### 개인정보·데이터
+
+- 데이터 저장 설명
+- export/import
+- local delete
+- privacy
+- permissions
+- account delete
+
+### 앱 정보·도움말
+
+일반:
+
+- app version
+- update status
+- help
+- contact
+- privacy
+
+진단:
+
+- versionCode
+- SHA
+- revision
+- schema
+- runtime
+- feature flags
+
+진단은 `버전 7번 누르기` 또는 명시적 developer action 뒤에만.
+
+---
+
+# 10. 시각 디자인 — SPORT SIGNAL SYSTEM
+
+사용자가 원하는 인상:
+
+```text
+깔끔함
+스포티함
+빠름
+정확함
+프리미엄
+성인
+과장되지 않음
+```
+
+## 10.1 색
+
+후보:
+
+```ts
+canvas:        #F4F6F8
+surface:       #FFFFFF
+surfaceStrong: #E9EDF2
+ink:           #0C1424
+inkSoft:       #49566A
+muted:         #6B778A
+line:          #D9DFE7
+
+signal:        #FF5A2F
+signalStrong:  #D83F18
+signalSoft:    #FFE3D9
+
+sportNavy:     #101D34
+sportBlue:     #2C6BED
+positive:      #16A36A
+warning:       #C88719
+danger:        #D13B38
+```
+
+정확한 대비를 실제 계산한다.
+
+현재 export 이름을 즉시 삭제하지 않고 alias와 migration을 둔다.
+
+## 10.2 warm lifestyle 느낌 줄이기
+
+- beige canvas 감소
+- warm card 남발 금지
+- 모든 면을 둥근 카드로 감싸지 않음
+- radius:
+  - row 10~12
+  - card 14~16
+  - hero 18
+  - pill은 tag와 segmented에만
+- 큰 24 radius를 모든 카드에 사용 금지
+
+## 10.3 타이포그래피
+
+새 외부 font 의존성을 현재 심사 중에 추가하지 않는다.
+
+system font로:
+
+- headline 강한 800~900
+- metric tabular numbers 가능하면 platform option
+- body 400~600
+- secondary 정보 12~14
+- letter spacing 과도 사용 금지
+
+한 화면의 font weight를 3단계 이상 남발하지 않는다.
+
+## 10.4 surface hierarchy
+
+Card만 쓰지 않는다.
+
+새 component 후보:
+
+```text
+Screen
+Section
+HeroAction
+Rail
+MetricStrip
+ListRow
+ActionRow
+SegmentedNav
+FilterButton
+BottomSheet
+CompactStatus
+EmptyState
+InlineNotice
+```
+
+Card는 독립된 grouped interaction에만 사용한다.
+
+목표:
+
+- Home의 card 수 50% 이상 감소
+- Settings index의 card 수 0~1
+- My hub의 card 수 최대 4
+- row는 divider와 whitespace 사용
+- Chip은 filter·state·segmented에만
+
+## 10.5 브랜드 모티프
+
+**Run Rail / Signal Line**
+
+- 얇은 signal orange line
+- 진행점
+- split marker
+- goal marker
+- run state transition
+
+모든 화면에 장식으로 반복하지 않고:
+
+- Today rail
+- plan progress
+- active run
+- completion
+
+에 의미 있게 사용한다.
+
+## 10.6 motion
+
+- 140~220ms
+- section switch
+- rail progress
+- sheet
+- run start
+- completion
+
+금지:
+
+- 과한 bounce
+- 모든 card entrance animation
+- glow
+- heavy gradient
+- long intro
+- reduced motion 무시
+
+---
+
+# 11. 코드·폴더 구조 개편
+
+기존 `domains`와 `services`는 제품 로직 정본이므로 보존한다.
+
+문제는 거대한 screen 파일과 navigation·screen의 혼합이다.
+
+## 11.1 목표 구조
+
+```text
+apps/mobile/
+  app/
+    shell/
+      AppShell.tsx
+      PrimaryNavigation.tsx
+      PrimaryTabBar.tsx
+      TopBar.tsx
+      RunDock.tsx
+      routeConfig.ts
+      legacyRouteAdapter.ts
+      backStack.ts
+
+    features/
+      today/
+        screens/
+        components/
+        model/
+      training/
+        screens/
+        components/
+        model/
+      run/
+        screens/
+          RunSetupScreen.tsx
+          ActiveRunScreen.tsx
+          RunCompleteScreen.tsx
+        components/
+        sheets/
+        model/
+      explore/
+        screens/
+        components/
+        model/
+      me/
+        screens/
+        components/
+        model/
+      settings/
+        screens/
+        components/
+        model/
+
+    shared/
+      ui/
+      layout/
+      feedback/
+      navigation/
+      accessibility/
+
+  domains/
+    activities/
+    badges/
+    challenges/
+    coaching/
+    navigation/
+    programs/
+    projects/
+    races/
+    shoes/
+    social/
+    tracking/
+    workouts/
+
+  services/
+    audio/
+    storage/
+    notifications/
+    static-data/
+    supabase/
+    updates/
+```
+
+## 11.2 점진적 migration
+
+한 번에 모든 파일을 이동하지 않는다.
+
+1. new shell 추가
+2. legacy route adapter
+3. Today migration
+4. Run split
+5. Training migration
+6. Explore migration
+7. Me migration
+8. Settings migration
+9. old wrapper 제거
+10. dead route 제거
+
+old import path가 많은 경우 compatibility re-export를 둔다.
+
+## 11.3 파일 크기·책임
+
+목표:
+
+- 화면 파일은 orchestration 중심
+- 하나의 화면 파일에 data calculation, storage, navigation, UI를 모두 넣지 않음
+- non-generated screen file 후보 350줄 이하
+- 500줄 초과는 분리 이유가 없으면 P2
+- StartScreen·SettingsScreen·MyScreen·ProgramsScreen은 반드시 분리
+- pure model은 Node test 가능
+- navigation config는 pure data
+- feature mapping 자동검사
+
+숫자만 맞추기 위한 의미 없는 파일 쪼개기 금지.
+
+---
+
+# 12. 구체적인 컴포넌트 분리
+
+## StartScreen
+
+분리:
+
+```text
+RunSetupScreen
+RunSetupSummary
+DurationSheet
+RunTypeSheet
+CoachPresetSheet
+MetronomeSheet
+AdvancedRunSettingsSheet
+ActiveRunScreen
+RunMetrics
+RunPhaseRail
+RunQuickControls
+RunCompletionScreen
+```
+
+tracking·audio orchestration은 hook 또는 controller로 분리.
+
+## SettingsScreen
+
+분리:
+
+```text
+SettingsIndexScreen
+CoachSoundSettingsScreen
+RunExperienceSettingsScreen
+PermissionSettingsScreen
+AccountBackupSettingsScreen
+PrivacyDataSettingsScreen
+AboutHelpScreen
+DiagnosticsScreen
+```
+
+## MyScreen
+
+분리:
+
+```text
+MeHubScreen
+ActivityHistoryScreen
+AnalysisScreen
+AchievementsScreen
+SavedItemsScreen
+```
+
+## ProgramsScreen
+
+분리:
+
+```text
+TrainingHubScreen
+TrainingTodayView
+CurrentPlanView
+PlanCatalogScreen
+WorkoutLibraryScreen
+ChallengeScreen
+ProjectsScreen
+```
+
+## HomeScreen
+
+분리:
+
+```text
+TodayScreen
+TodayAction
+RunRail
+WeekStrip
+NextEventRow
+RecentActivitySummary
+ExploreShortcut
+```
+
+---
+
+# 13. 사용 흐름 시뮬레이션
+
+각 흐름을 실제 코드와 화면으로 수행한다.
+
+## 13.1 신규 사용자
+
+목표:
+
+- 첫 실행 완료
+- 오늘 추천 확인
+- 첫 러닝 시작
+- 완료 저장
+
+합격:
+
+- disabled login 설명을 강제로 거치지 않음
+- 시스템 권한은 필요할 때
+- 추천 러닝까지 3개 이하 주요 결정
+- 시작 CTA가 명확
+- 완료 후 다음 행동
+
+## 13.2 기존 사용자 — 오늘 바로 달리기
+
+목표:
+
+- 앱 실행
+- 추천 러닝 시작
+
+합격:
+
+- 1 tap
+- 별도 설정 화면 없음
+- 기본값 복원
+- active screen 진입
+
+## 13.3 기존 사용자 — 직접 러닝
+
+목표:
+
+- 달리기 탭
+- 시간 변경
+- 유형 또는 코치 변경
+- 시작
+
+합격:
+
+- 2~4 action
+- unrelated setting 노출 없음
+
+## 13.4 계획 사용자
+
+목표:
+
+- 훈련
+- 현재 plan
+- 오늘 회차
+- 시작
+
+합격:
+
+- plan catalog를 보지 않음
+- 현재 회차가 먼저
+- 1~2 tap
+
+## 13.5 대회 사용자
+
+목표:
+
+- 찾기 > 대회
+- 접수 중 10K
+- 지역 filter
+- 목표 저장
+- 계획 연결
+
+합격:
+
+- 목록 보기 전에 filter wall 없음
+- filter sheet
+- 목표 저장 뒤 다음 행동
+
+## 13.6 러닝화 사용자
+
+목표:
+
+- 찾기 > 러닝화
+- 첫 10K 신발 추천
+- 두 신발 비교
+- 저장
+
+## 13.7 기록 사용자
+
+목표:
+
+- 나
+- 최근 활동
+- 월간 분석
+- 배지
+- 데이터 export
+
+## 13.8 설정 사용자
+
+목표:
+
+- 나 > 설정
+- 코치 변경
+- 자동 멈춤 변경
+- 개인정보 확인
+
+합격:
+
+- settings index에서 목적을 바로 찾음
+- 비활성 provider 목록을 먼저 보지 않음
+- developer data 없음
+
+---
+
+# 14. Interaction Budget
+
+자동 또는 수동으로 측정한다.
+
+| 작업 | 목표 |
+|---|---:|
+| 앱 실행 → 추천 러닝 시작 | 1 tap |
+| 앱 실행 → 달리기 setup | 1 tap |
+| setup → 시간 변경 → start | 2~3 actions |
+| setup → 코치 preset 변경 → start | 2~3 actions |
+| home → current plan run | 2 taps 이하 |
+| 대회 tab → 기본 목록 | 0 추가 tap |
+| 대회 filter 적용 | filter button 포함 3~5 actions |
+| 러닝화 추천 시작 | 2 taps 이하 |
+| recent activity 상세 | 2 taps 이하 |
+| 설정 → 코치 변경 | 3 taps 이하 |
+| 설정 → 데이터 export | 3 taps 이하 |
+| help | 3 taps 이하 |
+
+tap 수만 줄이기 위해 위험한 자동 실행을 하지 않는다.
+
+---
+
+# 15. 화면 복잡도 Budget
+
+## 전역
+
+- top-level navigation 5개
+- drawer 0개
+- 한 viewport primary CTA 최대 1개
+- top-level 화면의 horizontal segmented 1개 이하
+- top-level 화면의 chip group 2개 이하
+- 준비 중 기능 top-level 0개
+
+## Home
+
+- 기본 module 4개 이하
+- card 4개 이하
+- vertical scroll 2.5 viewport 후보
+- Today action 중복 0
+
+## Run Setup
+
+- 기본 editable row 3개 이하
+- advanced closed
+- 기본 chip group 1개 이하
+- start button 항상 쉽게 보임
+
+## Settings
+
+- index row 6개 이하
+- index interactive control 0
+- diagnostics 기본 노출 0
+- disabled integrations 기본 노출 0
+
+## Races
+
+- 결과 전 visible filter band 최대 1개
+- search + filter button + view toggle
+- 상세 filter는 sheet
+
+## Me
+
+- hub section 5개 이하
+- 전체 배지 list 기본 노출 금지
+- full analytics 별도 screen
+
+---
+
+# 16. Responsive·접근성
+
+검증 크기:
+
+```text
+320×568
+360×800
+390×844
+412×915
+tablet
+landscape
+```
+
+상태:
+
+- 100%
+- 130%
+- 160%
+- 200% font
+- TalkBack
+- VoiceOver
+- reduced motion
+- dark active run
+- light app shell
+
+필수:
+
+- touch 48dp
+- horizontal overflow 0
+- clipped label 0
+- tab label single word
+- color-only state 0
+- bottom nav safe area
+- sheet keyboard
+- back behavior
+- screen reader focus
+- live region 남용 금지
+
+---
+
+# 17. 시각 검증
+
+자동테스트만으로 디자인 PASS 금지.
+
+반드시 capture:
+
+- Today new user
+- Today active plan
+- Today goal race
+- Training Today
+- Current Plan
+- Workout Library
+- Run Setup default
+- Run Setup advanced
+- Active Run day
+- Active Run night
+- Explore Races
+- Race filter sheet
+- Explore Shoes
+- Explore Knowledge
+- Me hub
+- Analysis
+- Achievements
+- Settings index
+- Coach settings
+- Data settings
+- empty/offline/error/loading
+
+각 화면:
+
+- 390×844
+- 320×568
+- 200% text 중요 화면
+- screenshot before/after
+- visual diff report
+
+Figma connector가 있으면:
+
+1. 현재 screen capture
+2. V7 IA diagram
+3. Today·Training·Run·Explore·Me·Settings mockup
+4. design tokens
+5. component states
+6. 코드와 mapping
+
+Figma 작업이 불가능하면:
+
+- `docs/design/v7/IA.mmd`
+- `docs/design/v7/SCREEN_SPECS.md`
+- `docs/design/v7/COMPONENT_MATRIX.md`
+- screenshots
+
+를 만든다.
+
+---
+
+# 18. 테스트 계약
+
+## 18.1 Feature Preservation Matrix
+
+모든 기존 기능을 자동 inventory 한다.
+
+```ts
+type FeatureMigration = {
+  legacyRoute: string;
+  featureId: string;
+  oldEntry: string;
+  newPrimary: 'today' | 'training' | 'run' | 'explore' | 'me';
+  newRoute: string;
+  visibility: 'PRIMARY' | 'CONTEXTUAL' | 'SECONDARY' | 'ADVANCED' | 'FEATURE_GATED' | 'DEVELOPER_ONLY';
+  reachable: boolean;
+  preservedStorageKeys: string[];
+};
+```
+
+합격:
+
+```text
+existing feature mapped = 100%
+UNMAPPED = 0
+unreachable = 0
+duplicate primary home = 0
+```
+
+## 18.2 Navigation
+
+- primary destinations exactly 5
+- drawer not mounted
+- hamburger not shown on top-level
+- child screen back
+- each tab state retention
+- Android back
+- deep link
+- notification
+- old lastTab migration
+- unknown route fallback
+- active run tabs hidden
+- completed run tabs restored
+
+## 18.3 Home
+
+- TodayAction one
+- primary CTA one
+- condition-based modules
+- no shoe ranking unless contextual flag
+- no duplicate today recommendation
+- urgent event priority
+- empty state
+
+## 18.4 Settings
+
+- six index rows
+- no debug info in index
+- no disabled integration list in index
+- each row routes correctly
+- existing values read/write same keys
+- advanced values preserved
+- destructive action confirmation
+
+## 18.5 Run
+
+- setup defaults
+- sheets
+- active/complete state
+- open-ended
+- coach V6
+- metronome
+- GPS fallback
+- pause
+- recovery
+- no regression
+
+## 18.6 Performance
+
+before/after:
+
+- app startup
+- Today first render
+- Training first render
+- Settings first render
+- navigation switch
+- race list
+- shoe list
+- 1,000 activities
+- 40 plans
+- 103 workouts
+- 48+ badges
+- memory
+- rerender
+- bundle size
+
+합리적 이유 없는 10% 이상 regression 수정.
+
+---
+
+# 19. 개발 단계
+
+## Wave 0 — 증거·동결
+
+- latest main
+- open PR #71 및 UX 관련 active PR
+- V6 branch·merge 상태
+- feature inventory
+- route inventory
+- storage inventory
+- screenshots
+- tap count
+- baseline tests
+- rollback SHA
+
+오래된 #35·#36·#39·#55 등의 중복 PR을 실제 diff 없이 이어받지 않는다.
+현재 main에 들어간 내용과 안 들어간 내용을 구분한다.
+
+## Wave 1 — Navigation Shell
+
+- 5 primary destinations
+- no drawer runtime
+- new top bar
+- child back
+- legacy route adapter
+- route tests
+
+## Wave 2 — Today
+
+- hero+TodayCard merge
+- Run Rail
+- contextual modules
+- lower content move to Explore/Me
+- screenshots
+
+## Wave 3 — Run
+
+- split setup/active/complete
+- Run Dock
+- sheets
+- preserve V6 audio and tracking
+- interaction tests
+
+## Wave 4 — Training
+
+- Today/Plan/Library segmented
+- current plan first
+- catalog separate
+- challenge/project/cadence secondary
+- all features reachable
+
+## Wave 5 — Explore
+
+- Races/Shoes/Knowledge
+- race filter sheet
+- guided shoes
+- knowledge search
+- community gated
+
+## Wave 6 — Me
+
+- hub
+- activities
+- analysis
+- achievements
+- saved
+- profile cleanup
+
+## Wave 7 — Settings
+
+- six-row index
+- nested screens
+- advanced disclosure
+- diagnostics hidden
+- unavailable feature gating
+
+## Wave 8 — Visual System
+
+- Sport Signal tokens
+- component hierarchy
+- reduce cards/chips
+- Run Rail
+- responsive polish
+- motion
+
+## Wave 9 — Folder Migration
+
+- feature folders
+- compatibility exports
+- remove legacy components
+- dead code
+- import boundaries
+
+## Wave 10 — Three Audits
+
+Audit 1:
+- user tasks and discoverability
+
+Audit 2:
+- data, navigation, security, release
+
+Audit 3:
+- visual, accessibility, performance
+
+각 audit에서 문제를 직접 수정하고 전체 회귀검사.
+
+---
+
+# 20. 첫 응답 형식
+
+첫 응답은 추상적 장문 계획서가 아니다.
+
+```text
+RUNNINGBOM V7 UX RESTRUCTURE: STARTING
+
+Latest origin/main SHA:
+Open UX/navigation/V6 PRs:
+Current app version:
+Current primary tabs:
+Current drawer top items:
+Current drawer child items:
+Current routes:
+Current home modules:
+Current settings major sections:
+Current settings controls:
+Current run-setup controls:
+Current training sections:
+Current race filter bands:
+Current My sections:
+Current profile responsibilities:
+Current top-level unavailable destinations:
+Storage keys touched:
+Production permission diff:
+Baseline tests:
+Screenshot capability:
+Figma capability:
+Rollback SHA:
+```
+
+숫자는 실제 코드로 센다.
+그 뒤 바로 Wave 0을 시작한다.
+
+---
+
+# 21. 산출물
+
+기존 표준문서가 있으면 확장한다.
+
+```text
+docs/design/v7/
+  CURRENT_UX_AUDIT.md
+  FEATURE_PRESERVATION_MATRIX.md
+  INFORMATION_ARCHITECTURE.md
+  SCREEN_SPECS.md
+  SPORT_SIGNAL_DESIGN_SYSTEM.md
+  INTERACTION_BUDGET.md
+  SETTINGS_RESTRUCTURE.md
+  NAVIGATION_MIGRATION.md
+  FOLDER_MIGRATION.md
+  VISUAL_DIFF_REPORT.md
+  ACCESSIBILITY_REPORT.md
+  PERFORMANCE_REPORT.md
+  DEVICE_GATES.md
+  FINAL_TRACEABILITY.md
+  IA.mmd
+```
+
+screenshots:
+
+```text
+artifacts/v7-ui/before/
+artifacts/v7-ui/after/
+```
+
+코드 없이 문서만 만들면 완료가 아니다.
+코드만 만들고 screenshot·traceability가 없으면 완료가 아니다.
+
+---
+
+# 22. 완료 상태
+
+각 항목:
+
+```text
+DESIGNED
+IMPLEMENTED_NOT_CONNECTED
+AUTOMATED_PASS
+VISUAL_REVIEW_REQUIRED
+DEVICE_REQUIRED
+PASS
+FAIL
+BLOCKED_EXTERNAL
+BLOCKED_CEO
+```
+
+최종 상태:
+
+```text
+AUTOMATED_PASS_VISUAL_DEVICE_REQUIRED
+RELEASE_CANDIDATE
+FAIL
+```
+
+`RELEASE_CANDIDATE` 조건:
+
+- P0 = 0
+- P1 = 0
+- 수정 가능한 P2 = 0
+- existing feature mapping 100%
+- top-level destination = 5
+- mounted drawer = 0
+- duplicate global navigation = 0
+- storage regression = 0
+- permission regression = 0
+- CI PASS
+- native export PASS
+- screenshot review PASS
+- accessibility PASS
+- required device PASS
+- rollback prepared
+
+---
+
+# 23. 최종 보고 형식
+
+1. 왜 복잡했는가 — 코드 증거
+2. 새 정보구조
+3. 기존 기능 보존 표
+4. 화면별 before/after
+5. 새 디자인 시스템
+6. 내비게이션
+7. Today
+8. Training
+9. Run
+10. Explore
+11. Me
+12. Settings
+13. folder migration
+14. tests
+15. screenshots
+16. accessibility
+17. performance
+18. permissions
+19. storage compatibility
+20. open PR conflict
+21. device gates
+22. rollback
+23. 아직 하지 못한 것
+24. CEO 확인사항
+
+---
+
+# 24. 최종 성공 질문
+
+성공 기준은 기능 수가 아니다.
+
+> 앱을 처음 켠 사람이 기능을 공부하지 않아도 오늘 할 일을 시작할 수 있고, 대회·훈련·러닝화·기록·코치·설정의 깊은 기능은 필요할 때 세 단계 안에서 찾을 수 있으며, 기존 데이터와 기능은 하나도 사라지지 않았는가?
+
+이 질문을 실제 코드·tap count·screenshot·테스트·실기기 증거로 답하라.
+
+계획만 작성하지 말고 지금 즉시 Wave 0부터 실행하라.
