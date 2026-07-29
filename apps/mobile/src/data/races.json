@@ -1,5 +1,5 @@
 {
-  "revision": "2026.07.29-race-data-18",
+  "revision": "2026.07.30-race-data-19",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -1102,7 +1102,7 @@
       "registrationOpensAt": "2026-06-29T00:00:00+09:00",
       "registrationClosesAt": "2026-07-29T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "6/29 - 7/29",
       "organizer": "일간스포츠",
       "verifiedAt": "마라톤온라인 home 아이콘",
@@ -1333,7 +1333,7 @@
       "registrationOpensAt": "2026-07-30T00:00:00+09:00",
       "registrationClosesAt": "2026-08-30T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "07/30 - 08/30",
       "organizer": "쿠팡플레이",
       "verifiedAt": "마라톤GO 공개 일정 상세",
@@ -2829,7 +2829,7 @@
       "registrationOpensAt": "2026-07-30T00:00:00+09:00",
       "registrationClosesAt": "2026-10-11T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "07/30 - 10/11",
       "organizer": "중랑구육상연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
@@ -3826,7 +3826,7 @@
       "registrationOpensAt": "2026-06-20T00:00:00+09:00",
       "registrationClosesAt": "2026-07-29T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "6/20 - 7/29",
       "organizer": "세종특별자치시육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
