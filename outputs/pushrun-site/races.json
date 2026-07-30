@@ -1,5 +1,5 @@
 {
-  "version": "2026.07.30-race-data-19",
+  "version": "2026.07.31-race-data-20",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -218,7 +218,7 @@
     },
     {
       "date": "2026-08-01",
-      "status": "open",
+      "status": "closed",
       "name": "2026 인사이더런 S",
       "region": "경기",
       "venue": "일산 킨텍스 제2전시장 7,8",
@@ -1799,8 +1799,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ulsan-namgu-athletics-short-marathon",
       "sourceName": "마라톤GO",
       "organizer": "울산광역시 남구 육상연맹",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-07-30T17:11:20.335Z",
+      "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2231,8 +2231,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-run-your-way-seoul-10k",
       "sourceName": "마라톤GO",
       "organizer": "뉴발란스",
-      "dataVerifiedAt": "2026-07-28T10:13:36.762Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-07-30T17:11:20.335Z",
+      "status": "open",
       "courseLabel": "10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2889,8 +2889,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/5th-cheonan-leebongju-marathon",
       "sourceName": "마라톤GO",
       "organizer": "-",
-      "dataVerifiedAt": "2026-07-24T17:59:02.557Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-07-30T17:11:20.335Z",
+      "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -3350,8 +3350,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-sejongrun-with-naver-works",
       "sourceName": "마라톤GO",
       "organizer": "세종시 육상연맹",
-      "dataVerifiedAt": "2026-07-24T17:59:02.557Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-07-30T17:11:20.335Z",
+      "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4417,7 +4417,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-07-29T16:57:53.879Z",
+  "lastSuccessfulRefreshAt": "2026-07-30T17:11:20.335Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
