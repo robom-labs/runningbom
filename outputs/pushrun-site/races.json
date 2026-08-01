@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.01-race-data-21",
+  "version": "2026.08.02-race-data-22",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -107,27 +107,6 @@
       "sourceDetailUrl": "https://www.chuncheonmarathon.com/apply/part-application.html"
     },
     {
-      "id": "night-run-busan",
-      "name": "2026 나이트런 부산",
-      "region": "부산",
-      "city": "광안리",
-      "venue": "광안리 해변",
-      "raceDate": "2026-08-01T19:00:00+09:00",
-      "registrationOpenAt": "2026-06-01T10:00:00+09:00",
-      "registrationCloseAt": "2026-07-01T23:59:00+09:00",
-      "registrationUrl": "https://www.nightracebusan.co.kr/",
-      "distances": [
-        "10K",
-        "5K"
-      ],
-      "status": "closed",
-      "capacity": 7000,
-      "popularity": 88,
-      "sourceName": "마라톤GO",
-      "note": "6월 티켓 오픈 예정으로 공지된 대회입니다.",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-night-run-busan"
-    },
-    {
       "id": "mbn-seoul",
       "name": "2026 MBN 서울마라톤",
       "region": "서울",
@@ -172,26 +151,6 @@
     }
   ],
   "scheduleFeed": [
-    {
-      "date": "2026-08-01",
-      "status": "closed",
-      "name": "2026 인사이더런 S",
-      "region": "경기",
-      "venue": "일산 킨텍스 제2전시장 7,8",
-      "time": "09:30",
-      "distances": [
-        "10K"
-      ],
-      "registrationUrl": "https://insiderun.me/",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-03-26T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-30T23:59:00+09:00",
-      "registrationPeriodLabel": "3/26 - 7/30",
-      "registrationPeriodSource": "2026년3월26일~2026년7월30일",
-      "courseLabel": "10km",
-      "organizer": "러너블"
-    },
     {
       "name": "2026 쿨밸리트레일레이스",
       "date": "2026-08-02",
@@ -3506,8 +3465,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-dmz-open-peace-marathon",
       "sourceName": "마라톤GO",
       "organizer": "경기도",
-      "dataVerifiedAt": "2026-07-31T18:07:31.708Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-01T15:47:09.600Z",
+      "status": "closed",
       "courseLabel": "Half,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4373,7 +4332,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-07-31T18:07:31.708Z",
+  "lastSuccessfulRefreshAt": "2026-08-01T15:47:09.600Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
