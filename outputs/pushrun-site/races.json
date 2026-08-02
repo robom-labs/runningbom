@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.02-race-data-23",
+  "version": "2026.08.03-race-data-24",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -151,29 +151,6 @@
     }
   ],
   "scheduleFeed": [
-    {
-      "name": "2026 쿨밸리트레일레이스",
-      "date": "2026-08-02",
-      "time": "08:00",
-      "region": "전북",
-      "venue": "장수종합경기장",
-      "distances": [
-        "18K"
-      ],
-      "registrationOpenAt": "2026-05-11T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-10T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "05/11 - 07/10",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "registrationUrl": "https://rocknrun.kr/coolvalleytrailrace_info",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-cool-valley-trail-race",
-      "sourceName": "마라톤GO",
-      "organizer": "(주)락앤런",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "closed",
-      "courseLabel": "18K",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
     {
       "date": "2026-08-08",
       "status": "closed",
@@ -1387,8 +1364,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-guro-mayor-anyangcheon-autumn-run-2026-09-13",
       "sourceName": "마라톤GO",
       "organizer": "구로구육상연맹",
-      "dataVerifiedAt": "2026-07-28T10:13:36.762Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-02T15:48:16.664Z",
+      "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2146,8 +2123,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-run-your-way-seoul-10k",
       "sourceName": "마라톤GO",
       "organizer": "뉴발란스",
-      "dataVerifiedAt": "2026-07-30T17:11:20.335Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-02T15:48:16.664Z",
+      "status": "closed",
       "courseLabel": "10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -3068,7 +3045,7 @@
     },
     {
       "date": "2026-10-18",
-      "status": "scheduled",
+      "status": "open",
       "name": "제22회 대구 북구사랑 마라톤",
       "region": "대구",
       "venue": "금호강 산격야영장",
@@ -3849,8 +3826,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/26th-suncheon-namseungryong-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "순천시체육회",
-      "dataVerifiedAt": "2026-07-24T17:59:02.557Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-02T15:48:16.664Z",
+      "status": "open",
       "courseLabel": "Full,Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4332,7 +4309,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-01T15:47:09.600Z",
+  "lastSuccessfulRefreshAt": "2026-08-02T15:48:16.664Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",

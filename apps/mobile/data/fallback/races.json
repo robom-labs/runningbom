@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026.08.02-race-data-23",
-  "generatedAt": "2026-08-01T15:47:09.600Z",
+  "contentVersion": "2026.08.03-race-data-24",
+  "generatedAt": "2026-08-02T15:48:16.664Z",
   "source": {
     "kind": "verified-web-normalization",
     "path": "outputs/pushrun-site/races.json",
@@ -13,26 +13,6 @@
     ]
   },
   "records": [
-    {
-      "id": "schedule-51a59efe9157",
-      "name": "2026 쿨밸리트레일레이스",
-      "region": "전북",
-      "venue": "장수종합경기장",
-      "raceDate": "2026-08-02",
-      "distances": [
-        "18K"
-      ],
-      "registrationOpensAt": "2026-05-11T00:00:00+09:00",
-      "registrationClosesAt": "2026-07-10T23:59:00+09:00",
-      "registrationTimeConfirmed": false,
-      "registrationStatus": "closed",
-      "registrationPeriodLabel": "05/11 - 07/10",
-      "organizer": "(주)락앤런",
-      "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "https://rocknrun.kr/coolvalleytrailrace_info",
-      "externalLinkKind": "official",
-      "sourceName": "마라톤GO"
-    },
     {
       "id": "schedule-aabb8fced5e3",
       "name": "2026 양산 어필(up-hill) 레이스",
@@ -1158,7 +1138,7 @@
       "registrationOpensAt": "2026-08-03T00:00:00+09:00",
       "registrationClosesAt": "2026-08-14T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "08/03 - 08/14",
       "organizer": "구로구육상연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
@@ -1944,7 +1924,7 @@
       "registrationOpensAt": "2026-07-31T00:00:00+09:00",
       "registrationClosesAt": "2026-08-02T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "07/31 - 08/02",
       "organizer": "뉴발란스",
       "verifiedAt": "마라톤GO 공개 일정 상세",
@@ -2761,7 +2741,7 @@
       "registrationOpensAt": "2026-08-03T00:00:00+09:00",
       "registrationClosesAt": "2026-08-24T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "8/3 - 8/24",
       "organizer": "대구광역시북구체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
@@ -3525,7 +3505,7 @@
       "registrationOpensAt": "2026-08-03T00:00:00+09:00",
       "registrationClosesAt": "2026-10-16T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "08/03 - 10/16",
       "organizer": "순천시체육회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
