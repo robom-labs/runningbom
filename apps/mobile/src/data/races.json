@@ -1,5 +1,5 @@
 {
-  "revision": "2026.08.02-race-data-22",
+  "revision": "2026.08.02-race-data-23",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -2128,7 +2128,7 @@
       "registrationOpensAt": "2026-08-02T09:00:00+09:00",
       "registrationClosesAt": "2026-08-23T23:59:00+09:00",
       "registrationTimeConfirmed": true,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "8/2 - 8/23",
       "organizer": "마라톤선교연합회/천주교수원교구",
       "verifiedAt": "2026-07-12",

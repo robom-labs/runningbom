@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.02-race-data-22",
+  "version": "2026.08.02-race-data-23",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -2388,7 +2388,7 @@
     },
     {
       "date": "2026-10-09",
-      "status": "scheduled",
+      "status": "open",
       "name": "WYD와 함께하는 생명사랑 마라톤/걷기 대회",
       "region": "경기",
       "venue": "안성 미리내 성지",

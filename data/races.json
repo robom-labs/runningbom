@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026.08.02-race-data-22",
+  "contentVersion": "2026.08.02-race-data-23",
   "generatedAt": "2026-08-01T15:47:09.600Z",
   "source": {
     "kind": "verified-web-normalization",
@@ -2139,7 +2139,7 @@
       "registrationOpensAt": "2026-08-02T09:00:00+09:00",
       "registrationClosesAt": "2026-08-23T23:59:00+09:00",
       "registrationTimeConfirmed": true,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "8/2 - 8/23",
       "organizer": "마라톤선교연합회/천주교수원교구",
       "verifiedAt": "2026-07-12",
