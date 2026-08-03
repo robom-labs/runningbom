@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026.08.03-race-data-24",
-  "generatedAt": "2026-08-02T15:48:16.664Z",
+  "contentVersion": "2026.08.04-race-data-25",
+  "generatedAt": "2026-08-03T22:16:40.220Z",
   "source": {
     "kind": "verified-web-normalization",
     "path": "outputs/pushrun-site/races.json",
@@ -1266,7 +1266,7 @@
       "registrationOpensAt": "2026-07-13T00:00:00+09:00",
       "registrationClosesAt": "2026-08-03T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "07/13 - 08/03",
       "organizer": "문경시, 문경시 청년센터",
       "verifiedAt": "마라톤GO 공개 일정 상세",
