@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026.08.04-race-data-26",
-  "generatedAt": "2026-08-03T22:16:40.220Z",
+  "contentVersion": "2026.08.05-race-data-27",
+  "generatedAt": "2026-08-04T20:00:35.649Z",
   "source": {
     "kind": "verified-web-normalization",
     "path": "outputs/pushrun-site/races.json",
@@ -2779,7 +2779,7 @@
       "registrationOpensAt": "2026-08-05T00:00:00+09:00",
       "registrationClosesAt": "2026-09-20T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "08/05 - 09/20",
       "organizer": "창원을 사랑하는 시민연합",
       "verifiedAt": "마라톤GO 공개 일정 상세",

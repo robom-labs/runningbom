@@ -1,5 +1,5 @@
 {
-  "revision": "2026.08.04-race-data-26",
+  "revision": "2026.08.05-race-data-27",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -2831,7 +2831,7 @@
       "registrationOpensAt": "2026-08-05T00:00:00+09:00",
       "registrationClosesAt": "2026-09-20T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "08/05 - 09/20",
       "organizer": "창원을 사랑하는 시민연합",
       "verifiedAt": "마라톤GO 공개 일정 상세",
