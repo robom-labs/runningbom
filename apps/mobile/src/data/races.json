@@ -1,5 +1,5 @@
 {
-  "revision": "2026.08.05-race-data-27",
+  "revision": "2026.08.06-race-data-28",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -1808,7 +1808,7 @@
       "registrationOpensAt": "2026-08-06T00:00:00+09:00",
       "registrationClosesAt": "2026-08-30T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "08/06 - 08/30",
       "organizer": "SM, KREAM",
       "verifiedAt": "마라톤GO 공개 일정 상세",
