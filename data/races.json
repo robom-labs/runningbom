@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026.08.07-race-data-29",
-  "generatedAt": "2026-08-07T00:18:19.474Z",
+  "contentVersion": "2026.08.08-race-data-30",
+  "generatedAt": "2026-08-07T19:18:56.804Z",
   "source": {
     "kind": "verified-web-normalization",
     "path": "outputs/pushrun-site/races.json",
@@ -1606,7 +1606,7 @@
       "registrationOpensAt": "2026-07-08T00:00:00+09:00",
       "registrationClosesAt": "2026-08-07T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "07/08 - 08/07",
       "organizer": "(주)경인일보",
       "verifiedAt": "마라톤GO 공개 일정 상세",
@@ -2560,7 +2560,7 @@
       "registrationOpensAt": "2026-07-27T00:00:00+09:00",
       "registrationClosesAt": "2026-08-07T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "07/27 - 08/07",
       "organizer": "한국유방건강재단",
       "verifiedAt": "마라톤GO 공개 일정 상세",
