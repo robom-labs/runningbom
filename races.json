@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.08-race-data-34",
+  "version": "2026.08.09-race-data-35",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -152,49 +152,6 @@
   ],
   "scheduleFeed": [
     {
-      "date": "2026-08-08",
-      "status": "closed",
-      "name": "2026 양산 어필(up-hill) 레이스",
-      "region": "경남",
-      "venue": "양산 에덴밸리 리조트 루지장",
-      "time": "17:30",
-      "distances": [
-        "Trail"
-      ],
-      "registrationUrl": "https://www.yangsanuphillrace.kr/",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-06-08T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-23T23:59:00+09:00",
-      "registrationPeriodLabel": "6/8 - 7/23",
-      "registrationPeriodSource": "2026년6월8일~2026년7월23일",
-      "courseLabel": "1.7Km",
-      "organizer": "양산시, 부산MBC"
-    },
-    {
-      "name": "제1회 테마임도 트레일런",
-      "date": "2026-08-08",
-      "time": "07:00 집결",
-      "region": "부산",
-      "venue": "부산스포원",
-      "distances": [
-        "50km"
-      ],
-      "registrationOpenAt": "2026-06-01T00:00:00+09:00",
-      "registrationCloseAt": "2026-06-30T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "06/01 - 06/30",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "registrationUrl": "https://korearun01.imweb.me/",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/1st-themeimdo-trailrun-2026-08-08",
-      "sourceName": "마라톤GO",
-      "organizer": "코리안런조직위",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "closed",
-      "courseLabel": "50km",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
       "date": "2026-08-15",
       "status": "closed",
       "name": "2026 안양천 달빛 나이트런",
@@ -273,8 +230,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-night-race",
       "sourceName": "마라톤GO",
       "organizer": "국민건강진흥원",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-08T16:02:04.796Z",
+      "status": "closed",
       "courseLabel": "8.15km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -3261,8 +3218,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gyeonggi-old-road-together-run",
       "sourceName": "마라톤GO",
       "organizer": "경기도",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-08T16:02:04.796Z",
+      "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4870,7 +4827,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-07T19:18:56.804Z",
+  "lastSuccessfulRefreshAt": "2026-08-08T16:02:04.796Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
