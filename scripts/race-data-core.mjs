@@ -238,6 +238,26 @@ function isCurrentOrFutureRace(race, today) {
   return String(race?.raceDate ?? race?.date ?? "").slice(0, 10) >= today;
 }
 
+export function registrationPeriodNeedsReview(race) {
+  const raceDate = String(race?.raceDate ?? race?.date ?? "").slice(0, 10);
+  const opensAt = String(race?.registrationOpenAt ?? "").slice(0, 10);
+  const closesAt = String(race?.registrationCloseAt ?? "").slice(0, 10);
+  if (!raceDate || !opensAt || !closesAt) return false;
+  return opensAt > closesAt || opensAt > raceDate || closesAt > raceDate;
+}
+
+function quarantineRegistrationPeriod(race) {
+  if (!registrationPeriodNeedsReview(race)) return race;
+  const next = {
+    ...race,
+    status: "unknown",
+    registrationDataStatus: "needs-review",
+    registrationDataIssue: "원문 접수 기간이 대회일 이후로 표시돼 상태를 자동 확정하지 않았습니다.",
+  };
+  delete next.registrationPeriodLabel;
+  return next;
+}
+
 // 기존 출처의 데이터를 지우지 않고, 신뢰 가능한 마라톤GO 상세에서 확인된 항목만 병합한다.
 // 신규 항목은 날짜·장소·거리·접수 기간이 모두 있을 때에만 scheduleFeed로 게시한다.
 export function mergeMarathonGoDiscoveries(data, discoveries, { now = Date.now(), checkedAt = new Date().toISOString() } = {}) {
@@ -255,7 +275,7 @@ export function mergeMarathonGoDiscoveries(data, discoveries, { now = Date.now()
     if (!discovery) {
       next.status = statusFromRegistrationPeriod(next.registrationOpenAt, next.registrationCloseAt, now, row.status);
     }
-    return next;
+    return quarantineRegistrationPeriod(next);
   });
   // featured는 사람이 공식 출처를 교차 확인해 선택한 영역이므로 자동 수집은 상태 갱신만 한다.
   const featuredRaces = mergeRows(currentFeatured, { discover: false }).filter((race) => isCurrentOrFutureRace(race, today));
@@ -264,7 +284,7 @@ export function mergeMarathonGoDiscoveries(data, discoveries, { now = Date.now()
   for (const discovery of validDiscoveries) {
     const identity = raceIdentity(discovery);
     if (!existing.has(identity)) {
-      scheduleFeed.push(createScheduleRace(discovery, now));
+      scheduleFeed.push(quarantineRegistrationPeriod(createScheduleRace(discovery, now)));
       existing.add(identity);
     }
   }

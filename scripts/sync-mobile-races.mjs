@@ -45,6 +45,8 @@ function normalizeRace(race, prefix) {
         }))
       : undefined,
     registrationStatus: race.status ?? "unknown",
+    registrationDataStatus: race.registrationDataStatus ?? undefined,
+    registrationDataIssue: race.registrationDataIssue ?? undefined,
     registrationPeriodLabel: race.registrationPeriodLabel ?? undefined,
     note: race.note ?? undefined,
     capacity: Number.isFinite(race.capacity) ? race.capacity : undefined,

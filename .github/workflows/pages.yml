@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - main
+  schedule:
+    # 데이터 갱신 뒤 배포 요청이 누락돼도 KST 03:47에 main 정본을 다시 배포한다.
+    - cron: "47 18 * * *"
   workflow_dispatch:
 
 permissions:

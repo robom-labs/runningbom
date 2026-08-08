@@ -136,6 +136,21 @@ for (const race of all) {
   ) {
     errors.push(`접수 기간 순서 오류: ${race.name}`);
   }
+  const raceDay = String(race.raceDate || race.date || "").slice(0, 10);
+  const registrationOpenDay = String(race.registrationOpenAt || "").slice(0, 10);
+  const registrationCloseDay = String(race.registrationCloseAt || "").slice(0, 10);
+  const periodNeedsReview = Boolean(
+    raceDay &&
+    registrationOpenDay &&
+    registrationCloseDay &&
+    (registrationOpenDay > raceDay || registrationCloseDay > raceDay)
+  );
+  if (periodNeedsReview && race.registrationDataStatus !== "needs-review") {
+    errors.push(`대회일 이후 접수 기간이 격리되지 않음: ${race.name}`);
+  }
+  if (race.registrationDataStatus === "needs-review" && race.status !== "unknown") {
+    errors.push(`재확인 접수 상태가 자동 확정됨: ${race.name}`);
+  }
 
   const identity = `${String(race.name).replace(/\s+/g, "").toLowerCase()}|${String(date).slice(0, 10)}`;
   if (identities.has(identity)) errors.push(`중복 대회: ${race.name} / ${String(date).slice(0, 10)}`);

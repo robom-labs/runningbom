@@ -16,6 +16,16 @@ import {
 
 const ACTIVE_MANIFEST_PATH = 'active-manifest.json';
 
+function newestBaseline(
+  bundle: StaticDataSnapshot,
+  lkg: StaticDataSnapshot | null,
+): StaticDataSnapshot {
+  if (!lkg) return bundle;
+  return Date.parse(lkg.manifest.generatedAt) >= Date.parse(bundle.manifest.generatedAt)
+    ? lkg
+    : bundle;
+}
+
 function safeVersionPath(contentVersion: string): string {
   if (!/^static-[a-f0-9]{20}$/.test(contentVersion)) {
     throw new Error('unsafe static contentVersion');
@@ -108,9 +118,10 @@ export async function refreshStaticData(
     options.digest,
   );
   const lkg = await loadLkg(options.storage, options.digest, options.appVersion);
+  const baseline = newestBaseline(bundle, lkg);
 
   if (!options.baseUrl) {
-    return lkg ?? bundle;
+    return baseline;
   }
 
   try {
@@ -122,6 +133,9 @@ export async function refreshStaticData(
     const manifest = parseStaticDataManifest(JSON.parse(manifestText));
     if (!appSupportsMinimumVersion(options.appVersion, manifest.minimumAppVersion)) {
       throw new Error('static data requires a newer app version');
+    }
+    if (Date.parse(manifest.generatedAt) < Date.parse(baseline.manifest.generatedAt)) {
+      throw new Error('static data is older than installed data');
     }
     const pairs = await Promise.all(
       STATIC_DATA_FILE_NAMES.map(async (fileName) => [
@@ -136,7 +150,7 @@ export async function refreshStaticData(
   } catch (error) {
     const reason = error instanceof Error ? error.message : String(error);
     return {
-      ...(lkg ?? bundle),
+      ...baseline,
       fallbackReason: reason,
     };
   }

@@ -19,6 +19,8 @@ export type Race = {
     timeConfirmed?: boolean;
   }>;
   registrationStatus?: 'open' | 'scheduled' | 'closed' | 'sold_out' | 'cancelled' | 'unknown' | string;
+  registrationDataStatus?: 'needs-review';
+  registrationDataIssue?: string;
   registrationPeriodLabel?: string;
   note?: string;
   capacity?: number;

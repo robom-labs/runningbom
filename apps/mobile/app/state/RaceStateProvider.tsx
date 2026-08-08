@@ -6,9 +6,11 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import Constants from 'expo-constants';
+import { AppState, type AppStateStatus } from 'react-native';
 
 import {
   bundledRevision,
@@ -26,8 +28,9 @@ import {
 } from '../../src/notifications';
 import type { Race } from '../../src/types';
 import { loadRunningbomStaticData } from '../../services/static-data';
+import { shouldRefreshRaceDataAfterBackground } from './raceRefreshPolicy';
 
-const appVersion = Constants.expoConfig?.version ?? '0.19.0';
+const appVersion = Constants.expoConfig?.version ?? '0.19.1';
 const staticDataBaseUrl =
   process.env.EXPO_PUBLIC_STATIC_DATA_URL ??
   'https://robom-labs.github.io/runningbom/data/';
@@ -72,35 +75,47 @@ export function RaceStateProvider({ children }: PropsWithChildren) {
   const [loading, setLoading] = useState(false);
   const [scheduledRaceIds, setScheduledRaceIds] = useState<Record<string, string>>({});
   const [busyRaceId, setBusyRaceId] = useState<string | null>(null);
+  const loadInFlight = useRef<Promise<void> | null>(null);
+  const backgroundedAt = useRef<number | null>(null);
+  const appState = useRef<AppStateStatus>(AppState.currentState);
 
-  const loadLatest = useCallback(async (signal?: AbortSignal) => {
-    setLoading(true);
-    try {
-      const snapshot = await loadRunningbomStaticData({
-        appVersion,
-        baseUrl: staticDataBaseUrl,
-        signal,
-      });
-      const raceDataset = snapshot.datasets['races.json'];
-      const latest = raceFeedFromRecords(raceDataset.contentVersion, raceDataset.records);
-      if (signal?.aborted) return;
-      setFeed((current) => (shouldReplaceRaceFeed(current, latest) ? latest : current));
-      const scheduled = await reconcileRegistrationNotifications(latest.races);
-      if (signal?.aborted) return;
-      setScheduledRaceIds(scheduledMap(scheduled));
-      if (snapshot.source === 'remote') {
-        setNotice('운영 데이터로 최신 접수 상태를 확인했어요.');
-      } else if (snapshot.source === 'lkg') {
-        setNotice('마지막으로 검증된 저장 데이터로 접수 상태를 확인했어요.');
-      } else {
-        setNotice('설치된 검증 데이터로 접수 상태를 확인했어요.');
+  const loadLatest = useCallback((signal?: AbortSignal): Promise<void> => {
+    if (loadInFlight.current) return loadInFlight.current;
+    const task = (async () => {
+      setLoading(true);
+      try {
+        const snapshot = await loadRunningbomStaticData({
+          appVersion,
+          baseUrl: staticDataBaseUrl,
+          signal,
+        });
+        const raceDataset = snapshot.datasets['races.json'];
+        const latest = raceFeedFromRecords(raceDataset.contentVersion, raceDataset.records);
+        if (signal?.aborted) return;
+        setFeed((current) => (shouldReplaceRaceFeed(current, latest) ? latest : current));
+        const scheduled = await reconcileRegistrationNotifications(latest.races);
+        if (signal?.aborted) return;
+        setScheduledRaceIds(scheduledMap(scheduled));
+        if (snapshot.source === 'remote') {
+          setNotice('운영 데이터로 최신 접수 상태를 확인했어요.');
+        } else if (snapshot.source === 'lkg') {
+          setNotice('마지막으로 검증된 저장 데이터로 접수 상태를 확인했어요.');
+        } else if (snapshot.fallbackReason) {
+          setNotice('운영 데이터보다 최신인 설치 데이터를 안전하게 사용하고 있어요.');
+        } else {
+          setNotice('설치된 검증 데이터로 접수 상태를 확인했어요.');
+        }
+      } catch {
+        if (signal?.aborted) return;
+        setNotice('최신 데이터를 불러오지 못해 설치된 검증 데이터를 사용하고 있어요.');
+      } finally {
+        if (!signal?.aborted) setLoading(false);
       }
-    } catch {
-      if (signal?.aborted) return;
-      setNotice('최신 데이터를 불러오지 못해 설치된 검증 데이터를 사용하고 있어요.');
-    } finally {
-      if (!signal?.aborted) setLoading(false);
-    }
+    })().finally(() => {
+      loadInFlight.current = null;
+    });
+    loadInFlight.current = task;
+    return task;
   }, []);
 
   useEffect(() => {
@@ -115,6 +130,26 @@ export function RaceStateProvider({ children }: PropsWithChildren) {
       .catch(() => undefined);
     void loadLatest(controller.signal);
     return () => controller.abort();
+  }, [loadLatest]);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (next: AppStateStatus) => {
+      const previous = appState.current;
+      appState.current = next;
+      if (previous === 'active' && next !== 'active') {
+        backgroundedAt.current = Date.now();
+        return;
+      }
+      if (
+        next === 'active' &&
+        previous !== 'active' &&
+        shouldRefreshRaceDataAfterBackground(backgroundedAt.current)
+      ) {
+        backgroundedAt.current = null;
+        void loadLatest();
+      }
+    });
+    return () => subscription.remove();
   }, [loadLatest]);
 
   const scheduleAlert = useCallback(async (race: Race) => {

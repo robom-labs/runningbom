@@ -15,6 +15,10 @@ import {
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const checkOnly = process.argv.includes("--check");
 const rootPackage = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
+const minimumAppVersion = rootPackage.staticDataMinimumAppVersion;
+if (!/^\d+\.\d+\.\d+$/.test(minimumAppVersion ?? "")) {
+  throw new Error("staticDataMinimumAppVersion이 semver 형식이 아닙니다.");
+}
 const webRaces = JSON.parse(await readFile(join(root, "outputs", "pushrun-site", "races.json"), "utf8"));
 const mobileRaces = JSON.parse(await readFile(join(root, "apps", "mobile", "src", "data", "races.json"), "utf8"));
 const shoeModule = await import(
@@ -147,7 +151,7 @@ const manifest = {
   schemaVersion: 1,
   contentVersion: contentVersionFor(checksums),
   generatedAt: latestIso([raceGeneratedAt, shoeGeneratedAt, coachGeneratedAt]),
-  minimumAppVersion: rootPackage.version,
+  minimumAppVersion,
   checksums,
   sizes,
   recordCounts,

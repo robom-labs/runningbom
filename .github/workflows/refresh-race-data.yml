@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: write
   contents: write
 
 concurrency:
@@ -43,6 +44,7 @@ jobs:
           path: outputs/race-data-refresh-report.json
           if-no-files-found: error
       - name: 검증된 변경만 main에 반영
+        id: publish
         run: |
           if git diff --quiet -- \
             outputs/pushrun-site/races.json \
@@ -50,6 +52,7 @@ jobs:
             data \
             apps/mobile/data/fallback; then
             echo "검증된 대회 데이터 변경이 없습니다."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git config user.name "robom-data-bot"
@@ -61,3 +64,9 @@ jobs:
             apps/mobile/data/fallback
           git commit -m "chore(data): 자동 대회 일정 동기화"
           git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: 최신 정적 데이터를 운영 Pages에 배포 요청
+        if: steps.publish.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run pages.yml --ref main

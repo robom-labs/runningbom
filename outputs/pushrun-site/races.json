@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.08-race-data-30",
+  "version": "2026.08.08-race-data-31",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -311,15 +311,16 @@
       "registrationOpenAt": "2025-12-05T00:00:00+09:00",
       "registrationCloseAt": "2028-07-31T23:59:00+09:00",
       "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "12/05 - 07/31",
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/38th-jirisan-hwadaejongju-trail-run-2026",
       "sourceName": "마라톤GO",
       "organizer": "(사)한국산악마라톤연맹",
       "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "open",
+      "status": "unknown",
       "courseLabel": "48km,40km",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
+      "registrationDataStatus": "needs-review",
+      "registrationDataIssue": "원문 접수 기간이 대회일 이후로 표시돼 상태를 자동 확정하지 않았습니다."
     },
     {
       "date": "2026-08-15",

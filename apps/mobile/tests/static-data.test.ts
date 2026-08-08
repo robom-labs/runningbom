@@ -56,7 +56,61 @@ describe('정적 데이터 manifest와 LKG', () => {
     });
     assert.equal(requestCount, 0);
     assert.equal(snapshot.source, 'bundle');
-    assert.equal(snapshot.datasets['races.json'].records.length, 183);
+    assert.equal(
+      snapshot.datasets['races.json'].records.length,
+      bundledStaticManifest.recordCounts['races.json'],
+    );
+  });
+
+  it('설치 번들보다 오래된 원격 데이터로 되돌아가지 않는다', async () => {
+    const remote = remotePayloads();
+    const olderManifest = {
+      ...bundledStaticManifest,
+      generatedAt: '2026-01-01T00:00:00.000Z',
+    };
+    remote.set(
+      'https://static.robom.kr/runningbom/manifest.json',
+      `${JSON.stringify(olderManifest, null, 2)}\n`,
+    );
+    const storage = new MemoryStorage();
+    const snapshot = await refreshStaticData({
+      appVersion: '0.19.0',
+      baseUrl: 'https://static.robom.kr/runningbom/',
+      bundledManifest: bundledStaticManifest,
+      bundledPayloadTexts: bundledStaticPayloadTexts,
+      storage,
+      digest,
+      request: async (url) => {
+        const value = remote.get(url);
+        if (!value) throw new Error(`missing test URL ${url}`);
+        return value;
+      },
+    });
+    assert.equal(snapshot.source, 'bundle');
+    assert.match(snapshot.fallbackReason ?? '', /older than installed/);
+    assert.equal(storage.writes.length, 0);
+  });
+
+  it('오래된 LKG보다 새 설치 번들을 우선한다', async () => {
+    const storage = new MemoryStorage();
+    const olderManifest = {
+      ...bundledStaticManifest,
+      generatedAt: '2026-01-01T00:00:00.000Z',
+    };
+    const versionPath = `versions/${olderManifest.contentVersion}`;
+    storage.values.set('active-manifest.json', `${JSON.stringify(olderManifest, null, 2)}\n`);
+    for (const [fileName, text] of Object.entries(bundledStaticPayloadTexts)) {
+      storage.values.set(`${versionPath}/${fileName}`, text);
+    }
+    const snapshot = await refreshStaticData({
+      appVersion: '0.19.0',
+      bundledManifest: bundledStaticManifest,
+      bundledPayloadTexts: bundledStaticPayloadTexts,
+      storage,
+      digest,
+    });
+    assert.equal(snapshot.source, 'bundle');
+    assert.equal(snapshot.manifest.generatedAt, bundledStaticManifest.generatedAt);
   });
 
   it('모든 원격 파일 검증 후 active manifest를 마지막에 교체한다', async () => {

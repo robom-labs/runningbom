@@ -26,7 +26,7 @@ const productionConfig = resolveRunningbomConfig(structuredClone(appJson.expo), 
 const previewConfig = resolveRunningbomConfig(structuredClone(appJson.expo), 'preview');
 
 assert(packageJson.version === rootPackageJson.version, '웹·모바일 앱 버전이 일치해야 합니다.');
-assert(packageJson.dependencies.expo === '~57.0.6', 'Expo SDK 57 버전이 고정되지 않았습니다.');
+assert(packageJson.dependencies.expo === '~57.0.11', 'Expo SDK 57 최신 패치 버전이 고정되지 않았습니다.');
 assert(packageJson.dependencies.react === '19.2.3', 'React 19.2.3이 필요합니다.');
 assert(packageJson.dependencies['react-native'] === '0.86.0', 'React Native 0.86.0이 필요합니다.');
 assert(!packageJson.dependencies['react-native-webview'], 'WebView 의존성은 허용하지 않습니다.');

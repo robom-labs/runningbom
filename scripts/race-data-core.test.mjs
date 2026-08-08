@@ -7,6 +7,7 @@ import {
   parseDateRange,
   parseMarathonGoDetail,
   raceIdentity,
+  registrationPeriodNeedsReview,
   statusFromRegistrationPeriod,
 } from "./race-data-core.mjs";
 
@@ -88,4 +89,33 @@ test("지난 대회와 지난 일정은 자동 게시 대상에서 제외한다"
   };
   const merged = mergeMarathonGoDiscoveries(current, [], { now: Date.parse("2026-07-24T00:00:00+09:00"), checkedAt: "2026-07-24T00:00:00.000Z" });
   assert.equal(merged.data.featuredRaces.length, 0);
+});
+
+test("대회일보다 늦은 접수 종료일은 공개 원문 값이어도 자동 상태 판정에서 격리한다", () => {
+  const current = {
+    version: "test",
+    featuredRaces: [],
+    scheduleFeed: [{
+      name: "기간 오류 대회",
+      date: "2026-08-15",
+      region: "전남",
+      venue: "공식 장소",
+      time: "03:00",
+      distances: ["Trail"],
+      registrationOpenAt: "2025-12-05T00:00:00+09:00",
+      registrationCloseAt: "2028-07-31T23:59:00+09:00",
+      registrationPeriodLabel: "12/05 - 07/31",
+      status: "open",
+      sourceName: "마라톤GO",
+    }],
+  };
+  assert.equal(registrationPeriodNeedsReview(current.scheduleFeed[0]), true);
+  const merged = mergeMarathonGoDiscoveries(current, [], {
+    now: Date.parse("2026-08-08T00:00:00+09:00"),
+    checkedAt: "2026-08-08T00:00:00.000Z",
+  });
+  const race = merged.data.scheduleFeed[0];
+  assert.equal(race.status, "unknown");
+  assert.equal(race.registrationDataStatus, "needs-review");
+  assert.equal(race.registrationPeriodLabel, undefined);
 });

@@ -45,6 +45,8 @@ function isRace(value: unknown): value is Race {
     Array.isArray(race.distances) &&
     typeof race.registrationOpensAt === 'string' &&
     typeof race.registrationTimeConfirmed === 'boolean' &&
+    (race.registrationDataStatus === undefined || race.registrationDataStatus === 'needs-review') &&
+    (race.registrationDataIssue === undefined || typeof race.registrationDataIssue === 'string') &&
     (race.officialUrl === undefined || (typeof race.officialUrl === 'string' && race.officialUrl.startsWith('https://'))) &&
     typeof race.sourceName === 'string'
   );
@@ -134,6 +136,9 @@ export async function fetchLatestRaces(signal?: AbortSignal): Promise<RaceFeed> 
 }
 
 export function formatRegistrationTime(race: Race): string {
+  if (race.registrationDataStatus === 'needs-review') {
+    return '공식 접수 기간 재확인 중';
+  }
   if (race.registrationPeriodLabel) {
     return race.registrationPeriodLabel;
   }
@@ -145,6 +150,7 @@ export function formatRegistrationTime(race: Race): string {
 }
 
 export function registrationStatusLabel(race: Race, now = Date.now()): string {
+  if (race.registrationDataStatus === 'needs-review') return '확인 필요';
   const status = race.registrationStatus;
   const closesAt = race.registrationClosesAt ? new Date(race.registrationClosesAt).getTime() : Number.NaN;
   const opensAt = new Date(race.registrationOpensAt).getTime();
@@ -156,6 +162,7 @@ export function registrationStatusLabel(race: Race, now = Date.now()): string {
 }
 
 export function canScheduleRegistrationAlert(race: Race, now = Date.now()): boolean {
+  if (race.registrationDataStatus === 'needs-review') return false;
   const status = registrationStatusLabel(race, now);
   return status === '접수 예정' && race.registrationTimeConfirmed;
 }

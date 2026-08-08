@@ -544,7 +544,11 @@ export function RaceScreen({ focusedRaceId }: Props) {
                 <Text style={styles.registrationLabel}>접수 일정</Text>
                 <Text style={styles.registrationValue}>{formatRegistrationTime(primary)}</Text>
               </View>
-              {primary.note ? <Text style={styles.note}>{primary.note}</Text> : null}
+              {primary.registrationDataIssue || primary.note ? (
+                <Text style={styles.note}>
+                  {primary.registrationDataIssue ?? primary.note}
+                </Text>
+              ) : null}
 
               <View style={styles.actions}>
                 <Button
@@ -556,6 +560,8 @@ export function RaceScreen({ focusedRaceId }: Props) {
                         ? '알림 취소'
                         : canSchedule
                           ? '접수 알림 예약'
+                          : primary.registrationDataStatus === 'needs-review'
+                            ? '공식 정보 확인 중'
                           : group.status === '접수 중'
                             ? '접수 진행 중'
                             : '시각 확인 후 예약'
