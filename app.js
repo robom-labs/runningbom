@@ -3,7 +3,7 @@ const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
 const APP_VERSION = "0.19.3";
 const ASSET_VERSION = "20260808-03";
-const BUILD_SHA = "62c812c";
+const BUILD_SHA = "b4a9c15";
 const PWA_CACHE_VERSION = "pushrun-v0.19.3";
 const {
   normalizeRaceName,
