@@ -378,6 +378,9 @@ test("workflow는 수동 실행과 보호 environment만 선언한다", async ()
   assert.match(workflow, /--approval-file/);
   assert.match(workflow, /bundletool-all-1\.18\.3\.jar/);
   assert.match(workflow, /PLAY_RELEASE_ENVIRONMENT_GUARD/);
+  assert.match(workflow, /https:\/\/api\.expo\.dev\/graphql/);
+  assert.match(workflow, /5be5e57e-a1a7-4d08-adf1-2218f38b32a5/);
+  assert.doesNotMatch(workflow, /build:view/);
   assert.match(workflow, /eas-cli@21\.7\.0 submit/);
   assert.doesNotMatch(workflow, /ref:\s*\$\{\{\s*inputs\.source_sha/);
   assert.ok(

@@ -84,10 +84,23 @@ jobs:
           set -euo pipefail
           BUILD_JSON="${RUNNER_TEMP}/eas-build.json"
           ARTIFACT_PATH="${RUNNER_TEMP}/runningbom-candidate.aab"
-          npx --yes eas-cli@21.7.0 build:view "${EAS_BUILD_ID}" --json > "${BUILD_JSON}"
-          BUILD_SOURCE_SHA="$(jq -er '.gitCommitHash' "${BUILD_JSON}")"
+          jq -n --arg buildId "${EAS_BUILD_ID}" '{
+            query: "query ReleaseBuildById($buildId: ID!) { builds { byId(buildId: $buildId) { id status platform distribution gitCommitHash artifacts { buildUrl } project { id } } } }",
+            variables: { buildId: $buildId }
+          }' | curl --fail-with-body --silent --show-error \
+            --header "Authorization: Bearer ${EXPO_TOKEN}" \
+            --header "Content-Type: application/json" \
+            --data-binary @- \
+            "https://api.expo.dev/graphql" > "${BUILD_JSON}"
+          jq -e '.errors == null' "${BUILD_JSON}" >/dev/null
+          test "$(jq -er '.data.builds.byId.id' "${BUILD_JSON}")" = "${EAS_BUILD_ID}"
+          test "$(jq -er '.data.builds.byId.status' "${BUILD_JSON}")" = "FINISHED"
+          test "$(jq -er '.data.builds.byId.platform' "${BUILD_JSON}")" = "ANDROID"
+          test "$(jq -er '.data.builds.byId.distribution' "${BUILD_JSON}")" = "STORE"
+          test "$(jq -er '.data.builds.byId.project.id' "${BUILD_JSON}")" = "5be5e57e-a1a7-4d08-adf1-2218f38b32a5"
+          BUILD_SOURCE_SHA="$(jq -er '.data.builds.byId.gitCommitHash' "${BUILD_JSON}")"
           test "${BUILD_SOURCE_SHA}" = "${EXPECTED_SOURCE_SHA}"
-          BUILD_URL="$(jq -er '.artifacts.buildUrl' "${BUILD_JSON}")"
+          BUILD_URL="$(jq -er '.data.builds.byId.artifacts.buildUrl' "${BUILD_JSON}")"
           curl --fail --location --retry 3 --silent --show-error "${BUILD_URL}" --output "${ARTIFACT_PATH}"
           echo "path=${ARTIFACT_PATH}" >> "${GITHUB_OUTPUT}"
 
@@ -157,10 +170,23 @@ jobs:
           set -euo pipefail
           BUILD_JSON="${RUNNER_TEMP}/eas-build.json"
           ARTIFACT_PATH="${RUNNER_TEMP}/runningbom-candidate.aab"
-          npx --yes eas-cli@21.7.0 build:view "${EAS_BUILD_ID}" --json > "${BUILD_JSON}"
-          BUILD_SOURCE_SHA="$(jq -er '.gitCommitHash' "${BUILD_JSON}")"
+          jq -n --arg buildId "${EAS_BUILD_ID}" '{
+            query: "query ReleaseBuildById($buildId: ID!) { builds { byId(buildId: $buildId) { id status platform distribution gitCommitHash artifacts { buildUrl } project { id } } } }",
+            variables: { buildId: $buildId }
+          }' | curl --fail-with-body --silent --show-error \
+            --header "Authorization: Bearer ${EXPO_TOKEN}" \
+            --header "Content-Type: application/json" \
+            --data-binary @- \
+            "https://api.expo.dev/graphql" > "${BUILD_JSON}"
+          jq -e '.errors == null' "${BUILD_JSON}" >/dev/null
+          test "$(jq -er '.data.builds.byId.id' "${BUILD_JSON}")" = "${EAS_BUILD_ID}"
+          test "$(jq -er '.data.builds.byId.status' "${BUILD_JSON}")" = "FINISHED"
+          test "$(jq -er '.data.builds.byId.platform' "${BUILD_JSON}")" = "ANDROID"
+          test "$(jq -er '.data.builds.byId.distribution' "${BUILD_JSON}")" = "STORE"
+          test "$(jq -er '.data.builds.byId.project.id' "${BUILD_JSON}")" = "5be5e57e-a1a7-4d08-adf1-2218f38b32a5"
+          BUILD_SOURCE_SHA="$(jq -er '.data.builds.byId.gitCommitHash' "${BUILD_JSON}")"
           test "${BUILD_SOURCE_SHA}" = "${EXPECTED_SOURCE_SHA}"
-          BUILD_URL="$(jq -er '.artifacts.buildUrl' "${BUILD_JSON}")"
+          BUILD_URL="$(jq -er '.data.builds.byId.artifacts.buildUrl' "${BUILD_JSON}")"
           curl --fail --location --retry 3 --silent --show-error "${BUILD_URL}" --output "${ARTIFACT_PATH}"
           echo "path=${ARTIFACT_PATH}" >> "${GITHUB_OUTPUT}"
 
