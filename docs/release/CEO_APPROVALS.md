@@ -1,7 +1,7 @@
 <!-- Google Play 단계 변경과 외부 게시 승인 근거를 기록하는 운영 문서다. -->
 # CEO approvals
 
-현재 기본 상태는 `CODE_ONLY`이며 Play 트랙 변경은 모두 금지됩니다.
+기본 안전 단계는 `CODE_ONLY`입니다. 현재는 아래 기록에 한정해 러닝봄 0.19.2 (12)의 비공개 테스트 게시만 승인된 `CLOSED_PUBLISH` 상태입니다.
 
 ## 승인 기록 형식
 
@@ -30,7 +30,20 @@
 - Intent: INTERNAL_TEST | CLOSED_REVIEW | CLOSED_PUBLISH | PRODUCTION
 ```
 
-현재 문서에는 실행 가능한 승인 기록이 없습니다. `CODE_ONLY` 작업은 Play 제출을 허용하지 않습니다.
+## CEO-APPROVAL-2026-0001
+
+- Status: APPROVED
+- Approved at: 2026-08-08T17:01:59+09:00
+- Approver: repository owner request in Codex task 019f4f39-8204-7f63-aa1a-b861fdf826e2
+- App version: 0.19.2
+- Version code: 12
+- Source SHA: 211135cd18a64472f4024ed97cd7cbe654c919e0
+- EAS build ID: a36a3ec1-daa5-405a-9b86-f568478bd1c2
+- AAB SHA-256: c42574efddad05704be75c8ec83431c1b752ba44f688d21fc054bc8a6ff5216d
+- Target track: closed
+- Intent: CLOSED_PUBLISH
+- Rollback 기준: 비공개 테스트의 새 출시를 중지하고 직전 활성 빌드 0.19.1 (11)을 유지한다.
+- Scope: 러닝봄 비공개 Alpha 테스트에만 게시하며 production 승격은 허용하지 않는다.
 
 ## 단계별 허용 범위
 
