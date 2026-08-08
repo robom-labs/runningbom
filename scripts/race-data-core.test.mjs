@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  collapseRaceRows,
   extractMarathonGoDetailUrls,
   mergeMarathonGoDiscoveries,
   parseDateRange,
@@ -24,6 +25,49 @@ test("회차 표기의 공백 차이는 같은 대회로 식별한다", () => {
     raceIdentity({ name: "제 16회 스마일 런 페스티벌", date: "2026-09-13" }),
     raceIdentity({ name: "제16회 스마일 런 페스티벌", date: "2026-09-13" }),
   );
+});
+
+test("종목별 5K·10K 행은 대회 한 건과 종목별 접수창으로 합친다", () => {
+  const collapsed = collapseRaceRows([
+    {
+      name: "2026 봄빛 마라톤 5K",
+      date: "2026-09-20",
+      region: "서울",
+      venue: "여의도 한강공원",
+      distances: ["5K"],
+      registrationOpenAt: "2026-08-01T10:00:00+09:00",
+      registrationCloseAt: "2026-08-10T18:00:00+09:00",
+      registrationOpenTimeConfirmed: true,
+      status: "open",
+    },
+    {
+      name: "2026 봄빛 마라톤 10km",
+      date: "2026-09-20",
+      region: "서울",
+      venue: "여의도 한강공원",
+      distances: ["10km"],
+      registrationOpenAt: "2026-08-03T14:00:00+09:00",
+      registrationCloseAt: "2026-08-12T18:00:00+09:00",
+      registrationOpenTimeConfirmed: true,
+      status: "scheduled",
+    },
+  ]);
+  assert.equal(collapsed.length, 1);
+  assert.equal(collapsed[0].name, "2026 봄빛 마라톤");
+  assert.deepEqual(collapsed[0].distances, ["5K", "10K"]);
+  assert.equal(collapsed[0].registrationOpenAt, "2026-08-01T10:00:00+09:00");
+  assert.equal(collapsed[0].registrationCloseAt, "2026-08-12T18:00:00+09:00");
+  assert.deepEqual(collapsed[0].registrationWindows.map((window) => window.label), ["5K", "10K"]);
+});
+
+test("같은 날 같은 이름이어도 지역이나 회차가 다르면 별개 대회로 유지한다", () => {
+  const rows = [
+    { name: "제10회 봄빛 마라톤 5K", date: "2026-09-20", region: "서울", distances: ["5K"] },
+    { name: "제10회 봄빛 마라톤 10K", date: "2026-09-20", region: "부산", distances: ["10K"] },
+    { name: "제11회 봄빛 마라톤 10K", date: "2026-09-20", region: "서울", distances: ["10K"] },
+  ];
+  assert.equal(collapseRaceRows(rows).length, 3);
+  assert.equal(raceIdentity(rows[0]), raceIdentity({ ...rows[0], name: "제 10회 봄빛 마라톤 10km" }));
 });
 
 test("공개 상세의 날짜 단위 접수 기간은 시각 미확정 상태로 정규화한다", () => {

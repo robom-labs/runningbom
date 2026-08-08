@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { collapseRaceRows } from "./race-data-core.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const sourcePath = join(root, "outputs", "pushrun-site", "races.json");
@@ -58,10 +59,13 @@ function normalizeRace(race, prefix) {
   };
 }
 
-const races = [
-  ...(source.featuredRaces ?? []).map((race) => normalizeRace(race, "featured")),
-  ...(source.scheduleFeed ?? []).map((race) => normalizeRace(race, "schedule")),
-]
+const canonicalRows = collapseRaceRows([
+  ...(source.featuredRaces ?? []).map((race) => ({ ...race, __syncPrefix: "featured" })),
+  ...(source.scheduleFeed ?? []).map((race) => ({ ...race, __syncPrefix: "schedule" })),
+]);
+
+const races = canonicalRows
+  .map((race) => normalizeRace(race, race.__syncPrefix ?? "schedule"))
   .filter((race) => race.name && race.region && race.venue && race.raceDate && race.registrationOpensAt)
   .sort((left, right) => left.raceDate.localeCompare(right.raceDate) || left.name.localeCompare(right.name, "ko"));
 

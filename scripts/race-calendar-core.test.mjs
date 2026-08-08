@@ -17,11 +17,31 @@ function race(overrides = {}) {
 }
 
 test("대회명 정규화는 특정 2026년이 아니라 모든 20xx 연도를 일반화한다", () => {
-  assert.equal(core.normalizeRaceName("2025 제10회 서울마라톤"), core.normalizeRaceName("2027 서울 Marathon"));
+  assert.equal(core.normalizeRaceName("2025 제10회 서울마라톤"), core.normalizeRaceName("2027 제 10회 서울 Marathon"));
 });
 
 test("같은 이름이라도 대회 날짜가 다르면 identity가 다르다", () => {
   assert.notEqual(core.raceIdentity(race()), core.raceIdentity(race({ raceDate: "2027-11-01T08:00:00+09:00" })));
+});
+
+test("5K·10K 종목 행은 웹에서도 카드 한 개로 합친다", () => {
+  const rows = core.collapseRaceRows([
+    race({ id: "race-5k", name: "2026 봄빛 마라톤 5K", region: "서울", distances: ["5K"] }),
+    race({ id: "race-10k", name: "2026 봄빛 마라톤 10km", region: "서울", distances: ["10km"] }),
+  ]);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].id, "race-5k");
+  assert.equal(rows[0].name, "2026 봄빛 마라톤");
+  assert.deepEqual(rows[0].distances, ["5K", "10K"]);
+});
+
+test("날짜·지역·회차 중 하나가 다르면 별개 대회로 남긴다", () => {
+  const rows = core.collapseRaceRows([
+    race({ id: "seoul-10", name: "제10회 봄빛 마라톤 5K", region: "서울" }),
+    race({ id: "busan-10", name: "제10회 봄빛 마라톤 10K", region: "부산" }),
+    race({ id: "seoul-11", name: "제11회 봄빛 마라톤 10K", region: "서울" }),
+  ]);
+  assert.equal(rows.length, 3);
 });
 
 test("캘린더에 접수 시작·종목별 시작·마감·대회일을 모두 만든다", () => {

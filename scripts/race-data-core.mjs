@@ -104,10 +104,23 @@ function normaliseDistance(value) {
   return text;
 }
 
-function normaliseName(name) {
+const COURSE_NAME_TOKEN = /(^|[\s()[\]{}·,\/_+\-])(?:5\s*(?:km|k|킬로미터|킬로)|10\s*(?:km|k|킬로미터|킬로)|21(?:\.0975)?\s*(?:km|k|킬로미터|킬로)|42(?:\.195)?\s*(?:km|k|킬로미터|킬로)|half(?:\s*marathon)?|full(?:\s*marathon)?|하프(?:마라톤|코스)?|풀(?:마라톤|코스)?)(?:\s*(?:코스|부문|종목))?(?=$|[\s()[\]{}·,\/_+\-])/gi;
+const DISTANCE_ORDER = ["5K", "10K", "Half", "Full", "Trail"];
+
+function stripCourseFromName(name) {
   return String(name)
+    .normalize("NFKC")
+    .replace(COURSE_NAME_TOKEN, "$1")
+    .replace(/[([{]\s*[)\]}]/g, " ")
+    .replace(/[·,\/_+\-]+\s*$/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normaliseName(name) {
+  return stripCourseFromName(name)
     .toLowerCase()
-    .replace(/제\s*\d+회/g, "")
+    .replace(/제\s*(\d+)\s*회/g, "제$1회")
     .replace(/\b20\d{2}\b/g, "")
     .replace(/marathon|race|trail|run/g, "")
     .replace(/마라톤대회|마라톤|트레일런|트레일|레이스/g, "")
@@ -115,7 +128,144 @@ function normaliseName(name) {
 }
 
 export function raceIdentity(race) {
-  return `${normaliseName(race?.name)}|${String(race?.raceDate ?? race?.date ?? "").slice(0, 10)}`;
+  const region = String(race?.region ?? race?.city ?? "")
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/[^0-9a-z가-힣]/g, "");
+  return `${normaliseName(race?.name)}|${String(race?.raceDate ?? race?.date ?? "").slice(0, 10)}|${region}`;
+}
+
+function sortedDistances(values) {
+  return [...new Set(values.map(normaliseDistance).filter(Boolean))].sort((left, right) => {
+    const leftIndex = DISTANCE_ORDER.indexOf(left);
+    const rightIndex = DISTANCE_ORDER.indexOf(right);
+    if (leftIndex < 0 && rightIndex < 0) return left.localeCompare(right, "ko");
+    if (leftIndex < 0) return 1;
+    if (rightIndex < 0) return -1;
+    return leftIndex - rightIndex;
+  });
+}
+
+function validTimestamp(value) {
+  const parsed = Date.parse(value || "");
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function safeWindowId(value) {
+  return String(value || "window")
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/[^0-9a-z가-힣]+/g, "-")
+    .replace(/^-|-$/g, "") || "window";
+}
+
+function mergeRegistrationWindows(entries) {
+  const windows = [];
+  const semanticKeys = new Set();
+  const usedIds = new Set();
+  const addWindow = (candidate) => {
+    if (!candidate?.opensAt || validTimestamp(candidate.opensAt) === null) return;
+    const label = String(candidate.label || candidate.distance || "종목").trim();
+    const semanticKey = `${candidate.distance || label}|${candidate.opensAt}|${candidate.closesAt || ""}`;
+    if (semanticKeys.has(semanticKey)) return;
+    semanticKeys.add(semanticKey);
+    const baseId = safeWindowId(candidate.id || candidate.distance || label);
+    let id = baseId;
+    let suffix = 2;
+    while (usedIds.has(id)) id = `${baseId}-${suffix++}`;
+    usedIds.add(id);
+    windows.push({
+      ...candidate,
+      id,
+      label,
+      timeConfirmed: candidate.timeConfirmed === true,
+    });
+  };
+
+  for (const entry of entries) {
+    for (const window of Array.isArray(entry.registrationWindows) ? entry.registrationWindows : []) {
+      addWindow({ ...window });
+    }
+  }
+
+  const schedules = new Set(entries
+    .filter((entry) => validTimestamp(entry.registrationOpenAt) !== null)
+    .map((entry) => `${entry.registrationOpenAt}|${entry.registrationCloseAt || ""}|${entry.registrationOpenTimeConfirmed === true}`));
+  if (schedules.size > 1) {
+    for (const entry of entries) {
+      for (const distance of Array.isArray(entry.distances) ? entry.distances : []) {
+        addWindow({
+          label: normaliseDistance(distance),
+          distance: normaliseDistance(distance),
+          opensAt: entry.registrationOpenAt,
+          closesAt: entry.registrationCloseAt,
+          timeConfirmed: entry.registrationOpenTimeConfirmed === true,
+        });
+      }
+    }
+  }
+
+  return windows.sort((left, right) => (
+    String(left.opensAt).localeCompare(String(right.opensAt))
+    || String(left.label).localeCompare(String(right.label), "ko")
+  ));
+}
+
+function mergedStatus(entries) {
+  const priority = ["open", "scheduled", "unknown", "sold_out", "closed", "cancelled", "postponed"];
+  return [...entries]
+    .map((entry) => entry.status)
+    .filter(Boolean)
+    .sort((left, right) => {
+      const leftIndex = priority.indexOf(left);
+      const rightIndex = priority.indexOf(right);
+      return (leftIndex < 0 ? priority.length : leftIndex) - (rightIndex < 0 ? priority.length : rightIndex);
+    })[0];
+}
+
+function mergeRaceEntries(entries) {
+  if (entries.length === 1) return { ...entries[0] };
+  const merged = { ...entries[0] };
+  const names = entries.map((entry) => stripCourseFromName(entry.name)).filter(Boolean);
+  merged.name = names.sort((left, right) => left.length - right.length || left.localeCompare(right, "ko"))[0] || merged.name;
+  merged.distances = sortedDistances(entries.flatMap((entry) => Array.isArray(entry.distances) ? entry.distances : []));
+  merged.courseLabel = merged.distances.join(",");
+
+  const opens = entries
+    .map((entry) => ({ value: entry.registrationOpenAt, time: validTimestamp(entry.registrationOpenAt), entry }))
+    .filter((item) => item.time !== null)
+    .sort((left, right) => left.time - right.time);
+  const closes = entries
+    .map((entry) => ({ value: entry.registrationCloseAt, time: validTimestamp(entry.registrationCloseAt) }))
+    .filter((item) => item.time !== null)
+    .sort((left, right) => right.time - left.time);
+  if (opens[0]) {
+    merged.registrationOpenAt = opens[0].value;
+    merged.registrationOpenTimeConfirmed = opens[0].entry.registrationOpenTimeConfirmed === true;
+  }
+  if (closes[0]) merged.registrationCloseAt = closes[0].value;
+
+  const windows = mergeRegistrationWindows(entries);
+  if (windows.length > 0) merged.registrationWindows = windows;
+  if (new Set(windows.map((window) => `${window.opensAt}|${window.timeConfirmed}`)).size > 1) {
+    merged.registrationPeriodLabel = "종목별 접수 일정";
+  }
+  const status = mergedStatus(entries);
+  if (status) merged.status = merged.registrationDataStatus === "needs-review" ? "unknown" : status;
+  return merged;
+}
+
+// 출처가 5K·10K를 별도 행으로 주더라도 이름·날짜·지역이 같은 대회는 한 행으로 합친다.
+// 화면 카운트와 카드 수가 종목 수만큼 부풀지 않게 수집·동기화 단계의 공통 안전망으로 쓴다.
+export function collapseRaceRows(rows) {
+  const buckets = new Map();
+  rows.forEach((row, index) => {
+    const identity = row?.name && (row?.raceDate || row?.date) ? raceIdentity(row) : `__invalid_row_${index}`;
+    const bucket = buckets.get(identity);
+    if (bucket) bucket.push(row);
+    else buckets.set(identity, [row]);
+  });
+  return [...buckets.values()].map(mergeRaceEntries);
 }
 
 export function statusFromRegistrationPeriod(startAt, endAt, now = Date.now(), fallback = "unknown") {
@@ -196,7 +346,7 @@ function mergeOne(current, discovered, now) {
     ? ["dataVerifiedAt"]
     : [
         "name", "date", "time", "region", "venue", "distances", "registrationOpenAt", "registrationCloseAt",
-        "registrationOpenTimeConfirmed", "registrationPeriodLabel", "registrationPeriodSource", "sourceDetailUrl",
+        "registrationOpenTimeConfirmed", "registrationWindows", "registrationPeriodLabel", "registrationPeriodSource", "sourceDetailUrl",
         "sourceName", "organizer", "dataVerifiedAt",
       ];
   for (const field of fields) {
@@ -264,9 +414,12 @@ export function mergeMarathonGoDiscoveries(data, discoveries, { now = Date.now()
   const currentFeatured = Array.isArray(data?.featuredRaces) ? data.featuredRaces : [];
   const currentSchedule = Array.isArray(data?.scheduleFeed) ? data.scheduleFeed : [];
   const today = kstDate(now);
-  const validDiscoveries = discoveries.filter(Boolean).filter((race) => isCurrentOrFutureRace(race, today));
+  const rawValidDiscoveries = discoveries.filter(Boolean).filter((race) => isCurrentOrFutureRace(race, today));
+  const validDiscoveries = collapseRaceRows(rawValidDiscoveries);
   const byIdentity = new Map(validDiscoveries.map((race) => [raceIdentity(race), race]));
-  const byDetailUrl = new Map(validDiscoveries.map((race) => [race.sourceDetailUrl, race]));
+  const byDetailUrl = new Map(rawValidDiscoveries
+    .filter((race) => race.sourceDetailUrl)
+    .map((race) => [race.sourceDetailUrl, byIdentity.get(raceIdentity(race))]));
   const mergeRows = (rows, { discover = true } = {}) => rows.map((row) => {
     const discovery = discover && isMarathonGoManaged(row)
       ? byDetailUrl.get(row.sourceDetailUrl) || byIdentity.get(raceIdentity(row))
@@ -288,16 +441,20 @@ export function mergeMarathonGoDiscoveries(data, discoveries, { now = Date.now()
     return quarantined;
   });
   // featured는 사람이 공식 출처를 교차 확인해 선택한 영역이므로 자동 수집은 상태 갱신만 한다.
-  const featuredRaces = mergeRows(currentFeatured, { discover: false }).filter((race) => isCurrentOrFutureRace(race, today));
-  const scheduleFeed = mergeRows(currentSchedule).filter((race) => isCurrentOrFutureRace(race, today));
-  const existing = new Set([...featuredRaces, ...scheduleFeed].map(raceIdentity));
+  const mergedFeatured = mergeRows(currentFeatured, { discover: false }).filter((race) => isCurrentOrFutureRace(race, today));
+  const mergedSchedule = mergeRows(currentSchedule).filter((race) => isCurrentOrFutureRace(race, today));
+  const existing = new Set([...mergedFeatured, ...mergedSchedule].map(raceIdentity));
   for (const discovery of validDiscoveries) {
     const identity = raceIdentity(discovery);
     if (!existing.has(identity)) {
-      scheduleFeed.push(quarantineRegistrationPeriod(createScheduleRace(discovery, now)));
+      mergedSchedule.push(quarantineRegistrationPeriod(createScheduleRace(discovery, now)));
       existing.add(identity);
     }
   }
+  const featuredIdentities = new Set(mergedFeatured.map(raceIdentity));
+  const collapsedRows = collapseRaceRows([...mergedFeatured, ...mergedSchedule]);
+  const featuredRaces = collapsedRows.filter((race) => featuredIdentities.has(raceIdentity(race)));
+  const scheduleFeed = collapsedRows.filter((race) => !featuredIdentities.has(raceIdentity(race)));
   scheduleFeed.sort((left, right) => String(left.date || left.raceDate).localeCompare(String(right.date || right.raceDate)) || String(left.name).localeCompare(String(right.name), "ko"));
   // 확인 시각은 6시간 작업마다 불필요하게 커밋하지 않고 KST 하루에 한 번만 갱신한다.
   const previousRefreshDate = data?.lastSuccessfulRefreshAt ? kstDate(data.lastSuccessfulRefreshAt) : null;

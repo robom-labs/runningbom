@@ -1,6 +1,6 @@
 {
   "name": "runningbom",
-  "version": "0.19.2",
+  "version": "0.19.3",
   "staticDataMinimumAppVersion": "0.19.0",
   "private": true,
   "scripts": {

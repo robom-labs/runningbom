@@ -2,6 +2,7 @@
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { raceIdentity } from "./race-data-core.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const site = join(root, "outputs", "pushrun-site");
@@ -151,7 +152,7 @@ for (const race of all) {
     errors.push(`재확인 접수 상태가 자동 확정됨: ${race.name}`);
   }
 
-  const identity = `${String(race.name).replace(/\s+/g, "").toLowerCase()}|${String(date).slice(0, 10)}`;
+  const identity = raceIdentity(race);
   if (identities.has(identity)) errors.push(`중복 대회: ${race.name} / ${String(date).slice(0, 10)}`);
   identities.add(identity);
 

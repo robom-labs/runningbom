@@ -6,6 +6,7 @@ const distanceOrder: RaceDistance[] = ['5K', '10K', 'Half', 'Full', 'Trail'];
 
 // 이름을 다듬는 정규식들입니다. 매번 새로 만들지 않도록 한곳에 둡니다.
 const bracketPattern = /[([{][^)\]}]*[)\]}]/g;
+const roundPattern = /제\s*(\d+)\s*회/g;
 const distanceWordPattern = /\d+(?:\.\d+)?\s*(?:k|km|킬로미터|킬로)(?![a-z가-힣])/g;
 const eventWordPattern = /하프코스|하프마라톤|하프|풀코스|풀마라톤|단축마라톤|건강달리기/g;
 const nonWordPattern = /[^0-9a-z가-힣]+/g;
@@ -25,6 +26,7 @@ export function normalizeRaceName(name: string): string {
     .normalize('NFKC')
     .toLocaleLowerCase('ko-KR')
     .replace(bracketPattern, ' ')
+    .replace(roundPattern, '제$1회')
     .replace(distanceWordPattern, ' ')
     .replace(eventWordPattern, ' ')
     .replace(nonWordPattern, ' ')

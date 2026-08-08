@@ -103,6 +103,8 @@ describe('대회 집계는 대회 기준 1건', () => {
   it('대회명에서 종목 표기를 걷어내 같은 대회를 인식한다', () => {
     assert.equal(normalizeRaceName('2026 봄빛 마라톤 10K'), normalizeRaceName('2026 봄빛 마라톤'));
     assert.equal(normalizeRaceName('봄빛 마라톤 (하프)'), normalizeRaceName('봄빛 마라톤'));
+    assert.equal(normalizeRaceName('제 10회 봄빛 마라톤 5K'), normalizeRaceName('제10회 봄빛 마라톤 10K'));
+    assert.notEqual(normalizeRaceName('제10회 봄빛 마라톤'), normalizeRaceName('제11회 봄빛 마라톤'));
   });
 
   it('딥링크로 들어온 종목 id로도 대회 카드를 찾는다', () => {
