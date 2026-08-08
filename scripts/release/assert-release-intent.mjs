@@ -280,15 +280,11 @@ async function run() {
     }
 
     const currentHead = gitHead();
-    if (currentHead.toLowerCase() !== options["source-sha"].toLowerCase()) {
-      throw new Error("source SHA가 현재 checkout HEAD와 일치하지 않습니다.");
-    }
     if (
       process.env.GITHUB_SHA &&
-      process.env.GITHUB_SHA.toLowerCase() !==
-        options["source-sha"].toLowerCase()
+      process.env.GITHUB_SHA.toLowerCase() !== currentHead.toLowerCase()
     ) {
-      throw new Error("source SHA가 GITHUB_SHA와 일치하지 않습니다.");
+      throw new Error("release control SHA가 현재 checkout HEAD와 일치하지 않습니다.");
     }
 
     await validateApprovalRecord(
@@ -307,6 +303,7 @@ async function run() {
       if (
         process.env.GITHUB_ACTIONS !== "true" ||
         process.env.GITHUB_EVENT_NAME !== "workflow_dispatch" ||
+        process.env.GITHUB_REF !== "refs/heads/main" ||
         process.env.RELEASE_EXECUTION_CONFIRMED !== "true" ||
         process.env.PLAY_RELEASE_ENVIRONMENT_GUARD !== "configured" ||
         process.env.PLAY_RELEASE_ENVIRONMENT_NAME !== expectedEnvironment
@@ -326,7 +323,8 @@ async function run() {
           targetTrack: options["target-track"],
           intent: options.intent,
           artifactSha256: actualArtifactSha,
-          sourceSha: currentHead,
+          sourceSha: options["source-sha"],
+          controlSha: currentHead,
           approvalReference: options["approval-reference"],
         },
         null,

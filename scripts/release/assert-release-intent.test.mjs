@@ -232,14 +232,40 @@ test("이름만 aab인 가짜 artifact를 차단한다", async () => {
   assert.match(result.stderr, /App Bundle 크기|ZIP 기반/);
 });
 
-test("checkout과 다른 source SHA를 차단한다", async () => {
+test("후보 source SHA는 승인 기록과 일치하면 control checkout과 달라도 허용한다", async () => {
+  const values = await fixture("INTERNAL_TEST");
+  const candidateSource = "0".repeat(40);
+  await writeFile(
+    values.approvalPath,
+    [
+      "# Test approvals",
+      "",
+      "## CEO-APPROVAL-2026-0001",
+      "",
+      "- Status: APPROVED",
+      `- Source SHA: ${candidateSource}`,
+      `- AAB SHA-256: ${values.artifactSha}`,
+      "- Target track: internal",
+      "- Intent: INTERNAL_TEST",
+      "",
+    ].join("\n"),
+  );
+  const result = invoke({
+    ...values,
+    sourceSha: candidateSource,
+  });
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /"controlSha"/);
+});
+
+test("후보 source SHA가 승인 기록과 다르면 차단한다", async () => {
   const values = await fixture("INTERNAL_TEST");
   const result = invoke({
     ...values,
     sourceSha: "0".repeat(40),
   });
   assert.equal(result.status, 1);
-  assert.match(result.stderr, /checkout HEAD와/);
+  assert.match(result.stderr, /source sha 값/);
 });
 
 test("임시 approval reference를 차단한다", async () => {
@@ -313,9 +339,29 @@ test("execute 가드는 승인 환경 신호가 모두 맞을 때만 통과한�
       PLAY_RELEASE_ENVIRONMENT_GUARD: "configured",
       PLAY_RELEASE_ENVIRONMENT_NAME: "play-internal-approval",
       GITHUB_SHA: head,
+      GITHUB_REF: "refs/heads/main",
     },
   });
   assert.equal(result.status, 0, result.stderr);
+});
+
+test("execute는 main이 아닌 release control ref를 차단한다", async () => {
+  const values = await fixture("INTERNAL_TEST");
+  const result = invoke({
+    ...values,
+    mode: "execute",
+    env: {
+      GITHUB_ACTIONS: "true",
+      GITHUB_EVENT_NAME: "workflow_dispatch",
+      RELEASE_EXECUTION_CONFIRMED: "true",
+      PLAY_RELEASE_ENVIRONMENT_GUARD: "configured",
+      PLAY_RELEASE_ENVIRONMENT_NAME: "play-internal-approval",
+      GITHUB_SHA: head,
+      GITHUB_REF: "refs/heads/release-candidate",
+    },
+  });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /workflow_dispatch/);
 });
 
 test("workflow는 수동 실행과 보호 environment만 선언한다", async () => {
@@ -333,6 +379,7 @@ test("workflow는 수동 실행과 보호 environment만 선언한다", async ()
   assert.match(workflow, /bundletool-all-1\.18\.3\.jar/);
   assert.match(workflow, /PLAY_RELEASE_ENVIRONMENT_GUARD/);
   assert.match(workflow, /eas-cli@16\.19\.0 submit/);
+  assert.doesNotMatch(workflow, /ref:\s*\$\{\{\s*inputs\.source_sha/);
   assert.ok(
     workflow.indexOf("--mode dry-run") <
       workflow.indexOf("name: Protected submit"),

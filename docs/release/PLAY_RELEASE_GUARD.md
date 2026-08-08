@@ -6,8 +6,9 @@
 - `ops/release/RELEASE_STAGE.json`의 기본 단계는 `CODE_ONLY`입니다.
 - `.github/workflows/play-release.yml`은 `workflow_dispatch`로만 실행됩니다.
 - `main` push, PR, schedule 이벤트로 Play 업로드가 실행되지 않습니다.
-- source SHA, EAS build ID, AAB SHA-256, 승인 참조값이 모두 필요합니다.
-- AAB와 EAS build의 source SHA가 checkout SHA와 다르면 중단합니다.
+- 앱 source SHA, EAS build ID, AAB SHA-256, 승인 참조값이 모두 필요합니다.
+- AAB와 EAS build의 앱 source SHA가 다르면 중단합니다.
+- 승인·단계·가드 코드는 workflow를 실행한 `main`의 release control commit에서 읽습니다. 따라서 AAB를 먼저 만든 뒤 그 해시를 별도 승인 commit에 기록할 수 있습니다.
 - 실제 제출 job은 대상별 GitHub environment 승인을 거칩니다.
 - `execute=false`가 기본이며 실제 Play 제출을 하지 않습니다.
 - 실제 제출 직전 가드를 다시 실행하고 실패하면 닫힌 상태로 종료합니다.
@@ -28,7 +29,7 @@ node --test scripts/release/assert-release-intent.test.mjs
 
 - `target_track`: `internal`, `closed`, `production`
 - `release_intent`: 단계와 일치하는 명시적 의도
-- `source_sha`: 전체 40자리 Git SHA
+- `source_sha`: 후보 AAB를 실제로 만든 전체 40자리 앱 source SHA. release control commit과 달라도 됩니다.
 - `eas_build_id`: 해당 source SHA로 생성한 EAS build ID
 - `artifact_sha256`: 다운로드될 AAB의 SHA-256
 - `approval_reference`: `docs/release/CEO_APPROVALS.md`의 승인 참조값
