@@ -275,7 +275,17 @@ export function mergeMarathonGoDiscoveries(data, discoveries, { now = Date.now()
     if (!discovery) {
       next.status = statusFromRegistrationPeriod(next.registrationOpenAt, next.registrationCloseAt, now, row.status);
     }
-    return quarantineRegistrationPeriod(next);
+    const quarantined = quarantineRegistrationPeriod(next);
+    // 원문의 잘못된 접수 기간은 병합 때 잠시 다시 들어왔다가 격리 과정에서 제거될 수 있다.
+    // 최종 게시값이 이전과 같다면 확인 시각도 유지해 6시간 작업이 매번 새 revision을 만들지 않는다.
+    const previousComparable = { ...row };
+    const nextComparable = { ...quarantined };
+    delete previousComparable.dataVerifiedAt;
+    delete nextComparable.dataVerifiedAt;
+    if (stableJson(previousComparable) === stableJson(nextComparable) && row.dataVerifiedAt) {
+      quarantined.dataVerifiedAt = row.dataVerifiedAt;
+    }
+    return quarantined;
   });
   // featured는 사람이 공식 출처를 교차 확인해 선택한 영역이므로 자동 수집은 상태 갱신만 한다.
   const featuredRaces = mergeRows(currentFeatured, { discover: false }).filter((race) => isCurrentOrFutureRace(race, today));

@@ -233,11 +233,13 @@ describe('스크린리더 라벨', () => {
 });
 
 describe('설정 정보구조', () => {
-  it('코치·음성 / 알림 / 연동 / 계정·데이터 / 앱 정보로 묶는다', () => {
+  it('코치·음성 / 알림 / 계정·데이터 / 앱 정보로 묶고 미지원 연동은 상시 노출하지 않는다', () => {
     const settings = source('app/screens/settings/SettingsScreen.tsx');
-    for (const title of ['코치·음성', '알림', '연동', '계정·데이터', '앱 정보']) {
+    for (const title of ['코치·음성', '알림', '계정·데이터', '앱 정보']) {
       assert.ok(settings.includes(`title="${title}"`), `${title} 묶음이 없습니다`);
     }
+    assert.ok(!settings.includes('title="연동"'), '쓸 수 없는 연동 묶음이 상시 노출됩니다');
+    assert.ok(!settings.includes('title="연동 준비 중"'), '준비 중 플레이스홀더가 남았습니다');
   });
 
   it('항목마다 한 줄 설명을 붙인다', () => {

@@ -119,3 +119,58 @@ test("대회일보다 늦은 접수 종료일은 공개 원문 값이어도 자�
   assert.equal(race.registrationDataStatus, "needs-review");
   assert.equal(race.registrationPeriodLabel, undefined);
 });
+
+test("이미 격리한 잘못된 접수 기간은 반복 수집해도 revision 변경 원인이 되지 않는다", () => {
+  const currentRace = {
+    name: "지리산 트레일런",
+    date: "2026-10-10",
+    region: "경남",
+    venue: "지리산",
+    time: "06:00",
+    distances: ["48km"],
+    registrationOpenAt: "2026-08-01T00:00:00+09:00",
+    registrationCloseAt: "2027-08-31T23:59:00+09:00",
+    registrationOpenTimeConfirmed: false,
+    registrationPeriodSource: "마라톤GO 공개 일정 상세",
+    sourceDetailUrl: "https://marathongo.co.kr/raceDetail/domestic/jirisan",
+    sourceName: "마라톤GO",
+    dataVerifiedAt: "2026-08-08T01:00:00.000Z",
+    status: "unknown",
+    courseLabel: "48km",
+    linkVerifiedFrom: "마라톤GO 공개 일정 상세",
+    registrationDataStatus: "needs-review",
+    registrationDataIssue: "원문 접수 기간이 대회일 이후로 표시돼 상태를 자동 확정하지 않았습니다.",
+  };
+  const discovery = {
+    ...currentRace,
+    dataVerifiedAt: "2026-08-08T07:00:00.000Z",
+    registrationPeriodLabel: "08/01 - 08/31",
+    registrationPeriodSource: "마라톤GO 공개 일정 상세",
+  };
+  delete discovery.status;
+  delete discovery.courseLabel;
+  delete discovery.linkVerifiedFrom;
+  delete discovery.registrationDataStatus;
+  delete discovery.registrationDataIssue;
+
+  const merged = mergeMarathonGoDiscoveries(
+    {
+      version: "2026.08.08-race-data-34",
+      lastSuccessfulRefreshAt: "2026-08-08T01:00:00.000Z",
+      refreshPolicy: {
+        provider: "마라톤GO 공개 국내 일정",
+        providerUrl: "https://marathongo.co.kr/raceSchedule/domestic",
+        cadence: "6시간마다 자동 확인",
+        rule: "필수 필드와 정적 검증을 통과한 값만 게시",
+      },
+      featuredRaces: [],
+      scheduleFeed: [currentRace],
+    },
+    [discovery],
+    { now: Date.parse("2026-08-08T12:00:00+09:00"), checkedAt: "2026-08-08T07:00:00.000Z" },
+  );
+
+  assert.equal(merged.data.scheduleFeed[0].dataVerifiedAt, currentRace.dataVerifiedAt);
+  assert.equal(merged.changed, false);
+  assert.equal(merged.contentChanged, false);
+});

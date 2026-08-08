@@ -133,6 +133,31 @@ export function findGroupByRaceId(
   return groups.find((group) => group.raceIds.includes(raceId));
 }
 
+export function isRaceGroupInterested(
+  group: RaceGroup,
+  groupKeys: readonly string[],
+  legacyRaceIds: readonly string[],
+): boolean {
+  return groupKeys.includes(group.key)
+    || group.raceIds.some((raceId) => legacyRaceIds.includes(raceId));
+}
+
+/** 0.19.1 이하의 대표 종목 ID를 데이터 갱신에도 안정적인 대회 묶음 키로 옮깁니다. */
+export function migrateRaceInterests(
+  groups: readonly RaceGroup[],
+  legacyRaceIds: readonly string[],
+  groupKeys: readonly string[],
+): { groupKeys: string[]; legacyRaceIds: string[] } {
+  const nextGroupKeys = new Set(groupKeys.filter(Boolean));
+  const unresolvedRaceIds: string[] = [];
+  for (const raceId of new Set(legacyRaceIds.filter(Boolean))) {
+    const group = groups.find((candidate) => candidate.raceIds.includes(raceId));
+    if (group) nextGroupKeys.add(group.key);
+    else unresolvedRaceIds.push(raceId);
+  }
+  return { groupKeys: [...nextGroupKeys], legacyRaceIds: unresolvedRaceIds };
+}
+
 const kstDateFormatter = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' });
 
 export function daysUntilRace(raceDate: string, now = Date.now()): number {

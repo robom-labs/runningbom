@@ -1,10 +1,10 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.19.1";
-const ASSET_VERSION = "20260808-01";
+const APP_VERSION = "0.19.2";
+const ASSET_VERSION = "20260808-02";
 const BUILD_SHA = "__BUILD_SHA__";
-const PWA_CACHE_VERSION = "pushrun-v0.19.1";
+const PWA_CACHE_VERSION = "pushrun-v0.19.2";
 const {
   normalizeRaceName,
   raceIdentity,
@@ -160,7 +160,7 @@ function parseScheduleFeed(feed) {
       popularity: 50,
       sourceName: entry.sourceName || "마라톤온라인",
       note: needsReview ? entry.registrationDataIssue : `${entry.time} 출발. 접수기간은 마라톤온라인 상세 페이지 기준입니다.`,
-      registrationLabel: needsReview ? "공식 접수 기간 재확인 중" : entry.registrationPeriodLabel || (isOpen ? "접수 중" : entry.status === "closed" ? "접수 마감" : "접수 일정 준비 중")
+      registrationLabel: needsReview ? "공식 접수 기간 재확인 중" : entry.registrationPeriodLabel || (isOpen ? "접수 중" : entry.status === "closed" ? "접수 마감" : "접수 일정 미확인")
     };
   });
 }
@@ -271,7 +271,7 @@ function registrationScheduleHtml(race) {
 
 function formatRegistrationRange(race) {
   if (registrationNeedsReview(race)) return "공식 접수 기간 재확인 중";
-  if (!race.registrationOpenAt) return race.registrationLabel || "접수 일정 준비 중";
+  if (!race.registrationOpenAt) return race.registrationLabel || "접수 일정 미확인";
   if (race.registrationPeriodLabel) return race.registrationPeriodLabel;
   if (!race.registrationCloseAt) return formatRegistrationPoint(race.registrationOpenAt);
   return `${formatRegistrationPoint(race.registrationOpenAt)} - ${formatRegistrationPoint(race.registrationCloseAt)}`;
@@ -757,7 +757,7 @@ function registrationButtonHtml(race, variant = "mini") {
   // 외부 접수 링크는 HTTPS만 허용한다. 확인되지 않은 HTTP 주소는 버튼을 비활성화한다.
   const safeUrl = /^https:\/\//i.test(race.registrationUrl || "");
   if (!safeUrl) {
-    return `<button class="${classes}" type="button" disabled aria-disabled="true" aria-label="${raceName} 접수 사이트 준비 중">준비 중</button>`;
+    return `<button class="${classes}" type="button" disabled aria-disabled="true" aria-label="${raceName} 공식 접수처 미확인">접수처 미확인</button>`;
   }
   const sourceOnly = race.registrationSourceOnly === true;
   const buttonText = sourceOnly ? (variant === "detail" ? "대회 정보 출처 보기" : "대회 정보 출처") : (variant === "detail" ? "공식 접수처 보기" : "공식 접수처");
@@ -1008,7 +1008,7 @@ function registrationSummaryLine(race) {
       ? `접수 시작 ${formatRegistrationPoint(at)}`
       : `접수 시작 ${formatRegistrationDate(at)} · 시각 확인 전`;
   }
-  return race.registrationLabel || "접수 일정 준비 중";
+  return race.registrationLabel || "접수 일정 미확인";
 }
 
 const MAP_PIN_SVG = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 21s6-5.3 6-10a6 6 0 1 0-12 0c0 4.7 6 10 6 10Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><circle cx="12" cy="11" r="2.2" fill="none" stroke="currentColor" stroke-width="1.9"/></svg>';
@@ -1033,12 +1033,12 @@ function raceDetailHtml(race) {
 
   const raceSchedule = `${formatRegistrationDate(race.raceDate)} ${formatRegistrationTime(race.raceDate)}`;
   const capacityLabel = race.capacity ? `${Number(race.capacity).toLocaleString("ko-KR")}명` : null;
-  const organizerLine = [race.organizer, capacityLabel].filter(Boolean).join(" · ") || "주최·규모 정보 준비 중";
+  const organizerLine = [race.organizer, capacityLabel].filter(Boolean).join(" · ") || "주최·규모 미확인";
 
   const safeUrl = /^https:\/\//i.test(race.registrationUrl || "");
   const officialBlock = safeUrl
     ? `<a class="detail-official" href="${escapeHtml(race.registrationUrl)}" target="_blank" rel="noopener noreferrer" data-family-event="official_registration_clicked" aria-label="${escapeHtml(race.name)} ${race.registrationSourceOnly ? "대회 정보 출처" : "공식 접수처"} 새 창으로 열기">${race.registrationSourceOnly ? "대회 정보 출처 열기" : "공식 접수처 열기"}</a>`
-    : `<div class="detail-official disabled" role="note">공식 접수처 링크 준비 중</div>`;
+    : `<div class="detail-official disabled" role="note">공식 접수처 링크 미확인</div>`;
   const sourceLine = `${escapeHtml(race.sourceName || "공개 접수 일정")} · 신청 전 공식 페이지 확인`;
 
   return `

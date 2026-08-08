@@ -1,5 +1,4 @@
-// 커뮤니티에 글쓰기가 열리기 전까지, 쓰고 싶은 글을 이 기기에만 보관해 두는 곳입니다.
-// 서버로 보내지 않고, 저절로 올라가지도 않습니다. 나중에 커뮤니티가 열리면 그대로 올릴 수 있습니다.
+// 러닝 중 떠오른 질문과 메모를 서버로 보내지 않고 이 기기에만 보관하는 곳입니다.
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Crypto from 'expo-crypto';
 import { useCallback, useEffect, useState } from 'react';
@@ -86,13 +85,13 @@ export function DraftBox() {
     <View style={styles.wrap}>
       <SectionHeader
         title="내 글 보관함"
-        subtitle="나중에 커뮤니티가 열리면 그대로 올릴 수 있게 이 기기에만 저장해 둬요."
+        subtitle="러닝 중 떠오른 질문과 메모를 이 기기에만 저장해 둬요."
         compact
       />
       <Card style={styles.card} tone="muted">
         <Text style={styles.note}>
-          지금은 다른 사람에게 보이지 않아요. 여기에 적어 둔 글은 내 폰 안에만 있고, 커뮤니티에
-          글쓰기가 열리면 그때 하나씩 골라 올릴 수 있어요.
+          다른 사람에게 보이지 않아요. 여기에 적어 둔 글은 내 폰 안에만 있고 저절로 밖으로
+          전송되지 않아요.
         </Text>
       </Card>
       <Card style={styles.card}>

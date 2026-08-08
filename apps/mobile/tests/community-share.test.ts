@@ -167,9 +167,10 @@ describe('커뮤니티 구획 순서', () => {
     }
   });
 
-  it('준비 중 구획은 언제 열리는지 지어내지 않는다', () => {
+  it('지원하지 않는 모임 기능을 화면에 계속 노출하지 않는다', () => {
     const screen = source('app/screens/community/CommunityScreen.tsx');
-    assert.match(screen, /아직 정해지지 않았어요/);
+    assert.doesNotMatch(screen, /section === 'together'/);
+    assert.doesNotMatch(screen, /나중에 열리면 참여할래요/);
     assert.equal(/\d{4}년 \d{1,2}월에? (열|공개)/.test(screen), false);
   });
 });
@@ -180,7 +181,7 @@ describe('커뮤니티 화면 구성', () => {
   it('맨 위가 내 프로필 요약이고 누르면 프로필로 간다', () => {
     const profileIndex = screen.indexOf('<ProfileSummaryCard');
     assert.ok(profileIndex > 0, '프로필 요약이 없습니다');
-    assert.ok(profileIndex < screen.indexOf('communitySections.map'), '프로필이 구획보다 뒤에 있습니다');
+    assert.ok(profileIndex < screen.indexOf('visibleSections.map'), '프로필이 구획보다 뒤에 있습니다');
     assert.ok(profileIndex < screen.indexOf('<ShareCardComposer'), '프로필이 본문보다 뒤에 있습니다');
     assert.match(screen, /onOpenProfile: \(\) => onNavigate\('profile'\)/);
   });
@@ -260,9 +261,10 @@ describe('내 글 보관함', () => {
     assert.equal(withoutDraft([draft('a'), draft('b')], 'a').length, 1);
   });
 
-  it('나중에 커뮤니티가 열리면 올릴 수 있다는 맥락을 화면에 적어 둔다', () => {
+  it('보관한 글이 서버로 전송되지 않는다고 분명히 알린다', () => {
     const box = source('app/screens/community/DraftBox.tsx');
-    assert.match(box, /나중에 커뮤니티가 열리면/);
     assert.match(box, /다른 사람에게 보이지 않아요/);
+    assert.match(box, /저절로 밖으로\s*전송되지 않아요/);
+    assert.doesNotMatch(box, /커뮤니티가 열리면/);
   });
 });

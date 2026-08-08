@@ -1,4 +1,4 @@
-// 설정 화면입니다. 코치·음성 / 알림·위치·배터리 / 알림 / 연동 / 계정·데이터 / 앱 정보 묶음으로 나누고,
+// 설정 화면입니다. 코치·음성 / 알림·위치·배터리 / 알림 / 계정·데이터 / 앱 정보 묶음으로 나누고,
 // 각 항목에 한 줄 설명을 붙여 무엇을 바꾸는 값인지 바로 알 수 있게 합니다.
 // 알림·위치·배터리 묶음은 지금 상태를 보여 주고 거기서 다시 켤 수 있는 진입점입니다.
 import * as Application from 'expo-application';
@@ -71,12 +71,6 @@ const speechRates: Array<[number, string]> = [
 ];
 
 const voiceGenders: VoiceGender[] = ['female', 'male'];
-
-const integrations = [
-  { id: 'samsung-health', name: '삼성 헬스', requirement: 'Samsung Health Data SDK 파트너 승인 필요' },
-  { id: 'garmin', name: 'Garmin Connect', requirement: 'Garmin Developer Program 승인과 OAuth 키 필요' },
-  { id: 'nike-run-club', name: 'Nike Run Club', requirement: '공개 API 없음 · 별도 데이터 제휴 필요' },
-];
 
 export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void }) {
   const { preferences, updatePreferences, refreshActivities } = useAppState();
@@ -365,24 +359,6 @@ export function SettingsScreen({ onOpenProfile }: { onOpenProfile: () => void })
           알림 권한을 거부해도 대회 탐색과 공식 링크는 그대로 사용할 수 있어요. 러닝봄은 마케팅
           알림을 보내지 않습니다.
         </Text>
-      </Card>
-
-      <SectionHeader title="연동" subtitle="연결되지 않은 것은 연결되지 않았다고 적어요." />
-      <Card style={styles.card}>
-        <Banner
-          title="연동 준비 중"
-          body="삼성 헬스·Garmin·Nike Run Club 가져오기는 각 서비스의 공식 승인과 자격증명이 연결된 뒤에 열립니다. 지금은 코치 기록과 직접 입력만 저장돼요."
-          tone="warning"
-        />
-        {integrations.map((item) => (
-          <View key={item.id} style={styles.row}>
-            <View style={styles.rowCopy}>
-              <Text style={styles.rowTitle}>{item.name}</Text>
-              <Text style={styles.rowMeta}>{item.requirement}</Text>
-            </View>
-            <Chip label="준비 중" />
-          </View>
-        ))}
       </Card>
 
       <SectionHeader

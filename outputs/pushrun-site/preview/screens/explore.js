@@ -27,7 +27,7 @@ function renderShoeExplore(state) {
   return html`
     <section class="shoe-intro"><span class="eyebrow">SHOES</span><h2>달리는 목적에 맞춰<br />한 켤레부터 비교해요.</h2><p>국내 공식몰·네이버 쇼핑·쿠팡 검색으로만 연결합니다. 가격·재고는 버튼을 누른 시점에 각 판매처에서 확인해요.</p></section>
     <section class="card"><div class="section-title"><h2>어떻게 달리나요?</h2><button class="text-button" data-action="shoe-finder">맞춤 찾기</button></div><div class="filter-line filters">${switchButtons(groups, state.shoeGroup, 'shoe-group')}</div><div class="filter-line filters">${switchButtons(goals, state.shoeGoal, 'shoe-goal')}</div></section>
-    <section class="section"><div class="section-title"><h2>${state.shoeGroup === '출시 예정' ? '국내 출시 확인 중' : '비교할 러닝화'}</h2><span class="mini-tag">${visible.length}종</span></div>${state.shoeGroup === '출시 예정' ? '<p class="notice">출시 예정은 국내 공식 발표·국내 판매 일정이 동시에 확인된 제품만 넣습니다. 현재 이 미리보기에는 추측성 출시 예정 제품을 넣지 않았어요.</p>' : ''}<div class="shoe-grid">${visible.map(shoeCard).join('') || '<div class="card"><b>조건에 맞는 제품을 준비 중이에요.</b><p>필터를 바꾸거나 전체에서 비교해 보세요.</p></div>'}</div></section>
+    <section class="section"><div class="section-title"><h2>${state.shoeGroup === '출시 예정' ? '국내 출시 확인 중' : '비교할 러닝화'}</h2><span class="mini-tag">${visible.length}종</span></div>${state.shoeGroup === '출시 예정' ? '<p class="notice">출시 예정은 국내 공식 발표·국내 판매 일정이 동시에 확인된 제품만 넣습니다. 현재 이 미리보기에는 추측성 출시 예정 제품을 넣지 않았어요.</p>' : ''}<div class="shoe-grid">${visible.map(shoeCard).join('') || '<div class="card"><b>조건에 맞는 제품이 없어요.</b><p>필터를 바꾸거나 전체에서 비교해 보세요.</p></div>'}</div></section>
     <p class="notice">현재 8종은 화면 구조 검토용 초기 목록입니다. 실제 앱에는 브랜드별 국내 공식 사양·국내 판매 여부·확인일을 검증한 뒤 늘립니다.</p>`;
 }
 

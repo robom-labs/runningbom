@@ -29,6 +29,7 @@ import {
 import {
   experienceFromLegacyBio,
   migrateExperienceLevel,
+  sanitizeStringList,
   stripLegacyExperiencePrefix,
 } from '../services/storage/preferences';
 import {
@@ -37,6 +38,8 @@ import {
   findGroupByRaceId,
   formatDDay,
   groupRaces,
+  isRaceGroupInterested,
+  migrateRaceInterests,
   normalizeRaceName,
 } from '../domains/races/aggregate';
 import { menuGroups, routeFromStoredValue, routeTitles } from '../app/navigation/routes';
@@ -111,6 +114,19 @@ describe('대회 집계는 대회 기준 1건', () => {
     assert.equal(findGroupByRaceId(groups, 'unknown'), undefined);
   });
 
+  it('예전 대표 종목 관심 ID를 대회 묶음 키로 옮겨 데이터 갱신 뒤에도 유지한다', () => {
+    const old = race('spring-race-old');
+    const replacement = race('spring-race-new', { officialUrl: 'https://example.com/new' });
+    const groups = groupRaces([old, replacement]);
+    const migrated = migrateRaceInterests(groups, ['spring-race-old', 'missing-race'], []);
+    assert.deepEqual(migrated.groupKeys, [groups[0]?.key]);
+    assert.deepEqual(migrated.legacyRaceIds, ['missing-race']);
+    assert.equal(isRaceGroupInterested(groups[0]!, migrated.groupKeys, migrated.legacyRaceIds), true);
+
+    const refreshed = groupRaces([replacement]);
+    assert.equal(isRaceGroupInterested(refreshed[0]!, migrated.groupKeys, migrated.legacyRaceIds), true);
+  });
+
   it('지역·거리·검색 필터가 대회 단위로 동작한다', () => {
     const groups = groupRaces([race('a'), race('b', { region: '부산', id: 'b' })]);
     const filtered = filterRaceGroups(groups, {
@@ -128,6 +144,16 @@ describe('대회 집계는 대회 기준 1건', () => {
     const now = Date.parse('2026-09-18T03:00:00Z');
     assert.equal(formatDDay('2026-09-20', now), 'D-2');
     assert.equal(formatDDay('2026-09-18', now), 'D-DAY');
+  });
+});
+
+describe('저장된 관심 식별자 복원', () => {
+  it('손상 값·빈 값·중복을 제거하고 정상 문자열만 보존한다', () => {
+    assert.deepEqual(
+      sanitizeStringList(['race-a', '', 42, 'race-a', 'race-b', null]),
+      ['race-a', 'race-b'],
+    );
+    assert.deepEqual(sanitizeStringList('race-a'), []);
   });
 });
 

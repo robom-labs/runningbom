@@ -26,6 +26,9 @@ export type AppPreferences = {
   leagueOptIn: boolean;
   featuredBadgeId?: string;
   currentShoeId?: string;
+  /** 새 데이터에서 대표 종목 행이 바뀌어도 유지되는 대회 묶음 식별자입니다. */
+  interestedRaceGroupKeys: string[];
+  /** 0.19.1 이하에서 저장한 종목 행 ID입니다. 대회 화면 진입 시 묶음 키로 자동 이전합니다. */
   interestedRaceIds: string[];
   interestedShoeIds: string[];
   /**
@@ -44,6 +47,7 @@ export const defaultPreferences: AppPreferences = {
   nickname: '러너',
   profileBio: '',
   leagueOptIn: false,
+  interestedRaceGroupKeys: [],
   interestedRaceIds: [],
   interestedShoeIds: [],
 };
@@ -67,6 +71,14 @@ export function sanitizeCoachMinutes(value: unknown): number {
     return defaultPreferences.coachMinutes;
   }
   return Math.min(MAX_COACH_MINUTES, minutes);
+}
+
+/** 손상되거나 구버전인 저장 배열에서 비어 있지 않은 문자열만 중복 없이 복원합니다. */
+export function sanitizeStringList(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.filter(
+    (item): item is string => typeof item === 'string' && item.trim().length > 0,
+  ))];
 }
 
 /**
@@ -105,8 +117,9 @@ export async function loadPreferences(): Promise<AppPreferences> {
       coachMinutes: sanitizeCoachMinutes(value.coachMinutes),
       coachOpenEnded: value.coachOpenEnded === true,
       ...(experienceLevel ? { experienceLevel } : { experienceLevel: undefined }),
-      interestedRaceIds: Array.isArray(value.interestedRaceIds) ? value.interestedRaceIds : [],
-      interestedShoeIds: Array.isArray(value.interestedShoeIds) ? value.interestedShoeIds : [],
+      interestedRaceGroupKeys: sanitizeStringList(value.interestedRaceGroupKeys),
+      interestedRaceIds: sanitizeStringList(value.interestedRaceIds),
+      interestedShoeIds: sanitizeStringList(value.interestedShoeIds),
     };
   } catch {
     return defaultPreferences;

@@ -6,8 +6,7 @@
 //   그래서 안내 글은 app/screens/guide(러닝 궁금증)로 옮기고, 이 화면은 사람이 올리는 것만 남겼습니다.
 // - 서버가 아직 없어서 남의 글은 정말로 없습니다. 없는 사람과 없는 글을 지어내지 않고,
 //   지금 정직하게 할 수 있는 것(내 기록을 카드로 만들어 내보내기, 내 글 보관해 두기)을 먼저 둡니다.
-// - 서버가 있어야 되는 것(사람들 소식·크루·리그)은 "준비 중"이라고 그대로 적습니다.
-//   언제 열리는지는 정해지지 않았으므로 날짜를 말하지 않습니다.
+// - 서버가 필요한 구획은 실제 읽기 연결이 있을 때만 보여 주고, 비활성 기능은 화면에 늘어놓지 않습니다.
 import { useEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -26,7 +25,6 @@ import { reactionKinds, reactionLabels, type PublicPost } from '../../../domains
 import { featureFlags } from '../../../services/feature-flags/flags';
 import { loadPublicFeed } from '../../../services/supabase/community';
 import { communityMode, type CommunityMode } from '../../../services/supabase/client';
-import { useAppState } from '../../state/AppStateProvider';
 import {
   categoryFor,
   feedCategories,
@@ -43,7 +41,6 @@ import { ProfileSummaryCard } from './ProfileSummaryCard';
 import {
   communitySections,
   defaultCommunitySection,
-  notReadySuffix,
   sectionAccessibilityLabel,
   sectionChipLabel,
   type CommunitySectionKey,
@@ -65,7 +62,6 @@ type Props = {
 };
 
 export function CommunityScreen({ onNavigate, onOpenGuide }: Props = {}) {
-  const { preferences, updatePreferences } = useAppState();
   const [section, setSection] = useState<CommunitySectionKey>(defaultCommunitySection);
   const [category, setCategory] = useState<FeedCategory>('전체');
   const [sort, setSort] = useState<FeedSort>('최신순');
@@ -98,6 +94,12 @@ export function CommunityScreen({ onNavigate, onOpenGuide }: Props = {}) {
     () => sortPosts(filterByCategory(posts, category), sort),
     [category, posts, sort],
   );
+  const visibleSections = useMemo(
+    () => communitySections
+      .filter((info) => info.ready || (info.key === 'posts' && mode !== 'CORE_ONLY'))
+      .map((info) => (info.key === 'posts' ? { ...info, ready: true } : info)),
+    [mode],
+  );
 
   return (
     <ScrollView
@@ -114,7 +116,7 @@ export function CommunityScreen({ onNavigate, onOpenGuide }: Props = {}) {
         body={
           writeEnabled
             ? '내 기록을 카드로 만들어 원하는 곳에 올릴 수 있어요. 사람들이 올린 글도 함께 볼 수 있어요.'
-            : '내 기록을 카드로 만들어 인스타그램·카카오톡 같은 곳에 올릴 수 있어요. 여럿이 함께하는 기능은 아직 준비 중이에요. 러닝이 궁금할 때는 러닝 궁금증 화면에서 찾아보세요.'
+            : '내 기록을 카드로 만들어 인스타그램·카카오톡 같은 곳에 올리거나, 내 글을 기기에 보관할 수 있어요. 러닝이 궁금할 때는 러닝 궁금증 화면에서 찾아보세요.'
         }
         tone={writeEnabled ? 'positive' : 'info'}
       />
@@ -129,13 +131,13 @@ export function CommunityScreen({ onNavigate, onOpenGuide }: Props = {}) {
         />
       ) : null}
 
-      {/* ③ 구획 고르기. 지금 쓸 수 있는 것이 앞, 준비 중인 것이 뒤입니다. */}
+      {/* ③ 구획 고르기. 지금 실제로 쓸 수 있는 것만 보여 줍니다. */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.tabs}
       >
-        {communitySections.map((info) => (
+        {visibleSections.map((info) => (
           <Chip
             accessibilityLabel={sectionAccessibilityLabel(info)}
             accessibilityRole="tab"
@@ -154,7 +156,7 @@ export function CommunityScreen({ onNavigate, onOpenGuide }: Props = {}) {
 
       {section === 'drafts' ? <DraftBox /> : null}
 
-      {section === 'posts' || section === 'together' ? (
+      {section === 'posts' ? (
         <View style={styles.modeRow}>
           <Chip label={modeLabels[mode]} tone={mode === 'NORMAL' ? 'positive' : 'warning'} />
           <Text style={styles.modeText}>{message}</Text>
@@ -163,17 +165,6 @@ export function CommunityScreen({ onNavigate, onOpenGuide }: Props = {}) {
 
       {section === 'posts' ? (
         <>
-          <Card style={styles.notReadyCard} tone="muted">
-            <Text style={styles.notReadyTitle}>사람들 소식은 {notReadySuffix}이에요</Text>
-            <Text style={styles.notReadyBody}>
-              다른 사람의 글을 주고받으려면 글을 모아 두는 서버가 있어야 하는데, 아직 연결되지
-              않았어요. 그래서 지금 이 목록은 비어 있는 게 맞아요.
-            </Text>
-            <Text style={styles.notReadyBody}>
-              언제 열리는지는 아직 정해지지 않았어요. 정해지지 않은 날짜를 말씀드리지 않을게요.
-            </Text>
-          </Card>
-
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -245,43 +236,6 @@ export function CommunityScreen({ onNavigate, onOpenGuide }: Props = {}) {
         </>
       ) : null}
 
-      {section === 'together' ? (
-        <>
-          <Card style={styles.notReadyCard} tone="muted">
-            <Text style={styles.notReadyTitle}>크루는 {notReadySuffix}이에요</Text>
-            <Text style={styles.notReadyBody}>
-              여럿이 모이는 방을 만들려면 사람과 일정을 서버에 저장해야 하는데, 아직 연결되지
-              않았어요. 안전 점검도 함께 끝나야 열 수 있어서 지금은 가입·만들기 버튼을 두지 않아요.
-            </Text>
-            <Text style={styles.notReadyBody}>
-              지금 당장 모여서 달리는 기능(즉석 모임)과 실시간 위치 나누기는 앞으로도 만들지 않을
-              계획이에요.
-            </Text>
-            <Text style={styles.statusNote}>언제 열리는지는 아직 정해지지 않았어요.</Text>
-          </Card>
-
-          <Card style={styles.notReadyCard} tone="muted">
-            <Text style={styles.notReadyTitle}>꾸준함 리그도 {notReadySuffix}이에요</Text>
-            <Text style={styles.notReadyBody}>
-              참여는 본인이 고를 때만 켜져요. 기본은 꺼짐이고, 코치로 마친 러닝만 하루 한 번·주
-              5일까지 셈해요. 전체 순위나 꼴찌 알림 같은 건 만들지 않아요.
-            </Text>
-            <Button
-              accessibilityHint="이 기기에만 참여 의사를 저장해요. 밖으로 보내지 않아요."
-              label={preferences.leagueOptIn ? '참여 안 함으로 바꾸기' : '나중에 열리면 참여할래요'}
-              onPress={() => void updatePreferences({ leagueOptIn: !preferences.leagueOptIn })}
-              style={styles.button}
-              tone={preferences.leagueOptIn ? 'quiet' : 'secondary'}
-            />
-            <Text accessibilityLiveRegion="polite" style={styles.statusNote}>
-              {preferences.leagueOptIn
-                ? '이 기기에 참여 의사를 저장했어요. 리그가 열리기 전에는 아무 점수도 밖으로 보내지 않아요.'
-                : '지금은 참여 안 함이에요.'}
-            </Text>
-          </Card>
-        </>
-      ) : null}
-
       <SectionHeader title="커뮤니티에서 지키는 것" compact />
       <Card style={styles.notReadyCard} tone="warm">
         <Text style={styles.notReadyBody}>
@@ -331,18 +285,11 @@ const styles = StyleSheet.create({
     lineHeight: lineHeight.caption,
   },
   notReadyCard: { gap: spacing.xs },
-  notReadyTitle: {
-    color: palette.ink,
-    fontSize: typeScale.titleSmall,
-    lineHeight: lineHeight.titleSmall,
-    fontWeight: fontWeight.heavy,
-  },
   notReadyBody: {
     color: palette.inkSoft,
     fontSize: typeScale.bodySmall,
     lineHeight: lineHeight.bodySmall,
   },
-  button: { marginTop: spacing.sm, minHeight: layout.touchTarget },
   statusNote: {
     color: palette.muted,
     fontSize: typeScale.caption,

@@ -16,7 +16,6 @@ import { activitySourceLabels } from '../../../domains/activities/types';
 import { goalRaceCountdown, goalRacePhaseLabels } from '../../../domains/races/goalRace';
 import { useGoalRace } from '../../../domains/races/useGoalRace';
 import {
-  Banner,
   Button,
   Card,
   Chip,
@@ -42,25 +41,6 @@ import { calendarLegend, intensityColors, MonthGrid } from './MonthGrid';
 import { PlanForm } from './PlanForm';
 
 const kindLabels: Record<string, string> = { run: '러닝', walk: '걷기', recovery: '회복' };
-
-// 외부 서비스 연동은 공식 파트너 승인과 OAuth 자격증명이 있어야 열 수 있습니다.
-const integrations = [
-  {
-    id: 'samsung-health',
-    name: '삼성 헬스',
-    requirement: 'Samsung Health Data SDK 파트너 승인과 앱 등록이 필요해요.',
-  },
-  {
-    id: 'garmin',
-    name: 'Garmin Connect',
-    requirement: 'Garmin Connect Developer Program 승인과 OAuth 키 발급이 필요해요.',
-  },
-  {
-    id: 'nike-run-club',
-    name: 'Nike Run Club',
-    requirement: '공개 API가 없어 Nike의 별도 데이터 제휴 승인이 필요해요.',
-  },
-];
 
 function monthTitle(value: Date): string {
   return `${value.getFullYear()}년 ${value.getMonth() + 1}월`;
@@ -283,25 +263,6 @@ export function CalendarScreen() {
         }}
       />
 
-      <SectionHeader title="외부 기록 연동" subtitle="연결되지 않은 것은 연결되지 않았다고 적어요." />
-      <Card style={styles.integrationCard}>
-        <Banner
-          title="연동 준비 중"
-          body="삼성 헬스·Garmin·Nike Run Club 자동 가져오기는 아직 연결되지 않았어요. 지금은 러닝봄 코치 기록과 직접 입력만 저장됩니다."
-          tone="warning"
-        />
-        {integrations.map((item) => (
-          <View key={item.id} style={styles.integrationRow}>
-            <View style={styles.integrationCopy}>
-              <Text style={styles.detailTitle}>{item.name}</Text>
-              <Text style={styles.detailMeta}>{item.requirement}</Text>
-            </View>
-            <View style={styles.integrationBadge}>
-              <Text style={styles.integrationBadgeText}>준비 중</Text>
-            </View>
-          </View>
-        ))}
-      </Card>
     </ScrollView>
   );
 }
@@ -423,20 +384,5 @@ const styles = StyleSheet.create({
   },
   planRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   planCopy: { flex: 1, minWidth: 0 },
-  integrationCard: { gap: spacing.sm },
-  integrationRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  integrationCopy: { flex: 1, minWidth: 0 },
-  integrationBadge: {
-    borderRadius: radius.pill,
-    backgroundColor: palette.surfaceMuted,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xxs,
-  },
-  integrationBadgeText: {
-    color: palette.inkSoft,
-    fontSize: typeScale.micro,
-    lineHeight: lineHeight.micro,
-    fontWeight: fontWeight.heavy,
-  },
   pressed: { opacity: pressedOpacity },
 });

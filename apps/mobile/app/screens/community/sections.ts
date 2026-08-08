@@ -6,7 +6,7 @@
 // 3. 기본으로 열리는 구획은 항상 "지금 쓸 수 있는 것" 중 첫 번째입니다.
 //    (앱을 열자마자 "준비 중"만 보이는 일이 생기지 않게 합니다.)
 
-export type CommunitySectionKey = 'card' | 'drafts' | 'posts' | 'together';
+export type CommunitySectionKey = 'card' | 'drafts' | 'posts';
 
 export type CommunitySection = {
   key: CommunitySectionKey;
@@ -38,12 +38,6 @@ export const communitySections: CommunitySection[] = [
     label: '사람들 소식',
     ready: false,
     hint: '글을 모아 두는 서버가 아직 연결되지 않았어요.',
-  },
-  {
-    key: 'together',
-    label: '크루·리그',
-    ready: false,
-    hint: '여럿이 모이는 기능은 서버와 안전 점검이 끝나야 열려요.',
   },
 ];
 

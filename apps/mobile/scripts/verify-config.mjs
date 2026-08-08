@@ -28,7 +28,7 @@ const previewConfig = resolveRunningbomConfig(structuredClone(appJson.expo), 'pr
 assert(packageJson.version === rootPackageJson.version, '웹·모바일 앱 버전이 일치해야 합니다.');
 assert(packageJson.dependencies.expo === '~57.0.11', 'Expo SDK 57 최신 패치 버전이 고정되지 않았습니다.');
 assert(packageJson.dependencies.react === '19.2.3', 'React 19.2.3이 필요합니다.');
-assert(packageJson.dependencies['react-native'] === '0.86.0', 'React Native 0.86.0이 필요합니다.');
+assert(packageJson.dependencies['react-native'] === '0.86.2', 'React Native 0.86.2가 필요합니다.');
 assert(!packageJson.dependencies['react-native-webview'], 'WebView 의존성은 허용하지 않습니다.');
 assert(productionConfig.name === '러닝봄', 'production 앱 이름은 러닝봄이어야 합니다.');
 assert(productionConfig.scheme === 'runningbom', 'production scheme은 runningbom이어야 합니다.');

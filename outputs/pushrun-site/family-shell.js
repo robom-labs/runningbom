@@ -41,12 +41,12 @@
   function renderFamilyApps(meta) {
     const target = root.document.getElementById("familyAppsList");
     if (!target || !Array.isArray(meta.familyApps)) return;
-    // 스토어 출시 전이라 형제 앱은 준비 중 안내와 로봄 안정 설치 경로(robom.kr/get)만 노출한다.
+    // 형제 앱은 출시 시각을 추측하지 않고 로봄의 안정 설치 안내 경로(robom.kr/get)로 연결한다.
     target.innerHTML = meta.familyApps
       .filter((app) => app.id !== meta.id)
       .map((app) => {
         const href = safeHttpsUrl(app.installUrl);
-        return `<a class="settings-row" data-family-app="${escapeHtml(app.id)}" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer"><span class="settings-row-icon" aria-hidden="true">${icon("family")}</span><span><strong>${escapeHtml(app.name)}</strong><small>준비 중 · 2026년 8월 초 출시 예정</small></span><em>준비 중</em></a>`;
+        return `<a class="settings-row" data-family-app="${escapeHtml(app.id)}" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer"><span class="settings-row-icon" aria-hidden="true">${icon("family")}</span><span><strong>${escapeHtml(app.name)}</strong><small>설치·테스트 참여 방법 확인</small></span><em>설치 안내</em></a>`;
       })
       .join("");
   }

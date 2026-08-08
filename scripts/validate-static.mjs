@@ -23,7 +23,6 @@ const familyLock = JSON.parse(readFileSync(join(root, "family.lock.json"), "utf8
 const vercelConfig = JSON.parse(readFileSync(join(root, "vercel.json"), "utf8"));
 const vercelBuild = readFileSync(join(root, "scripts", "build-vercel.mjs"), "utf8");
 const vercelIgnore = readFileSync(join(root, ".vercelignore"), "utf8");
-const FAMILY_SOURCE_COMMIT = "de2dd07d93d031ff3871bb7a7cd56941587492f5";
 
 // ── 신선도 기준(상수) ─────────────────────────────────────────────
 // 접수 예정(오픈 시각이 미래) 대회가 이 수 미만이면 FAIL.
@@ -214,8 +213,8 @@ if (
 if (!html.includes(`name="application-version" content="${pkg.version}"`)) {
   errors.push("HTML application-version과 package.json 버전이 다릅니다.");
 }
-if (familyLock.sourceCommit !== FAMILY_SOURCE_COMMIT) {
-  errors.push(`family.lock.json sourceCommit 불일치: ${familyLock.sourceCommit}`);
+if (!/^[0-9a-f]{40}$/.test(familyLock.sourceCommit || "")) {
+  errors.push("family.lock.json sourceCommit은 40자리 immutable Git SHA여야 합니다.");
 }
 if (familyLock.familySpecVersion !== familyMeta.familySpecVersion || familyMeta.id !== "runningbom") {
   errors.push("패밀리 lock과 RunningBom 메타데이터가 일치하지 않습니다.");

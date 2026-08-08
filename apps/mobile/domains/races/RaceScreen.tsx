@@ -31,6 +31,8 @@ import {
   findGroupByRaceId,
   formatDDay,
   groupRaces,
+  isRaceGroupInterested,
+  migrateRaceInterests,
   racePeriodFilters,
   raceQuickFilters,
   raceSorts,
@@ -98,6 +100,28 @@ export function RaceScreen({ focusedRaceId }: Props) {
   const [visibleCount, setVisibleCount] = useState(20);
 
   const groups = useMemo(() => groupRaces(feed.races), [feed.races]);
+
+  useEffect(() => {
+    const migrated = migrateRaceInterests(
+      groups,
+      preferences.interestedRaceIds,
+      preferences.interestedRaceGroupKeys,
+    );
+    const sameGroupKeys = migrated.groupKeys.length === preferences.interestedRaceGroupKeys.length
+      && migrated.groupKeys.every((value, index) => value === preferences.interestedRaceGroupKeys[index]);
+    const sameLegacyIds = migrated.legacyRaceIds.length === preferences.interestedRaceIds.length
+      && migrated.legacyRaceIds.every((value, index) => value === preferences.interestedRaceIds[index]);
+    if (sameGroupKeys && sameLegacyIds) return;
+    void updatePreferences({
+      interestedRaceGroupKeys: migrated.groupKeys,
+      interestedRaceIds: migrated.legacyRaceIds,
+    });
+  }, [
+    groups,
+    preferences.interestedRaceGroupKeys,
+    preferences.interestedRaceIds,
+    updatePreferences,
+  ]);
 
   useEffect(() => {
     const focused = findGroupByRaceId(groups, focusedRaceId);
@@ -192,11 +216,19 @@ export function RaceScreen({ focusedRaceId }: Props) {
   }
 
   function toggleInterest(group: RaceGroup) {
-    const saved = group.raceIds.some((id) => preferences.interestedRaceIds.includes(id));
-    const next = saved
-      ? preferences.interestedRaceIds.filter((id) => !group.raceIds.includes(id))
-      : [...preferences.interestedRaceIds, group.id];
-    void updatePreferences({ interestedRaceIds: next });
+    const saved = isRaceGroupInterested(
+      group,
+      preferences.interestedRaceGroupKeys,
+      preferences.interestedRaceIds,
+    );
+    void updatePreferences({
+      interestedRaceGroupKeys: saved
+        ? preferences.interestedRaceGroupKeys.filter((key) => key !== group.key)
+        : [...new Set([...preferences.interestedRaceGroupKeys, group.key])],
+      interestedRaceIds: preferences.interestedRaceIds.filter(
+        (raceId) => !group.raceIds.includes(raceId),
+      ),
+    });
   }
 
   const twoColumns = width >= 840;
@@ -479,8 +511,10 @@ export function RaceScreen({ focusedRaceId }: Props) {
           const busy = busyRaceId !== null && group.raceIds.includes(busyRaceId);
           const focused = activeGroupId === group.id;
           const expanded = expandedGroupId === group.id;
-          const interested = group.raceIds.some((id) =>
-            preferences.interestedRaceIds.includes(id),
+          const interested = isRaceGroupInterested(
+            group,
+            preferences.interestedRaceGroupKeys,
+            preferences.interestedRaceIds,
           );
           return (
             <Card
@@ -649,7 +683,7 @@ export function RaceScreen({ focusedRaceId }: Props) {
                     </>
                   )}
                   <Text style={styles.detailSource}>
-                    데이터 확인 {primary.verifiedAt ?? '확인 시각 준비 중'} ·{' '}
+                    데이터 확인 {primary.verifiedAt ?? '확인 시각 없음'} ·{' '}
                     {group.sourceNames.join(', ')}
                   </Text>
                 </View>

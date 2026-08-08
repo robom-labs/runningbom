@@ -68,10 +68,14 @@ export async function configureNotificationChannel(): Promise<void> {
   });
 }
 
-async function notificationPermissionGranted(): Promise<boolean> {
+async function notificationPermissionGranted(requestPermission = true): Promise<boolean> {
   const current = await Notifications.getPermissionsAsync();
   if (allowsNotifications(current)) {
     return true;
+  }
+
+  if (!requestPermission) {
+    return false;
   }
 
   const requested = await Notifications.requestPermissionsAsync();
@@ -92,7 +96,10 @@ function allowsNotifications(status: Notifications.NotificationPermissionsStatus
   );
 }
 
-export async function scheduleRegistrationNotification(race: Race): Promise<ScheduleResult> {
+export async function scheduleRegistrationNotification(
+  race: Race,
+  options: { requestPermission?: boolean } = {},
+): Promise<ScheduleResult> {
   if (!race.registrationTimeConfirmed) {
     return { kind: 'time-unconfirmed' };
   }
@@ -102,7 +109,7 @@ export async function scheduleRegistrationNotification(race: Race): Promise<Sche
     return { kind: 'past' };
   }
 
-  if (!(await notificationPermissionGranted())) {
+  if (!(await notificationPermissionGranted(options.requestPermission ?? true))) {
     return { kind: 'denied' };
   }
 
@@ -175,7 +182,7 @@ export async function reconcileRegistrationNotifications(races: Race[]): Promise
   }));
 
   for (const race of rearm.values()) {
-    await scheduleRegistrationNotification(race);
+    await scheduleRegistrationNotification(race, { requestPermission: false });
   }
 
   return getScheduledRegistrationAlerts();

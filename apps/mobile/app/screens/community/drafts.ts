@@ -1,4 +1,4 @@
-// 커뮤니티 글쓰기가 열리기 전까지 사용자가 쓴 질문·메모를 이 기기에만 보관하는 규칙입니다.
+// 사용자가 쓴 질문·메모를 이 기기에만 보관하는 규칙입니다.
 // 서버로 보내지 않고, 기존 저장 키를 건드리지 않으며, 새 키만 추가합니다.
 
 import type { KnowledgeTopic } from '../guide/knowledge';
@@ -31,7 +31,7 @@ export type DraftParseResult =
 export function parseDraft(topic: KnowledgeTopic, body: string): DraftParseResult {
   const normalized = body.normalize('NFKC').replace(/\s+/g, ' ').trim();
   if (normalized.length < 5) {
-    return { ok: false, message: '5자 이상 적어 주세요. 나중에 그대로 올릴 수 있게 보관해 둘게요.' };
+    return { ok: false, message: '기기에 보관하려면 5자 이상 적어 주세요.' };
   }
   if (normalized.length > DRAFT_BODY_MAX) {
     return { ok: false, message: `${DRAFT_BODY_MAX}자 이내로 줄여 주세요.` };

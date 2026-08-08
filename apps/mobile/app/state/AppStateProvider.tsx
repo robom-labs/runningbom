@@ -328,8 +328,11 @@ export function AppStateProvider({ children }: PropsWithChildren) {
 
   const streak = useMemo(() => calculateStreak(activities), [activities]);
   const badgeContext = useMemo(
-    () => ({ interestedRaceCount: preferences.interestedRaceIds.length }),
-    [preferences.interestedRaceIds],
+    () => ({
+      interestedRaceCount:
+        preferences.interestedRaceGroupKeys.length + preferences.interestedRaceIds.length,
+    }),
+    [preferences.interestedRaceGroupKeys, preferences.interestedRaceIds],
   );
   const badgeProgress = useMemo(
     () => badgeProgressList(activities, streak, badgeContext),
