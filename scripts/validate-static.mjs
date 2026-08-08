@@ -54,7 +54,11 @@ if (data.refreshPolicy?.providerUrl !== "https://marathongo.co.kr/raceSchedule/d
 if (vercelConfig.buildCommand !== "node scripts/build-vercel.mjs" || vercelConfig.outputDirectory !== ".vercel-static") {
   errors.push("Vercel 정적 미러가 빌드 SHA 주입 산출물을 배포하지 않습니다.");
 }
-if (!vercelBuild.includes("VERCEL_GIT_COMMIT_SHA") || !vercelBuild.includes('replaceAll("__BUILD_SHA__"')) {
+if (
+  !vercelBuild.includes("VERCEL_GIT_COMMIT_SHA") ||
+  !vercelBuild.includes("ROBOM_BUILD_SHA") ||
+  !vercelBuild.includes('replaceAll("__BUILD_SHA__"')
+) {
   errors.push("Vercel 빌드가 운영 Git SHA를 app.js에 주입하지 않습니다.");
 }
 if (!vercelIgnore.includes("!scripts/build-vercel.mjs")) {

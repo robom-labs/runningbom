@@ -4,10 +4,14 @@ import { cp, readFile, rm, writeFile } from "node:fs/promises";
 const source = new URL("../outputs/pushrun-site/", import.meta.url);
 const output = new URL("../.vercel-static/", import.meta.url);
 const appFile = new URL("app.js", output);
-const commit = process.env.VERCEL_GIT_COMMIT_SHA ?? process.env.GITHUB_SHA ?? "";
+const commit =
+  process.env.VERCEL_GIT_COMMIT_SHA ??
+  process.env.GITHUB_SHA ??
+  process.env.ROBOM_BUILD_SHA ??
+  "";
 
 if (!/^[0-9a-f]{40}$/i.test(commit)) {
-  throw new Error("VERCEL_GIT_COMMIT_SHA 또는 GITHUB_SHA 40자리 값이 필요합니다.");
+  throw new Error("VERCEL_GIT_COMMIT_SHA, GITHUB_SHA 또는 ROBOM_BUILD_SHA 40자리 값이 필요합니다.");
 }
 
 await rm(output, { recursive: true, force: true });
