@@ -4,6 +4,7 @@ import { describe, it } from 'node:test';
 
 import {
   applyQuickFilters,
+  buildRaceCalendarMonth,
   countRaces,
   formatRaceFeedRevision,
   formatRaceVerification,
@@ -15,6 +16,10 @@ import {
   sortRaceGroups,
   weekendRange,
 } from '../domains/races/aggregate';
+import {
+  isRegistrationClosingSoon,
+  registrationCountdownLabel,
+} from '../src/races';
 import {
   GOAL_RACE_KEY,
   goalRaceChecklist,
@@ -128,8 +133,8 @@ describe('대회 빠른 필터와 정렬', () => {
     NOW,
   );
 
-  it('네 종류의 빠른 칩을 제공한다', () => {
-    assert.deepEqual(raceQuickFilters, ['접수 중만', '이번 주말', '내 지역', '관심만']);
+  it('마감 임박을 포함한 다섯 종류의 빠른 칩을 제공한다', () => {
+    assert.deepEqual(raceQuickFilters, ['접수 중만', '마감 임박', '이번 주말', '내 지역', '관심만']);
     assert.deepEqual(raceSorts, ['가까운 날짜순', '거리순', '지역순']);
   });
 
@@ -165,6 +170,18 @@ describe('대회 빠른 필터와 정렬', () => {
       NOW,
     );
     assert.deepEqual(interested.map((group) => group.id), ['open-jeju']);
+  });
+
+  it('공식 마감일이 7일 안에 있는 접수 중 대회만 마감 임박으로 고른다', () => {
+    const urgent = groupRaces([
+      race('urgent', { registrationClosesAt: '2026-07-31T23:59:00+09:00' }),
+      race('later', { registrationClosesAt: '2026-08-15T23:59:00+09:00' }),
+      race('unknown-close'),
+    ], NOW);
+    assert.deepEqual(
+      applyQuickFilters(urgent, ['마감 임박'], {}, NOW).map((group) => group.id),
+      ['urgent'],
+    );
   });
 
   it('칩을 겹쳐도 원본 목록을 바꾸지 않는다', () => {
@@ -271,5 +288,35 @@ describe('대회 달력 뷰', () => {
     assert.deepEqual(raceCountsByDay(groups, '2026-08'), { '2026-08-01': 2 });
     assert.deepEqual(raceCountsByDay(groups, '2026-09'), { '2026-09-05': 1 });
     assert.deepEqual(raceCountsByDay(groups, '2026-11'), {});
+  });
+
+  it('월 시작 요일과 말일을 포함한 7열 달력을 만들고 거리별 종목은 한 건으로 센다', () => {
+    const groups = groupRaces([
+      race('spring-10k', { name: '2026 봄빛 마라톤 10K', distances: ['10K'], raceDate: '2026-09-20' }),
+      race('spring-5k', { name: '2026 봄빛 마라톤 5K', distances: ['5K'], raceDate: '2026-09-20' }),
+    ], NOW);
+    const month = buildRaceCalendarMonth(groups, '2026-09', NOW);
+    assert.ok(month);
+    assert.equal(month.cells.length % 7, 0);
+    assert.equal(month.cells.find((cell) => cell.key === '2026-09-20')?.groupCount, 1);
+    assert.equal(month.cells.filter((cell) => cell.inMonth).length, 30);
+  });
+});
+
+describe('접수 마감 안내', () => {
+  it('KST 날짜 경계에서 시작·마감 D-day를 정확히 표시한다', () => {
+    const open = race('open', {
+      registrationOpensAt: '2026-07-01T10:00:00+09:00',
+      registrationClosesAt: '2026-07-27T23:59:00+09:00',
+    });
+    assert.equal(registrationCountdownLabel(open, NOW), '접수 마감 D-1');
+    assert.equal(isRegistrationClosingSoon(open, NOW), true);
+
+    const scheduled = race('scheduled', { registrationOpensAt: '2026-07-27T10:00:00+09:00' });
+    assert.equal(registrationCountdownLabel(scheduled, NOW), '접수 시작 D-1');
+
+    const noClose = race('no-close');
+    assert.equal(registrationCountdownLabel(noClose, NOW), '접수 중 · 마감일 확인 필요');
+    assert.equal(isRegistrationClosingSoon(noClose, NOW), false);
   });
 });

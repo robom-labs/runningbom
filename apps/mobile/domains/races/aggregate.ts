@@ -1,5 +1,5 @@
 // 같은 대회가 종목(거리)별로 여러 행으로 들어와도 대회 1건으로 집계합니다.
-import { registrationStatusLabel } from '../../src/races';
+import { isRegistrationClosingSoon, registrationStatusLabel } from '../../src/races';
 import type { DistanceFilter, Race, RaceDistance, RegionFilter } from '../../src/types';
 
 const distanceOrder: RaceDistance[] = ['5K', '10K', 'Half', 'Full', 'Trail'];
@@ -274,8 +274,8 @@ export function filterRaceGroups(
 // ── 빠른 칩 · 정렬 · 달력 뷰 ──────────────────────────────────────────────
 // 대회 수가 많아도 원하는 것을 빨리 찾도록 돕는 순수 규칙입니다.
 
-export type RaceQuickFilter = '접수 중만' | '이번 주말' | '내 지역' | '관심만';
-export const raceQuickFilters: RaceQuickFilter[] = ['접수 중만', '이번 주말', '내 지역', '관심만'];
+export type RaceQuickFilter = '접수 중만' | '마감 임박' | '이번 주말' | '내 지역' | '관심만';
+export const raceQuickFilters: RaceQuickFilter[] = ['접수 중만', '마감 임박', '이번 주말', '내 지역', '관심만'];
 
 /** 이번 주 토·일의 날짜 키입니다. 토요일이 지났으면 그 주의 일요일까지만 남습니다. */
 export function weekendRange(now = Date.now()): { start: string; end: string } {
@@ -305,6 +305,9 @@ export function applyQuickFilters(
   const myRegion = options.myRegion?.trim();
   return groups.filter((group) => {
     if (active.includes('접수 중만') && group.status !== '접수 중') return false;
+    if (active.includes('마감 임박') && !isRegistrationClosingSoon(group.registrationTarget, now)) {
+      return false;
+    }
     if (active.includes('이번 주말')) {
       if (group.raceDate < weekend.start || group.raceDate > weekend.end) return false;
     }
@@ -419,4 +422,66 @@ export function raceCountsByDay(groups: RaceGroup[], month: string): Record<stri
     counts[group.raceDate] = (counts[group.raceDate] ?? 0) + 1;
   }
   return counts;
+}
+
+export type RaceCalendarCell = {
+  key: string;
+  day: number;
+  inMonth: boolean;
+  today: boolean;
+  groupCount: number;
+};
+
+export type RaceCalendarMonth = {
+  month: string;
+  label: string;
+  cells: RaceCalendarCell[];
+};
+
+const pad = (value: number) => String(value).padStart(2, '0');
+
+/** 한 대회를 거리별 행이 아닌 대회 묶음 1건으로 세는 7열 월간 달력 모델입니다. */
+export function buildRaceCalendarMonth(
+  groups: RaceGroup[],
+  month: string,
+  now = Date.now(),
+): RaceCalendarMonth | null {
+  if (!monthPattern.test(month)) return null;
+  const year = Number(month.slice(0, 4));
+  const monthNumber = Number(month.slice(5, 7));
+  const firstWeekday = new Date(Date.UTC(year, monthNumber - 1, 1)).getUTCDay();
+  const daysInMonth = new Date(Date.UTC(year, monthNumber, 0)).getUTCDate();
+  const today = kstDateFormatter.format(new Date(now));
+  const counts = raceCountsByDay(groups, month);
+  const cells: RaceCalendarCell[] = [];
+
+  for (let index = 0; index < firstWeekday; index += 1) {
+    cells.push({ key: '', day: 0, inMonth: false, today: false, groupCount: 0 });
+  }
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    const key = `${month}-${pad(day)}`;
+    cells.push({
+      key,
+      day,
+      inMonth: true,
+      today: key === today,
+      groupCount: counts[key] ?? 0,
+    });
+  }
+  while (cells.length % 7 !== 0) {
+    cells.push({ key: '', day: 0, inMonth: false, today: false, groupCount: 0 });
+  }
+
+  return {
+    month,
+    label: `${year}년 ${monthNumber}월`,
+    cells,
+  };
+}
+
+export function raceGroupsForDate(groups: RaceGroup[], dateKey: string): RaceGroup[] {
+  return sortRaceGroups(
+    groups.filter((group) => group.raceDate === dateKey),
+    '가까운 날짜순',
+  );
 }

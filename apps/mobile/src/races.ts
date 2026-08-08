@@ -33,6 +33,14 @@ function todayKst(now = Date.now()): string {
   return kstDayFormatter.format(new Date(now));
 }
 
+function calendarDaysBetween(target: number, now: number): number | null {
+  if (!Number.isFinite(target) || !Number.isFinite(now)) return null;
+  const targetDay = Date.parse(`${kstDayFormatter.format(new Date(target))}T00:00:00Z`);
+  const today = Date.parse(`${kstDayFormatter.format(new Date(now))}T00:00:00Z`);
+  if (!Number.isFinite(targetDay) || !Number.isFinite(today)) return null;
+  return Math.round((targetDay - today) / 86_400_000);
+}
+
 function isRace(value: unknown): value is Race {
   if (!value || typeof value !== 'object') return false;
   const race = value as Partial<Race>;
@@ -159,6 +167,35 @@ export function registrationStatusLabel(race: Race, now = Date.now()): string {
   if (status === 'closed' || (Number.isFinite(closesAt) && closesAt < now)) return '접수 마감';
   if (Number.isFinite(opensAt) && opensAt <= now) return '접수 중';
   return '접수 예정';
+}
+
+/** 공식 접수 시작·마감 시각을 KST 달력 날짜 기준 D-day 문구로 바꿉니다. */
+export function registrationCountdownLabel(race: Race, now = Date.now()): string {
+  const status = registrationStatusLabel(race, now);
+  if (status === '확인 필요') return '접수 일정 확인 필요';
+  if (status === '취소' || status === '매진' || status === '접수 마감') return status;
+  if (status === '접수 중') {
+    const closesAt = Date.parse(race.registrationClosesAt ?? '');
+    const days = calendarDaysBetween(closesAt, now);
+    if (days == null) return '접수 중 · 마감일 확인 필요';
+    return days === 0 ? '오늘 접수 마감' : `접수 마감 D-${days}`;
+  }
+  const opensAt = Date.parse(race.registrationOpensAt);
+  const days = calendarDaysBetween(opensAt, now);
+  if (days == null) return '접수 예정';
+  return days === 0 ? '오늘 접수 시작' : `접수 시작 D-${days}`;
+}
+
+/** 현재 접수 중이며 공식 마감일이 지정 일수 안에 오는 대회만 고릅니다. */
+export function isRegistrationClosingSoon(
+  race: Race,
+  now = Date.now(),
+  withinDays = 7,
+): boolean {
+  if (registrationStatusLabel(race, now) !== '접수 중') return false;
+  const closesAt = Date.parse(race.registrationClosesAt ?? '');
+  const days = calendarDaysBetween(closesAt, now);
+  return days != null && days >= 0 && days <= withinDays;
 }
 
 export function canScheduleRegistrationAlert(race: Race, now = Date.now()): boolean {

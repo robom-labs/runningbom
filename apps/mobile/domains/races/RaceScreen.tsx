@@ -20,6 +20,7 @@ import {
   canScheduleRegistrationAlert,
   formatRaceDate,
   formatRegistrationTime,
+  registrationCountdownLabel,
   registrationStatusLabel,
   registrationFilters,
   regionsFor,
@@ -514,6 +515,7 @@ export function RaceScreen({ focusedRaceId }: Props) {
         {(view === '목록' ? renderedGroups : []).map((group) => {
           const primary = group.primary;
           const registrationTarget = group.registrationTarget;
+          const registrationCountdown = registrationCountdownLabel(registrationTarget);
           const scheduledEntry = group.entries.find((entry) => Boolean(scheduledRaceIds[entry.id]));
           const scheduled = Boolean(scheduledEntry);
           const canSchedule = canScheduleRegistrationAlert(registrationTarget);
@@ -588,6 +590,7 @@ export function RaceScreen({ focusedRaceId }: Props) {
 
               <View style={styles.registration}>
                 <Text style={styles.registrationLabel}>접수 일정</Text>
+                <Text style={styles.registrationCountdown}>{registrationCountdown}</Text>
                 <Text style={styles.registrationValue}>{formatRegistrationTime(registrationTarget)}</Text>
               </View>
               {registrationTarget.registrationDataIssue || registrationTarget.note ? (
@@ -942,6 +945,13 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   registrationLabel: { color: palette.accentDark, fontSize: typeScale.caption, fontWeight: '900' },
+  registrationCountdown: {
+    color: palette.ink,
+    fontSize: typeScale.bodySmall,
+    lineHeight: 20,
+    fontWeight: '900',
+    marginTop: 4,
+  },
   registrationValue: {
     color: palette.ink,
     fontSize: typeScale.bodySmall,
