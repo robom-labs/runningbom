@@ -378,7 +378,7 @@ test("workflow는 수동 실행과 보호 environment만 선언한다", async ()
   assert.match(workflow, /--approval-file/);
   assert.match(workflow, /bundletool-all-1\.18\.3\.jar/);
   assert.match(workflow, /PLAY_RELEASE_ENVIRONMENT_GUARD/);
-  assert.match(workflow, /eas-cli@16\.19\.0 submit/);
+  assert.match(workflow, /eas-cli@21\.7\.0 submit/);
   assert.doesNotMatch(workflow, /ref:\s*\$\{\{\s*inputs\.source_sha/);
   assert.ok(
     workflow.indexOf("--mode dry-run") <
@@ -386,6 +386,6 @@ test("workflow는 수동 실행과 보호 environment만 선언한다", async ()
   );
   assert.ok(
     workflow.lastIndexOf("--mode execute") <
-      workflow.indexOf("eas-cli@16.19.0 submit"),
+      workflow.indexOf("eas-cli@21.7.0 submit"),
   );
 });

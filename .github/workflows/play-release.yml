@@ -84,7 +84,7 @@ jobs:
           set -euo pipefail
           BUILD_JSON="${RUNNER_TEMP}/eas-build.json"
           ARTIFACT_PATH="${RUNNER_TEMP}/runningbom-candidate.aab"
-          npx --yes eas-cli@16.19.0 build:view "${EAS_BUILD_ID}" --json --non-interactive > "${BUILD_JSON}"
+          npx --yes eas-cli@21.7.0 build:view "${EAS_BUILD_ID}" --json > "${BUILD_JSON}"
           BUILD_SOURCE_SHA="$(jq -er '.gitCommitHash' "${BUILD_JSON}")"
           test "${BUILD_SOURCE_SHA}" = "${EXPECTED_SOURCE_SHA}"
           BUILD_URL="$(jq -er '.artifacts.buildUrl' "${BUILD_JSON}")"
@@ -157,7 +157,7 @@ jobs:
           set -euo pipefail
           BUILD_JSON="${RUNNER_TEMP}/eas-build.json"
           ARTIFACT_PATH="${RUNNER_TEMP}/runningbom-candidate.aab"
-          npx --yes eas-cli@16.19.0 build:view "${EAS_BUILD_ID}" --json --non-interactive > "${BUILD_JSON}"
+          npx --yes eas-cli@21.7.0 build:view "${EAS_BUILD_ID}" --json > "${BUILD_JSON}"
           BUILD_SOURCE_SHA="$(jq -er '.gitCommitHash' "${BUILD_JSON}")"
           test "${BUILD_SOURCE_SHA}" = "${EXPECTED_SOURCE_SHA}"
           BUILD_URL="$(jq -er '.artifacts.buildUrl' "${BUILD_JSON}")"
@@ -235,7 +235,7 @@ jobs:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           ARTIFACT_PATH: ${{ steps.artifact.outputs.path }}
         run: |
-          npx --yes eas-cli@16.19.0 submit \
+          npx --yes eas-cli@21.7.0 submit \
             --platform android \
             --profile guarded \
             --path "${ARTIFACT_PATH}" \
