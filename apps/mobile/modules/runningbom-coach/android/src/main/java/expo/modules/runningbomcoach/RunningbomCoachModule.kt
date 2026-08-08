@@ -28,6 +28,7 @@ class RunningbomCoachModule : Module() {
       val speechRate = (voice["rate"] as? Number)?.toDouble() ?: 1.0
       val voiceId = voice["voiceId"] as? String ?: ""
       val pitch = (voice["pitch"] as? Number)?.toDouble() ?: 1.0
+      val openEnded = voice["openEnded"] as? Boolean ?: false
       val context = requireContext()
       val intent = Intent(context, RunningbomCoachService::class.java).apply {
         action = RunningbomCoachService.ACTION_START
@@ -40,6 +41,7 @@ class RunningbomCoachModule : Module() {
         putExtra(RunningbomCoachService.EXTRA_SPEECH_RATE, speechRate.toFloat())
         putExtra(RunningbomCoachService.EXTRA_VOICE_ID, voiceId)
         putExtra(RunningbomCoachService.EXTRA_PITCH, pitch.toFloat())
+        putExtra(RunningbomCoachService.EXTRA_OPEN_ENDED, openEnded)
       }
       ContextCompat.startForegroundService(context, intent)
     }
@@ -69,8 +71,39 @@ class RunningbomCoachModule : Module() {
         "countsAs" to preferences.getString("countsAs", null),
         "elapsedSeconds" to preferences.getInt("elapsedSeconds", 0),
         "durationSeconds" to preferences.getInt("durationSeconds", 0),
+        "openEnded" to preferences.getBoolean("openEnded", false),
         "startedAtEpochMillis" to preferences.getLong("startedAtEpochMillis", 0L),
         "completedAtEpochMillis" to preferences.getLong("completedAtEpochMillis", 0L),
+      )
+    }
+
+    AsyncFunction("startMetronome") { cadence: Int ->
+      val context = requireContext()
+      val intent = Intent(context, RunningbomMetronomeService::class.java).apply {
+        action = RunningbomMetronomeService.ACTION_START
+        putExtra(RunningbomMetronomeService.EXTRA_CADENCE, cadence)
+      }
+      ContextCompat.startForegroundService(context, intent)
+    }
+
+    AsyncFunction("stopMetronome") {
+      val context = requireContext()
+      context.startService(Intent(context, RunningbomMetronomeService::class.java).apply {
+        action = RunningbomMetronomeService.ACTION_STOP
+      })
+    }
+
+    AsyncFunction("getMetronomeState") {
+      val preferences = requireContext().getSharedPreferences(
+        RunningbomMetronomeService.PREFERENCES,
+        Context.MODE_PRIVATE,
+      )
+      mapOf(
+        "playing" to preferences.getBoolean("playing", false),
+        "cadence" to preferences.getInt("cadence", 170),
+        "beatCount" to preferences.getLong("beatCount", 0L),
+        "startedAtEpochMillis" to preferences.getLong("startedAtEpochMillis", 0L),
+        "underrunCount" to preferences.getInt("underrunCount", 0),
       )
     }
   }

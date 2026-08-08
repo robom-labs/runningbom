@@ -9,6 +9,7 @@ export type FallbackCoachClock = {
   countsAs?: ActivityKind;
   elapsedSeconds: number;
   durationSeconds: number;
+  openEnded?: boolean;
   startedAtEpochMillis?: number;
   completedAtEpochMillis?: number;
   runningSinceEpochMillis?: number;
@@ -20,6 +21,7 @@ type StartFallbackClockInput = {
   title: string;
   countsAs: ActivityKind;
   durationSeconds: number;
+  openEnded?: boolean;
 };
 
 export const idleFallbackClock: FallbackCoachClock = {
@@ -40,6 +42,7 @@ export function startFallbackClock(
     countsAs: input.countsAs,
     elapsedSeconds: 0,
     durationSeconds: Math.max(1, Math.floor(input.durationSeconds)),
+    ...(input.openEnded ? { openEnded: true } : {}),
     startedAtEpochMillis: nowEpochMillis,
     runningSinceEpochMillis: nowEpochMillis,
   };
@@ -56,12 +59,11 @@ export function snapshotFallbackClock(
   const additionalSeconds = Math.floor(
     Math.max(0, nowEpochMillis - clock.runningSinceEpochMillis) / 1_000,
   );
-  const elapsedSeconds = Math.min(
-    clock.durationSeconds,
-    clock.elapsedSeconds + additionalSeconds,
-  );
+  const elapsedSeconds = clock.openEnded
+    ? clock.elapsedSeconds + additionalSeconds
+    : Math.min(clock.durationSeconds, clock.elapsedSeconds + additionalSeconds);
 
-  if (elapsedSeconds >= clock.durationSeconds) {
+  if (!clock.openEnded && elapsedSeconds >= clock.durationSeconds) {
     const remainingSeconds = Math.max(0, clock.durationSeconds - clock.elapsedSeconds);
     const { runningSinceEpochMillis, ...completedClock } = clock;
     return {

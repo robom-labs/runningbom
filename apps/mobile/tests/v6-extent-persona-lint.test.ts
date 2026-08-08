@@ -20,6 +20,7 @@ import {
   createCoachSessionForExtent,
   needsHorizonRefill,
   nextHorizonMinutes,
+  OPEN_ENDED_HORIZON_MINUTES,
 } from '../domains/coaching/model';
 import {
   SHORT_SESSION_SECONDS,
@@ -389,16 +390,17 @@ test('시간을 정한 러닝은 예전 그대로입니다', () => {
   assert.deepEqual(fixed.cues, legacy.cues);
 });
 
-test('여섯 시간을 넘겨 달리면 다음 분량을 이어 받습니다', () => {
+test('열두 시간 분량이 끝나기 전에 다음 분량을 이어 받을 신호를 냅니다', () => {
   const open = createCoachSessionForExtent('이지런', { type: 'open-ended' }, 'standard');
   assert.equal(needsHorizonRefill(open, 60 * 60), false);
-  assert.equal(needsHorizonRefill(open, (360 - 10) * 60), true);
+  assert.equal(needsHorizonRefill(open, (OPEN_ENDED_HORIZON_MINUTES - 21) * 60), false);
+  assert.equal(needsHorizonRefill(open, (OPEN_ENDED_HORIZON_MINUTES - 19) * 60), true);
   // 시간이 정해진 러닝은 이어 만들 것이 없습니다.
   const fixed = createCoachSessionForExtent('이지런', { type: 'fixed-time', seconds: 1800 }, 'standard');
   assert.equal(needsHorizonRefill(fixed, 1800), false);
   // 다음 분량은 지금 흘러간 시간보다 넉넉해야 합니다.
-  assert.ok(nextHorizonMinutes(7 * 3600) > 7 * 60);
-  assert.equal(nextHorizonMinutes(60) >= 360, true);
+  assert.ok(nextHorizonMinutes(13 * 3600) > 13 * 60);
+  assert.equal(nextHorizonMinutes(60) >= OPEN_ENDED_HORIZON_MINUTES, true);
 });
 
 test('시작 화면이 10~120분 밖을 거절하지 않습니다', () => {

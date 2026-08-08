@@ -47,6 +47,7 @@ import {
 } from './extent';
 import { speakAs } from './register';
 import type { CoachDensity, SpeechRegister } from './persona';
+import { fillFullTalkContinuity } from './continuity';
 import {
   blockLineOffsets,
   blockedSpans,
@@ -93,11 +94,12 @@ export const DEFAULT_SESSION_MINUTES = 30;
  *
  * 큐는 "시작 후 몇 초"로 붙어 있으므로 무한히 만들 수는 없습니다.
  * 그렇다고 짧게 만들면 그 뒤로 코치가 조용해집니다.
- * 그래서 여섯 시간치를 미리 만들어 둡니다. 실제로 측정해 보면 2,400문장을
- * 17밀리초에 만듭니다. 사람이 알아채지 못하는 시간이고, 여섯 시간을 넘겨 달리는
- * 사람은 그때 다음 분량을 이어 받습니다.
+ * 화면이 잠긴 뒤에는 JavaScript가 다음 분량을 제때 보태 준다고 보장할 수 없습니다.
+ * 그래서 장시간 검증 기준과 같은 열두 시간치를 한 번에, 그러나 유한하게 만들어 둡니다.
+ * 이 분량이 끝났다고 세션을 자동 완료하지는 않습니다. 끝낼 때까지 러닝은 사용자가
+ * 직접 종료할 때만 끝납니다.
  */
-export const OPEN_ENDED_HORIZON_MINUTES = 360;
+export const OPEN_ENDED_HORIZON_MINUTES = 720;
 
 /** 다음 분량을 만들기 시작하는 시점입니다. 남은 분량이 이보다 적으면 이어 만듭니다. */
 export const OPEN_ENDED_REFILL_MINUTES = 20;
@@ -489,26 +491,26 @@ export function createCoachSessionForExtent(
  * 덩어리 구간 안에 있던 짧은 문장은 버립니다.
  * 이야기 중간에 "어깨 내려요"가 끼어들면 두 사람이 동시에 말하는 것처럼 들립니다.
  */
+export type LongformSessionPlan = {
+  session: CoachSession;
+  plannedCount: number;
+};
+
 /**
- * 마지막으로 만든 세션이 쓴 덩어리 수입니다.
+ * 긴 이야기와 이번에 소비할 커서 수를 함께 돌려주는 순수 계획입니다.
  *
- * 화면이 다음 커서를 계산할 때 씁니다. 세션 자체에 넣으면 저장된 기록의 모양이 바뀌므로
- * 여기 따로 둡니다. 세션을 만든 직후에 읽어야 맞습니다.
+ * 이전 구현은 모듈 전역 변수에 "마지막 렌더가 만든 개수"를 저장했습니다. React가
+ * 화면을 미리 렌더하거나 다른 테스트가 세션을 만들면 값이 바뀌어, 실제로 시작하지 않은
+ * 러닝도 커리큘럼이 앞으로 가는 문제가 있었습니다. 시작에 성공한 호출부만 이 값을
+ * 저장하도록 결과에 명시적으로 담습니다.
  */
-let lastLongformCount = 0;
-
-export function longformCountOfLastSession(): number {
-  return lastLongformCount;
-}
-
-export function withLongform(
+export function planLongformSession(
   session: CoachSession,
   density: CoachDensity,
   startCursor = 0,
-): CoachSession {
+): LongformSessionPlan {
   if (!usesLongform(density)) {
-    lastLongformCount = 0;
-    return session;
+    return { session, plannedCount: 0 };
   }
 
   const durationSeconds = session.durationMinutes * 60;
@@ -519,8 +521,18 @@ export function withLongform(
     startCursor,
     warmupSeconds: Math.min(WARMUP_SECONDS, Math.max(60, durationSeconds * 0.1)),
   });
-  if (planned.length === 0) return session;
-  lastLongformCount = planned.length;
+  if (planned.length === 0) {
+    return {
+      session:
+        density === 'full-talk'
+          ? fillFullTalkContinuity(
+              { ...session, id: `${session.id}:${density}` },
+              startCursor * 13,
+            )
+          : session,
+      plannedCount: 0,
+    };
+  }
 
   const spans = blockedSpans(planned);
   const kept = session.cues.filter((cue) => !isInsideBlock(cue.offsetSeconds, spans));
@@ -533,11 +545,28 @@ export function withLongform(
     })),
   );
 
-  return {
+  const sessionWithBlocks: CoachSession = {
     ...session,
     id: `${session.id}:${density}`,
     cues: [...kept, ...blockCues].sort((left, right) => left.offsetSeconds - right.offsetSeconds),
   };
+
+  return {
+    plannedCount: planned.length,
+    session:
+      density === 'full-talk'
+        ? fillFullTalkContinuity(sessionWithBlocks, startCursor * 13)
+        : sessionWithBlocks,
+  };
+}
+
+/** 기존 호출부가 세션만 필요할 때 쓰는 호환 함수입니다. */
+export function withLongform(
+  session: CoachSession,
+  density: CoachDensity,
+  startCursor = 0,
+): CoachSession {
+  return planLongformSession(session, density, startCursor).session;
 }
 
 /**

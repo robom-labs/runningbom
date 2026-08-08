@@ -48,6 +48,7 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
     const val EXTRA_SPEECH_RATE = "speechRate"
     const val EXTRA_VOICE_ID = "voiceId"
     const val EXTRA_PITCH = "pitch"
+    const val EXTRA_OPEN_ENDED = "openEnded"
 
     const val PREFERENCES = "runningbom-coach-state"
     private const val CHANNEL_ID = "runningbom-coach"
@@ -64,12 +65,14 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
   private var textToSpeech: TextToSpeech? = null
   private var textToSpeechReady = false
   private var audioFocusRequest: AudioFocusRequest? = null
+  private var speechFocusHeld = false
 
   private var sessionId = ""
   private var definitionId = ""
   private var title = "러닝 코칭"
   private var countsAs = "run"
   private var durationSeconds = 0
+  private var openEnded = false
   private var speechRate = 1f
   private var speechPitch = 1f
   private var preferredVoiceId = ""
@@ -91,7 +94,7 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
       persistState("running", elapsed)
       updateMediaSession(elapsed)
 
-      if (elapsed >= durationSeconds) {
+      if (!openEnded && elapsed >= durationSeconds) {
         completedAtEpochMillis = System.currentTimeMillis()
         completed = true
         running = false
@@ -121,6 +124,10 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
         if (running) {
           pausedByAudioFocus = change == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT
           pauseInternal("다른 오디오 사용으로 일시정지")
+        }
+        if (change == AudioManager.AUDIOFOCUS_LOSS) {
+          pausedByAudioFocus = false
+          abandonAudioFocus()
         }
       }
       AudioManager.AUDIOFOCUS_GAIN -> {
@@ -179,10 +186,12 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
       ?.takeIf { it == "run" || it == "walk" || it == "recovery" }
       ?: "run"
     durationSeconds = intent.getIntExtra(EXTRA_DURATION_SECONDS, 0).coerceAtLeast(1)
+    openEnded = intent.getBooleanExtra(EXTRA_OPEN_ENDED, false)
     speechRate = intent.getFloatExtra(EXTRA_SPEECH_RATE, 1f).coerceIn(0.7f, 1.3f)
     speechPitch = intent.getFloatExtra(EXTRA_PITCH, 1f).coerceIn(0.8f, 1.3f)
     preferredVoiceId = intent.getStringExtra(EXTRA_VOICE_ID).orEmpty()
     cues = parseCueSchedule(intent.getStringExtra(EXTRA_CUE_SCHEDULE).orEmpty())
+    textToSpeech?.stop()
     nextCueIndex = 0
     elapsedBeforeRunMillis = 0L
     activeRunStartedAt = SystemClock.elapsedRealtime()
@@ -192,11 +201,9 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
     running = true
     pausedByAudioFocus = false
 
-    requestAudioFocus()
     selectBestInstalledKoreanVoice()
     textToSpeech?.setSpeechRate(speechRate)
     textToSpeech?.setPitch(speechPitch)
-    textToSpeech?.playSilentUtterance(150L, TextToSpeech.QUEUE_FLUSH, "runningbom-prime")
     persistState("running", 0)
     updateMediaSession(0)
     startForeground(NOTIFICATION_ID, buildNotification("진행 중"))
@@ -210,6 +217,7 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
     running = false
     handler.removeCallbacks(ticker)
     textToSpeech?.stop()
+    if (!pausedByAudioFocus) abandonAudioFocus()
     val elapsed = elapsedSeconds()
     persistState("paused", elapsed)
     updateMediaSession(elapsed)
@@ -220,7 +228,6 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
     if (running || completed || durationSeconds <= 0) return
     activeRunStartedAt = SystemClock.elapsedRealtime()
     running = true
-    requestAudioFocus()
     val elapsed = elapsedSeconds()
     persistState("running", elapsed)
     updateMediaSession(elapsed)
@@ -250,8 +257,9 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
     } else {
       0L
     }
-    return ((elapsedBeforeRunMillis + activeMillis) / 1_000.0).roundToInt()
-      .coerceIn(0, durationSeconds)
+    val elapsed = ((elapsedBeforeRunMillis + activeMillis) / 1_000.0).roundToInt()
+      .coerceAtLeast(0)
+    return if (openEnded) elapsed else elapsed.coerceAtMost(durationSeconds)
   }
 
   /**
@@ -269,18 +277,26 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
   private fun deliverDueCue(elapsed: Int) {
     if (!textToSpeechReady || nextCueIndex >= cues.size) return
     val due = mutableListOf<CoachCue>()
-    while (nextCueIndex < cues.size && cues[nextCueIndex].offsetSeconds <= elapsed) {
-      due.add(cues[nextCueIndex])
-      nextCueIndex += 1
+    var candidateIndex = nextCueIndex
+    while (candidateIndex < cues.size && cues[candidateIndex].offsetSeconds <= elapsed) {
+      due.add(cues[candidateIndex])
+      candidateIndex += 1
     }
     if (due.isEmpty()) return
 
     val spoken = if (due.size <= MAX_SPOKEN_PER_TICK) due else due.takeLast(MAX_SPOKEN_PER_TICK)
-    spoken.forEachIndexed { index, cue ->
-      // 첫 마디는 앞의 말을 끊고 시작하고, 이어지는 마디는 뒤에 붙입니다.
-      // 전부 QUEUE_FLUSH로 넣으면 앞 마디를 자기들끼리 지워 결국 하나만 들립니다.
-      val mode = if (index == 0) TextToSpeech.QUEUE_FLUSH else TextToSpeech.QUEUE_ADD
-      textToSpeech?.speak(cue.text, mode, null, "runningbom-cue-${cue.offsetSeconds}")
+    // 다른 음악을 러닝 내내 독점하지 않습니다. 실제로 말하기 직전에만 짧게 요청합니다.
+    // 포커스를 받지 못했으면 큐 인덱스를 넘기지 않고 다음 틱에 다시 시도합니다.
+    if (!requestSpeechAudioFocus()) return
+    nextCueIndex = candidateIndex
+    spoken.forEach { cue ->
+      // 이미 말하고 있는 문장을 새 안내가 끊지 않도록 모두 뒤에 붙입니다.
+      textToSpeech?.speak(
+        cue.text,
+        TextToSpeech.QUEUE_ADD,
+        null,
+        "runningbom-cue-${cue.offsetSeconds}",
+      )
     }
   }
 
@@ -311,13 +327,20 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
       }
       override fun onDone(utteranceId: String?) {
         persistCheckpoint(utteranceId, "done")
+        releaseSpeechFocusWhenIdle()
       }
       @Deprecated("Deprecated in Java")
       override fun onError(utteranceId: String?) {
         persistCheckpoint(utteranceId, "error")
+        releaseSpeechFocusWhenIdle()
       }
       override fun onError(utteranceId: String?, errorCode: Int) {
         persistCheckpoint(utteranceId, "error:$errorCode")
+        releaseSpeechFocusWhenIdle()
+      }
+      override fun onStop(utteranceId: String?, interrupted: Boolean) {
+        persistCheckpoint(utteranceId, if (interrupted) "stopped:interrupted" else "stopped")
+        releaseSpeechFocusWhenIdle()
       }
     })
   }
@@ -347,9 +370,17 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
     engine.voice = candidate
   }
 
-  private fun requestAudioFocus() {
+  /**
+   * 한 문장을 읽는 동안에만 오디오 포커스를 빌립니다.
+   *
+   * 세션 전체에 AUDIOFOCUS_GAIN을 잡으면 음악·팟캐스트가 러닝 내내 멈춥니다.
+   * 코치 발화는 짧은 안내이므로 MAY_DUCK이 맞고, 지연 승인을 기다리며 오래된 문장을
+   * 뒤늦게 읽지 않도록 즉시 승인된 경우에만 큐를 진행합니다.
+   */
+  private fun requestSpeechAudioFocus(): Boolean {
+    if (speechFocusHeld) return true
     if (Build.VERSION.SDK_INT >= 26) {
-      val request = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+      val request = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
         .setAudioAttributes(
           AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_MEDIA)
@@ -357,27 +388,39 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
             .build(),
         )
         .setOnAudioFocusChangeListener(audioFocusListener)
-        .setAcceptsDelayedFocusGain(true)
+        .setAcceptsDelayedFocusGain(false)
         .build()
       audioFocusRequest = request
-      audioManager.requestAudioFocus(request)
+      speechFocusHeld = audioManager.requestAudioFocus(request) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
     } else {
       @Suppress("DEPRECATION")
-      audioManager.requestAudioFocus(
+      speechFocusHeld = audioManager.requestAudioFocus(
         audioFocusListener,
         AudioManager.STREAM_MUSIC,
-        AudioManager.AUDIOFOCUS_GAIN,
-      )
+        AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK,
+      ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
     }
+    return speechFocusHeld
+  }
+
+  private fun releaseSpeechFocusWhenIdle() {
+    handler.postDelayed({
+      if (textToSpeech?.isSpeaking != true && !pausedByAudioFocus) {
+        abandonAudioFocus()
+      }
+    }, 80L)
   }
 
   private fun abandonAudioFocus() {
+    if (!speechFocusHeld && audioFocusRequest == null) return
     if (Build.VERSION.SDK_INT >= 26) {
       audioFocusRequest?.let(audioManager::abandonAudioFocusRequest)
     } else {
       @Suppress("DEPRECATION")
       audioManager.abandonAudioFocus(audioFocusListener)
     }
+    speechFocusHeld = false
+    audioFocusRequest = null
   }
 
   private fun updateMediaSession(elapsed: Int) {
@@ -463,6 +506,7 @@ class RunningbomCoachService : Service(), TextToSpeech.OnInitListener {
       .putString("countsAs", countsAs)
       .putInt("elapsedSeconds", elapsed)
       .putInt("durationSeconds", durationSeconds)
+      .putBoolean("openEnded", openEnded)
       .putLong("startedAtEpochMillis", startedAtEpochMillis)
       .putLong("completedAtEpochMillis", completedAtEpochMillis)
       .putLong("checkpointElapsedRealtime", SystemClock.elapsedRealtime())

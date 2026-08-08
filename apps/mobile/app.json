@@ -17,7 +17,10 @@
       "bundleIdentifier": "kr.robom.runningbom",
       "buildNumber": "7",
       "infoPlist": {
-        "CFBundleDisplayName": "러닝봄"
+        "CFBundleDisplayName": "러닝봄",
+        "UIBackgroundModes": [
+          "audio"
+        ]
       },
       "associatedDomains": []
     },

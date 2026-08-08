@@ -259,6 +259,11 @@ describe('기기 서비스도 밀린 대사를 버리지 않는다', () => {
 
   it('읽지 않은 대사도 자리는 끝까지 넘긴다', () => {
     // 안 그러면 지난 대사가 계속 되살아납니다.
-    assert.ok(serviceSource.includes('nextCueIndex += 1'));
+    assert.ok(serviceSource.includes('nextCueIndex = candidateIndex'));
+    assert.ok(
+      serviceSource.indexOf('if (!requestSpeechAudioFocus()) return') <
+        serviceSource.indexOf('nextCueIndex = candidateIndex'),
+      '오디오 포커스를 얻기 전에 대사를 소비합니다',
+    );
   });
 });

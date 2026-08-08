@@ -34,10 +34,9 @@ import {
   recentCues,
   resolveRunningType,
   runningTypeCategories,
-  longformCountOfLastSession,
   nextBodyCursor,
+  planLongformSession,
   runningTypesByCategory,
-  withLongform,
   type CoachSessionKind,
   type GuidanceLevel,
   type RunningTypeCategory,
@@ -196,16 +195,18 @@ export function StartScreen() {
   );
   // 반말을 골랐으면 여기서 한 번에 옮깁니다.
   // 기기 서비스에 넘길 대사표, 앱이 말할 문장, 화면에 찍히는 기록이 전부 같은 세션에서 나옵니다.
-  const session = useMemo(
-    () =>
-      applyRegister(
-        withLongform(
-          createCoachSessionForExtent(kind, extent, preferences.coachGuidance),
-          coachSettings.density,
-          coachSettings.bodyCursor ?? 0,
-        ),
-        coachSettings.register,
-      ),
+  const sessionPlan = useMemo(
+    () => {
+      const planned = planLongformSession(
+        createCoachSessionForExtent(kind, extent, preferences.coachGuidance),
+        coachSettings.density,
+        coachSettings.bodyCursor ?? 0,
+      );
+      return {
+        ...planned,
+        session: applyRegister(planned.session, coachSettings.register),
+      };
+    },
     [
       kind,
       extent,
@@ -215,6 +216,7 @@ export function StartScreen() {
       coachSettings.bodyCursor,
     ],
   );
+  const session = sessionPlan.session;
   /** 끝을 모르면 남은 시간·진행률을 화면에도 띄우지 않습니다. 코치만 입을 다무는 게 아닙니다. */
   const showsRemaining = mayMentionRemaining(extent);
   const active = runtime.state === 'running' || runtime.state === 'paused';
@@ -330,7 +332,7 @@ export function StartScreen() {
         // 끝을 정하지 않고 시작했다면 그 사실을 되살립니다.
         // 되살리지 않으면 앱을 다시 켠 순간 "6시간짜리 러닝"으로 보이고,
         // 코치가 갑자기 남은 시간을 말하기 시작합니다.
-        if (!preferences.coachOpenEnded) {
+        if (!next.openEnded) {
           setOpenEnded(false);
           setMinutes(restoredMinutes);
           setDirectInput(String(restoredMinutes));
@@ -381,7 +383,7 @@ export function StartScreen() {
     } catch {
       setRuntime((current) => ({ ...current, state: 'stopped' }));
     }
-  }, [completeActivity, preferences.coachOpenEnded]);
+  }, [completeActivity]);
 
   useEffect(() => {
     void refreshRuntime();
@@ -545,15 +547,20 @@ export function StartScreen() {
   async function launchSession() {
     await updatePreferences({ coachMinutes: minutes, coachType: kind, coachOpenEnded: openEnded });
 
-    // 이번에 들은 만큼 커리큘럼을 앞으로 옮깁니다.
-    // 시작할 때 옮깁니다 — 끝까지 안 달리고 멈추는 일이 흔한데, 그때마다 커서가 제자리면
-    // 그 사람은 영영 머리·어깨만 듣게 됩니다.
-    const used = longformCountOfLastSession();
-    if (used > 0) {
-      updateCoach({ bodyCursor: nextBodyCursor(coachSettings.bodyCursor ?? 0, used) });
-    }
     try {
-      setRuntime(await startCoachSession(session, preferences.speechRate, voiceGender));
+      const started = await startCoachSession(session, preferences.speechRate, voiceGender);
+      setRuntime(started);
+
+      // 실제 서비스 시작에 성공한 뒤에만 이번 커리큘럼을 소비합니다.
+      // 렌더만 했거나 음성 서비스 시작이 실패한 경우에는 다음 러닝에서 같은 내용을 들을 수 있습니다.
+      if (sessionPlan.plannedCount > 0) {
+        updateCoach({
+          bodyCursor: nextBodyCursor(
+            coachSettings.bodyCursor ?? 0,
+            sessionPlan.plannedCount,
+          ),
+        });
+      }
     } catch {
       Alert.alert(
         '음성 코치를 시작하지 못했어요',
