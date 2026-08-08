@@ -101,10 +101,23 @@
     return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
   }
 
-  function normalizeRaceName(name) {
+  const COURSE_NAME_TOKEN = /(^|[\s()[\]{}·,\/_+\-])(?:5\s*(?:km|k|킬로미터|킬로)|10\s*(?:km|k|킬로미터|킬로)|21(?:\.0975)?\s*(?:km|k|킬로미터|킬로)|42(?:\.195)?\s*(?:km|k|킬로미터|킬로)|half(?:\s*marathon)?|full(?:\s*marathon)?|하프(?:마라톤|코스)?|풀(?:마라톤|코스)?)(?:\s*(?:코스|부문|종목))?(?=$|[\s()[\]{}·,\/_+\-])/gi;
+  const DISTANCE_ORDER = ["5K", "10K", "Half", "Full", "Trail"];
+
+  function stripCourseFromName(name) {
     return String(name || "")
+      .normalize("NFKC")
+      .replace(COURSE_NAME_TOKEN, "$1")
+      .replace(/[([{]\s*[)\]}]/g, " ")
+      .replace(/[·,\/_+\-]+\s*$/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function normalizeRaceName(name) {
+    return stripCourseFromName(name)
       .toLowerCase()
-      .replace(/제\d+회/g, "")
+      .replace(/제\s*(\d+)\s*회/g, "제$1회")
       .replace(/\b20\d{2}\b/g, "")
       .replace(/marathon|race|trail|run/g, "")
       .replace(/마라톤대회|마라톤|트레일런|트레일|레이스/g, "")
@@ -112,7 +125,134 @@
   }
 
   function raceIdentity(race) {
-    return `${normalizeRaceName(race.name)}|${String(race.raceDate || race.date || "").slice(0, 10)}`;
+    const region = String(race.region || race.city || "")
+      .normalize("NFKC")
+      .toLowerCase()
+      .replace(/[^0-9a-z가-힣]/g, "");
+    return `${normalizeRaceName(race.name)}|${String(race.raceDate || race.date || "").slice(0, 10)}|${region}`;
+  }
+
+  function normalizeDistance(value) {
+    const text = String(value || "").trim();
+    if (/^5\s*(?:km|k)$/i.test(text)) return "5K";
+    if (/^10\s*(?:km|k)$/i.test(text)) return "10K";
+    if (/^(?:half|하프)/i.test(text)) return "Half";
+    if (/^(?:full|풀)/i.test(text)) return "Full";
+    if (/trail|트레일/i.test(text)) return "Trail";
+    return text;
+  }
+
+  function sortedDistances(values) {
+    return [...new Set(values.map(normalizeDistance).filter(Boolean))].sort((left, right) => {
+      const leftIndex = DISTANCE_ORDER.indexOf(left);
+      const rightIndex = DISTANCE_ORDER.indexOf(right);
+      if (leftIndex < 0 && rightIndex < 0) return left.localeCompare(right, "ko");
+      if (leftIndex < 0) return 1;
+      if (rightIndex < 0) return -1;
+      return leftIndex - rightIndex;
+    });
+  }
+
+  function validTimestamp(value) {
+    const parsed = Date.parse(value || "");
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+
+  function collapseRaceRows(rows) {
+    const buckets = new Map();
+    rows.forEach((row, index) => {
+      const key = row?.name && (row?.raceDate || row?.date) ? raceIdentity(row) : `__invalid_row_${index}`;
+      const bucket = buckets.get(key);
+      if (bucket) bucket.push(row);
+      else buckets.set(key, [row]);
+    });
+    return [...buckets.values()].map((entries) => {
+      if (entries.length === 1) return { ...entries[0] };
+      const merged = { ...entries[0] };
+      const names = entries.map((entry) => stripCourseFromName(entry.name)).filter(Boolean);
+      merged.name = names.sort((left, right) => left.length - right.length || left.localeCompare(right, "ko"))[0] || merged.name;
+      merged.distances = sortedDistances(entries.flatMap((entry) => Array.isArray(entry.distances) ? entry.distances : []));
+      merged.courseLabel = merged.distances.join(",");
+
+      const opens = entries
+        .map((entry) => ({ value: entry.registrationOpenAt, time: validTimestamp(entry.registrationOpenAt), entry }))
+        .filter((item) => item.time !== null)
+        .sort((left, right) => left.time - right.time);
+      const closes = entries
+        .map((entry) => ({ value: entry.registrationCloseAt, time: validTimestamp(entry.registrationCloseAt) }))
+        .filter((item) => item.time !== null)
+        .sort((left, right) => right.time - left.time);
+      if (opens[0]) {
+        merged.registrationOpenAt = opens[0].value;
+        merged.registrationOpenTimeConfirmed = opens[0].entry.registrationOpenTimeConfirmed === true;
+      }
+      if (closes[0]) merged.registrationCloseAt = closes[0].value;
+
+      const windows = [];
+      const windowKeys = new Set();
+      const usedIds = new Set();
+      const addWindow = (candidate) => {
+        if (!candidate?.opensAt || validTimestamp(candidate.opensAt) === null) return;
+        const label = String(candidate.label || candidate.distance || "종목").trim();
+        const semanticKey = `${candidate.distance || label}|${candidate.opensAt}|${candidate.closesAt || ""}`;
+        if (windowKeys.has(semanticKey)) return;
+        windowKeys.add(semanticKey);
+        const baseId = String(candidate.id || candidate.distance || label || "window")
+          .normalize("NFKC")
+          .toLowerCase()
+          .replace(/[^0-9a-z가-힣]+/g, "-")
+          .replace(/^-|-$/g, "") || "window";
+        let id = baseId;
+        let suffix = 2;
+        while (usedIds.has(id)) id = `${baseId}-${suffix++}`;
+        usedIds.add(id);
+        windows.push({ ...candidate, id, label, timeConfirmed: candidate.timeConfirmed === true });
+      };
+      for (const entry of entries) {
+        for (const window of Array.isArray(entry.registrationWindows) ? entry.registrationWindows : []) addWindow(window);
+      }
+      const schedules = new Set(entries
+        .filter((entry) => validTimestamp(entry.registrationOpenAt) !== null)
+        .map((entry) => `${entry.registrationOpenAt}|${entry.registrationCloseAt || ""}|${entry.registrationOpenTimeConfirmed === true}`));
+      if (schedules.size > 1) {
+        for (const entry of entries) {
+          for (const distance of Array.isArray(entry.distances) ? entry.distances : []) {
+            addWindow({
+              label: normalizeDistance(distance),
+              distance: normalizeDistance(distance),
+              opensAt: entry.registrationOpenAt,
+              closesAt: entry.registrationCloseAt,
+              timeConfirmed: entry.registrationOpenTimeConfirmed === true,
+            });
+          }
+        }
+      }
+      if (windows.length > 0) {
+        merged.registrationWindows = windows.sort((left, right) => (
+          String(left.opensAt).localeCompare(String(right.opensAt))
+          || String(left.label).localeCompare(String(right.label), "ko")
+        ));
+      }
+      if (new Set(windows.map((window) => `${window.opensAt}|${window.timeConfirmed}`)).size > 1) {
+        merged.registrationPeriodLabel = "종목별 접수 일정";
+        merged.registrationLabel = "종목별 접수 일정";
+      }
+
+      const statusPriority = ["open", "scheduled", "unknown", "sold_out", "closed", "cancelled", "postponed"];
+      const status = entries
+        .map((entry) => entry.registrationStatus || entry.status)
+        .filter(Boolean)
+        .sort((left, right) => {
+          const leftIndex = statusPriority.indexOf(left);
+          const rightIndex = statusPriority.indexOf(right);
+          return (leftIndex < 0 ? statusPriority.length : leftIndex) - (rightIndex < 0 ? statusPriority.length : rightIndex);
+        })[0];
+      if (status) {
+        merged.status = status;
+        merged.registrationStatus = status;
+      }
+      return merged;
+    });
   }
 
   function buildRaceCalendarEvents(race) {
@@ -274,6 +414,7 @@
   return {
     normalizeRaceName,
     raceIdentity,
+    collapseRaceRows,
     buildRaceCalendarEvents,
     eventsForDate,
     racesForDate,

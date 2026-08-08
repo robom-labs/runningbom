@@ -1,13 +1,14 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.19.2";
-const ASSET_VERSION = "20260808-02";
-const BUILD_SHA = "b7631cd";
-const PWA_CACHE_VERSION = "pushrun-v0.19.2";
+const APP_VERSION = "0.19.3";
+const ASSET_VERSION = "20260808-03";
+const BUILD_SHA = "da648ca";
+const PWA_CACHE_VERSION = "pushrun-v0.19.3";
 const {
   normalizeRaceName,
   raceIdentity,
+  collapseRaceRows,
   racesForDate: calendarRacesForDate,
   eventCountsByDate,
   formatKstDateTime: formatDateTime,
@@ -128,7 +129,7 @@ function parseScheduleFeed(feed) {
     return {
       // ★ 내용 기반 안정 ID. 예전엔 배열 index(`schedule-${index}-...`)라 피드가
       // 재정렬·삽입되면 ID가 바뀌어 localStorage 에 저장된 알림이 전부 고아가 됐다.
-      // raceIdentity 와 동일한 정규화(이름+날짜)로 뽑아 피드가 바뀌어도 알림이 유지되게 한다.
+      // raceIdentity 와 같은 대회명 정규화(종목 표기 제거)+날짜로 뽑아 피드가 바뀌어도 알림이 유지되게 한다.
       id: `schedule-${normalizeRaceName(entry.name)}-${entry.date}`,
       name: entry.name,
       region: entry.region,
@@ -141,6 +142,7 @@ function parseScheduleFeed(feed) {
       registrationDataStatus: entry.registrationDataStatus || null,
       registrationDataIssue: entry.registrationDataIssue || null,
       registrationPeriodLabel: entry.registrationPeriodLabel || null,
+      registrationWindows: Array.isArray(entry.registrationWindows) ? entry.registrationWindows : [],
       registrationUrl: entry.registrationUrl || entry.sourceDetailUrl || null,
       registrationSourceOnly: !entry.registrationUrl && Boolean(entry.sourceDetailUrl),
       sourceDetailUrl: entry.sourceDetailUrl || null,
@@ -202,16 +204,7 @@ function normalizeRaceTime(value) {
 }
 
 function mergeRaces(primary, secondary) {
-  const seen = new Set(primary.map((race) => raceIdentity(race)));
-  return [
-    ...primary,
-    ...secondary.filter((race) => {
-      const key = raceIdentity(race);
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    })
-  ];
+  return collapseRaceRows([...primary, ...secondary]);
 }
 
 function hasConfirmedRegistrationOpenTime(race) {
