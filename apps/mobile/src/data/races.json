@@ -1,47 +1,7 @@
 {
-  "revision": "2026.08.08-race-data-34",
+  "revision": "2026.08.09-race-data-35",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
-    {
-      "id": "schedule-aabb8fced5e3",
-      "name": "2026 양산 어필(up-hill) 레이스",
-      "region": "경남",
-      "venue": "양산 에덴밸리 리조트 루지장",
-      "raceDate": "2026-08-08",
-      "distances": [
-        "Trail"
-      ],
-      "registrationOpensAt": "2026-06-08T00:00:00+09:00",
-      "registrationClosesAt": "2026-07-23T23:59:00+09:00",
-      "registrationTimeConfirmed": false,
-      "registrationStatus": "closed",
-      "registrationPeriodLabel": "6/8 - 7/23",
-      "organizer": "양산시, 부산MBC",
-      "verifiedAt": "마라톤온라인 home 아이콘",
-      "officialUrl": "https://www.yangsanuphillrace.kr/",
-      "externalLinkKind": "official",
-      "sourceName": "마라톤온라인"
-    },
-    {
-      "id": "schedule-f8f677880cad",
-      "name": "제1회 테마임도 트레일런",
-      "region": "부산",
-      "venue": "부산스포원",
-      "raceDate": "2026-08-08",
-      "distances": [
-        "50km"
-      ],
-      "registrationOpensAt": "2026-06-01T00:00:00+09:00",
-      "registrationClosesAt": "2026-06-30T23:59:00+09:00",
-      "registrationTimeConfirmed": false,
-      "registrationStatus": "closed",
-      "registrationPeriodLabel": "06/01 - 06/30",
-      "organizer": "코리안런조직위",
-      "verifiedAt": "마라톤GO 공개 일정 상세",
-      "officialUrl": "https://korearun01.imweb.me/",
-      "externalLinkKind": "official",
-      "sourceName": "마라톤GO"
-    },
     {
       "id": "schedule-68f110d3bbe9",
       "name": "2026 안양천 달빛 나이트런",
@@ -116,7 +76,7 @@
       "registrationOpensAt": "2026-07-07T00:00:00+09:00",
       "registrationClosesAt": "2026-08-08T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "07/07 - 08/08",
       "organizer": "국민건강진흥원",
       "verifiedAt": "마라톤GO 공개 일정 상세",
@@ -2934,7 +2894,7 @@
       "registrationOpensAt": "2026-07-09T00:00:00+09:00",
       "registrationClosesAt": "2026-08-08T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "07/09 - 08/08",
       "organizer": "경기도",
       "verifiedAt": "마라톤GO 공개 일정 상세",
