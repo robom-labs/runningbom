@@ -1,10 +1,10 @@
 const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
-const APP_VERSION = "0.19.0";
-const ASSET_VERSION = "20260726-01";
-const BUILD_SHA = "4d59253";
-const PWA_CACHE_VERSION = "pushrun-v0.19.0";
+const APP_VERSION = "0.19.1";
+const ASSET_VERSION = "20260808-01";
+const BUILD_SHA = "efb904c";
+const PWA_CACHE_VERSION = "pushrun-v0.19.1";
 const {
   normalizeRaceName,
   raceIdentity,
@@ -117,8 +117,9 @@ function parseScheduleFeed(feed) {
     const opensAt = entry.registrationOpenAt ? new Date(entry.registrationOpenAt).getTime() : null;
     const closesAt = entry.registrationCloseAt ? new Date(entry.registrationCloseAt).getTime() : null;
     const isBeforeClose = !closesAt || now <= closesAt;
-    const isOpen = isBeforeClose && (entry.status === "open" || Boolean(opensAt && opensAt <= now));
-    const hasUpcomingOpen = Boolean(opensAt && opensAt > now);
+    const needsReview = registrationNeedsReview(entry);
+    const isOpen = !needsReview && isBeforeClose && (entry.status === "open" || Boolean(opensAt && opensAt <= now));
+    const hasUpcomingOpen = !needsReview && Boolean(opensAt && opensAt > now);
     const openTimeConfirmed = entry.registrationOpenTimeConfirmed === true;
     // 방어: venue/time/distances 가 빠진 항목 1개 때문에 앱 전체가 하얗게 죽지 않게 한다.
     // (validate-static.mjs 가 배포 전에 FAIL 시키지만, 런타임에서도 한 번 더 방어한다.)
@@ -137,6 +138,8 @@ function parseScheduleFeed(feed) {
       registrationOpenAt: entry.registrationOpenAt || null,
       registrationCloseAt: entry.registrationCloseAt || null,
       registrationOpenTimeConfirmed: openTimeConfirmed,
+      registrationDataStatus: entry.registrationDataStatus || null,
+      registrationDataIssue: entry.registrationDataIssue || null,
       registrationPeriodLabel: entry.registrationPeriodLabel || null,
       registrationUrl: entry.registrationUrl || entry.sourceDetailUrl || null,
       registrationSourceOnly: !entry.registrationUrl && Boolean(entry.sourceDetailUrl),
@@ -147,7 +150,7 @@ function parseScheduleFeed(feed) {
       organizer: entry.organizer || null,
       status: isOpen ? "open" : hasUpcomingOpen ? "scheduled" : entry.status,
       registrationStatus: isOpen ? "open" : hasUpcomingOpen ? "scheduled" : entry.status || "unknown",
-      sourceStatus: isOpen ? "접수 중" : hasUpcomingOpen ? "접수 예정" : statusLabel(entry.status),
+      sourceStatus: needsReview ? "공식 확인 필요" : isOpen ? "접수 중" : hasUpcomingOpen ? "접수 예정" : statusLabel(entry.status),
       alertCapabilities: [
         ...(hasUpcomingOpen && openTimeConfirmed ? ["registration_time"] : []),
         ...(isOpen ? ["open_now"] : []),
@@ -156,8 +159,8 @@ function parseScheduleFeed(feed) {
       capacity: null,
       popularity: 50,
       sourceName: entry.sourceName || "마라톤온라인",
-      note: `${entry.time} 출발. 접수기간은 마라톤온라인 상세 페이지 기준입니다.`,
-      registrationLabel: entry.registrationPeriodLabel || (isOpen ? "접수 중" : entry.status === "closed" ? "접수 마감" : "접수 일정 준비 중")
+      note: needsReview ? entry.registrationDataIssue : `${entry.time} 출발. 접수기간은 마라톤온라인 상세 페이지 기준입니다.`,
+      registrationLabel: needsReview ? "공식 접수 기간 재확인 중" : entry.registrationPeriodLabel || (isOpen ? "접수 중" : entry.status === "closed" ? "접수 마감" : "접수 일정 준비 중")
     };
   });
 }
@@ -166,22 +169,27 @@ function normalizeFeaturedRace(race) {
   const now = Date.now();
   const opensAt = race.registrationOpenAt ? new Date(race.registrationOpenAt).getTime() : null;
   const closesAt = race.registrationCloseAt ? new Date(race.registrationCloseAt).getTime() : null;
+  const needsReview = registrationNeedsReview(race);
   const isBeforeClose = !closesAt || now <= closesAt;
-  const isAccepting = isBeforeClose && (race.status === "open" || Boolean(opensAt && opensAt <= now));
-  const hasUpcomingOpen = opensAt && opensAt > now && !["closed", "sold_out", "cancelled"].includes(race.status);
+  const isAccepting = !needsReview && isBeforeClose && (race.status === "open" || Boolean(opensAt && opensAt <= now));
+  const hasUpcomingOpen = !needsReview && opensAt && opensAt > now && !["closed", "sold_out", "cancelled"].includes(race.status);
   const openTimeConfirmed = hasConfirmedRegistrationOpenTime(race);
   return {
     ...race,
     registrationOpenTimeConfirmed: openTimeConfirmed,
     courseLabel: race.courseLabel || (Array.isArray(race.distances) ? race.distances : []).join(","),
     registrationStatus: isAccepting ? "open" : hasUpcomingOpen ? "scheduled" : race.status || "unknown",
-    sourceStatus: isAccepting ? "접수 중" : hasUpcomingOpen ? "접수 예정" : statusLabel(race.status),
+    sourceStatus: needsReview ? "공식 확인 필요" : isAccepting ? "접수 중" : hasUpcomingOpen ? "접수 예정" : statusLabel(race.status),
     alertCapabilities: [
       ...(hasUpcomingOpen && openTimeConfirmed ? ["registration_time"] : []),
       ...(isAccepting ? ["open_now"] : []),
       "race_day"
     ]
   };
+}
+
+function registrationNeedsReview(race) {
+  return race?.registrationDataStatus === "needs-review";
 }
 
 function normalizeRaceTime(value) {
@@ -207,12 +215,16 @@ function mergeRaces(primary, secondary) {
 }
 
 function hasConfirmedRegistrationOpenTime(race) {
+  if (registrationNeedsReview(race)) return false;
   if (typeof race.registrationOpenTimeConfirmed === "boolean") return race.registrationOpenTimeConfirmed;
   if (!race.registrationOpenAt) return false;
   return !isKstPlainDateTime(race.registrationOpenAt);
 }
 
 function registrationScheduleRows(race) {
+  if (registrationNeedsReview(race)) {
+    return { separate: false, rows: [{ label: "전 종목", at: null, confirmed: false }] };
+  }
   const windows = Array.isArray(race.registrationWindows) ? race.registrationWindows : [];
   const hasSeparateSchedules = windows.length > 1 && new Set(
     windows.map((window) => `${window.opensAt}|${window.timeConfirmed !== false}`)
@@ -258,6 +270,7 @@ function registrationScheduleHtml(race) {
 }
 
 function formatRegistrationRange(race) {
+  if (registrationNeedsReview(race)) return "공식 접수 기간 재확인 중";
   if (!race.registrationOpenAt) return race.registrationLabel || "접수 일정 준비 중";
   if (race.registrationPeriodLabel) return race.registrationPeriodLabel;
   if (!race.registrationCloseAt) return formatRegistrationPoint(race.registrationOpenAt);
@@ -311,16 +324,19 @@ function canUseAlert(race) {
 }
 
 function isAcceptingNow(race) {
+  if (registrationNeedsReview(race)) return false;
   return window.PushRunAlertsCore.isAcceptingNow(race, Date.now());
 }
 
 // 원본 status가 "open"으로 남아 있어도 마감 시각이 지났으면 접수 종료로 본다.
 function isRegistrationClosed(race) {
+  if (registrationNeedsReview(race)) return false;
   const closesAt = race.registrationCloseAt ? new Date(race.registrationCloseAt).getTime() : null;
   return Boolean(closesAt && Date.now() > closesAt);
 }
 
 function raceSortGroup(race) {
+  if (registrationNeedsReview(race)) return 2;
   const now = Date.now();
   const opensAt = race.registrationOpenAt ? new Date(race.registrationOpenAt).getTime() : null;
   const closesAt = race.registrationCloseAt ? new Date(race.registrationCloseAt).getTime() : null;
@@ -381,6 +397,7 @@ function getConfirmedRegistrationRaces() {
 }
 
 function getUpcomingRegistrationAt(race) {
+  if (registrationNeedsReview(race)) return null;
   const candidates = [race.registrationOpenAt, ...(race.registrationWindows || []).map((window) => window.opensAt)]
     .map((value) => new Date(value).getTime())
     .filter((value) => Number.isFinite(value) && value > Date.now());
@@ -963,6 +980,9 @@ function courseTagList(race) {
 
 // 접수 상태 → 카드 톤(상단 색선·배지·시간 확정 필). 시안과 1:1.
 function raceTone(race) {
+  if (registrationNeedsReview(race)) {
+    return { accent: "#cbb8a5", badgeBg: "#f3e9dd", badgeColor: "#6e6156", statusLabel: "확인 필요", timePill: true, timePillLabel: "원문 재확인", timePillBg: "#f3e9dd", timePillColor: "#6e6156", timePillBorder: "1px dashed #cbb8a5", regLineColor: "#6e6156" };
+  }
   if (isOpenRace(race)) {
     return { accent: "#2e9e63", badgeBg: "#e3f4e9", badgeColor: "#217a4b", statusLabel: "접수 중", timePill: false, regLineColor: "#5c4d40" };
   }
@@ -977,6 +997,7 @@ function raceTone(race) {
 
 // ⑥ 카드에서 가장 중요한 접수 일정 한 줄
 function registrationSummaryLine(race) {
+  if (registrationNeedsReview(race)) return "공식 접수 기간 재확인 중";
   if (isOpenRace(race)) {
     return race.registrationCloseAt ? `접수 마감 ${formatRegistrationPoint(race.registrationCloseAt)}` : "공식 접수처에서 접수 마감 확인";
   }
