@@ -8,6 +8,7 @@
 - 6시간 자동 수집, 3시간 독립 감시, 마지막 정상본 보존, 운영 Pages와 GitHub main 일치 검증 계약을 다시 통과시켜 사용자가 직접 자료를 갱신하지 않아도 되는 구조를 확인했다.
 - Expo의 iOS 프로젝트 생성 도구가 끌어오던 취약한 `uuid 7.0.3`을 공식 수정 버전 `11.1.1`로 고정하고 Android·iOS 내보내기를 다시 통과시켰다.
 - 제품 버전을 `0.21.0`, Android versionCode를 `15`, iOS buildNumber를 `12`, PWA 캐시를 `pushrun-v0.21.0`으로 올렸다.
+- GitHub-hosted runner의 Node 20 전환 경고를 제거하도록 checkout·setup-node·setup-java·artifact·Pages 공식 Action과 중앙 family contract pin을 Node 24 기반 최신 고정 SHA로 갱신했다.
 
 ## 0.20.0 (2026-08-08)
 
