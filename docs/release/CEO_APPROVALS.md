@@ -1,7 +1,7 @@
 <!-- Google Play 단계 변경과 외부 게시 승인 근거를 기록하는 운영 문서다. -->
 # CEO approvals
 
-기본 안전 단계는 `CODE_ONLY`입니다. 현재는 아래 기록에 한정해 러닝봄 0.19.3 (13)의 비공개 테스트 게시까지 승인된 `CLOSED_PUBLISH` 상태입니다.
+기본 안전 단계는 `CODE_ONLY`입니다. 현재는 아래 기록에 한정해 러닝봄 0.20.0 (14)의 비공개 테스트 게시까지 승인된 `CLOSED_PUBLISH` 상태입니다.
 
 ## 승인 기록 형식
 
@@ -55,6 +55,21 @@
 - Source SHA: da648cae6e0ec8b7fb998fbb2269e563df237310
 - EAS build ID: 51695246-f022-48bb-a493-f0ddf67a2495
 - AAB SHA-256: add709437ef030a39c87b06243f0e47db7a1599713950434f64debe331b3aaea
+- Target track: closed
+- Intent: CLOSED_PUBLISH
+- Rollback 기준: 새 비공개 테스트 출시를 중지하고 Play Console에서 현재 활성 상태인 0.17.13 (2)을 유지한다.
+- Scope: 러닝봄 비공개 Alpha 테스트에만 게시하며 production 승격은 허용하지 않는다.
+
+## CEO-APPROVAL-2026-0003
+
+- Status: APPROVED
+- Approved at: 2026-08-08T20:50:34+09:00
+- Approver: repository owner request in Codex task 019f4f39-8204-7f63-aa1a-b861fdf826e2
+- App version: 0.20.0
+- Version code: 14
+- Source SHA: 0602e115e2cbd2ae4e7edd2290353d2af0b503a9
+- EAS build ID: 1fe3b637-ec11-4a2f-9598-7070fe744f5f
+- AAB SHA-256: ad59b7987a7043781d547440e30fed56a274a4c8f7cc884fab24c45850977e7c
 - Target track: closed
 - Intent: CLOSED_PUBLISH
 - Rollback 기준: 새 비공개 테스트 출시를 중지하고 Play Console에서 현재 활성 상태인 0.17.13 (2)을 유지한다.
