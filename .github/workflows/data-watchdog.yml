@@ -1,0 +1,109 @@
+name: RunningBom Data Watchdog
+
+on:
+  schedule:
+    # 수집 작업(매 6시간 17분)과 배포가 끝난 뒤 독립적으로 확인한다.
+    - cron: "47 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+  issues: write
+
+concurrency:
+  group: runningbom-data-watchdog
+  cancel-in-progress: true
+
+jobs:
+  verify-production-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+      - name: 자동 수집과 운영 정본 독립 검증
+        id: health
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          details=$(
+            node scripts/validate-race-production.mjs
+            data_exit=$?
+            latest=$(gh run list --workflow refresh-race-data.yml --branch main --limit 1 --json status,conclusion,updatedAt,url)
+            RUN_JSON="$latest" node scripts/validate-refresh-workflow-heartbeat.mjs
+            workflow_exit=$?
+            if [ "$data_exit" -ne 0 ] || [ "$workflow_exit" -ne 0 ]; then exit 1; fi
+          2>&1)
+          exit_code=$?
+          set -e
+          echo "$details"
+          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+          {
+            echo "details<<ROBOM_WATCHDOG_OUTPUT"
+            echo "$details"
+            echo "ROBOM_WATCHDOG_OUTPUT"
+          } >> "$GITHUB_OUTPUT"
+      - name: 새 장애에서만 수집·배포 자동 복구 시도
+        if: steps.health.outputs.exit_code != '0'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          open_issue=$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "[자동 감시] 러닝봄 운영 데이터 이상") | .number' | head -n 1)
+          if [ -n "$open_issue" ]; then
+            echo "이미 보고된 같은 장애이므로 중복 복구 실행을 생략합니다."
+            exit 0
+          fi
+
+          refresh_active=$(gh run list --workflow refresh-race-data.yml --branch main --limit 5 --json status --jq '[.[] | select(.status == "queued" or .status == "in_progress")] | length')
+          if [ "$refresh_active" = "0" ]; then
+            gh workflow run refresh-race-data.yml --ref main
+            echo "대회 데이터 수집을 한 번 다시 요청했습니다."
+          fi
+
+          deploy_active=$(gh run list --workflow pages.yml --branch main --limit 5 --json status --jq '[.[] | select(.status == "queued" or .status == "in_progress")] | length')
+          if [ "$deploy_active" = "0" ]; then
+            gh workflow run pages.yml --ref main
+            echo "운영 데이터 재배포를 한 번 다시 요청했습니다."
+          fi
+      - name: 장애 이슈를 한 번만 생성 또는 재개
+        if: steps.health.outputs.exit_code != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TITLE: "[자동 감시] 러닝봄 운영 데이터 이상"
+          DETAILS: ${{ steps.health.outputs.details }}
+        run: |
+          item=$(gh issue list --state all --limit 100 --json number,title,state --jq '.[] | select(.title == "[자동 감시] 러닝봄 운영 데이터 이상") | [.number,.state] | @tsv' | head -n 1)
+          number=$(printf '%s' "$item" | cut -f1)
+          state=$(printf '%s' "$item" | cut -f2)
+          body=$(printf '%s\n\n%s\n\n%s\n\n```\n%s\n```\n\n%s\n\n%s' \
+            "자동 감시가 러닝봄 수집 작업 또는 운영 대회 정본의 이상을 발견했습니다." \
+            "영향: 검증되지 않은 새 자료는 배포하지 않고 마지막 정상본을 유지합니다." \
+            "검사 결과" \
+            "$DETAILS" \
+            "복구: 공개 출처와 예약 수집 상태를 확인한 뒤 이 감시가 다시 통과하면 이슈가 자동으로 닫힙니다." \
+            "실행: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID")
+          if [ -z "$number" ]; then
+            gh issue create --title "$TITLE" --body "$body"
+          elif [ "$state" = "CLOSED" ]; then
+            gh issue reopen "$number"
+            gh issue comment "$number" --body "$body"
+          fi
+      - name: 정상 복구 시 감시 이슈 종료
+        if: steps.health.outputs.exit_code == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          number=$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "[자동 감시] 러닝봄 운영 데이터 이상") | .number' | head -n 1)
+          if [ -n "$number" ]; then
+            gh issue close "$number" --comment "자동 수집과 운영 대회 정본이 최신성·중복·날짜·출처 검증을 다시 통과해 자동으로 종료합니다."
+          fi
+      - name: 이상이면 워크플로 실패 처리
+        if: steps.health.outputs.exit_code != '0'
+        run: exit 1

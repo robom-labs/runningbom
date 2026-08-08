@@ -47,6 +47,7 @@ export type RaceGroup = {
   key: string;
   raceIds: string[];
   primary: Race;
+  registrationTarget: Race;
   entries: Race[];
   name: string;
   region: string;
@@ -84,6 +85,40 @@ function primaryEntry(entries: Race[]): Race {
   })[0] as Race;
 }
 
+const registrationStatusPriority = [
+  '접수 중',
+  '접수 예정',
+  '확인 필요',
+  '접수 마감',
+  '매진',
+  '취소',
+] as const;
+
+// 종목별 접수 상태가 다르면 지금 행동할 수 있는 종목을 대표 접수 대상으로 고릅니다.
+export function registrationTargetEntry(entries: Race[], now = Date.now()): Race {
+  const sorted = [...entries].sort((left, right) => {
+    const leftStatus = registrationStatusLabel(left, now);
+    const rightStatus = registrationStatusLabel(right, now);
+    const leftPriority = registrationStatusPriority.indexOf(leftStatus as typeof registrationStatusPriority[number]);
+    const rightPriority = registrationStatusPriority.indexOf(rightStatus as typeof registrationStatusPriority[number]);
+    const statusDiff = (leftPriority < 0 ? registrationStatusPriority.length : leftPriority)
+      - (rightPriority < 0 ? registrationStatusPriority.length : rightPriority);
+    if (statusDiff !== 0) return statusDiff;
+    if (leftStatus === '접수 예정' && left.registrationTimeConfirmed !== right.registrationTimeConfirmed) {
+      return left.registrationTimeConfirmed ? -1 : 1;
+    }
+    const linkDiff = Number(!left.officialUrl) - Number(!right.officialUrl);
+    if (linkDiff !== 0) return linkDiff;
+    const leftOpens = Date.parse(left.registrationOpensAt);
+    const rightOpens = Date.parse(right.registrationOpensAt);
+    if (Number.isFinite(leftOpens) && Number.isFinite(rightOpens) && leftOpens !== rightOpens) {
+      return leftOpens - rightOpens;
+    }
+    return left.id.localeCompare(right.id);
+  });
+  return sorted[0] as Race;
+}
+
 export function groupRaces(values: Race[], now = Date.now()): RaceGroup[] {
   const buckets = new Map<string, Race[]>();
   const seenIds = new Set<string>();
@@ -100,18 +135,20 @@ export function groupRaces(values: Race[], now = Date.now()): RaceGroup[] {
 
   const groups = [...buckets.entries()].map(([key, entries]) => {
     const primary = primaryEntry(entries);
+    const registrationTarget = registrationTargetEntry(entries, now);
     return {
       id: primary.id,
       key,
       raceIds: entries.map((entry) => entry.id),
       primary,
+      registrationTarget,
       entries,
       name: primary.name,
       region: primary.region,
       venue: primary.venue,
       raceDate: primary.raceDate,
       distances: sortedDistances(entries.flatMap((entry) => entry.distances)),
-      status: registrationStatusLabel(primary, now),
+      status: registrationStatusLabel(registrationTarget, now),
       sourceNames: [...new Set(entries.map((entry) => entry.sourceName))],
     } satisfies RaceGroup;
   });
@@ -237,8 +274,8 @@ export function filterRaceGroups(
 // ── 빠른 칩 · 정렬 · 달력 뷰 ──────────────────────────────────────────────
 // 대회 수가 많아도 원하는 것을 빨리 찾도록 돕는 순수 규칙입니다.
 
-export type RaceQuickFilter = '접수 중만' | '이번 주말' | '내 지역';
-export const raceQuickFilters: RaceQuickFilter[] = ['접수 중만', '이번 주말', '내 지역'];
+export type RaceQuickFilter = '접수 중만' | '이번 주말' | '내 지역' | '관심만';
+export const raceQuickFilters: RaceQuickFilter[] = ['접수 중만', '이번 주말', '내 지역', '관심만'];
 
 /** 이번 주 토·일의 날짜 키입니다. 토요일이 지났으면 그 주의 일요일까지만 남습니다. */
 export function weekendRange(now = Date.now()): { start: string; end: string } {
@@ -256,7 +293,11 @@ export function weekendRange(now = Date.now()): { start: string; end: string } {
 export function applyQuickFilters(
   groups: RaceGroup[],
   active: RaceQuickFilter[],
-  options: { myRegion?: string } = {},
+  options: {
+    myRegion?: string;
+    interestedGroupKeys?: readonly string[];
+    legacyInterestedRaceIds?: readonly string[];
+  } = {},
   now = Date.now(),
 ): RaceGroup[] {
   if (active.length === 0) return groups;
@@ -270,8 +311,41 @@ export function applyQuickFilters(
     if (active.includes('내 지역')) {
       if (!myRegion || group.region !== myRegion) return false;
     }
+    if (active.includes('관심만') && !isRaceGroupInterested(
+      group,
+      options.interestedGroupKeys ?? [],
+      options.legacyInterestedRaceIds ?? [],
+    )) return false;
     return true;
   });
+}
+
+const revisionPattern = /^(\d{4})\.(\d{2})\.(\d{2})-race-data-(\d+)$/u;
+const verifiedAtFormatter = new Intl.DateTimeFormat('ko-KR', {
+  month: 'long',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+  timeZone: 'Asia/Seoul',
+});
+
+export function formatRaceFeedRevision(revision: string): string {
+  const match = revisionPattern.exec(revision.trim());
+  if (!match) return `데이터 버전 ${revision}`;
+  return `대회 자료 ${Number(match[2])}월 ${Number(match[3])}일판 · 데이터 ${Number(match[4])}`;
+}
+
+export function formatRaceVerification(value?: string): string {
+  const text = value?.trim();
+  if (!text) return '검증 시각 없음';
+  const parsed = Date.parse(text);
+  if (/^\d{4}-\d{2}-\d{2}T/u.test(text) && Number.isFinite(parsed)) {
+    return `확인 ${verifiedAtFormatter.format(new Date(parsed))}`;
+  }
+  if (/마라톤온라인/u.test(text)) return '검증 근거 마라톤온라인 공개 일정';
+  if (/마라톤GO/u.test(text)) return '검증 근거 마라톤GO 공개 일정';
+  return `검증 근거 ${text}`;
 }
 
 export type RaceSort = '가까운 날짜순' | '거리순' | '지역순';

@@ -30,7 +30,7 @@ import type { Race } from '../../src/types';
 import { loadRunningbomStaticData } from '../../services/static-data';
 import { shouldRefreshRaceDataAfterBackground } from './raceRefreshPolicy';
 
-const appVersion = Constants.expoConfig?.version ?? '0.19.3';
+const appVersion = Constants.expoConfig?.version ?? '0.20.0';
 const staticDataBaseUrl =
   process.env.EXPO_PUBLIC_STATIC_DATA_URL ??
   'https://robom-labs.github.io/runningbom/data/';

@@ -5,6 +5,8 @@ import { describe, it } from 'node:test';
 import {
   applyQuickFilters,
   countRaces,
+  formatRaceFeedRevision,
+  formatRaceVerification,
   groupRaces,
   raceCountsByDay,
   raceMonthBuckets,
@@ -126,8 +128,8 @@ describe('대회 빠른 필터와 정렬', () => {
     NOW,
   );
 
-  it('세 종류의 빠른 칩을 제공한다', () => {
-    assert.deepEqual(raceQuickFilters, ['접수 중만', '이번 주말', '내 지역']);
+  it('네 종류의 빠른 칩을 제공한다', () => {
+    assert.deepEqual(raceQuickFilters, ['접수 중만', '이번 주말', '내 지역', '관심만']);
     assert.deepEqual(raceSorts, ['가까운 날짜순', '거리순', '지역순']);
   });
 
@@ -137,7 +139,7 @@ describe('대회 빠른 필터와 정렬', () => {
     assert.equal(weekend.end, '2026-08-02');
   });
 
-  it('접수 중만·이번 주말·내 지역을 각각 걸러낸다', () => {
+  it('접수 중만·이번 주말·내 지역·관심만을 각각 걸러낸다', () => {
     const openOnly = applyQuickFilters(groups, ['접수 중만'], {}, NOW);
     assert.ok(openOnly.every((group) => group.status === '접수 중'));
     assert.ok(!openOnly.some((group) => group.id === 'weekend-busan'));
@@ -155,6 +157,14 @@ describe('대회 빠른 필터와 정렬', () => {
     );
     // 지역이 정해지지 않았으면 임의로 고르지 않고 0건입니다.
     assert.equal(applyQuickFilters(groups, ['내 지역'], {}, NOW).length, 0);
+
+    const interested = applyQuickFilters(
+      groups,
+      ['관심만'],
+      { interestedGroupKeys: [groups[2]?.key ?? ''] },
+      NOW,
+    );
+    assert.deepEqual(interested.map((group) => group.id), ['open-jeju']);
   });
 
   it('칩을 겹쳐도 원본 목록을 바꾸지 않는다', () => {
@@ -180,6 +190,35 @@ describe('대회 빠른 필터와 정렬', () => {
       sortRaceGroups(groups, '지역순').map((group) => group.region),
       ['부산', '서울', '제주'],
     );
+  });
+});
+
+describe('대회 묶음의 접수 상태와 신뢰 문구', () => {
+  it('거리별 상태가 달라도 대회는 한 건이고 지금 접수 중인 종목을 대표한다', () => {
+    const values = [
+      race('spring-5k', {
+        name: '2026 봄빛 마라톤 5K',
+        distances: ['5K'],
+        registrationOpensAt: '2026-09-01T10:00:00+09:00',
+      }),
+      race('spring-10k', {
+        name: '2026 봄빛 마라톤 10K',
+        distances: ['10K'],
+        registrationOpensAt: '2026-06-01T10:00:00+09:00',
+        officialUrl: 'https://example.com/apply-10k',
+      }),
+    ];
+    const groups = groupRaces(values, NOW);
+    assert.equal(groups.length, 1);
+    assert.deepEqual(groups[0]?.distances, ['5K', '10K']);
+    assert.equal(groups[0]?.status, '접수 중');
+    assert.equal(groups[0]?.registrationTarget.id, 'spring-10k');
+  });
+
+  it('기계용 revision과 출처 표기를 사용자용 문구로 바꾼다', () => {
+    assert.equal(formatRaceFeedRevision('2026.08.08-race-data-34'), '대회 자료 8월 8일판 · 데이터 34');
+    assert.equal(formatRaceVerification('마라톤온라인 home 아이콘'), '검증 근거 마라톤온라인 공개 일정');
+    assert.equal(formatRaceVerification('마라톤GO 공개 일정 상세'), '검증 근거 마라톤GO 공개 일정');
   });
 });
 

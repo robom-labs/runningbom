@@ -20,6 +20,7 @@ import {
   canScheduleRegistrationAlert,
   formatRaceDate,
   formatRegistrationTime,
+  registrationStatusLabel,
   registrationFilters,
   regionsFor,
   type RegistrationFilter,
@@ -30,6 +31,8 @@ import {
   filterRaceGroups,
   findGroupByRaceId,
   formatDDay,
+  formatRaceFeedRevision,
+  formatRaceVerification,
   groupRaces,
   isRaceGroupInterested,
   migrateRaceInterests,
@@ -147,6 +150,8 @@ export function RaceScreen({ focusedRaceId }: Props) {
     const filtered = filterRaceGroups(groups, { region, distance, registration, period, query });
     const quick = applyQuickFilters(filtered, quickFilters, {
       ...(myRegion ? { myRegion } : {}),
+      interestedGroupKeys: preferences.interestedRaceGroupKeys,
+      legacyInterestedRaceIds: preferences.interestedRaceIds,
     });
     const sorted = sortRaceGroups(quick, sort);
     if (!activeGroupId) return sorted;
@@ -161,6 +166,8 @@ export function RaceScreen({ focusedRaceId }: Props) {
     groups,
     myRegion,
     period,
+    preferences.interestedRaceGroupKeys,
+    preferences.interestedRaceIds,
     query,
     quickFilters,
     region,
@@ -493,7 +500,7 @@ export function RaceScreen({ focusedRaceId }: Props) {
           ))}
         </View>
       </View>
-      <Text style={styles.revision}>데이터 {feed.revision}</Text>
+      <Text style={styles.revision}>{formatRaceFeedRevision(feed.revision)}</Text>
 
       {view === '달력' ? (
         <RaceCalendarView
@@ -506,8 +513,13 @@ export function RaceScreen({ focusedRaceId }: Props) {
       <View style={[styles.list, twoColumns && styles.listWide]}>
         {(view === '목록' ? renderedGroups : []).map((group) => {
           const primary = group.primary;
-          const scheduled = group.raceIds.some((id) => Boolean(scheduledRaceIds[id]));
-          const canSchedule = canScheduleRegistrationAlert(primary);
+          const registrationTarget = group.registrationTarget;
+          const scheduledEntry = group.entries.find((entry) => Boolean(scheduledRaceIds[entry.id]));
+          const scheduled = Boolean(scheduledEntry);
+          const canSchedule = canScheduleRegistrationAlert(registrationTarget);
+          const linkTarget = registrationTarget.officialUrl?.startsWith('https://')
+            ? registrationTarget
+            : primary;
           const busy = busyRaceId !== null && group.raceIds.includes(busyRaceId);
           const focused = activeGroupId === group.id;
           const expanded = expandedGroupId === group.id;
@@ -576,11 +588,11 @@ export function RaceScreen({ focusedRaceId }: Props) {
 
               <View style={styles.registration}>
                 <Text style={styles.registrationLabel}>접수 일정</Text>
-                <Text style={styles.registrationValue}>{formatRegistrationTime(primary)}</Text>
+                <Text style={styles.registrationValue}>{formatRegistrationTime(registrationTarget)}</Text>
               </View>
-              {primary.registrationDataIssue || primary.note ? (
+              {registrationTarget.registrationDataIssue || registrationTarget.note ? (
                 <Text style={styles.note}>
-                  {primary.registrationDataIssue ?? primary.note}
+                  {registrationTarget.registrationDataIssue ?? registrationTarget.note}
                 </Text>
               ) : null}
 
@@ -594,20 +606,22 @@ export function RaceScreen({ focusedRaceId }: Props) {
                         ? '알림 취소'
                         : canSchedule
                           ? '접수 알림 예약'
-                          : primary.registrationDataStatus === 'needs-review'
+                          : registrationTarget.registrationDataStatus === 'needs-review'
                             ? '공식 정보 확인 중'
                           : group.status === '접수 중'
                             ? '접수 진행 중'
                             : '시각 확인 후 예약'
                   }
-                  onPress={() => void (scheduled ? cancelAlert(primary) : scheduleAlert(primary))}
+                  onPress={() => void (scheduled
+                    ? cancelAlert(scheduledEntry ?? registrationTarget)
+                    : scheduleAlert(registrationTarget))}
                   style={styles.action}
                   tone={scheduled ? 'quiet' : 'primary'}
                 />
                 <Button
-                  disabled={!primary.officialUrl?.startsWith('https://')}
-                  label={primary.externalLinkKind === 'source' ? '정보 출처' : '접수·공식'}
-                  onPress={() => void openExternalUrl(primary)}
+                  disabled={!linkTarget.officialUrl?.startsWith('https://')}
+                  label={linkTarget.externalLinkKind === 'source' ? '정보 출처' : '접수·공식'}
+                  onPress={() => void openExternalUrl(linkTarget)}
                   style={styles.action}
                   tone="secondary"
                 />
@@ -643,14 +657,14 @@ export function RaceScreen({ focusedRaceId }: Props) {
                   {group.entries.map((entry) => (
                     <Text key={entry.id} style={styles.detailValue}>
                       {entry.distances.map((value) => distanceLabels[value] ?? value).join(' · ')} ·{' '}
-                      {formatRegistrationTime(entry)}
+                      {registrationStatusLabel(entry)} · {formatRegistrationTime(entry)}
                     </Text>
                   ))}
                   <Text style={styles.detailLabel}>접수처</Text>
-                  {primary.officialUrl?.startsWith('https://') ? (
+                  {linkTarget.officialUrl?.startsWith('https://') ? (
                     <Button
-                      label={primary.externalLinkKind === 'source' ? '정보 출처 열기' : '접수·공식 페이지 열기'}
-                      onPress={() => void openExternalUrl(primary)}
+                      label={linkTarget.externalLinkKind === 'source' ? '정보 출처 열기' : '접수·공식 페이지 열기'}
+                      onPress={() => void openExternalUrl(linkTarget)}
                       style={styles.detailButton}
                       tone="secondary"
                     />
@@ -683,7 +697,7 @@ export function RaceScreen({ focusedRaceId }: Props) {
                     </>
                   )}
                   <Text style={styles.detailSource}>
-                    데이터 확인 {primary.verifiedAt ?? '확인 시각 없음'} ·{' '}
+                    {formatRaceVerification(primary.verifiedAt)} ·{' '}
                     {group.sourceNames.join(', ')}
                   </Text>
                 </View>

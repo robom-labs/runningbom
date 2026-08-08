@@ -8,6 +8,7 @@ import {
   mergeMarathonGoDiscoveries,
   parseMarathonGoDetail,
 } from "./race-data-core.mjs";
+import { assessRaceRefreshHealth } from "./race-health-core.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dataPath = resolve(root, "outputs/pushrun-site/races.json");
@@ -70,6 +71,13 @@ if (merged.contentChanged) {
   const currentRevision = Number(String(current.version || "").match(/race-data-(\d+)$/)?.[1] || 0);
   merged.data.version = `${kst}-race-data-${currentRevision + 1}`;
 }
+const health = assessRaceRefreshHealth({
+  previousData: current,
+  nextData: merged.data,
+  catalogueCount: detailUrls.length,
+  parsedCount: discoveries.length,
+  now: Date.parse(checkedAt),
+});
 const report = {
   checkedAt,
   source: { name: "마라톤GO 공개 국내 일정", url: catalogue.finalUrl },
@@ -80,9 +88,14 @@ const report = {
   changed: merged.changed,
   contentChanged: merged.contentChanged,
   summary: merged.summary,
+  health,
 };
 mkdirSync(dirname(reportPath), { recursive: true });
 writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
+
+if (!health.ok) {
+  throw new Error(`대회 데이터 이상 감지로 기존 정상본을 유지합니다: ${health.errors.join(" | ")}`);
+}
 
 if (write) {
   writeFileSync(dataPath, `${JSON.stringify(merged.data, null, 2)}\n`);
