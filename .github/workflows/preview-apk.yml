@@ -36,6 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
+      actions: write
       contents: write
     steps:
       - name: Checkout
@@ -366,6 +367,7 @@ jobs:
       # 이 매니페스트가 갱신돼야 설치된 앱에 "새 버전 있어요" 배너가 뜬다.
       # outputs/ 는 이 워크플로의 push 경로 필터 밖이라 되돌아 트리거되지 않는다(무한 빌드 방지).
       - name: 인앱 업데이트 매니페스트 갱신
+        id: publish_manifest
         if: github.event_name != 'workflow_dispatch' || inputs.publish_release
         env:
           APP_VERSION: ${{ steps.version.outputs.app_version }}
@@ -376,6 +378,7 @@ jobs:
           BEFORE="$(node -p "require('./$MANIFEST').versionCode")"
           if [ "$BEFORE" = "$VERSION_CODE" ]; then
             echo "매니페스트 versionCode 일치: $BEFORE (변경 없음)"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -394,9 +397,26 @@ jobs:
           git add "$MANIFEST"
           git commit -m "chore(preview): 인앱 업데이트 매니페스트 versionCode $BEFORE -> $VERSION_CODE"
           # 빌드 중 main이 앞서갔을 수 있으니 rebase 후 올린다. 실패해도 APK 배포는 이미 끝났다.
+          PUSHED=false
           for attempt in 1 2 3; do
-            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              PUSHED=true
+              break
+            fi
             echo "매니페스트 push 재시도 $attempt"
             sleep $((attempt * 5))
           done
-          echo "::warning::매니페스트 갱신 커밋을 push하지 못했습니다. 인앱 배너가 늦게 뜰 수 있습니다."
+          if [ "$PUSHED" = true ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::매니페스트 갱신 커밋을 push하지 못했습니다. 인앱 배너가 늦게 뜰 수 있습니다."
+          fi
+
+      # GITHUB_TOKEN으로 만든 커밋은 다른 push 워크플로를 자동으로 깨우지 않는다.
+      # 명시적으로 Pages를 호출해 새 version.json을 실제 운영 주소까지 배포한다.
+      - name: 새 Preview 매니페스트 운영 배포 요청
+        if: steps.publish_manifest.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run pages.yml --ref main
