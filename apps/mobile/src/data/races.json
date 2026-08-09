@@ -1,5 +1,5 @@
 {
-  "revision": "2026.08.09-race-data-35",
+  "revision": "2026.08.10-race-data-36",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -4068,7 +4068,7 @@
       "registrationOpensAt": "2026-08-10T00:00:00+09:00",
       "registrationClosesAt": "2026-10-15T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "08/10 - 10/15",
       "organizer": "주식회사 락앤런",
       "verifiedAt": "마라톤GO 공개 일정 상세",
@@ -4219,7 +4219,7 @@
       "registrationOpensAt": "2026-08-10T00:00:00+09:00",
       "registrationClosesAt": "2026-08-30T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "08/10 - 08/30",
       "organizer": "사우나 민족",
       "verifiedAt": "마라톤GO 공개 일정 상세",
