@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.12-race-data-39",
+  "version": "2026.08.13-race-data-40",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -794,7 +794,7 @@
     },
     {
       "date": "2026-09-05",
-      "status": "open",
+      "status": "closed",
       "name": "제2회 2026 Vrun",
       "region": "서울",
       "venue": "신정교하부육상트랙구장",
@@ -978,8 +978,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-goodneighbors-race-seoul-charity-running",
       "sourceName": "마라톤GO",
       "organizer": "굿네이버스",
-      "dataVerifiedAt": "2026-07-28T17:47:59.572Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-12T19:30:03.532Z",
+      "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -1650,7 +1650,7 @@
     },
     {
       "date": "2026-09-19",
-      "status": "open",
+      "status": "closed",
       "name": "제18회 사이버 영토 수호 마라톤",
       "region": "서울",
       "venue": "여의도 물빛무대 앞 광",
@@ -3449,8 +3449,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-petlympic-run-with-go",
       "sourceName": "마라톤GO",
       "organizer": "(사)함께하는 사랑밭",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-12T19:30:03.532Z",
+      "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -3977,8 +3977,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-mungyeong-legend-trail-baekdudaegan",
       "sourceName": "마라톤GO",
       "organizer": "에코라인",
-      "dataVerifiedAt": "2026-08-11T19:28:43.821Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-12T19:30:03.532Z",
+      "status": "closed",
       "courseLabel": "50k,34k,21k",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -5082,7 +5082,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-11T19:28:43.821Z",
+  "lastSuccessfulRefreshAt": "2026-08-12T19:30:03.532Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
