@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.13-race-data-40",
+  "version": "2026.08.14-race-data-41",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -2450,8 +2450,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/23rd-gangnam-international-peace-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "강남구,미8군사령부",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-13T19:28:42.976Z",
+      "status": "closed",
       "courseLabel": "Full,Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4810,8 +4810,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2027-seoul-youth-peace-run",
       "sourceName": "마라톤GO",
       "organizer": "2027 서울WYD, CPBC",
-      "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-13T19:28:42.976Z",
+      "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -5082,7 +5082,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-12T19:30:03.532Z",
+  "lastSuccessfulRefreshAt": "2026-08-13T19:28:42.976Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",

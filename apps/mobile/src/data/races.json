@@ -1,5 +1,5 @@
 {
-  "revision": "2026.08.13-race-data-40",
+  "revision": "2026.08.14-race-data-41",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -2167,7 +2167,7 @@
       "registrationOpensAt": "2026-08-10T00:00:00+09:00",
       "registrationClosesAt": "2026-08-13T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "08/10 - 08/13",
       "organizer": "강남구,미8군사령부",
       "verifiedAt": "마라톤GO 공개 일정 상세",
@@ -4431,7 +4431,7 @@
       "registrationOpensAt": "2026-08-14T00:00:00+09:00",
       "registrationClosesAt": "2026-10-24T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "08/14 - 10/24",
       "organizer": "2027 서울WYD, CPBC",
       "verifiedAt": "마라톤GO 공개 일정 상세",
