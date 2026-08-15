@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.15-race-data-42",
+  "version": "2026.08.16-race-data-43",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -151,154 +151,6 @@
     }
   ],
   "scheduleFeed": [
-    {
-      "date": "2026-08-15",
-      "status": "closed",
-      "name": "2026 안양천 달빛 나이트런",
-      "region": "서울",
-      "venue": "신정교 하부 영롱이 억새구장",
-      "time": "18:30",
-      "distances": [
-        "10K",
-        "5K"
-      ],
-      "registrationUrl": "https://moonnightrun.kr/",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-06-05T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-06T23:59:00+09:00",
-      "registrationPeriodLabel": "6/5 - 8/6",
-      "registrationPeriodSource": "2026년6월5일~2026년8월6일",
-      "courseLabel": "10km,5km",
-      "organizer": "(사)대한이에스지협회"
-    },
-    {
-      "date": "2026-08-15",
-      "status": "closed",
-      "name": "2026 장수 나이트 트레일",
-      "region": "전북",
-      "venue": "장수종합경기장",
-      "time": "19:00",
-      "distances": [
-        "Trail"
-      ],
-      "registrationUrl": "https://rocknrun.kr/",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-05-15T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-31T23:59:00+09:00",
-      "registrationPeriodLabel": "5/15 - 7/31",
-      "registrationPeriodSource": "2026년5월15일~2026년7월31일",
-      "courseLabel": "38K-P",
-      "organizer": "(주)락앤런"
-    },
-    {
-      "date": "2026-08-15",
-      "status": "closed",
-      "name": "2026 전마협 광복절 무료 초청 마라톤",
-      "region": "대전",
-      "venue": "대전엑스포다리 밑",
-      "time": "06:00",
-      "distances": [
-        "10K",
-        "5K"
-      ],
-      "registrationUrl": "https://mara1080.com/event/9e568eef-64ff-4548-881f-3a420689dece",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-06-15T00:00:00+09:00",
-      "registrationCloseAt": "2026-06-16T23:59:00+09:00",
-      "registrationPeriodLabel": "6/15 - 6/16",
-      "registrationPeriodSource": "2026년6월15일~2026년6월16일",
-      "courseLabel": "10km,5km",
-      "organizer": "전국마라톤협회"
-    },
-    {
-      "name": "2026 INCHEON NIGHT RACE",
-      "date": "2026-08-15",
-      "time": "시간",
-      "region": "인천",
-      "venue": "일자",
-      "distances": [
-        "8.15km",
-        "장소"
-      ],
-      "registrationOpenAt": "2026-07-07T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-08T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "07/07 - 08/08",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-night-race",
-      "sourceName": "마라톤GO",
-      "organizer": "국민건강진흥원",
-      "dataVerifiedAt": "2026-08-14T19:16:54.162Z",
-      "status": "closed",
-      "courseLabel": "8.15km",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "date": "2026-08-15",
-      "status": "closed",
-      "name": "영남알프스9봉 트레일 레이스",
-      "region": "경남",
-      "venue": "청운산장",
-      "time": "14:00",
-      "distances": [
-        "Trail"
-      ],
-      "registrationUrl": "https://jyd.creatorlink.net/",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-04-01T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-15T23:59:00+09:00",
-      "registrationPeriodLabel": "4/1 - 7/15",
-      "registrationPeriodSource": "2026년4월1일~2026년7월15일",
-      "courseLabel": "9봉 87k",
-      "organizer": "JYD자연을달린다"
-    },
-    {
-      "name": "제38회 지리산화대종주 Trail Run",
-      "date": "2026-08-15",
-      "time": "03:00 집결",
-      "region": "전남",
-      "venue": "화엄사주차장",
-      "distances": [
-        "48km",
-        "40km"
-      ],
-      "registrationOpenAt": "2025-12-05T00:00:00+09:00",
-      "registrationCloseAt": "2028-07-31T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/38th-jirisan-hwadaejongju-trail-run-2026",
-      "sourceName": "마라톤GO",
-      "organizer": "(사)한국산악마라톤연맹",
-      "dataVerifiedAt": "2026-08-08T07:18:23.752Z",
-      "status": "unknown",
-      "courseLabel": "48km,40km",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "registrationDataStatus": "needs-review",
-      "registrationDataIssue": "원문 접수 기간이 대회일 이후로 표시돼 상태를 자동 확정하지 않았습니다."
-    },
-    {
-      "date": "2026-08-15",
-      "status": "closed",
-      "name": "제38회 지리산화대종주 UTMB",
-      "region": "전남",
-      "venue": "화엄사주차장",
-      "time": "03:00",
-      "distances": [
-        "Trail"
-      ],
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2025-12-05T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-31T23:59:00+09:00",
-      "registrationPeriodLabel": "25.12/5 - 26.7/31",
-      "registrationPeriodSource": "2025년12월5일~2026년7월31일",
-      "courseLabel": "48km,40km",
-      "organizer": "(사)한국산악마라톤연맹"
-    },
     {
       "date": "2026-08-16",
       "status": "closed",
@@ -5362,7 +5214,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-14T19:16:54.162Z",
+  "lastSuccessfulRefreshAt": "2026-08-15T18:50:11.256Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",

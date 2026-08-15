@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "static-56b2a81dd58fef405c0a",
-  "generatedAt": "2026-08-14T19:16:54.162Z",
+  "contentVersion": "static-1a4c17eaf1f0afa895ad",
+  "generatedAt": "2026-08-15T18:50:11.256Z",
   "minimumAppVersion": "0.19.0",
   "checksums": {
-    "races.json": "6ee2d58849ee265a7a1bb592b7a6a21f8271fd1e909e8ace6408a379df41a74c",
+    "races.json": "adbb1b423a168601bbc65986d87bea4b3fc39cbc5087f4a12ec6498e822ea6a3",
     "shoes.json": "6995c88202f71b27a4683bde2cdd48521e25f6be18d8013f375e0d0f62bb7ea3",
     "upcoming-shoes.json": "8cb8da12ddd7b39aaa145571c915d3521cc9398a713879ddb8ca9c462cd23378",
     "coaching.json": "b74bb0f52aed26946bbdd9fe1a9f36c8b4d3b25e9d5dd1ab90643467aa0f3ce4"
   },
   "sizes": {
-    "races.json": 172846,
+    "races.json": 167543,
     "shoes.json": 7183,
     "upcoming-shoes.json": 238,
     "coaching.json": 1582015
   },
   "recordCounts": {
-    "races.json": 228,
+    "races.json": 221,
     "shoes.json": 8,
     "upcoming-shoes.json": 0,
     "coaching.json": 60
