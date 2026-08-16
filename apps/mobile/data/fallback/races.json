@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026.08.16-race-data-43",
-  "generatedAt": "2026-08-15T18:50:11.256Z",
+  "contentVersion": "2026.08.17-race-data-44",
+  "generatedAt": "2026-08-16T18:49:33.514Z",
   "source": {
     "kind": "verified-web-normalization",
     "path": "outputs/pushrun-site/races.json",
@@ -13,25 +13,6 @@
     ]
   },
   "records": [
-    {
-      "id": "schedule-484cbbc040de",
-      "name": "2026Happy700평창대관령전국하프마라톤",
-      "region": "강원",
-      "venue": "2018 평창동계올림픽 기념관",
-      "raceDate": "2026-08-16",
-      "distances": [
-        "Half",
-        "10K"
-      ],
-      "registrationOpensAt": "2026-06-10T00:00:00+09:00",
-      "registrationClosesAt": "2026-07-25T23:59:00+09:00",
-      "registrationTimeConfirmed": false,
-      "registrationStatus": "closed",
-      "registrationPeriodLabel": "6/10 - 7/25",
-      "organizer": "한국실업육상연맹",
-      "verifiedAt": "마라톤온라인 home 아이콘",
-      "sourceName": "마라톤온라인"
-    },
     {
       "id": "schedule-b9ef2192e53d",
       "name": "2026 서울패션로드 DDP 런더핏(Run the Fit)",
@@ -4384,7 +4365,7 @@
       "registrationOpensAt": "2026-08-17T00:00:00+09:00",
       "registrationClosesAt": "2026-10-30T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "08/17 - 10/30",
       "organizer": "아시아투데이(사)한국마라톤연맹",
       "verifiedAt": "마라톤GO 공개 일정 상세",
@@ -4561,7 +4542,7 @@
       "registrationOpensAt": "2026-08-17T00:00:00+09:00",
       "registrationClosesAt": "2026-11-16T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "08/17 - 11/16",
       "verifiedAt": "마라톤GO 공개 일정 상세",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-saehanmedia-marathon-celebrating-baekbeom-kim-gu-150th-anniversary",
@@ -4671,7 +4652,7 @@
       "registrationOpensAt": "2026-08-01T00:00:00+09:00",
       "registrationClosesAt": "2026-08-16T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "08/01 - 08/16",
       "organizer": "KNN,부산시",
       "verifiedAt": "마라톤GO 공개 일정 상세",

@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.16-race-data-43",
+  "version": "2026.08.17-race-data-44",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -151,26 +151,6 @@
     }
   ],
   "scheduleFeed": [
-    {
-      "date": "2026-08-16",
-      "status": "closed",
-      "name": "2026Happy700평창대관령전국하프마라톤",
-      "region": "강원",
-      "venue": "2018 평창동계올림픽 기념관",
-      "time": "08:00",
-      "distances": [
-        "Half",
-        "10K"
-      ],
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-06-10T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-25T23:59:00+09:00",
-      "registrationPeriodLabel": "6/10 - 7/25",
-      "registrationPeriodSource": "2026년6월10일~2026년7월25일",
-      "courseLabel": "하프,10km",
-      "organizer": "한국실업육상연맹"
-    },
     {
       "name": "2026 서울패션로드 DDP 런더핏(Run the Fit)",
       "date": "2026-08-22",
@@ -4768,8 +4748,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-eoksapul-marathon",
       "sourceName": "마라톤GO",
       "organizer": "아시아투데이(사)한국마라톤연맹",
-      "dataVerifiedAt": "2026-08-14T19:16:54.162Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-16T18:49:33.514Z",
+      "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4914,8 +4894,8 @@
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-saehanmedia-marathon-celebrating-baekbeom-kim-gu-150th-anniversary",
       "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-08-14T19:16:54.162Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-16T18:49:33.514Z",
+      "status": "open",
       "courseLabel": "Half,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -5061,8 +5041,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-bridge-marathon",
       "sourceName": "마라톤GO",
       "organizer": "KNN,부산시",
-      "dataVerifiedAt": "2026-08-14T19:16:54.162Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-16T18:49:33.514Z",
+      "status": "closed",
       "courseLabel": "Full,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -5214,7 +5194,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-15T18:50:11.256Z",
+  "lastSuccessfulRefreshAt": "2026-08-16T18:49:33.514Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
