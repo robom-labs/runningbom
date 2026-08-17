@@ -1,7 +1,7 @@
 {
   "note": "공식 페이지가 스스로 공개한 대표 이미지(og:image) 주소만 담습니다. 사람이 만들지 않고 scripts/collect-official-images.mjs가 채웁니다.",
-  "revision": 2,
-  "checkedAt": "2026-07-27",
+  "revision": 3,
+  "checkedAt": "2026-08-17",
   "images": {
     "gyeongju-marathon": {
       "url": "https://cdn.imweb.me/upload/S2022062363fb5e0b6e96f/14f061771b38b.png",
@@ -18,6 +18,11 @@
       "source": "facebook.com",
       "checkedAt": "2026-07-27"
     },
+    "schedule-09907509d61d": {
+      "url": "https://whiterun.kr/images/og_image.png?260212",
+      "source": "whiterun.kr",
+      "checkedAt": "2026-08-17"
+    },
     "schedule-15e101b84778": {
       "url": "https://www.smilerun.co.kr/main/%EC%8A%A4%EB%A7%88%EC%9D%BC%EB%9F%B0%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C/images/inc/image.png",
       "source": "smilerun.co.kr",
@@ -27,6 +32,11 @@
       "url": "https://bjlee.casports.or.kr/title_img.jpg",
       "source": "bjlee.casports.or.kr",
       "checkedAt": "2026-07-27"
+    },
+    "schedule-1cbc5c5cac91": {
+      "url": "https://cdn.imweb.me/upload/S2023060511d467df56b65/3cfa0641fdea7.png",
+      "source": "rocknrun.kr",
+      "checkedAt": "2026-08-17"
     },
     "schedule-1ddd3b56e1dd": {
       "url": "https://storage.googleapis.com/cr-resource/image/a5e7d71783ddc98b29857ebc97c85165/speedagencytrailrun/650/30a9ef85df9009ad838dccf1140f8b76.png?_1785192224",
@@ -63,15 +73,30 @@
       "source": "samsamis.com",
       "checkedAt": "2026-07-27"
     },
+    "schedule-2f2ced549b85": {
+      "url": "https://runbs.co.kr/images/og_image.jpg?20260715",
+      "source": "runbs.co.kr",
+      "checkedAt": "2026-08-17"
+    },
     "schedule-320f17393a81": {
       "url": "https://urfesta.com/images/thumb.jpg",
       "source": "urfesta.com",
       "checkedAt": "2026-07-27"
     },
+    "schedule-351a498e737d": {
+      "url": "https://cdn.imweb.me/upload/S2023060511d467df56b65/3cfa0641fdea7.png",
+      "source": "rocknrun.kr",
+      "checkedAt": "2026-08-17"
+    },
     "schedule-367895c0a879": {
       "url": "https://cdn.imweb.me/upload/S20260623e6c1838697a1e/8f7071189c21d.png",
       "source": "runsense.co.kr",
       "checkedAt": "2026-07-27"
+    },
+    "schedule-37fde28f52fa": {
+      "url": "https://funandrun.co.kr/images/sns.png",
+      "source": "funandrun.co.kr",
+      "checkedAt": "2026-08-17"
     },
     "schedule-3e9a087dea40": {
       "url": "https://www.herorace.kr/opengraph-image.png?opengraph-image.3qcxshozulk9a.png",
@@ -128,6 +153,21 @@
       "source": "runbookcity.com",
       "checkedAt": "2026-07-27"
     },
+    "schedule-69295f1e8698": {
+      "url": "https://www.hyundai.com/content/dam/hyundai/kr/ko/images/common/sns/og-image-hyundai-motors.jpg",
+      "source": "hyundai.com",
+      "checkedAt": "2026-08-17"
+    },
+    "schedule-6f272ff76c01": {
+      "url": "https://amarunsb.com/images/og_image.png?260305",
+      "source": "amarunsb.com",
+      "checkedAt": "2026-08-17"
+    },
+    "schedule-766d64fdbb67": {
+      "url": "https://amarunhs.com/images/og_image.png?250609",
+      "source": "amarunhs.com",
+      "checkedAt": "2026-08-17"
+    },
     "schedule-7da72e16c401": {
       "url": "https://cdn.imweb.me/upload/S2022061529e4e17bafaeb/e73a027cbc4f0.png",
       "source": "gongjumarathon.com",
@@ -183,6 +223,11 @@
       "source": "najumarathon.com",
       "checkedAt": "2026-07-27"
     },
+    "schedule-99021ed538da": {
+      "url": "https://ecimg.cafe24img.com/pg3172b09935163057/smtownrunclub/web/upload/share-image-1-1a1762345e1f317cdff5665848fd4fe6.png",
+      "source": "smtownrunclub.com",
+      "checkedAt": "2026-08-17"
+    },
     "schedule-a1b2f00df0c5": {
       "url": "https://www.yonma.kr/assets/img/og_card.png",
       "source": "yonma.kr",
@@ -192,6 +237,11 @@
       "url": "https://cdn.imweb.me/upload/S20250429f8bb90b3fb627/3abaea731a8cc.png",
       "source": "runseoulrun.com",
       "checkedAt": "2026-07-27"
+    },
+    "schedule-a61c70bb6c42": {
+      "url": "https://cdn.imweb.me/upload/S202605193c952706d27dc/318005b049445.png",
+      "source": "n-runplus.co.kr",
+      "checkedAt": "2026-08-17"
     },
     "schedule-a752ddb8accb": {
       "url": "https://ansanrun.com/title_img3.jpg",
@@ -217,6 +267,11 @@
       "url": "https://global6kforwater.com/resource/frt/images/og_image_202604.jpg",
       "source": "global6kforwater.com",
       "checkedAt": "2026-07-27"
+    },
+    "schedule-b9ef2192e53d": {
+      "url": "https://cdn.imweb.me/thumbnail/20260807/cbc2f1f12c3b6.png",
+      "source": "inthetrail.com",
+      "checkedAt": "2026-08-17"
     },
     "schedule-c0e2f01b26d3": {
       "url": "https://www.badarun.co.kr/meta_images.png",
@@ -248,6 +303,26 @@
       "source": "cuk-sports.com",
       "checkedAt": "2026-07-27"
     },
+    "schedule-cfaa08245b59": {
+      "url": "https://bjlee.casports.or.kr/title_img2026.jpg",
+      "source": "bjlee.casports.or.kr",
+      "checkedAt": "2026-08-17"
+    },
+    "schedule-d9272c15913a": {
+      "url": "https://gprun.com/images/og_image.png?260206",
+      "source": "gprun.com",
+      "checkedAt": "2026-08-17"
+    },
+    "schedule-dd5eb30916b3": {
+      "url": "https://www.wmac2026.com/img/og/wmac2026-og-1200x630.jpg",
+      "source": "wmac2026.com",
+      "checkedAt": "2026-08-17"
+    },
+    "schedule-e27407303eb6": {
+      "url": "https://asiarun.kr/images/og_image.png?260210",
+      "source": "asiarun.kr",
+      "checkedAt": "2026-08-17"
+    },
     "schedule-e385f7c91b05": {
       "url": "https://cdn.imweb.me/upload/S202004134291ef7e7f84c/834e5bb94363d.png",
       "source": "runnerking.com",
@@ -277,6 +352,11 @@
       "url": "https://cdn.imweb.me/upload/S20260610235da01dda75a/59f84054f5791.png",
       "source": "jejuwindmillrun.com",
       "checkedAt": "2026-07-27"
+    },
+    "schedule-f02b59f3c6e1": {
+      "url": "https://energyrun.co.kr/images/og_image.png?202606",
+      "source": "energyrun.co.kr",
+      "checkedAt": "2026-08-17"
     },
     "schedule-f6b181b3fe7c": {
       "url": "https://seoulopen.or.kr/images/common/metaLogo02.png",
