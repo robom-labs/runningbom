@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.17-race-data-44",
+  "version": "2026.08.18-race-data-45",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -212,8 +212,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gyoryongsanseong-backyard-survival-marathon",
       "sourceName": "마라톤GO",
       "organizer": "삼삼이즈",
-      "dataVerifiedAt": "2026-08-14T19:16:54.162Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-17T19:00:52.654Z",
+      "status": "closed",
       "courseLabel": "1회전 7K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -3877,7 +3877,7 @@
     },
     {
       "date": "2026-11-01",
-      "status": "scheduled",
+      "status": "open",
       "name": "제21회 울산인권마라톤",
       "region": "울산",
       "venue": "태화강 둔치",
@@ -4174,8 +4174,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jeon-guk-sasang-eco-marathon",
       "sourceName": "마라톤GO",
       "organizer": "사상구청,사상구체육회",
-      "dataVerifiedAt": "2026-08-14T19:16:54.162Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-17T19:00:52.654Z",
+      "status": "open",
       "courseLabel": "10km 로드레이스,5km 건강달리기,5km 슬로조깅",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -5194,7 +5194,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-16T18:49:33.514Z",
+  "lastSuccessfulRefreshAt": "2026-08-17T19:00:52.654Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",

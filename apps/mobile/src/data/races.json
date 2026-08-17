@@ -1,5 +1,5 @@
 {
-  "revision": "2026.08.17-race-data-44",
+  "revision": "2026.08.18-race-data-45",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -54,7 +54,7 @@
       "registrationOpensAt": "2026-08-09T00:00:00+09:00",
       "registrationClosesAt": "2026-08-17T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "08/09 - 08/17",
       "organizer": "삼삼이즈",
       "verifiedAt": "마라톤GO 공개 일정 상세",
@@ -3565,7 +3565,7 @@
       "registrationOpensAt": "2026-08-18T00:00:00+09:00",
       "registrationClosesAt": "2026-09-18T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "8/18 - 9/18",
       "organizer": "울산인권마라톤대회 조직위원회",
       "verifiedAt": "마라톤온라인 home 아이콘",
@@ -3829,7 +3829,7 @@
       "registrationOpensAt": "2026-08-18T00:00:00+09:00",
       "registrationClosesAt": "2026-10-11T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "08/18 - 10/11",
       "organizer": "사상구청,사상구체육회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
