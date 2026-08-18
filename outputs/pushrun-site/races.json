@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.18-race-data-45",
+  "version": "2026.08.19-race-data-46",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -544,8 +544,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ileelseon-marathon",
       "sourceName": "마라톤GO",
       "organizer": "이일선기념사업회",
-      "dataVerifiedAt": "2026-08-14T19:16:54.162Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-18T18:59:47.351Z",
+      "status": "closed",
       "courseLabel": "10K,4.4km걷기",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2253,8 +2253,8 @@
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yangju-cheonilhong-autumn-festa-marathon",
       "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-08-14T19:16:54.162Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-18T18:59:47.351Z",
+      "status": "open",
       "courseLabel": "10K,5K,20km코스,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -3568,7 +3568,7 @@
       "sourceName": "마라톤GO",
       "organizer": "부산일보사",
       "dataVerifiedAt": "2026-07-27T22:17:11.088Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "15km,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -3591,8 +3591,8 @@
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ulsan-runfesta-u-run",
       "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-08-14T19:16:54.162Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-18T18:59:47.351Z",
+      "status": "open",
       "courseLabel": "Half,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4030,8 +4030,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-jinhae-navy-marathon-2026-11-07",
       "sourceName": "마라톤GO",
       "organizer": "(주)경남신문사",
-      "dataVerifiedAt": "2026-08-14T19:16:54.162Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-18T18:59:47.351Z",
+      "status": "open",
       "courseLabel": "5K,11.11km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -5194,7 +5194,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-17T19:00:52.654Z",
+  "lastSuccessfulRefreshAt": "2026-08-18T18:59:47.351Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
