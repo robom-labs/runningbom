@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026.08.19-race-data-46",
-  "generatedAt": "2026-08-18T18:59:47.351Z",
+  "contentVersion": "2026.08.20-race-data-47",
+  "generatedAt": "2026-08-19T18:56:21.957Z",
   "source": {
     "kind": "verified-web-normalization",
     "path": "outputs/pushrun-site/races.json",
@@ -1345,7 +1345,7 @@
       "registrationOpensAt": "2026-04-17T00:00:00+09:00",
       "registrationClosesAt": "2026-08-19T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "4/17 - 8/19",
       "organizer": "전마협",
       "verifiedAt": "마라톤온라인 home 아이콘",
@@ -3882,7 +3882,7 @@
       "registrationOpensAt": "2026-08-20T00:00:00+09:00",
       "registrationClosesAt": "2026-10-25T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "08/20 - 10/25",
       "organizer": "아산시 마라톤 협회",
       "verifiedAt": "마라톤GO 공개 일정 상세",

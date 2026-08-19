@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.19-race-data-46",
+  "version": "2026.08.20-race-data-47",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -1297,7 +1297,7 @@
     },
     {
       "date": "2026-09-19",
-      "status": "open",
+      "status": "closed",
       "name": "2026 금산인삼축제 마라톤",
       "region": "충남",
       "venue": "금산세계인삼엑스포주차장",
@@ -4268,8 +4268,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/12th-asans-ginkgo-tree-road-national-marathon-2026-11-08",
       "sourceName": "마라톤GO",
       "organizer": "아산시 마라톤 협회",
-      "dataVerifiedAt": "2026-08-14T19:16:54.162Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-19T18:56:21.957Z",
+      "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -5194,7 +5194,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-18T18:59:47.351Z",
+  "lastSuccessfulRefreshAt": "2026-08-19T18:56:21.957Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
