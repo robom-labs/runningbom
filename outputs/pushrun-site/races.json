@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.20-race-data-47",
+  "version": "2026.08.21-race-data-48",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -170,14 +170,14 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-fashion-road-ddp-run-the-fit",
       "sourceName": "마라톤GO",
       "organizer": "서울시",
-      "dataVerifiedAt": "2026-08-14T19:16:54.162Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-20T19:03:20.239Z",
+      "status": "closed",
       "courseLabel": "러닝 프로그램",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
       "date": "2026-08-22",
-      "status": "open",
+      "status": "closed",
       "name": "제2회 한양도성길 트레일런",
       "region": "서울",
       "venue": "낙산공원중앙광장(낙산길54)",
@@ -1778,7 +1778,7 @@
     },
     {
       "date": "2026-09-20",
-      "status": "open",
+      "status": "closed",
       "name": "제2회 마포구청장배 마라톤 대회",
       "region": "서울",
       "venue": "평화의 공원 평화광장",
@@ -5194,7 +5194,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-19T18:56:21.957Z",
+  "lastSuccessfulRefreshAt": "2026-08-20T19:03:20.239Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",

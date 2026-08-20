@@ -1,5 +1,5 @@
 {
-  "revision": "2026.08.20-race-data-47",
+  "revision": "2026.08.21-race-data-48",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -15,7 +15,7 @@
       "registrationOpensAt": "2026-08-06T00:00:00+09:00",
       "registrationClosesAt": "2026-08-20T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "08/06 - 08/20",
       "organizer": "서울시",
       "verifiedAt": "마라톤GO 공개 일정 상세",
@@ -35,7 +35,7 @@
       "registrationOpensAt": "2026-06-15T00:00:00+09:00",
       "registrationClosesAt": "2026-08-20T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "6/15 - 8/20",
       "organizer": "파브코리아",
       "verifiedAt": "마라톤온라인 home 아이콘",
@@ -1555,7 +1555,7 @@
       "registrationOpensAt": "2026-06-23T00:00:00+09:00",
       "registrationClosesAt": "2026-08-20T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "6/23 - 8/20",
       "organizer": "마포구체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
