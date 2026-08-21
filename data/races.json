@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026.08.21-race-data-48",
+  "contentVersion": "2026.08.21-race-data-49",
   "generatedAt": "2026-08-20T19:03:20.239Z",
   "source": {
     "kind": "verified-web-normalization",
@@ -2141,6 +2141,28 @@
       "sourceName": "마라톤온라인"
     },
     {
+      "id": "schedule-b9f15fb59e32",
+      "name": "2026 고흥우주항공배 마라톤",
+      "region": "전남",
+      "venue": "일자",
+      "raceDate": "2026-10-09",
+      "distances": [
+        "Half",
+        "10K",
+        "5K",
+        "장소"
+      ],
+      "registrationOpensAt": "2026-08-19T00:00:00+09:00",
+      "registrationClosesAt": "2026-09-20T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "open",
+      "registrationPeriodLabel": "08/19 - 09/20",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-goheung-space-aviation-marathon",
+      "externalLinkKind": "source",
+      "sourceName": "마라톤GO"
+    },
+    {
       "id": "schedule-c3981bb3a043",
       "name": "WYD와 함께하는 생명사랑 마라톤/걷기 대회",
       "region": "경기",
@@ -3367,6 +3389,26 @@
       "sourceName": "마라톤온라인"
     },
     {
+      "id": "schedule-1dc17fe7150d",
+      "name": "2026 태종대 BEAT ON 좀비레이스",
+      "region": "부산",
+      "venue": "일자",
+      "raceDate": "2026-10-31",
+      "distances": [
+        "4km 코스",
+        "장소"
+      ],
+      "registrationOpensAt": "2026-08-20T00:00:00+09:00",
+      "registrationClosesAt": "2026-09-20T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "open",
+      "registrationPeriodLabel": "08/20 - 09/20",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-taejongdae-beat-on-zombie-race",
+      "externalLinkKind": "source",
+      "sourceName": "마라톤GO"
+    },
+    {
       "id": "schedule-22a8401f5711",
       "name": "2026 JUST RUN10 포천",
       "region": "경기",
@@ -3672,6 +3714,27 @@
       "sourceName": "마라톤온라인"
     },
     {
+      "id": "schedule-86b634b13a49",
+      "name": "넥슨과 함께하는 2026 푸르메런",
+      "region": "서울",
+      "venue": "일자",
+      "raceDate": "2026-11-07",
+      "distances": [
+        "10K",
+        "3km",
+        "장소"
+      ],
+      "registrationOpensAt": "2026-08-26T00:00:00+09:00",
+      "registrationClosesAt": "2026-09-23T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "scheduled",
+      "registrationPeriodLabel": "08/26 - 09/23",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-purmerun-miracle365-nexon",
+      "externalLinkKind": "source",
+      "sourceName": "마라톤GO"
+    },
+    {
       "id": "schedule-8dc25f58d104",
       "name": "제15회 부여 굿뜨래 마라톤 대회",
       "region": "충남",
@@ -3753,6 +3816,28 @@
       "organizer": "과천시체육회",
       "verifiedAt": "마라톤GO 공개 일정 상세",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gwacheon-marathon",
+      "externalLinkKind": "source",
+      "sourceName": "마라톤GO"
+    },
+    {
+      "id": "schedule-363de0daecc0",
+      "name": "제24회 전국 나주 금성산숲길마라톤",
+      "region": "전남",
+      "venue": "일자",
+      "raceDate": "2026-11-08",
+      "distances": [
+        "Half",
+        "6km",
+        "11km",
+        "장소"
+      ],
+      "registrationOpensAt": "2026-08-24T00:00:00+09:00",
+      "registrationClosesAt": "2026-09-10T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "scheduled",
+      "registrationPeriodLabel": "08/24 - 09/10",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/24th-naju-geumseongsan-forest-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
@@ -4090,6 +4175,27 @@
       "sourceName": "마라톤GO"
     },
     {
+      "id": "schedule-22568bd194f5",
+      "name": "2026 나눔레이스 인 용인",
+      "region": "경기",
+      "venue": "일자",
+      "raceDate": "2026-11-15",
+      "distances": [
+        "10K",
+        "15km",
+        "장소"
+      ],
+      "registrationOpensAt": "2026-08-24T00:00:00+09:00",
+      "registrationClosesAt": "2026-09-06T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "scheduled",
+      "registrationPeriodLabel": "08/24 - 09/06",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-nanumrace-yongin",
+      "externalLinkKind": "source",
+      "sourceName": "마라톤GO"
+    },
+    {
       "id": "schedule-4917c05f3b4f",
       "name": "2026 제주감귤마라톤",
       "region": "제주",
@@ -4374,6 +4480,28 @@
       "sourceName": "마라톤GO"
     },
     {
+      "id": "schedule-b640dcd365a5",
+      "name": "2026 인천마라톤",
+      "region": "인천",
+      "venue": "일자",
+      "raceDate": "2026-11-22",
+      "distances": [
+        "Full",
+        "10K",
+        "5K",
+        "장소"
+      ],
+      "registrationOpensAt": "2026-09-21T00:00:00+09:00",
+      "registrationClosesAt": "2026-09-21T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "scheduled",
+      "registrationPeriodLabel": "09/21 - 09/21",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-marathon-asiad-stadium-start",
+      "externalLinkKind": "source",
+      "sourceName": "마라톤GO"
+    },
+    {
       "id": "schedule-d4394bec0c27",
       "name": "2026 평화의숲 마라톤",
       "region": "서울",
@@ -4503,6 +4631,29 @@
       "verifiedAt": "마라톤GO 공개 일정 상세",
       "officialUrl": "https://mokyokrun.shop/",
       "externalLinkKind": "official",
+      "sourceName": "마라톤GO"
+    },
+    {
+      "id": "schedule-0103ac98f029",
+      "name": "2026 정읍공동체 프리마켓 마라톤",
+      "region": "전북",
+      "venue": "일자",
+      "raceDate": "2026-11-29",
+      "distances": [
+        "10K",
+        "5K",
+        "5km가족부(2인1조)",
+        "10km 단체전(3인1조)",
+        "장소"
+      ],
+      "registrationOpensAt": "2026-08-18T00:00:00+09:00",
+      "registrationClosesAt": "2026-11-15T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "open",
+      "registrationPeriodLabel": "08/18 - 11/15",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jeongeup-community-freemarket-marathon",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
@@ -4678,6 +4829,28 @@
       "registrationPeriodLabel": "08/14 - 10/30",
       "verifiedAt": "마라톤GO 공개 일정 상세",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hwang-youngjo-roadrace",
+      "externalLinkKind": "source",
+      "sourceName": "마라톤GO"
+    },
+    {
+      "id": "schedule-5949f7d5a414",
+      "name": "2026 소년소녀 가장 돕기 기부런",
+      "region": "서울",
+      "venue": "일자",
+      "raceDate": "2026-12-12",
+      "distances": [
+        "10K",
+        "5K",
+        "걷기",
+        "장소"
+      ],
+      "registrationOpensAt": "2026-08-18T00:00:00+09:00",
+      "registrationClosesAt": "2026-11-06T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "open",
+      "registrationPeriodLabel": "08/18 - 11/06",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-boys-girls-head-donation-run",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
