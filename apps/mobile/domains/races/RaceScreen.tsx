@@ -622,34 +622,48 @@ export function RaceScreen({ focusedRaceId }: Props) {
               ) : null}
 
               <View style={styles.actions}>
-                <Button
-                  disabled={busy || (!scheduled && !canSchedule)}
-                  label={
-                    busy
-                      ? '처리 중'
-                      : scheduled
-                        ? '알림 취소'
-                        : canSchedule
-                          ? '접수 알림 예약'
-                          : registrationTarget.registrationDataStatus === 'needs-review'
-                            ? '공식 정보 확인 중'
-                          : group.status === '접수 중'
-                            ? '접수 진행 중'
-                            : '시각 확인 후 예약'
-                  }
-                  onPress={() => void (scheduled
-                    ? cancelAlert(scheduledEntry ?? registrationTarget)
-                    : scheduleAlert(registrationTarget))}
-                  style={styles.action}
-                  tone={scheduled ? 'quiet' : 'primary'}
-                />
-                <Button
-                  disabled={!canOpenExternal}
-                  label={canOpenExternal ? externalLinkLabel(linkTarget) : '정보 확인 중'}
-                  onPress={() => void openExternalUrl(linkTarget)}
-                  style={styles.action}
-                  tone="secondary"
-                />
+                {group.status === '접수 중' ? (
+                  canOpenExternal ? (
+                    <Button
+                      label={externalLinkLabel(linkTarget)}
+                      onPress={() => void openExternalUrl(linkTarget)}
+                      style={styles.action}
+                      tone="primary"
+                    />
+                  ) : (
+                    <Text style={styles.note}>안전하게 안내할 접수 페이지를 확인 중이에요.</Text>
+                  )
+                ) : (
+                  <>
+                    <Button
+                      disabled={busy || (!scheduled && !canSchedule)}
+                      label={
+                        busy
+                          ? '처리 중'
+                          : scheduled
+                            ? '알림 취소'
+                            : canSchedule
+                              ? '접수 알림 예약'
+                              : registrationTarget.registrationDataStatus === 'needs-review'
+                                ? '접수 정보 확인 중'
+                                : '시각 확인 후 예약'
+                      }
+                      onPress={() => void (scheduled
+                        ? cancelAlert(scheduledEntry ?? registrationTarget)
+                        : scheduleAlert(registrationTarget))}
+                      style={styles.action}
+                      tone={scheduled ? 'quiet' : 'primary'}
+                    />
+                    {canOpenExternal ? (
+                      <Button
+                        label={externalLinkLabel(linkTarget)}
+                        onPress={() => void openExternalUrl(linkTarget)}
+                        style={styles.action}
+                        tone="secondary"
+                      />
+                    ) : null}
+                  </>
+                )}
               </View>
 
               <Pressable

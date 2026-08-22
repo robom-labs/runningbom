@@ -23,7 +23,7 @@
     },
     "android": {
       "package": "kr.robom.runningbom",
-      "versionCode": 15,
+      "versionCode": 16,
       "permissions": [
         "android.permission.POST_NOTIFICATIONS"
       ],

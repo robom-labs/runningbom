@@ -114,6 +114,16 @@ test("status가 open이어도 마감 시각이 지났으면 접수중으로 보�
   assert.equal(core.getAlertTarget(closedRace, NOW)?.type, "race_day");
 });
 
+test("출발 시각이 미확인인 대회에는 자정 기준 대회일 알림을 만들지 않는다", () => {
+  const dateOnlyRace = makeRace({
+    registrationOpenAt: iso(NOW - 10 * DAY),
+    registrationCloseAt: iso(NOW - DAY),
+    raceTimeConfirmed: false,
+  });
+
+  assert.deepEqual(core.getAlertTargets(dateOnlyRace, NOW), []);
+});
+
 test("지난 접수일에는 D+를 표시하지 않는다", () => {
   assert.equal(core.formatDday(iso(NOW - DAY), NOW), "");
   assert.equal(core.formatDday(iso(NOW), NOW), "D-Day");
