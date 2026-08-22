@@ -2,8 +2,8 @@ const ALERT_STORAGE_KEY = "pushrun:alert-subscriptions:v3";
 const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
 const APP_VERSION = "0.21.0";
-const ASSET_VERSION = "20260822-01";
-const BUILD_SHA = "3efbed2";
+const ASSET_VERSION = "20260822-02";
+const BUILD_SHA = "fcd402b";
 const PWA_CACHE_VERSION = "pushrun-v0.21.0";
 const {
   normalizeRaceName,
@@ -161,7 +161,7 @@ function parseScheduleFeed(feed) {
       alertCapabilities: [
         ...(hasUpcomingOpen && openTimeConfirmed ? ["registration_time"] : []),
         ...(isOpen ? ["open_now"] : []),
-        "race_day"
+        ...(raceTime.confirmed ? ["race_day"] : [])
       ],
       capacity: null,
       popularity: 50,
@@ -190,7 +190,7 @@ function normalizeFeaturedRace(race) {
     alertCapabilities: [
       ...(hasUpcomingOpen && openTimeConfirmed ? ["registration_time"] : []),
       ...(isAccepting ? ["open_now"] : []),
-      "race_day"
+      ...(race.raceTimeConfirmed !== false ? ["race_day"] : [])
     ]
   };
 }
@@ -202,13 +202,16 @@ function registrationNeedsReview(race) {
 function normalizeRaceTime(value) {
   const text = String(value || "");
   const match = text.match(/(\d{1,2}):(\d{2})/);
-  if (match) {
-    const label = `${pad(Number(match[1]))}:${match[2]}`;
+  const hour = Number(match?.[1]);
+  const minute = Number(match?.[2]);
+  if (match && hour >= 0 && hour < 24 && minute >= 0 && minute < 60) {
+    const label = `${pad(hour)}:${pad(minute)}`;
     return { value: `${label}:00`, label, confirmed: true };
   }
   const hourMatch = text.match(/(\d{1,2})시/);
-  if (hourMatch) {
-    const label = `${pad(Number(hourMatch[1]))}:00`;
+  const hourOnly = Number(hourMatch?.[1]);
+  if (hourMatch && hourOnly >= 0 && hourOnly < 24) {
+    const label = `${pad(hourOnly)}:00`;
     return { value: `${label}:00`, label, confirmed: true };
   }
   return { value: "00:00:00", label: "시간 미확인", confirmed: false };
@@ -351,7 +354,7 @@ function raceSortGroup(race) {
   const now = Date.now();
   const opensAt = race.registrationOpenAt ? new Date(race.registrationOpenAt).getTime() : null;
   const closesAt = race.registrationCloseAt ? new Date(race.registrationCloseAt).getTime() : null;
-  const raceAt = new Date(race.raceDate).getTime();
+  const raceAt = raceDayEndsAt(race);
   if ((race.status === "open" && (!closesAt || now <= closesAt)) || (opensAt && closesAt && opensAt <= now && now <= closesAt)) return 0;
   if (opensAt && opensAt > now) return 1;
   if (raceAt > now) return 2;
@@ -364,7 +367,7 @@ function raceTimes(race) {
   const value = {
     close: new Date(race.registrationCloseAt || race.raceDate).getTime(),
     open: new Date(race.registrationOpenAt || race.raceDate).getTime(),
-    race: new Date(race.raceDate).getTime()
+    race: raceDayEndsAt(race)
   };
   raceTimeCache.set(race, value);
   return value;
@@ -475,9 +478,14 @@ function getCategoryRaces() {
 }
 
 function isVisibleRace(race) {
-  const now = Date.now();
-  const raceAt = new Date(race.raceDate).getTime();
-  return raceAt >= now && !["cancelled", "postponed"].includes(race.status);
+  return raceDayEndsAt(race) >= Date.now() && !["cancelled", "postponed"].includes(race.status);
+}
+
+// 출발 시각이 미확인인 대회는 그 날짜가 끝날 때까지 목록에 남긴다.
+function raceDayEndsAt(race) {
+  if (race.raceTimeConfirmed !== false) return new Date(race.raceDate).getTime();
+  const day = String(race.raceDate || "").slice(0, 10);
+  return new Date(`${day}T23:59:59+09:00`).getTime();
 }
 
 function statusLabel(status) {

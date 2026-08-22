@@ -89,6 +89,8 @@
     const registrationTargets = getRegistrationTargets(race, now);
     if (registrationTargets.length) return registrationTargets;
     if (!race || ["closed", "sold_out", "cancelled"].includes(race.status)) return [];
+    // 날짜만 확인된 대회는 기본값 00:00으로 대회일 알림을 만들지 않는다.
+    if (race.raceTimeConfirmed === false) return [];
     const opensAt = race.registrationOpenAt ? new Date(race.registrationOpenAt).getTime() : null;
     if (opensAt && opensAt > now) return [];
     const raceAt = race.raceDate ? new Date(race.raceDate).getTime() : null;
