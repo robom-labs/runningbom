@@ -42,14 +42,14 @@ test('§13 지금 카탈로그에 가격 규칙 위반이 없다', () => {
   assert.deepEqual(validatePrices(shoeCatalog, now), []);
 });
 
-test('§13 홈 아래쪽 신발 순위가 다섯 줄이고 각 줄에 값이 있다', () => {
+test('§13 신발 순위가 다섯 줄이고 각 줄에 값이 있다', () => {
   const ranked = rankShoes(shoeCatalog, { limit: 5 }, now);
   assert.equal(ranked.length, 5);
   for (const item of ranked) {
     assert.match(priceDisplay(item.shoe, now).headline, /\d/);
   }
-  // 홈 화면이 실제로 이 카드를 그리고 있는지도 봅니다.
-  assert.match(source('app/screens/home/HomeScreen.tsx'), /<ShoeRankingCard/);
+  // 대회 중심 홈과 분리해도, 러닝화 화면의 순위 규칙은 보존합니다.
+  assert.match(source('domains/shoes/ShoeRankingCard.tsx'), /rankShoes/);
 });
 
 test('§13 순위 산식이 앱 안에서 열린다', () => {

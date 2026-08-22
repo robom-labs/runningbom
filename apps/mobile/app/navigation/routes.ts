@@ -124,7 +124,10 @@ const legacyTabRoutes: Record<string, RouteKey> = {
 };
 
 export function routeFromStoredValue(value: string | undefined): RouteKey {
-  if (isRouteKey(value)) return value;
+  // 대회 탐색 흐름 밖의 예전 마지막 화면은 홈으로 옮깁니다.
+  // 저장값과 활동 데이터는 지우지 않아, 나중에 필요한 화면에서 그대로 읽을 수 있습니다.
+  const eventFirstRoutes: RouteKey[] = ['home', 'races', 'calendar', 'stats', 'profile', 'settings', 'voice', 'help'];
+  if (isRouteKey(value)) return eventFirstRoutes.includes(value) ? value : 'home';
   if (value && legacyTabRoutes[value]) return legacyTabRoutes[value] as RouteKey;
   return 'home';
 }
