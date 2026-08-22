@@ -4,10 +4,19 @@ import { describe, it } from 'node:test';
 
 import {
   RACE_FOREGROUND_REFRESH_INTERVAL_MS,
+  millisecondsUntilNextKstDay,
   shouldRefreshRaceDataAfterBackground,
 } from '../app/state/raceRefreshPolicy';
 
 describe('대회 데이터 재진입 갱신', () => {
+  it('한국 시간 자정에 맞춰 다음 날짜의 목록을 다시 계산한다', () => {
+    const beforeMidnight = Date.parse('2026-08-22T23:59:50+09:00');
+    const afterMidnight = Date.parse('2026-08-23T00:00:00+09:00');
+
+    assert.equal(millisecondsUntilNextKstDay(beforeMidnight), 10_000);
+    assert.equal(millisecondsUntilNextKstDay(afterMidnight), 86_400_000);
+  });
+
   it('10분 미만 백그라운드는 다시 받지 않는다', () => {
     assert.equal(
       shouldRefreshRaceDataAfterBackground(1_000, 1_000 + RACE_FOREGROUND_REFRESH_INTERVAL_MS - 1),

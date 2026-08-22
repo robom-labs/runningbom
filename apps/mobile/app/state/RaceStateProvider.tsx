@@ -41,7 +41,7 @@ import {
   saveRaceVisitInbox,
   saveRaceVisitSnapshot,
 } from '../../services/storage/raceVisitSnapshot';
-import { shouldRefreshRaceDataAfterBackground } from './raceRefreshPolicy';
+import { millisecondsUntilNextKstDay, shouldRefreshRaceDataAfterBackground } from './raceRefreshPolicy';
 
 const appVersion = Constants.expoConfig?.version ?? '0.21.0';
 const staticDataBaseUrl =
@@ -187,6 +187,19 @@ export function RaceStateProvider({ children }: PropsWithChildren) {
       }
     });
     return () => subscription.remove();
+  }, [loadLatest]);
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    const refreshAtNextKstDay = () => {
+      timer = setTimeout(() => {
+        void loadLatest();
+        refreshAtNextKstDay();
+      }, millisecondsUntilNextKstDay());
+    };
+
+    refreshAtNextKstDay();
+    return () => clearTimeout(timer);
   }, [loadLatest]);
 
   const scheduleAlert = useCallback(async (race: Race) => {
