@@ -493,6 +493,13 @@ describe('홈 화면 구성', () => {
     assert.match(home, /size="lg"/);
   });
 
+  it('홈 대회 카드는 링크 성격을 보여 주고, 고른 대회는 상세를 바로 연다', () => {
+    assert.match(home, /raceGroupLinkStatus\(group\)/);
+    assert.match(home, /row\.linkStatus/);
+    const races = source('domains/races/RaceScreen.tsx');
+    assert.match(races, /setExpandedGroupId\(focused\.id\)/);
+  });
+
   it('색·글자 크기·간격을 디자인 토큰으로만 지정한다', () => {
     for (const text of [home, model]) {
       assert.equal(/#[0-9a-fA-F]{3,8}\b/.test(text.replace(/https?:\/\/\S+/g, '')), false);

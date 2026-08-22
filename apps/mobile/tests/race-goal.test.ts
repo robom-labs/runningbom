@@ -9,6 +9,7 @@ import {
   formatRaceFeedRevision,
   formatRaceVerification,
   groupRaces,
+  raceGroupLinkStatus,
   raceCountsByDay,
   raceMonthBuckets,
   raceQuickFilters,
@@ -236,6 +237,16 @@ describe('대회 묶음의 접수 상태와 신뢰 문구', () => {
     assert.equal(formatRaceFeedRevision('2026.08.08-race-data-34'), '대회 자료 8월 8일판 · 데이터 34');
     assert.equal(formatRaceVerification('마라톤온라인 home 아이콘'), '검증 근거 마라톤온라인 공개 일정');
     assert.equal(formatRaceVerification('마라톤GO 공개 일정 상세'), '검증 근거 마라톤GO 공개 일정');
+  });
+
+  it('홈에는 공식성 대신 접수 페이지·정보 출처·확인 중 상태만 보여 준다', () => {
+    const registration = groupRaces([race('registration', { registrationUrl: 'https://example.com/apply' })], NOW)[0];
+    const source = groupRaces([race('source', { sourceDetailUrl: 'https://example.com/source' })], NOW)[0];
+    const unavailable = groupRaces([race('unavailable')], NOW)[0];
+
+    assert.equal(raceGroupLinkStatus(registration!), '접수 페이지 있음');
+    assert.equal(raceGroupLinkStatus(source!), '대회 정보 출처 있음');
+    assert.equal(raceGroupLinkStatus(unavailable!), '정보 확인 중');
   });
 });
 
