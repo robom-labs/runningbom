@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.13-race-data-40",
+  "version": "2026.08.22-race-data-52",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -152,173 +152,6 @@
   ],
   "scheduleFeed": [
     {
-      "date": "2026-08-15",
-      "status": "closed",
-      "name": "2026 안양천 달빛 나이트런",
-      "region": "서울",
-      "venue": "신정교 하부 영롱이 억새구장",
-      "time": "18:30",
-      "distances": [
-        "10K",
-        "5K"
-      ],
-      "registrationUrl": "https://moonnightrun.kr/",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-06-05T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-06T23:59:00+09:00",
-      "registrationPeriodLabel": "6/5 - 8/6",
-      "registrationPeriodSource": "2026년6월5일~2026년8월6일",
-      "courseLabel": "10km,5km",
-      "organizer": "(사)대한이에스지협회"
-    },
-    {
-      "date": "2026-08-15",
-      "status": "closed",
-      "name": "2026 장수 나이트 트레일",
-      "region": "전북",
-      "venue": "장수종합경기장",
-      "time": "19:00",
-      "distances": [
-        "Trail"
-      ],
-      "registrationUrl": "https://rocknrun.kr/",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-05-15T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-31T23:59:00+09:00",
-      "registrationPeriodLabel": "5/15 - 7/31",
-      "registrationPeriodSource": "2026년5월15일~2026년7월31일",
-      "courseLabel": "38K-P",
-      "organizer": "(주)락앤런"
-    },
-    {
-      "date": "2026-08-15",
-      "status": "closed",
-      "name": "2026 전마협 광복절 무료 초청 마라톤",
-      "region": "대전",
-      "venue": "대전엑스포다리 밑",
-      "time": "06:00",
-      "distances": [
-        "10K",
-        "5K"
-      ],
-      "registrationUrl": "https://mara1080.com/event/9e568eef-64ff-4548-881f-3a420689dece",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-06-15T00:00:00+09:00",
-      "registrationCloseAt": "2026-06-16T23:59:00+09:00",
-      "registrationPeriodLabel": "6/15 - 6/16",
-      "registrationPeriodSource": "2026년6월15일~2026년6월16일",
-      "courseLabel": "10km,5km",
-      "organizer": "전국마라톤협회"
-    },
-    {
-      "name": "2026 INCHEON NIGHT RACE",
-      "date": "2026-08-15",
-      "time": "19:30 집결",
-      "region": "인천",
-      "venue": "인천 영정구 중산동 1946",
-      "distances": [
-        "8.15km"
-      ],
-      "registrationOpenAt": "2026-07-07T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-08T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "07/07 - 08/08",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-night-race",
-      "sourceName": "마라톤GO",
-      "organizer": "국민건강진흥원",
-      "dataVerifiedAt": "2026-08-08T16:02:04.796Z",
-      "status": "closed",
-      "courseLabel": "8.15km",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "date": "2026-08-15",
-      "status": "closed",
-      "name": "영남알프스9봉 트레일 레이스",
-      "region": "경남",
-      "venue": "청운산장",
-      "time": "14:00",
-      "distances": [
-        "Trail"
-      ],
-      "registrationUrl": "https://jyd.creatorlink.net/",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-04-01T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-15T23:59:00+09:00",
-      "registrationPeriodLabel": "4/1 - 7/15",
-      "registrationPeriodSource": "2026년4월1일~2026년7월15일",
-      "courseLabel": "9봉 87k",
-      "organizer": "JYD자연을달린다"
-    },
-    {
-      "name": "제38회 지리산화대종주 Trail Run",
-      "date": "2026-08-15",
-      "time": "03:00 집결",
-      "region": "전남",
-      "venue": "화엄사주차장",
-      "distances": [
-        "48km",
-        "40km"
-      ],
-      "registrationOpenAt": "2025-12-05T00:00:00+09:00",
-      "registrationCloseAt": "2028-07-31T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/38th-jirisan-hwadaejongju-trail-run-2026",
-      "sourceName": "마라톤GO",
-      "organizer": "(사)한국산악마라톤연맹",
-      "dataVerifiedAt": "2026-08-08T07:18:23.752Z",
-      "status": "unknown",
-      "courseLabel": "48km,40km",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "registrationDataStatus": "needs-review",
-      "registrationDataIssue": "원문 접수 기간이 대회일 이후로 표시돼 상태를 자동 확정하지 않았습니다."
-    },
-    {
-      "date": "2026-08-15",
-      "status": "closed",
-      "name": "제38회 지리산화대종주 UTMB",
-      "region": "전남",
-      "venue": "화엄사주차장",
-      "time": "03:00",
-      "distances": [
-        "Trail"
-      ],
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2025-12-05T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-31T23:59:00+09:00",
-      "registrationPeriodLabel": "25.12/5 - 26.7/31",
-      "registrationPeriodSource": "2025년12월5일~2026년7월31일",
-      "courseLabel": "48km,40km",
-      "organizer": "(사)한국산악마라톤연맹"
-    },
-    {
-      "date": "2026-08-16",
-      "status": "closed",
-      "name": "2026Happy700평창대관령전국하프마라톤",
-      "region": "강원",
-      "venue": "2018 평창동계올림픽 기념관",
-      "time": "08:00",
-      "distances": [
-        "Half",
-        "10K"
-      ],
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-06-10T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-25T23:59:00+09:00",
-      "registrationPeriodLabel": "6/10 - 7/25",
-      "registrationPeriodSource": "2026년6월10일~2026년7월25일",
-      "courseLabel": "하프,10km",
-      "organizer": "한국실업육상연맹"
-    },
-    {
       "name": "2026 서울패션로드 DDP 런더핏(Run the Fit)",
       "date": "2026-08-22",
       "time": "17:00",
@@ -336,14 +169,14 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-fashion-road-ddp-run-the-fit",
       "sourceName": "마라톤GO",
       "organizer": "서울시",
-      "dataVerifiedAt": "2026-08-07T00:18:19.474Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "closed",
       "courseLabel": "러닝 프로그램",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
       "date": "2026-08-22",
-      "status": "open",
+      "status": "closed",
       "name": "제2회 한양도성길 트레일런",
       "region": "서울",
       "venue": "낙산공원중앙광장(낙산길54)",
@@ -377,8 +210,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gyoryongsanseong-backyard-survival-marathon",
       "sourceName": "마라톤GO",
       "organizer": "삼삼이즈",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "closed",
       "courseLabel": "1회전 7K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -400,7 +233,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-geumsusan-trail-running",
       "sourceName": "마라톤GO",
       "organizer": "제천시산악연맹",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "22km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -423,7 +256,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-daegu-world-masters-10km-marathon",
       "sourceName": "마라톤GO",
       "organizer": "대구광역시, 세계마스터즈육상연",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -448,7 +281,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-daegu-world-masters-10km",
       "sourceName": "마라톤GO",
       "organizer": "대구광역시,세계마스터즈육상연맹",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "10K,35세이상일반인,3000명",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -513,7 +346,7 @@
       "sourceName": "마라톤GO",
       "organizer": "플랜인",
       "dataVerifiedAt": "2026-07-28T10:13:36.762Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -535,7 +368,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-daegu-world-masters-half-marathon",
       "sourceName": "마라톤GO",
       "organizer": "대구광역시, 세계마스터즈육상연맹(WMA)",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -561,7 +394,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-daegu-world-masters-athletics-championship-half-marathon",
       "sourceName": "마라톤GO",
       "organizer": "대구광역시, 세계마스터즈육상연맹(WMA)",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,트랙,필드 등 34개 종목(35세 이상)",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -585,7 +418,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/16th-seongbuk-gu-mayor-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "성북구육상연맹",
-      "dataVerifiedAt": "2026-08-10T19:21:05.555Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -677,7 +510,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-dynafit-taebaek-trail",
       "sourceName": "마라톤GO",
       "organizer": "태백시, 태백시 철인3종 협회",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "50k,32k-T,32k-U",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -701,8 +534,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ileelseon-marathon",
       "sourceName": "마라톤GO",
       "organizer": "이일선기념사업회",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "closed",
       "courseLabel": "10K,4.4km걷기",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -787,7 +620,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/23rd-cheorwon-dmz-international-peace-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "철원군, 한국일보",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Full,Half,10K,걷기",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -829,7 +662,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-mungyongsaejae-trailrun",
       "sourceName": "마라톤GO",
       "organizer": "파브코리아",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "13km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -978,7 +811,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-goodneighbors-race-seoul-charity-running",
       "sourceName": "마라톤GO",
       "organizer": "굿네이버스",
-      "dataVerifiedAt": "2026-08-12T19:30:03.532Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1002,7 +835,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-nightrun-plus-chungju",
       "sourceName": "마라톤GO",
       "organizer": "나이트런 플러스",
-      "dataVerifiedAt": "2026-07-28T17:47:59.572Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1026,7 +859,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yangyang-riverside-national-marathon",
       "sourceName": "마라톤GO",
       "organizer": "G1방송, 양양군",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1050,7 +883,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-energy-hero-race",
       "sourceName": "마라톤GO",
       "organizer": "굿피플",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1075,7 +908,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yeosu-baekriseomseom-trailrun",
       "sourceName": "마라톤GO",
       "organizer": "스피드에이전시",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "40K,27K,16K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1100,7 +933,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jangsu-red-food-race",
       "sourceName": "마라톤GO",
       "organizer": "주식회사 락앤런",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K,16Km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1123,7 +956,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-forest-run-hyundai",
       "sourceName": "마라톤GO",
       "organizer": "현대",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1197,7 +1030,7 @@
     },
     {
       "date": "2026-09-12",
-      "status": "open",
+      "status": "closed",
       "name": "제2회 화이트런 생리대 기부마라톤",
       "region": "서울",
       "venue": "영등포구 신정교하부 육상트랙구",
@@ -1257,7 +1090,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-uljin-geumgangsong-healing-marathon",
       "sourceName": "마라톤GO",
       "organizer": "울진군",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K,7인1조 단체전",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1280,8 +1113,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hero-race-15km-yeouido",
       "sourceName": "마라톤GO",
       "organizer": "MBN",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "closed",
       "courseLabel": "15km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -1370,7 +1203,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/14th-seoraksan-dinosaur-ridge-climbathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "(사)한국산악마라톤연맹",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "27km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1412,8 +1245,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-guro-mayor-anyangcheon-autumn-run-2026-09-13",
       "sourceName": "마라톤GO",
       "organizer": "구로구육상연맹",
-      "dataVerifiedAt": "2026-08-02T15:48:16.664Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -1441,7 +1274,7 @@
     },
     {
       "date": "2026-09-19",
-      "status": "open",
+      "status": "closed",
       "name": "2026 금산인삼축제 마라톤",
       "region": "충남",
       "venue": "금산세계인삼엑스포주차장",
@@ -1479,7 +1312,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-infinite-run-in-kyungjoo",
       "sourceName": "마라톤GO",
       "organizer": "쿠팡플레이",
-      "dataVerifiedAt": "2026-07-29T16:57:53.879Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1501,7 +1334,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-sachal-run",
       "sourceName": "마라톤GO",
       "organizer": "윌슨컴퍼니 주식회사",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "6.3km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1526,7 +1359,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-anyangcheon-half-marathon",
       "sourceName": "마라톤GO",
       "organizer": "(사)행복한가게",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1548,7 +1381,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yeosu-nangdo-trail",
       "sourceName": "마라톤GO",
       "organizer": "파브코리아",
-      "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "13km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1573,7 +1406,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jangsu-trail-race-fall",
       "sourceName": "마라톤GO",
       "organizer": "(주)락앤런",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "100km,100Miles,38K-J",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1596,7 +1429,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-chungnyeon-day-namdong-run",
       "sourceName": "마라톤GO",
       "organizer": "디지틀조선일보C&M",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1620,7 +1453,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-just-run10-gimhae-daedong",
       "sourceName": "마라톤GO",
       "organizer": "(주)러닝브레이커, 전국러닝협회",
-      "dataVerifiedAt": "2026-07-31T18:07:31.708Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1782,7 +1615,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ansan-marathon",
       "sourceName": "마라톤GO",
       "organizer": "안산시체육",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1806,7 +1639,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ulsan-namgu-athletics-short-marathon",
       "sourceName": "마라톤GO",
       "organizer": "울산광역시 남구 육상연맹",
-      "dataVerifiedAt": "2026-07-30T17:11:20.335Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1831,7 +1664,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-songdo-international-half-marathon",
       "sourceName": "마라톤GO",
       "organizer": "(주)경인일보",
-      "dataVerifiedAt": "2026-08-07T19:18:56.804Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1877,7 +1710,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-20th-sunsa-marathon-festival-internet-registration",
       "sourceName": "마라톤GO",
       "organizer": "강동구 육상연맹",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K,5km 걷기",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1903,14 +1736,14 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-gapyeong-jaraseom-national-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "가평군체육회, 세계일보",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K,5km가족런",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
       "date": "2026-09-20",
-      "status": "open",
+      "status": "closed",
       "name": "제2회 마포구청장배 마라톤 대회",
       "region": "서울",
       "venue": "평화의 공원 평화광장",
@@ -1948,7 +1781,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-global-6k-for-water-busan",
       "sourceName": "마라톤GO",
       "organizer": "월드비전",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "6km,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -1973,7 +1806,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-masters-half-marathon",
       "sourceName": "마라톤GO",
       "organizer": "(사)사회안전예방중앙회",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2061,7 +1894,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-chuncheon-united-marathon",
       "sourceName": "마라톤GO",
       "organizer": "연합뉴스, 춘천시육상연맹",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2085,8 +1918,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-just-run10-cheongju-pb-easy-official-second",
       "sourceName": "마라톤GO",
       "organizer": "(주)러닝브레이커, 전국러닝협",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2128,7 +1961,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/25th-kimje-saemangeum-horizon-national-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "김제스포츠클럽",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2151,7 +1984,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-smtown-run-club",
       "sourceName": "마라톤GO",
       "organizer": "SM, KREAM",
-      "dataVerifiedAt": "2026-08-05T19:58:24.077Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2238,7 +2071,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-run-your-way-seoul-10k",
       "sourceName": "마라톤GO",
       "organizer": "뉴발란스",
-      "dataVerifiedAt": "2026-08-02T15:48:16.664Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2262,7 +2095,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-soil-gamdong-marathon",
       "sourceName": "마라톤GO",
       "organizer": "더윙, S오일",
-      "dataVerifiedAt": "2026-07-31T18:07:31.708Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2286,7 +2119,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/14th-gwangmyeong-mayor-health-run-2026-10-04",
       "sourceName": "마라톤GO",
       "organizer": "광명시육상연맹",
-      "dataVerifiedAt": "2026-07-31T18:07:31.708Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2358,6 +2191,29 @@
       "organizer": "(사)한국체육개발원 등"
     },
     {
+      "name": "2026 양주 천일홍 가을 페스타 마라톤",
+      "date": "2026-10-05",
+      "time": "08시 집결",
+      "region": "경기",
+      "venue": "양주시 나리공원",
+      "distances": [
+        "10K",
+        "5K",
+        "20km코스"
+      ],
+      "registrationOpenAt": "2026-08-19T00:00:00+09:00",
+      "registrationCloseAt": "2026-10-02T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/19 - 10/02",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yangju-cheonilhong-autumn-festa-marathon",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
+      "courseLabel": "10K,5K,20km코스,장소",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
       "name": "2026 한경서울마라톤",
       "date": "2026-10-05",
       "time": "07:30 집결",
@@ -2377,7 +2233,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hankyung-seoul-marathon",
       "sourceName": "마라톤GO",
       "organizer": "한경닷컴/런코리아",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2425,7 +2281,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/12th-siheung-national-half-marathon-2026-10-05",
       "sourceName": "마라톤GO",
       "organizer": "경기일보, 시흥시체육회",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2450,9 +2306,32 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/23rd-gangnam-international-peace-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "강남구,미8군사령부",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "closed",
       "courseLabel": "Full,Half,10K,5K",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "2026 고흥우주항공배 마라톤",
+      "date": "2026-10-09",
+      "time": "오전 9시 집결",
+      "region": "전남",
+      "venue": "고흥군 박지성공설운동장",
+      "distances": [
+        "Half",
+        "10K",
+        "5K"
+      ],
+      "registrationOpenAt": "2026-08-19T00:00:00+09:00",
+      "registrationCloseAt": "2026-09-20T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/19 - 09/20",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-goheung-space-aviation-marathon",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
+      "courseLabel": "Half,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
@@ -2498,7 +2377,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/26th-hongseong-marathon-2026-10-09-leebongju-boston-marathon-celebration",
       "sourceName": "마라톤GO",
       "organizer": "홍성군체육회",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K,5km가족런,10km 단체런(5인)",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2547,7 +2426,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gyeongpo-marathon",
       "sourceName": "마라톤GO",
       "organizer": "(주)강원도민일보",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2775,7 +2654,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-collegestudent-run-independence-donation-run",
       "sourceName": "마라톤GO",
       "organizer": "대학문화유니온",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2800,7 +2679,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-mungyeong-omija-halfmarathon",
       "sourceName": "마라톤GO",
       "organizer": "영남일보",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2824,7 +2703,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-race",
       "sourceName": "마라톤GO",
       "organizer": "동아일보",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2848,7 +2727,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ulsan-marathon-asanro-road-race",
       "sourceName": "마라톤GO",
       "organizer": "울산광역시 육상연맹",
-      "dataVerifiedAt": "2026-07-28T10:13:36.762Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
@@ -2872,7 +2751,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-robotland-futurerun",
       "sourceName": "마라톤GO",
       "organizer": "기호일보",
-      "dataVerifiedAt": "2026-08-07T00:18:19.474Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2897,7 +2776,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-cheonan-leebongjoo-marathon",
       "sourceName": "마라톤GO",
       "organizer": "천안시체육회",
-      "dataVerifiedAt": "2026-08-07T00:18:19.474Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2921,7 +2800,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-pinkrun",
       "sourceName": "마라톤GO",
       "organizer": "한국유방건강재단",
-      "dataVerifiedAt": "2026-08-07T19:18:56.804Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -2944,7 +2823,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-world-vision-global-6k-for-water-gu-mi",
       "sourceName": "마라톤GO",
       "organizer": "월드 비전",
-      "dataVerifiedAt": "2026-07-28T10:13:36.762Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "6km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3014,7 +2893,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gyeongcheong-marathon",
       "sourceName": "마라톤GO",
       "organizer": "(사)행복한동행",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3058,7 +2937,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ujb-waterway-marathon",
       "sourceName": "마라톤GO",
       "organizer": "의정부체육회",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3082,7 +2961,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jeonnam-gwangju-namgu-marathon",
       "sourceName": "마라톤GO",
       "organizer": "전남광주통합특별시남구육상연맹",
-      "dataVerifiedAt": "2026-07-28T10:13:36.762Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3128,7 +3007,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-u119-memorial-run",
       "sourceName": "마라톤GO",
       "organizer": "(주)엘지유플러스",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "5K,11.9km 코스",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3155,7 +3034,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/24th-cheongwon-life-rice-daecheongho-marathon-2026-10-17",
       "sourceName": "마라톤GO",
       "organizer": "청주시체육회",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "* 정원이 마감된 것으로 확인되었어요,Full,Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3178,7 +3057,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2nd-1019-peace-marathon-2026-yeosu",
       "sourceName": "마라톤GO",
       "organizer": "뉴스탑전남",
-      "dataVerifiedAt": "2026-07-24T17:59:02.557Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "5K,10.19",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3270,7 +3149,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-jungnang-mayor-rose-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "중랑구육상연맹",
-      "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3355,7 +3234,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/28th-changwon-citizen-health-run-2026",
       "sourceName": "마라톤GO",
       "organizer": "창원을 사랑하는 시민연합",
-      "dataVerifiedAt": "2026-08-04T20:00:35.649Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "6km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3379,7 +3258,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gyeonggi-old-road-together-run",
       "sourceName": "마라톤GO",
       "organizer": "경기도",
-      "dataVerifiedAt": "2026-08-08T16:02:04.796Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3403,7 +3282,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-newsis-seaside-marathon",
       "sourceName": "마라톤GO",
       "organizer": "뉴시스",
-      "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3426,30 +3305,30 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-muthrun-eco-friendly-marathon",
       "sourceName": "마라톤GO",
       "organizer": "청주충북환경운동연합",
-      "dataVerifiedAt": "2026-08-07T00:18:19.474Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
-      "name": "2026 서울 펫림픽 & 런 위드 고",
+      "name": "2026 서울 펫림픽 & 런 위드 고 (SEOUL PETLYMPIC & RUN WITH GO)",
       "date": "2026-10-24",
-      "time": "07:30 집결",
+      "time": "07:00 집결",
       "region": "서울",
       "venue": "서울 월드컵경기장 평화광장",
       "distances": [
         "10K",
         "5K"
       ],
-      "registrationOpenAt": "2026-08-13T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-31T23:59:00+09:00",
+      "registrationOpenAt": "2026-08-14T00:00:00+09:00",
+      "registrationCloseAt": "2026-09-30T23:59:00+09:00",
       "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "08/13 - 08/31",
+      "registrationPeriodLabel": "08/14 - 09/30",
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-petlympic-run-with-go",
       "sourceName": "마라톤GO",
       "organizer": "(사)함께하는 사랑밭",
-      "dataVerifiedAt": "2026-08-12T19:30:03.532Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3473,7 +3352,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-iksan-donation-run",
       "sourceName": "마라톤GO",
       "organizer": "(사)크레파스",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,6.4km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3517,7 +3396,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hanam-autumn-family-marathon",
       "sourceName": "마라톤GO",
       "organizer": "청운의꿈(주)",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3542,7 +3421,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gtws-muju-trail",
       "sourceName": "마라톤GO",
       "organizer": "전북",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "26km,18km,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3566,7 +3445,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-sejongrun-with-naver-works",
       "sourceName": "마라톤GO",
       "organizer": "세종시 육상연맹",
-      "dataVerifiedAt": "2026-07-30T17:11:20.335Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3638,8 +3517,31 @@
       "sourceName": "마라톤GO",
       "organizer": "부산일보사",
       "dataVerifiedAt": "2026-07-27T22:17:11.088Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "15km,10K,5K",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "2026 울산런페스타 U-RUN",
+      "date": "2026-10-25",
+      "time": "07:00 집결",
+      "region": "울산",
+      "venue": "울산 문수국제양궁장",
+      "distances": [
+        "Half",
+        "10K",
+        "5K"
+      ],
+      "registrationOpenAt": "2026-08-19T00:00:00+09:00",
+      "registrationCloseAt": "2026-09-20T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/19 - 09/20",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ulsan-runfesta-u-run",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
+      "courseLabel": "Half,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
@@ -3682,7 +3584,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/14th-jeongseojin-arabaetgil-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "인천일보,인천마라톤조직위원회",
-      "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3749,9 +3651,30 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-autism-race-awareness",
       "sourceName": "마라톤GO",
       "organizer": "한국자폐인사랑협회",
-      "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,4.2km",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "2026 태종대 BEAT ON 좀비레이스",
+      "date": "2026-10-31",
+      "time": "16:44 집결",
+      "region": "부산",
+      "venue": "부산 영도구 태종대 자동차야외극장(Drive in영도)",
+      "distances": [
+        "4km 코스"
+      ],
+      "registrationOpenAt": "2026-08-20T00:00:00+09:00",
+      "registrationCloseAt": "2026-09-20T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/20 - 09/20",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-taejongdae-beat-on-zombie-race",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
+      "courseLabel": "4km 코스,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
@@ -3772,7 +3695,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-just-run10-pocheon-easy-pb-official-race",
       "sourceName": "마라톤GO",
       "organizer": "(주)러닝브레이커,전국러닝협회",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3796,7 +3719,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/21st-sacheon-noeul-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "경남일보",
-      "dataVerifiedAt": "2026-08-07T00:18:19.474Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3861,7 +3784,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-dmz-open-peace-marathon",
       "sourceName": "마라톤GO",
       "organizer": "경기도",
-      "dataVerifiedAt": "2026-08-01T15:47:09.600Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3885,7 +3808,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jtbc-marathon-entry-fee",
       "sourceName": "마라톤GO",
       "organizer": "jtbc",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Full,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -3909,14 +3832,14 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/26seoul-donghaeng-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "서울동행마라톤조직위원회",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
       "date": "2026-11-01",
-      "status": "scheduled",
+      "status": "open",
       "name": "제21회 울산인권마라톤",
       "region": "울산",
       "venue": "태화강 둔치",
@@ -3977,7 +3900,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-mungyeong-legend-trail-baekdudaegan",
       "sourceName": "마라톤GO",
       "organizer": "에코라인",
-      "dataVerifiedAt": "2026-08-12T19:30:03.532Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "50k,34k,21k",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4020,9 +3943,31 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-maritime-run-festa",
       "sourceName": "마라톤GO",
       "organizer": "한국해운신문, 부산항발전협의회",
-      "dataVerifiedAt": "2026-07-26T15:48:49.451Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "넥슨과 함께하는 2026 푸르메런",
+      "date": "2026-11-07",
+      "time": "9시 집결",
+      "region": "서울",
+      "venue": "상암 월드컵공원 평화광장",
+      "distances": [
+        "10K",
+        "3km"
+      ],
+      "registrationOpenAt": "2026-08-26T00:00:00+09:00",
+      "registrationCloseAt": "2026-09-23T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/26 - 09/23",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-purmerun-miracle365-nexon",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "scheduled",
+      "courseLabel": "10K,3km,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
@@ -4066,8 +4011,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-jinhae-navy-marathon-2026-11-07",
       "sourceName": "마라톤GO",
       "organizer": "(주)경남신문사",
-      "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
       "courseLabel": "5K,11.11km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4090,7 +4035,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gwacheon-marathon",
       "sourceName": "마라톤GO",
       "organizer": "과천시체육회",
-      "dataVerifiedAt": "2026-07-31T18:07:31.708Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4114,7 +4059,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-roundlab-run-1108",
       "sourceName": "마라톤GO",
       "organizer": "서린컴퍼니(주), 강원일보",
-      "dataVerifiedAt": "2026-08-07T00:18:19.474Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4137,7 +4082,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-heritage-run",
       "sourceName": "마라톤GO",
       "organizer": "아시아경제",
-      "dataVerifiedAt": "2026-08-07T00:18:19.474Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "scheduled",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4160,7 +4105,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-guseokguseok-international-trailrun",
       "sourceName": "마라톤GO",
       "organizer": "서울신문, 한국익스트림앤스포츠",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Trail",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4205,9 +4150,33 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jeon-guk-sasang-eco-marathon",
       "sourceName": "마라톤GO",
       "organizer": "사상구청,사상구체육회",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
       "courseLabel": "10km 로드레이스,5km 건강달리기,5km 슬로조깅",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "2026 해남땅끝 전국마라톤대회",
+      "date": "2026-11-08",
+      "time": "08:00 집결",
+      "region": "전남",
+      "venue": "대흥사쉼터 일원",
+      "distances": [
+        "Full",
+        "Half",
+        "10K",
+        "5K"
+      ],
+      "registrationOpenAt": "2026-08-13T00:00:00+09:00",
+      "registrationCloseAt": "2026-10-14T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/13 - 10/14",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-haenam-tanggeut-national-marathon",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
+      "courseLabel": "Full,Half,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
@@ -4273,8 +4242,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/12th-asans-ginkgo-tree-road-national-marathon-2026-11-08",
       "sourceName": "마라톤GO",
       "organizer": "아산시 마라톤 협회",
-      "dataVerifiedAt": "2026-08-12T02:47:44.451Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4296,9 +4265,32 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/20th-volunteer-love-goodfun-marathon-2026-11-08",
       "sourceName": "마라톤GO",
       "organizer": "(사)대한생활체육마라톤협회",
-      "dataVerifiedAt": "2026-07-28T10:13:36.762Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "제24회 전국 나주 금성산숲길마라톤",
+      "date": "2026-11-08",
+      "time": "09:00 집결",
+      "region": "전남",
+      "venue": "나주시 금성산 일원",
+      "distances": [
+        "Half",
+        "6km",
+        "11km"
+      ],
+      "registrationOpenAt": "2026-08-24T00:00:00+09:00",
+      "registrationCloseAt": "2026-09-10T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/24 - 09/10",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/24th-naju-geumseongsan-forest-marathon-2026",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "scheduled",
+      "courseLabel": "Half,6km,11km,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
@@ -4339,7 +4331,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-pohang-marathon-championship",
       "sourceName": "마라톤GO",
       "organizer": "kthcn",
-      "dataVerifiedAt": "2026-08-07T00:18:19.474Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4364,33 +4356,9 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/26th-suncheon-namseungryong-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "순천시체육회",
-      "dataVerifiedAt": "2026-08-02T15:48:16.664Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Full,Half,10K,5K",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "name": "제2회 안양천 단풍길 마라톤",
-      "date": "2026-11-14",
-      "time": "09:00 집결",
-      "region": "서울",
-      "venue": "신정교 하부 영롱이 억새구장",
-      "distances": [
-        "Half",
-        "10K",
-        "5K"
-      ],
-      "registrationOpenAt": "2026-07-31T00:00:00+09:00",
-      "registrationCloseAt": "2026-11-05T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "07/31 - 11/05",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2nd-anyangcheon-autumn-marathon-2026",
-      "sourceName": "마라톤GO",
-      "organizer": "(사)대한생활체육연맹",
-      "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
-      "status": "open",
-      "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
@@ -4412,7 +4380,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-peace-marathon-9th",
       "sourceName": "마라톤GO",
       "organizer": "서울자주통일평화연대",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4439,6 +4407,28 @@
       "organizer": "가민,러너블"
     },
     {
+      "name": "2026 나눔레이스 인 용인",
+      "date": "2026-11-15",
+      "time": "08:00 집결",
+      "region": "경기",
+      "venue": "세리박위드용인",
+      "distances": [
+        "10K",
+        "15km"
+      ],
+      "registrationOpenAt": "2026-08-24T00:00:00+09:00",
+      "registrationCloseAt": "2026-09-06T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/24 - 09/06",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-nanumrace-yongin",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "scheduled",
+      "courseLabel": "10K,15km,장소",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
       "name": "2026 제주감귤마라톤",
       "date": "2026-11-15",
       "time": "09:00 집결",
@@ -4458,7 +4448,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jeju-citrus-marathon",
       "sourceName": "마라톤GO",
       "organizer": "한라일보",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Full,Half,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4481,7 +4471,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/17th-happiness-trail-run-festival-charity-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "{사}소아암환우돕기 조직위",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "29km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4524,7 +4514,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/24th-daemosan-guryongsan-trailrun-2026-11-15",
       "sourceName": "마라톤GO",
       "organizer": "(사)한국산악마라톤연맹",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4551,7 +4541,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/24th-sangju-gotgam-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "전국마라톤협회",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "* 정원이 마감된 것으로 확인되었어요,Full,Half,10K,4.4km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4576,7 +4566,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/28th-busan-international-news-marathon",
       "sourceName": "마라톤GO",
       "organizer": "국제신문",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4666,7 +4656,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-namhae-trail-race-fall-42k-30k-12k",
       "sourceName": "마라톤GO",
       "organizer": "주식회사 락앤런",
-      "dataVerifiedAt": "2026-08-09T19:04:45.389Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Full,30km,12km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4692,9 +4682,32 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-sejong-autumn-breeze-eurunning-festa",
       "sourceName": "마라톤GO",
       "organizer": "주식회사 세정",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K,10k 커플런,10k 단체전(5인1조)",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "2026 김대중마라톤대회",
+      "date": "2026-11-22",
+      "time": "09:00 집결",
+      "region": "전남",
+      "venue": "목포종합경기장",
+      "distances": [
+        "Half",
+        "10K",
+        "5K"
+      ],
+      "registrationOpenAt": "2026-09-01T00:00:00+09:00",
+      "registrationCloseAt": "2026-10-01T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "09/01 - 10/01",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-kim-dae-jung-marathon",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "scheduled",
+      "courseLabel": "Half,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
@@ -4716,9 +4729,32 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-eoksapul-marathon",
       "sourceName": "마라톤GO",
       "organizer": "아시아투데이(사)한국마라톤연맹",
-      "dataVerifiedAt": "2026-08-07T00:18:19.474Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
       "courseLabel": "Half,10K,5K",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "2026 인천마라톤",
+      "date": "2026-11-22",
+      "time": "08:00 집결",
+      "region": "인천",
+      "venue": "인천아시아드 주경기장",
+      "distances": [
+        "Full",
+        "10K",
+        "5K"
+      ],
+      "registrationOpenAt": "2026-09-21T00:00:00+09:00",
+      "registrationCloseAt": "2026-09-21T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "09/21 - 09/21",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-marathon-asiad-stadium-start",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "scheduled",
+      "courseLabel": "Full,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
@@ -4739,7 +4775,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-peace-forest-marathon",
       "sourceName": "마라톤GO",
       "organizer": "세계평화사랑연맹",
-      "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4761,7 +4797,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-mujinjang-trail-pre-race",
       "sourceName": "마라톤GO",
       "organizer": "주식회사 락앤런",
-      "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "scheduled",
       "courseLabel": "335km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4787,7 +4823,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-namwon-chunhyang-national-marathon",
       "sourceName": "마라톤GO",
       "organizer": "남원시체육회",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Full,Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4810,8 +4846,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2027-seoul-youth-peace-run",
       "sourceName": "마라톤GO",
       "organizer": "2027 서울WYD, CPBC",
-      "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4840,6 +4876,53 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
+      "name": "2026 새한미디어 마라톤",
+      "date": "2026-11-29",
+      "time": "08시 집결",
+      "region": "서울",
+      "venue": "평화의공원 평화광장",
+      "distances": [
+        "Half",
+        "10K",
+        "5K"
+      ],
+      "registrationOpenAt": "2026-08-17T00:00:00+09:00",
+      "registrationCloseAt": "2026-11-16T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/17 - 11/16",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-saehanmedia-marathon-celebrating-baekbeom-kim-gu-150th-anniversary",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
+      "courseLabel": "Half,10K,5K,장소",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "2026 정읍공동체 프리마켓 마라톤",
+      "date": "2026-11-29",
+      "time": "09:30 집결",
+      "region": "전북",
+      "venue": "정읍천변 어린이전용축구장",
+      "distances": [
+        "10K",
+        "5K",
+        "5km가족부(2인1조)",
+        "10km 단체전(3인1조)"
+      ],
+      "registrationOpenAt": "2026-08-18T00:00:00+09:00",
+      "registrationCloseAt": "2026-11-15T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/18 - 11/15",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jeongeup-community-freemarket-marathon",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
+      "courseLabel": "10K,5K,5km가족부(2인1조),10km 단체전(3인1조),장소",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
       "name": "제14회 안중근 평화 마라톤",
       "date": "2026-11-29",
       "time": "07:30 집결",
@@ -4857,7 +4940,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/14th-ahn-jung-geun-peace-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "안중근평화재단청년아카데미",
-      "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4905,7 +4988,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-goldrun-gumsan-marathon",
       "sourceName": "마라톤GO",
       "organizer": "전국마라톤협회",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "5K,12km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4928,7 +5011,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hanam-misa-lake-energy-run",
       "sourceName": "마라톤GO",
       "organizer": "(사)행복한가게",
-      "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4952,7 +5035,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/23rd-hangang-citizen-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "(사)대한생활체육회",
-      "dataVerifiedAt": "2026-07-31T18:07:31.708Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -4976,9 +5059,54 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-bridge-marathon",
       "sourceName": "마라톤GO",
       "organizer": "KNN,부산시",
-      "dataVerifiedAt": "2026-07-31T18:07:31.708Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "closed",
       "courseLabel": "Full,10K",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "2026 황영조 로드레이스",
+      "date": "2026-12-06",
+      "time": "09:00 집결",
+      "region": "인천",
+      "venue": "정서진 아라타워",
+      "distances": [
+        "Half",
+        "10K"
+      ],
+      "registrationOpenAt": "2026-08-14T00:00:00+09:00",
+      "registrationCloseAt": "2026-10-30T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/14 - 10/30",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hwang-youngjo-roadrace",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
+      "courseLabel": "Half,10K,장소",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "2026 소년소녀 가장 돕기 기부런",
+      "date": "2026-12-12",
+      "time": "07:30 집결",
+      "region": "서울",
+      "venue": "상암동 평화광장",
+      "distances": [
+        "10K",
+        "5K",
+        "걷기"
+      ],
+      "registrationOpenAt": "2026-08-18T00:00:00+09:00",
+      "registrationCloseAt": "2026-11-06T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/18 - 11/06",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-boys-girls-head-donation-run",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
+      "courseLabel": "10K,5K,걷기,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
@@ -5004,6 +5132,28 @@
       "dataVerifiedAt": "2026-08-04T03:42:39.727Z",
       "status": "scheduled",
       "courseLabel": "Full,Half,10K,5K",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "2026 한강런",
+      "date": "2026-12-28",
+      "time": "09:00 집결",
+      "region": "서울",
+      "venue": "안양천다목적광장",
+      "distances": [
+        "10K",
+        "5K"
+      ],
+      "registrationOpenAt": "2026-08-14T00:00:00+09:00",
+      "registrationCloseAt": "2026-12-12T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/14 - 12/12",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hangang-run-festival-of-health-and-unity",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
+      "status": "open",
+      "courseLabel": "10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
@@ -5051,7 +5201,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2027-seoul-international-marathon",
       "sourceName": "마라톤GO",
       "organizer": "동아일보,서울시",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
       "status": "closed",
       "courseLabel": "Full,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
@@ -5082,7 +5232,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-12T19:30:03.532Z",
+  "lastSuccessfulRefreshAt": "2026-08-21T18:59:41.513Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
