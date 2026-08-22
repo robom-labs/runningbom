@@ -3,7 +3,7 @@ const SYNC_STORAGE_KEY = "pushrun:last-sync:v1";
 const PERMISSION_GUIDE_KEY = "pushrun:permission-guide-seen:v1";
 const APP_VERSION = "0.21.0";
 const ASSET_VERSION = "20260822-01";
-const BUILD_SHA = "b02eb0b";
+const BUILD_SHA = "3efbed2";
 const PWA_CACHE_VERSION = "pushrun-v0.21.0";
 const {
   normalizeRaceName,
@@ -147,9 +147,11 @@ function parseScheduleFeed(feed) {
       registrationPeriodLabel: entry.registrationPeriodLabel || null,
       registrationWindows: Array.isArray(entry.registrationWindows) ? entry.registrationWindows : [],
       registrationUrl: entry.registrationUrl || entry.sourceDetailUrl || null,
+      registrationLinkKind: entry.registrationUrl ? "registration" : entry.sourceDetailUrl ? "source" : null,
       registrationSourceOnly: !entry.registrationUrl && Boolean(entry.sourceDetailUrl),
       sourceDetailUrl: entry.sourceDetailUrl || null,
       linkVerifiedFrom: entry.linkVerifiedFrom || "마라톤온라인 목록",
+      dataVerifiedAt: entry.dataVerifiedAt || null,
       distances,
       courseLabel: entry.courseLabel || distances.join(","),
       organizer: entry.organizer || null,
@@ -164,8 +166,8 @@ function parseScheduleFeed(feed) {
       capacity: null,
       popularity: 50,
       sourceName: entry.sourceName || "마라톤온라인",
-      note: needsReview ? entry.registrationDataIssue : `${entry.time} 출발. 접수기간은 마라톤온라인 상세 페이지 기준입니다.`,
-      registrationLabel: needsReview ? "공식 접수 기간 재확인 중" : entry.registrationPeriodLabel || (isOpen ? "접수 중" : entry.status === "closed" ? "접수 마감" : "접수 일정 미확인")
+      note: needsReview ? entry.registrationDataIssue : `${raceTime.confirmed ? `${raceTime.label} 출발` : "출발 시각 미확인"}. 접수 기간은 ${entry.sourceName || "공개 일정"} 기준입니다.`,
+      registrationLabel: needsReview ? "접수 기간 재확인 중" : entry.registrationPeriodLabel || (isOpen ? "접수 중" : entry.status === "closed" ? "접수 마감" : "접수 일정 미확인")
     };
   });
 }
@@ -766,10 +768,10 @@ function registrationButtonHtml(race, variant = "mini") {
   // 외부 접수 링크는 HTTPS만 허용한다. 확인되지 않은 HTTP 주소는 버튼을 비활성화한다.
   const safeUrl = /^https:\/\//i.test(race.registrationUrl || "");
   if (!safeUrl) {
-    return `<button class="${classes}" type="button" disabled aria-disabled="true" aria-label="${raceName} 공식 접수처 미확인">접수처 미확인</button>`;
+    return `<button class="${classes}" type="button" disabled aria-disabled="true" aria-label="${raceName} 접수 페이지와 정보 출처 확인 중">정보 확인 중</button>`;
   }
   const sourceOnly = race.registrationSourceOnly === true;
-  const buttonText = sourceOnly ? (variant === "detail" ? "대회 정보 출처 보기" : "대회 정보 출처") : (variant === "detail" ? "공식 접수처 보기" : "공식 접수처");
+  const buttonText = sourceOnly ? (variant === "detail" ? "대회 정보 출처 보기" : "대회 정보 출처") : (variant === "detail" ? "접수 페이지 보기" : "접수 페이지");
   return `<a class="${classes}" href="${escapeHtml(race.registrationUrl)}" target="_blank" rel="noopener noreferrer" data-family-event="official_registration_clicked" aria-label="${raceName} ${sourceOnly ? "대회 정보 출처" : "접수 사이트"} 새 창으로 열기">${buttonText}</a>`;
 }
 
@@ -952,7 +954,7 @@ function closingSoonHtml(races) {
           const safeUrl = /^https:\/\//i.test(race.registrationUrl || "");
           const content = `<span>${escapeHtml(cardCountdown(race, now).label)}</span><strong>${escapeHtml(race.name)}</strong><i>${race.registrationSourceOnly ? "정보 확인" : "바로 신청"}</i>`;
           return safeUrl
-            ? `<a href="${escapeHtml(race.registrationUrl)}" target="_blank" rel="noopener noreferrer" data-family-event="official_registration_clicked" aria-label="${escapeHtml(race.name)} ${race.registrationSourceOnly ? "대회 정보 출처" : "공식 접수처"} 바로 열기">${content}</a>`
+            ? `<a href="${escapeHtml(race.registrationUrl)}" target="_blank" rel="noopener noreferrer" data-family-event="official_registration_clicked" aria-label="${escapeHtml(race.name)} ${race.registrationSourceOnly ? "대회 정보 출처" : "접수 페이지"} 바로 열기">${content}</a>`
             : `<div>${content}</div>`;
         }).join("")}
       </div>
@@ -1006,9 +1008,9 @@ function raceTone(race) {
 
 // ⑥ 카드에서 가장 중요한 접수 일정 한 줄
 function registrationSummaryLine(race) {
-  if (registrationNeedsReview(race)) return "공식 접수 기간 재확인 중";
+  if (registrationNeedsReview(race)) return "접수 기간 재확인 중";
   if (isOpenRace(race)) {
-    return race.registrationCloseAt ? `접수 마감 ${formatRegistrationPoint(race.registrationCloseAt)}` : "공식 접수처에서 접수 마감 확인";
+    return race.registrationCloseAt ? `접수 마감 ${formatRegistrationPoint(race.registrationCloseAt)}` : "접수 페이지에서 마감일 확인";
   }
   if (isRegistrationClosed(race)) return "접수가 마감되었어요";
   const at = getUpcomingRegistrationAt(race);
@@ -1046,9 +1048,13 @@ function raceDetailHtml(race) {
 
   const safeUrl = /^https:\/\//i.test(race.registrationUrl || "");
   const officialBlock = safeUrl
-    ? `<a class="detail-official" href="${escapeHtml(race.registrationUrl)}" target="_blank" rel="noopener noreferrer" data-family-event="official_registration_clicked" aria-label="${escapeHtml(race.name)} ${race.registrationSourceOnly ? "대회 정보 출처" : "공식 접수처"} 새 창으로 열기">${race.registrationSourceOnly ? "대회 정보 출처 열기" : "공식 접수처 열기"}</a>`
-    : `<div class="detail-official disabled" role="note">공식 접수처 링크 미확인</div>`;
-  const sourceLine = `${escapeHtml(race.sourceName || "공개 접수 일정")} · 신청 전 공식 페이지 확인`;
+    ? `<a class="detail-official" href="${escapeHtml(race.registrationUrl)}" target="_blank" rel="noopener noreferrer" data-family-event="official_registration_clicked" aria-label="${escapeHtml(race.name)} ${race.registrationSourceOnly ? "대회 정보 출처" : "접수 페이지"} 새 창으로 열기">${race.registrationSourceOnly ? "대회 정보 출처 열기" : "접수 페이지 열기"}</a>`
+    : `<div class="detail-official disabled" role="note">접수 페이지와 정보 출처 확인 중</div>`;
+  const verifiedAt = Date.parse(race.dataVerifiedAt || "");
+  const sourceTime = Number.isFinite(verifiedAt)
+    ? `마지막 데이터 확인 ${new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(verifiedAt))}`
+    : "확인 시각 없음";
+  const sourceLine = `${escapeHtml(race.sourceName || "공개 접수 일정")} · ${sourceTime} · 최종 접수 조건은 외부 페이지 확인`;
 
   return `
     <div class="race-detail" role="region" aria-label="${escapeHtml(race.name)} 상세 정보">
@@ -1076,13 +1082,13 @@ function raceCardHtml(race) {
     ? `<span class="race-time-pill" style="background:${tone.timePillBg};color:${tone.timePillColor};border:${tone.timePillBorder}">${escapeHtml(tone.timePillLabel)}</span>`
     : "";
   // 강한 코랄 CTA(⑦): 접수 예정·대회일 알림 가능 → "알림 설정",
-  // 이미 접수 중이라 알릴 시점이 없으면 → "지금 접수하기"(공식 접수처).
+  // 이미 접수 중이라 알릴 시점이 없으면 → 접수 페이지 또는 정보 출처를 연다.
   const safeRegUrl = /^https:\/\//i.test(race.registrationUrl || "");
   const alertButton = canAlert
     ? `<button class="race-alert-btn${alertOn ? " on" : ""}" type="button" data-open-alert="${safeId}" aria-pressed="${alertOn}" aria-label="${escapeHtml(race.name)} 접수 알림 ${alertOn ? "설정됨" : "설정"}">${alertOn ? "알림 켜짐" : "알림 설정"}</button>`
     : safeRegUrl
-      ? `<a class="race-alert-btn" href="${escapeHtml(race.registrationUrl)}" target="_blank" rel="noopener noreferrer" data-family-event="official_registration_clicked" aria-label="${escapeHtml(race.name)} ${race.registrationSourceOnly ? "대회 정보 출처" : "공식 접수처"} 새 창으로 열기">${race.registrationSourceOnly ? "정보 출처 열기" : "지금 접수하기"}</a>`
-      : `<span class="race-alert-btn disabled" role="note">공식 접수처 확인</span>`;
+      ? `<a class="race-alert-btn" href="${escapeHtml(race.registrationUrl)}" target="_blank" rel="noopener noreferrer" data-family-event="official_registration_clicked" aria-label="${escapeHtml(race.name)} ${race.registrationSourceOnly ? "대회 정보 출처" : "접수 페이지"} 새 창으로 열기">${race.registrationSourceOnly ? "정보 출처 열기" : "접수 페이지 열기"}</a>`
+      : `<span class="race-alert-btn disabled" role="note">정보 확인 중</span>`;
   return `
     <article class="race-card-v2" data-race-id="${safeId}" data-expanded="${expanded}" role="listitem" tabindex="-1">
       <span class="race-accent" aria-hidden="true" style="background:${tone.accent}"></span>
