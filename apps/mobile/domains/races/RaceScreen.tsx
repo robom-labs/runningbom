@@ -161,7 +161,7 @@ export function RaceScreen({ focusedRaceId }: Props) {
     setQuickFilters([]);
     setView('목록');
     setActiveGroupId(focused.id);
-    setExpandedGroupId(undefined);
+    setExpandedGroupId(focused.id);
     setVisibleCount(20);
   }, [focusedRaceId, groups]);
 

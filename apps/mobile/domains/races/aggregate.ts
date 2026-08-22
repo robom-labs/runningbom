@@ -58,6 +58,27 @@ export type RaceGroup = {
   sourceNames: string[];
 };
 
+export type RaceLinkStatus = '접수 페이지 있음' | '대회 정보 출처 있음' | '정보 확인 중';
+
+function hasHttpsUrl(value?: string): boolean {
+  return value?.startsWith('https://') ?? false;
+}
+
+/** 홈 목록은 URL 존재만으로 공식성을 주장하지 않고, 사용자가 확인할 수 있는 링크 성격만 보여 줍니다. */
+export function raceGroupLinkStatus(group: Pick<RaceGroup, 'entries'>): RaceLinkStatus {
+  const hasRegistrationPage = group.entries.some(
+    (entry) => hasHttpsUrl(entry.registrationUrl)
+      || (entry.externalLinkKind === 'registration' && hasHttpsUrl(entry.externalUrl ?? entry.officialUrl)),
+  );
+  if (hasRegistrationPage) return '접수 페이지 있음';
+
+  const hasSourcePage = group.entries.some(
+    (entry) => hasHttpsUrl(entry.sourceDetailUrl)
+      || (entry.externalLinkKind === 'source' && hasHttpsUrl(entry.externalUrl ?? entry.officialUrl)),
+  );
+  return hasSourcePage ? '대회 정보 출처 있음' : '정보 확인 중';
+}
+
 function sortedDistances(values: RaceDistance[]): RaceDistance[] {
   const unique = [...new Set(values.map((value) => value.trim()).filter(Boolean))];
   return unique.sort((left, right) => {

@@ -8,7 +8,7 @@ import { useAppState } from '../../state/AppStateProvider';
 import { useRaceState } from '../../state/RaceStateProvider';
 import { kstDayKey } from '../../../domains/activities/summary';
 import { upcomingPlans } from '../../../domains/activities/plans';
-import { groupRaces } from '../../../domains/races/aggregate';
+import { groupRaces, raceGroupLinkStatus } from '../../../domains/races/aggregate';
 import { goalRaceCountdown, goalRacePhaseLabels } from '../../../domains/races/goalRace';
 import { useGoalRace } from '../../../domains/races/useGoalRace';
 import type { RouteKey } from '../../navigation/types';
@@ -24,6 +24,7 @@ type UpcomingRow = {
   badge: string;
   title: string;
   meta: string;
+  linkStatus?: string;
   accessibilityHint: string;
   onPress: () => void;
 };
@@ -78,6 +79,7 @@ export function HomeScreen({ onNavigate, onOpenRace }: Props) {
         badge: dayCountLabel(group.raceDate, now),
         title: group.name,
         meta: `${deadline ?? group.status} · ${group.region} · ${group.distances.join(' · ')}`,
+        linkStatus: raceGroupLinkStatus(group),
         accessibilityHint: '대회 상세와 접수 알림을 열어요',
         onPress: () => onOpenRace(group.id),
       });
@@ -110,6 +112,7 @@ export function HomeScreen({ onNavigate, onOpenRace }: Props) {
               <View style={styles.rowCopy}>
                 <Text numberOfLines={1} style={styles.rowTitle}>{row.title}</Text>
                 <Text numberOfLines={1} style={styles.rowMeta}>{row.meta}</Text>
+                {row.linkStatus ? <Text style={styles.rowLinkStatus}>{row.linkStatus}</Text> : null}
               </View>
             </Pressable>
           ))}
@@ -143,6 +146,7 @@ const styles = StyleSheet.create({
   rowCopy: { flex: 1, minWidth: 0, gap: spacing.xxs },
   rowTitle: { color: palette.ink, fontSize: typeScale.body, lineHeight: lineHeight.body, fontWeight: fontWeight.heavy },
   rowMeta: { color: palette.muted, fontSize: typeScale.caption, lineHeight: lineHeight.caption },
+  rowLinkStatus: { color: palette.accentStrong, fontSize: typeScale.caption, lineHeight: lineHeight.caption, fontWeight: fontWeight.bold },
   guidanceCard: { gap: spacing.sm },
   guidanceTitle: { color: palette.ink, fontSize: typeScale.body, lineHeight: lineHeight.body, fontWeight: fontWeight.heavy },
   guidanceBody: { color: palette.inkSoft, fontSize: typeScale.bodySmall, lineHeight: lineHeight.bodySmall },
