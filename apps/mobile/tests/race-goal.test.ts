@@ -19,6 +19,7 @@ import {
 } from '../domains/races/aggregate';
 import {
   isRegistrationClosingSoon,
+  registrationStatusLabel,
   registrationCountdownLabel,
 } from '../src/races';
 import {
@@ -247,6 +248,15 @@ describe('대회 묶음의 접수 상태와 신뢰 문구', () => {
     assert.equal(raceGroupLinkStatus(registration!), '접수 페이지 있음');
     assert.equal(raceGroupLinkStatus(source!), '대회 정보 출처 있음');
     assert.equal(raceGroupLinkStatus(unavailable!), '정보 확인 중');
+  });
+
+  it('마지막 데이터 확인 시각이 없는 접수 중 일정은 기본 접수 행동에서 보류한다', () => {
+    const unverified = race('unverified', {
+      registrationDataStatus: 'needs-review',
+      registrationDataIssue: '마지막 데이터 확인 시각이 없어 접수 상태를 안내하지 않아요.',
+    });
+    assert.equal(registrationStatusLabel(unverified, NOW), '확인 필요');
+    assert.equal(isRegistrationClosingSoon(unverified, NOW), false);
   });
 });
 

@@ -19,6 +19,7 @@ export type Race = {
     timeConfirmed?: boolean;
   }>;
   registrationStatus?: 'open' | 'scheduled' | 'closed' | 'sold_out' | 'cancelled' | 'unknown' | string;
+  /** 일정 파싱 오류 또는 마지막 확인 시각 부재로 기본 행동 경로에서 보류된 데이터입니다. */
   registrationDataStatus?: 'needs-review';
   registrationDataIssue?: string;
   registrationPeriodLabel?: string;

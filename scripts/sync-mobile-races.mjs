@@ -29,6 +29,14 @@ function normalizeRace(race, prefix) {
     ? race.sourceDetailUrl
     : undefined;
   const externalUrl = registrationUrl ?? sourceDetailUrl;
+  const sourceCheckedAt = typeof race.dataVerifiedAt === "string" && !Number.isNaN(Date.parse(race.dataVerifiedAt))
+    ? race.dataVerifiedAt
+    : undefined;
+  // 접수 중이라는 상태만 있고 마지막 확인 시각이 없으면, 기본 접수·알림 행동에서 안내하지 않습니다.
+  // 원본 행은 남기되 앱에서 확인 필요로 분리해, 확인 시각을 지어내거나 대회를 삭제하지 않습니다.
+  const registrationDataStatus = race.registrationDataStatus ?? (sourceCheckedAt ? undefined : "needs-review");
+  const registrationDataIssue = race.registrationDataIssue
+    ?? (!sourceCheckedAt ? "마지막 데이터 확인 시각이 없어 접수 상태를 안내하지 않아요." : undefined);
   return {
     id: stableId(race, prefix),
     name: race.name,
@@ -51,15 +59,13 @@ function normalizeRace(race, prefix) {
         }))
       : undefined,
     registrationStatus: race.status ?? "unknown",
-    registrationDataStatus: race.registrationDataStatus ?? undefined,
-    registrationDataIssue: race.registrationDataIssue ?? undefined,
+    registrationDataStatus,
+    registrationDataIssue,
     registrationPeriodLabel: race.registrationPeriodLabel ?? undefined,
     note: race.note ?? undefined,
     capacity: Number.isFinite(race.capacity) ? race.capacity : undefined,
     organizer: race.organizer ?? undefined,
-    sourceCheckedAt: typeof race.dataVerifiedAt === "string" && !Number.isNaN(Date.parse(race.dataVerifiedAt))
-      ? race.dataVerifiedAt
-      : undefined,
+    sourceCheckedAt,
     registrationUrl,
     sourceDetailUrl,
     linkReference: typeof race.linkVerifiedFrom === "string" ? race.linkVerifiedFrom : undefined,
