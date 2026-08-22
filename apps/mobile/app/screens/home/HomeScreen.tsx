@@ -1,5 +1,5 @@
 // 러닝봄의 대회 중심 홈입니다. 접수 탐색과 내 일정만 첫 화면에 노출합니다.
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Banner, Button, Card, EmptyState, SectionHeader, Skeleton, screenStyles } from '../../design-system/components';
@@ -25,6 +25,7 @@ type UpcomingRow = {
   badge: string;
   title: string;
   meta: string;
+  detail?: string;
   linkStatus?: string;
   accessibilityHint: string;
   onPress: () => void;
@@ -34,7 +35,8 @@ const UPCOMING_LIMIT = 4;
 
 export function HomeScreen({ onNavigate, onOpenRace }: Props) {
   const { preferences, storageError, plans } = useAppState();
-  const { feed, loading, visitChanges } = useRaceState();
+  const { feed, loading, visitChanges, dismissVisitChanges } = useRaceState();
+  const [showAllVisitChanges, setShowAllVisitChanges] = useState(false);
   const { goalRace } = useGoalRace();
   const now = useMemo(() => Date.now(), []);
   const openAllRaces = useCallback(() => onOpenRace(undefined), [onOpenRace]);
@@ -47,7 +49,7 @@ export function HomeScreen({ onNavigate, onOpenRace }: Props) {
     () => raceGroups.filter((group) => group.status === '접수 중'),
     [raceGroups],
   );
-  const visitChangeRows = useMemo(() => {
+  const allVisitChangeRows = useMemo(() => {
     const groupByRaceId = new Map(raceGroups.flatMap((group) => group.raceIds.map((id) => [id, group])));
     return visitChanges.flatMap((change) => {
       const group = groupByRaceId.get(change.raceId);
@@ -57,12 +59,17 @@ export function HomeScreen({ onNavigate, onOpenRace }: Props) {
         badge: raceVisitChangeLabel(change.kind),
         title: group.name,
         meta: `${group.status} · ${group.region} · ${group.raceDate}`,
+        detail: change.detail,
         linkStatus: raceGroupLinkStatus(group),
         accessibilityHint: '새로 확인할 대회 상세를 열어요',
         onPress: () => onOpenRace(group.id),
       } satisfies UpcomingRow];
-    }).slice(0, 3);
+    });
   }, [onOpenRace, raceGroups, visitChanges]);
+  const visitChangeRows = useMemo(
+    () => allVisitChangeRows.slice(0, showAllVisitChanges ? allVisitChangeRows.length : 3),
+    [allVisitChangeRows, showAllVisitChanges],
+  );
 
   const upcoming = useMemo<UpcomingRow[]>(() => {
     const rows: UpcomingRow[] = [];
@@ -120,7 +127,11 @@ export function HomeScreen({ onNavigate, onOpenRace }: Props) {
 
       {visitChangeRows.length > 0 ? (
         <>
-          <SectionHeader title="지난번 이후 새로 확인한 대회" subtitle="새 대회, 접수 시작, 링크와 일정 변경만 먼저 모았어요." />
+          <SectionHeader
+            title="지난번 이후 새로 확인한 대회"
+            subtitle="새 대회, 접수 시작, 링크와 일정 변경만 먼저 모았어요."
+            action={allVisitChangeRows.length > 3 ? <Button label={showAllVisitChanges ? '접기' : `전체 ${allVisitChangeRows.length}건 보기`} onPress={() => setShowAllVisitChanges((current) => !current)} tone="quiet" /> : undefined}
+          />
           <View style={styles.rowList}>
             {visitChangeRows.map((row, index) => (
               <Pressable accessibilityHint={row.accessibilityHint} accessibilityLabel={`${row.badge} ${row.title}. ${row.meta}`} accessibilityRole="button" key={row.key} onPress={row.onPress} style={({ pressed }) => [styles.row, index < visitChangeRows.length - 1 && styles.rowDivider, pressed && styles.pressed]}>
@@ -128,11 +139,13 @@ export function HomeScreen({ onNavigate, onOpenRace }: Props) {
                 <View style={styles.rowCopy}>
                   <Text numberOfLines={1} style={styles.rowTitle}>{row.title}</Text>
                   <Text numberOfLines={1} style={styles.rowMeta}>{row.meta}</Text>
+                  {row.detail ? <Text numberOfLines={1} style={styles.rowDetail}>{row.detail}</Text> : null}
                   {row.linkStatus ? <Text style={styles.rowLinkStatus}>{row.linkStatus}</Text> : null}
                 </View>
               </Pressable>
             ))}
           </View>
+          {showAllVisitChanges ? <Button label="이 변경을 확인했어요" onPress={() => void dismissVisitChanges()} style={styles.visitChangesAction} tone="quiet" /> : null}
         </>
       ) : null}
 
@@ -185,7 +198,9 @@ const styles = StyleSheet.create({
   rowCopy: { flex: 1, minWidth: 0, gap: spacing.xxs },
   rowTitle: { color: palette.ink, fontSize: typeScale.body, lineHeight: lineHeight.body, fontWeight: fontWeight.heavy },
   rowMeta: { color: palette.muted, fontSize: typeScale.caption, lineHeight: lineHeight.caption },
+  rowDetail: { color: palette.inkSoft, fontSize: typeScale.caption, lineHeight: lineHeight.caption },
   rowLinkStatus: { color: palette.accentStrong, fontSize: typeScale.caption, lineHeight: lineHeight.caption, fontWeight: fontWeight.bold },
+  visitChangesAction: { alignSelf: 'flex-start', marginTop: spacing.sm },
   guidanceCard: { gap: spacing.sm },
   guidanceTitle: { color: palette.ink, fontSize: typeScale.body, lineHeight: lineHeight.body, fontWeight: fontWeight.heavy },
   guidanceBody: { color: palette.inkSoft, fontSize: typeScale.bodySmall, lineHeight: lineHeight.bodySmall },

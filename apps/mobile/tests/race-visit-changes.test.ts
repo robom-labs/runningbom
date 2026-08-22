@@ -5,6 +5,7 @@ import { describe, it } from 'node:test';
 import {
   createRaceVisitSnapshot,
   isRaceVisitSnapshot,
+  mergeRaceVisitChanges,
   raceVisitChangeLabel,
   raceVisitChanges,
 } from '../domains/races/visitChanges';
@@ -59,7 +60,7 @@ describe('지난 방문 이후 대회 변화', () => {
       { raceId: 'opened', kind: 'registration-opened' },
       { raceId: 'new', kind: 'new-race' },
       { raceId: 'link', kind: 'link-added' },
-      { raceId: 'schedule', kind: 'schedule-updated' },
+      { raceId: 'schedule', kind: 'schedule-updated', detail: '장소 여의도 한강공원 → 잠실운동장' },
     ]);
   });
 
@@ -74,10 +75,22 @@ describe('지난 방문 이후 대회 변화', () => {
   it('저장값 형식을 검사하고 사용자용 꼬리표를 돌려준다', () => {
     const snapshot = createRaceVisitSnapshot(feed('new', [race('valid')]));
     assert.equal(isRaceVisitSnapshot(snapshot), true);
-    assert.equal(isRaceVisitSnapshot({ ...snapshot, version: 2 }), false);
+    assert.equal(isRaceVisitSnapshot({ ...snapshot, version: 99 }), false);
     assert.equal(raceVisitChangeLabel('registration-opened'), '접수 시작');
     assert.equal(raceVisitChangeLabel('new-race'), '새 대회');
     assert.equal(raceVisitChangeLabel('link-added'), '접수 정보 추가');
     assert.equal(raceVisitChangeLabel('schedule-updated'), '일정 변경');
+  });
+
+  it('확인 전 변화는 같은 대회·종류가 반복돼도 하나로 보존한다', () => {
+    const pending = [{ raceId: 'spring', kind: 'schedule-updated' as const, detail: '대회일 2026.10.10 → 2026.10.17' }];
+    const merged = mergeRaceVisitChanges(pending, [
+      { raceId: 'spring', kind: 'schedule-updated', detail: '대회일 2026.10.17 → 2026.10.24' },
+      { raceId: 'open', kind: 'registration-opened' },
+    ]);
+    assert.deepEqual(merged, [
+      { raceId: 'open', kind: 'registration-opened' },
+      { raceId: 'spring', kind: 'schedule-updated', detail: '대회일 2026.10.10 → 2026.10.17' },
+    ]);
   });
 });

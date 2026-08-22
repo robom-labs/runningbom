@@ -504,12 +504,16 @@ describe('홈 화면 구성', () => {
     assert.match(home, /visitChanges/);
     assert.match(home, /raceVisitChangeLabel/);
     assert.match(home, /지난번 이후 새로 확인한 대회/);
+    assert.match(home, /전체 \$\{allVisitChangeRows\.length\}건 보기/);
+    assert.match(home, /이 변경을 확인했어요/);
     assert.ok(
       home.indexOf('지난번 이후 새로 확인한 대회') < home.indexOf('title="내 대회와 일정"'),
       '지난 방문 이후 변화는 기존 일정 목록보다 먼저 보여야 합니다',
     );
     const state = source('app/state/RaceStateProvider.tsx');
     assert.match(state, /loadRaceVisitSnapshot/);
+    assert.match(state, /loadRaceVisitInbox/);
+    assert.match(state, /dismissVisitChanges/);
     assert.match(state, /saveRaceVisitSnapshot/);
     assert.match(state, /raceVisitChanges/);
   });

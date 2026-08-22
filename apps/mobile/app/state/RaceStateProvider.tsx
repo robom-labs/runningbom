@@ -14,6 +14,7 @@ import { AppState, type AppStateStatus } from 'react-native';
 
 import {
   createRaceVisitSnapshot,
+  mergeRaceVisitChanges,
   raceVisitChanges,
   type RaceVisitChange,
 } from '../../domains/races/visitChanges';
@@ -34,7 +35,10 @@ import {
 import type { Race } from '../../src/types';
 import { loadRunningbomStaticData } from '../../services/static-data';
 import {
+  clearRaceVisitInbox,
+  loadRaceVisitInbox,
   loadRaceVisitSnapshot,
+  saveRaceVisitInbox,
   saveRaceVisitSnapshot,
 } from '../../services/storage/raceVisitSnapshot';
 import { shouldRefreshRaceDataAfterBackground } from './raceRefreshPolicy';
@@ -51,6 +55,7 @@ type RaceStateValue = {
   scheduledRaceIds: Record<string, string>;
   busyRaceId: string | null;
   visitChanges: RaceVisitChange[];
+  dismissVisitChanges: () => Promise<void>;
   refresh: () => Promise<void>;
   scheduleAlert: (race: Race) => Promise<void>;
   cancelAlert: (race: Race) => Promise<void>;
@@ -66,6 +71,7 @@ const RaceStateContext = createContext<RaceStateValue>({
   scheduledRaceIds: {},
   busyRaceId: null,
   visitChanges: [],
+  dismissVisitChanges: async () => undefined,
   refresh: async () => undefined,
   scheduleAlert: async () => undefined,
   cancelAlert: async () => undefined,
@@ -108,11 +114,21 @@ export function RaceStateProvider({ children }: PropsWithChildren) {
         setFeed((current) => (shouldReplaceRaceFeed(current, latest) ? latest : current));
         if (!initialVisitCompared.current) {
           const currentVisit = createRaceVisitSnapshot(latest);
-          const previousVisit = await loadRaceVisitSnapshot();
+          const [previousVisit, pendingChanges] = await Promise.all([
+            loadRaceVisitSnapshot(),
+            loadRaceVisitInbox(),
+          ]);
           if (signal?.aborted) return;
-          setVisitChanges(raceVisitChanges(previousVisit, currentVisit));
+          const changes = mergeRaceVisitChanges(
+            pendingChanges.filter((change) => latest.races.some((race) => race.id === change.raceId)),
+            raceVisitChanges(previousVisit, currentVisit),
+          );
+          setVisitChanges(changes);
           initialVisitCompared.current = true;
-          void saveRaceVisitSnapshot(currentVisit);
+          await Promise.all([
+            saveRaceVisitSnapshot(currentVisit),
+            saveRaceVisitInbox(changes),
+          ]);
         }
         const scheduled = await reconcileRegistrationNotifications(latest.races);
         if (signal?.aborted) return;
@@ -211,6 +227,11 @@ export function RaceStateProvider({ children }: PropsWithChildren) {
     }
   }, []);
 
+  const dismissVisitChanges = useCallback(async () => {
+    setVisitChanges([]);
+    await clearRaceVisitInbox();
+  }, []);
+
   const value = useMemo<RaceStateValue>(
     () => ({
       feed,
@@ -219,6 +240,7 @@ export function RaceStateProvider({ children }: PropsWithChildren) {
       scheduledRaceIds,
       busyRaceId,
       visitChanges,
+      dismissVisitChanges,
       refresh: async () => loadLatest(),
       scheduleAlert,
       cancelAlert,
@@ -226,6 +248,7 @@ export function RaceStateProvider({ children }: PropsWithChildren) {
     [
       busyRaceId,
       cancelAlert,
+      dismissVisitChanges,
       feed,
       loadLatest,
       loading,

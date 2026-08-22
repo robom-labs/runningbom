@@ -1,13 +1,14 @@
 // 지난 방문의 대회 피드와 최신 피드를 비교해 다시 확인할 일정만 고릅니다.
 import type { RaceFeed } from '../../src/races';
 
-export const RACE_VISIT_SNAPSHOT_VERSION = 1;
+export const RACE_VISIT_SNAPSHOT_VERSION = 2;
 
 export type RaceVisitChangeKind = 'new-race' | 'registration-opened' | 'link-added' | 'schedule-updated';
 
 export type RaceVisitChange = {
   raceId: string;
   kind: RaceVisitChangeKind;
+  detail?: string;
 };
 
 type RaceVisitEntry = {
@@ -15,7 +16,10 @@ type RaceVisitEntry = {
   registrationStatus: string;
   needsReview: boolean;
   hasLink: boolean;
-  scheduleSignature: string;
+  raceDate: string;
+  region: string;
+  venue: string;
+  registrationClosesAt: string;
 };
 
 export type RaceVisitSnapshot = {
@@ -31,15 +35,6 @@ const changePriority: Record<RaceVisitChangeKind, number> = {
   'schedule-updated': 3,
 };
 
-function scheduleSignature(entry: {
-  raceDate: string;
-  region: string;
-  venue: string;
-  registrationClosesAt?: string;
-}): string {
-  return [entry.raceDate, entry.region, entry.venue, entry.registrationClosesAt ?? ''].join('\u0001');
-}
-
 function isRaceVisitEntry(value: unknown): value is RaceVisitEntry {
   if (!value || typeof value !== 'object') return false;
   const entry = value as Partial<RaceVisitEntry>;
@@ -48,7 +43,10 @@ function isRaceVisitEntry(value: unknown): value is RaceVisitEntry {
     typeof entry.registrationStatus === 'string' &&
     typeof entry.needsReview === 'boolean' &&
     typeof entry.hasLink === 'boolean' &&
-    typeof entry.scheduleSignature === 'string'
+    typeof entry.raceDate === 'string' &&
+    typeof entry.region === 'string' &&
+    typeof entry.venue === 'string' &&
+    typeof entry.registrationClosesAt === 'string'
   );
 }
 
@@ -73,7 +71,10 @@ export function createRaceVisitSnapshot(feed: RaceFeed): RaceVisitSnapshot {
       registrationStatus: race.registrationStatus ?? 'unknown',
       needsReview: race.registrationDataStatus === 'needs-review',
       hasLink: Boolean(race.registrationUrl ?? race.sourceDetailUrl),
-      scheduleSignature: scheduleSignature(race),
+      raceDate: race.raceDate,
+      region: race.region,
+      venue: race.venue,
+      registrationClosesAt: race.registrationClosesAt ?? '',
     })),
   };
 }
@@ -105,8 +106,9 @@ export function raceVisitChanges(
       changes.push({ raceId: entry.id, kind: 'link-added' });
       continue;
     }
-    if (before.scheduleSignature !== entry.scheduleSignature) {
-      changes.push({ raceId: entry.id, kind: 'schedule-updated' });
+    const detail = scheduleChangeDetail(before, entry);
+    if (detail) {
+      changes.push({ raceId: entry.id, kind: 'schedule-updated', detail });
     }
   }
 
@@ -114,6 +116,40 @@ export function raceVisitChanges(
     const priority = changePriority[left.kind] - changePriority[right.kind];
     return priority !== 0 ? priority : left.raceId.localeCompare(right.raceId);
   });
+}
+
+/** 읽지 않은 변화는 종류별로 한 건만 남겨 같은 대회가 목록을 채우지 않게 합니다. */
+export function mergeRaceVisitChanges(
+  pending: RaceVisitChange[],
+  incoming: RaceVisitChange[],
+): RaceVisitChange[] {
+  const merged = new Map<string, RaceVisitChange>();
+  for (const change of [...pending, ...incoming]) {
+    const key = `${change.raceId}\u0001${change.kind}`;
+    if (!merged.has(key)) merged.set(key, change);
+  }
+  return [...merged.values()].sort((left, right) => {
+    const priority = changePriority[left.kind] - changePriority[right.kind];
+    return priority !== 0 ? priority : left.raceId.localeCompare(right.raceId);
+  });
+}
+
+function scheduleChangeDetail(before: RaceVisitEntry, entry: RaceVisitEntry): string | undefined {
+  const fields: Array<[string, string, string, boolean]> = [
+    ['대회일', before.raceDate, entry.raceDate, true],
+    ['지역', before.region, entry.region, false],
+    ['장소', before.venue, entry.venue, false],
+    ['접수 마감', before.registrationClosesAt, entry.registrationClosesAt, true],
+  ];
+  const changed = fields.find(([, previous, current]) => previous !== current);
+  if (!changed) return undefined;
+  const [label, previous, current, isDate] = changed;
+  return `${label} ${formatChangeValue(previous, isDate)} → ${formatChangeValue(current, isDate)}`;
+}
+
+function formatChangeValue(value: string, isDate: boolean): string {
+  if (!value) return '미정';
+  return isDate ? value.slice(0, 16).replace('T', ' ').replaceAll('-', '.') : value;
 }
 
 export function raceVisitChangeLabel(kind: RaceVisitChangeKind): string {
