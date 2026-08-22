@@ -1,53 +1,7 @@
 {
-  "revision": "2026.08.22-race-data-52",
+  "revision": "2026.08.23-race-data-53",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
-    {
-      "id": "schedule-b9ef2192e53d",
-      "name": "2026 서울패션로드 DDP 런더핏(Run the Fit)",
-      "region": "서울",
-      "venue": "DDP 이간수문 전시장",
-      "raceDate": "2026-08-22",
-      "distances": [
-        "러닝 프로그램"
-      ],
-      "registrationOpensAt": "2026-08-06T00:00:00+09:00",
-      "registrationClosesAt": "2026-08-20T23:59:00+09:00",
-      "registrationTimeConfirmed": false,
-      "registrationStatus": "closed",
-      "registrationPeriodLabel": "08/06 - 08/20",
-      "organizer": "서울시",
-      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
-      "registrationUrl": "https://inthetrail.com/shop_view/?idx=54",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-fashion-road-ddp-run-the-fit",
-      "linkReference": "마라톤GO 공개 일정 상세",
-      "verifiedAt": "마라톤GO 공개 일정 상세",
-      "externalUrl": "https://inthetrail.com/shop_view/?idx=54",
-      "officialUrl": "https://inthetrail.com/shop_view/?idx=54",
-      "externalLinkKind": "registration",
-      "sourceName": "마라톤GO"
-    },
-    {
-      "id": "schedule-ed613697b024",
-      "name": "제2회 한양도성길 트레일런",
-      "region": "서울",
-      "venue": "낙산공원중앙광장(낙산길54)",
-      "raceDate": "2026-08-22",
-      "distances": [
-        "Trail"
-      ],
-      "registrationOpensAt": "2026-06-15T00:00:00+09:00",
-      "registrationClosesAt": "2026-08-20T23:59:00+09:00",
-      "registrationTimeConfirmed": false,
-      "registrationStatus": "closed",
-      "registrationDataStatus": "needs-review",
-      "registrationDataIssue": "마지막 데이터 확인 시각이 없어 접수 상태를 안내하지 않아요.",
-      "registrationPeriodLabel": "6/15 - 8/20",
-      "organizer": "파브코리아",
-      "linkReference": "마라톤온라인 home 아이콘",
-      "verifiedAt": "마라톤온라인 home 아이콘",
-      "sourceName": "마라톤온라인"
-    },
     {
       "id": "schedule-dcb80b4cf0bc",
       "name": "2026 교룡산성 백야드",

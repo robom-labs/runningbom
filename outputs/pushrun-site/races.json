@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.22-race-data-52",
+  "version": "2026.08.23-race-data-53",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -151,48 +151,6 @@
     }
   ],
   "scheduleFeed": [
-    {
-      "name": "2026 서울패션로드 DDP 런더핏(Run the Fit)",
-      "date": "2026-08-22",
-      "time": "17:00",
-      "region": "서울",
-      "venue": "DDP 이간수문 전시장",
-      "distances": [
-        "러닝 프로그램"
-      ],
-      "registrationOpenAt": "2026-08-06T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-20T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "08/06 - 08/20",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "registrationUrl": "https://inthetrail.com/shop_view/?idx=54",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-fashion-road-ddp-run-the-fit",
-      "sourceName": "마라톤GO",
-      "organizer": "서울시",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "closed",
-      "courseLabel": "러닝 프로그램",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "date": "2026-08-22",
-      "status": "closed",
-      "name": "제2회 한양도성길 트레일런",
-      "region": "서울",
-      "venue": "낙산공원중앙광장(낙산길54)",
-      "time": "08:00",
-      "distances": [
-        "Trail"
-      ],
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-06-15T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-20T23:59:00+09:00",
-      "registrationPeriodLabel": "6/15 - 8/20",
-      "registrationPeriodSource": "2026년6월15일~2026년8월20일",
-      "courseLabel": "20km",
-      "organizer": "파브코리아"
-    },
     {
       "name": "2026 교룡산성 백야드",
       "date": "2026-08-23",
@@ -5232,7 +5190,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-21T18:59:41.513Z",
+  "lastSuccessfulRefreshAt": "2026-08-22T15:55:41.005Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
