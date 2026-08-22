@@ -2,9 +2,16 @@
 import { ScrollView, StyleSheet } from 'react-native';
 
 import { RaceScreen } from '../../../domains/races/RaceScreen';
+import type { RacePreference } from '../../../domains/races/preference';
 import { palette, spacing } from '../../design-system/theme';
 
-export function RacesScreen({ focusedRaceId }: { focusedRaceId?: string }) {
+type Props = {
+  focusedRaceId?: string;
+  initialPreference?: RacePreference;
+  preferenceNonce?: number;
+};
+
+export function RacesScreen({ focusedRaceId, initialPreference, preferenceNonce }: Props) {
   return (
     <ScrollView
       contentContainerStyle={styles.content}
@@ -12,7 +19,11 @@ export function RacesScreen({ focusedRaceId }: { focusedRaceId?: string }) {
       showsVerticalScrollIndicator={false}
       style={styles.root}
     >
-      <RaceScreen focusedRaceId={focusedRaceId} />
+      <RaceScreen
+        focusedRaceId={focusedRaceId}
+        initialPreference={initialPreference}
+        preferenceNonce={preferenceNonce}
+      />
     </ScrollView>
   );
 }

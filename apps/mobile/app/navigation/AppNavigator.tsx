@@ -27,6 +27,7 @@ import { palette } from '../design-system/theme';
 import { useAppState } from '../state/AppStateProvider';
 import { currentWeekStart, formatDistance, totalsForWeek } from '../../domains/activities/summary';
 import { raceIdFromDeepLink } from '../../src/races';
+import type { RacePreference } from '../../domains/races/preference';
 import {
   destinationForRoute,
   isTopLevelRoute,
@@ -43,6 +44,7 @@ export function AppNavigator() {
   const [route, setRoute] = useState<RouteKey>(() => routeFromStoredValue(preferences.lastTab));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [focusedRaceId, setFocusedRaceId] = useState<string>();
+  const [racePreference, setRacePreference] = useState<{ value: RacePreference; nonce: number }>();
   // 드로어 하위 메뉴에서 고른 기록·통계 구획입니다. 같은 항목을 다시 골라도 반응하도록 nonce를 둡니다.
   const [statsFocus, setStatsFocus] = useState<{ section: StatsFocus; nonce: number }>();
   // 뒤로가기가 무조건 홈으로 튀지 않도록, 지나온 화면을 쌓아 둡니다.
@@ -79,6 +81,16 @@ export function AppNavigator() {
   const openRace = useCallback(
     (raceId?: string) => {
       setFocusedRaceId(raceId);
+      setRacePreference(undefined);
+      navigate('races');
+    },
+    [navigate],
+  );
+
+  const openPreferredRaces = useCallback(
+    (preference: RacePreference) => {
+      setFocusedRaceId(undefined);
+      setRacePreference((current) => ({ value: preference, nonce: (current?.nonce ?? 0) + 1 }));
       navigate('races');
     },
     [navigate],
@@ -164,7 +176,13 @@ export function AppNavigator() {
       case 'calendar':
         return <CalendarScreen />;
       case 'races':
-        return <RacesScreen focusedRaceId={focusedRaceId} />;
+        return (
+          <RacesScreen
+            focusedRaceId={focusedRaceId}
+            initialPreference={racePreference?.value}
+            preferenceNonce={racePreference?.nonce}
+          />
+        );
       case 'shoes':
         return <ShoesScreen />;
       case 'cadence':
@@ -193,6 +211,7 @@ export function AppNavigator() {
           <HomeScreen
             onNavigate={navigate}
             onOpenRace={(raceId) => openRace(raceId)}
+            onOpenPreferredRaces={openPreferredRaces}
           />
         );
     }
@@ -201,6 +220,8 @@ export function AppNavigator() {
     goBack,
     navigate,
     openRace,
+    openPreferredRaces,
+    racePreference,
     route,
     statsFocus,
   ]);

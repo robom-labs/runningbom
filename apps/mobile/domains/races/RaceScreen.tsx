@@ -50,9 +50,12 @@ import { racePosterSpec } from './poster';
 import { RacePoster } from './RacePoster';
 import { RaceCalendarView } from './RaceCalendarView';
 import { useGoalRace } from './useGoalRace';
+import { hasRacePreference, type RacePreference } from './preference';
 
 type Props = {
   focusedRaceId?: string;
+  initialPreference?: RacePreference;
+  preferenceNonce?: number;
 };
 
 type RaceView = '목록' | '달력';
@@ -99,7 +102,7 @@ function sourceCheckedLabel(race: Race): string {
   }).format(new Date(checked))}`;
 }
 
-export function RaceScreen({ focusedRaceId }: Props) {
+export function RaceScreen({ focusedRaceId, initialPreference, preferenceNonce }: Props) {
   const { width } = useWindowDimensions();
   const { preferences, updatePreferences } = useAppState();
   const {
@@ -165,6 +168,20 @@ export function RaceScreen({ focusedRaceId }: Props) {
     setVisibleCount(20);
   }, [focusedRaceId, groups]);
 
+  useEffect(() => {
+    if (!initialPreference || preferenceNonce === undefined) return;
+    setRegion(initialPreference.region);
+    setDistance(initialPreference.distance);
+    setRegistration('전체');
+    setPeriod('전체');
+    setQuery('');
+    setQuickFilters([]);
+    setView('목록');
+    setActiveGroupId(undefined);
+    setExpandedGroupId(undefined);
+    setVisibleCount(20);
+  }, [initialPreference?.distance, initialPreference?.region, preferenceNonce]);
+
   const availableRegions = useMemo(() => regionsFor(feed.races), [feed.races]);
 
   // "내 지역"은 사용자가 고른 지역 필터가 있을 때만 씁니다. 위치를 추측하지 않습니다.
@@ -204,6 +221,9 @@ export function RaceScreen({ focusedRaceId }: Props) {
     [goalRace, groups],
   );
   const goalCountdown = goalRace ? goalRaceCountdown(goalRace.raceDate) : undefined;
+  const selectedPreference = { region, distance } satisfies RacePreference;
+  const savedPreference = preferences.preferredRacePreference;
+  const selectedPreferenceSaved = savedPreference?.region === region && savedPreference.distance === distance;
 
   function toggleQuickFilter(value: RaceQuickFilter) {
     setActiveGroupId(undefined);
@@ -455,6 +475,32 @@ export function RaceScreen({ focusedRaceId }: Props) {
           </ScrollView>
         </View>
       ) : null}
+
+      <View style={styles.preferenceCard}>
+        <View style={styles.preferenceCopy}>
+          <Text style={styles.preferenceTitle}>내 대회 조건</Text>
+          <Text style={styles.preferenceBody}>
+            {hasRacePreference(savedPreference)
+              ? `저장됨 · ${savedPreference!.region} · ${distanceLabels[savedPreference!.distance] ?? savedPreference!.distance}`
+              : '지금 고른 지역과 거리를 기기에만 저장해 다음 변화에서 먼저 보여드려요.'}
+          </Text>
+        </View>
+        <View style={styles.preferenceActions}>
+          <Button
+            disabled={!hasRacePreference(selectedPreference) || selectedPreferenceSaved}
+            label={selectedPreferenceSaved ? '저장됨' : '이 조건 저장'}
+            onPress={() => void updatePreferences({ preferredRacePreference: selectedPreference })}
+            tone="quiet"
+          />
+          {hasRacePreference(savedPreference) ? (
+            <Button
+              label="조건 지우기"
+              onPress={() => void updatePreferences({ preferredRacePreference: undefined })}
+              tone="quiet"
+            />
+          ) : null}
+        </View>
+      </View>
 
       <View accessibilityLiveRegion="polite" style={styles.notice}>
         <Text style={styles.noticeText}>{notice}</Text>
@@ -882,6 +928,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xs,
   },
   choiceRow: { gap: spacing.xs, paddingHorizontal: spacing.xxs },
+  preferenceCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+    backgroundColor: palette.surfaceWarm,
+    borderColor: palette.line,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: radius.lg,
+    marginTop: spacing.sm,
+    padding: spacing.sm,
+  },
+  preferenceCopy: { flex: 1, minWidth: 180, gap: spacing.xxs },
+  preferenceTitle: { color: palette.ink, fontSize: typeScale.bodySmall, fontWeight: '900' },
+  preferenceBody: { color: palette.inkSoft, fontSize: typeScale.caption, lineHeight: 18 },
+  preferenceActions: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   notice: {
     backgroundColor: palette.warningSoft,
     borderRadius: radius.md,

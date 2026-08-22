@@ -2,6 +2,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { experienceLevels, isExperienceLevel, type ExperienceLevel } from '../../domains/badges/goals';
+import {
+  emptyRacePreference,
+  hasRacePreference,
+  type RacePreference,
+} from '../../domains/races/preference';
 
 export type { ExperienceLevel };
 
@@ -30,6 +35,8 @@ export type AppPreferences = {
   interestedRaceGroupKeys: string[];
   /** 0.19.1 이하에서 저장한 종목 행 ID입니다. 대회 화면 진입 시 묶음 키로 자동 이전합니다. */
   interestedRaceIds: string[];
+  /** 사용자가 직접 고른 지역·거리 한 세트입니다. 위치를 추측하거나 서버에 보내지 않습니다. */
+  preferredRacePreference?: RacePreference;
   interestedShoeIds: string[];
   /**
    * "끝낼 때까지" 러닝을 골라 뒀는지입니다.
@@ -81,6 +88,19 @@ export function sanitizeStringList(value: unknown): string[] {
   ))];
 }
 
+export function sanitizeRacePreference(value: unknown): RacePreference | undefined {
+  if (!value || typeof value !== 'object') return undefined;
+  const preference = value as Partial<RacePreference>;
+  const region = typeof preference.region === 'string' && preference.region.trim()
+    ? preference.region.trim()
+    : emptyRacePreference.region;
+  const distance = ['전체', '5K', '10K', 'Half', 'Full', 'Trail'].includes(preference.distance ?? '')
+    ? preference.distance!
+    : emptyRacePreference.distance;
+  const result = { region, distance } satisfies RacePreference;
+  return hasRacePreference(result) ? result : undefined;
+}
+
 /**
  * 예전 프로필 화면은 러닝 경력을 profileBio 앞에 "1~3년 · ..." 형태로 붙여 저장했습니다.
  * 전용 필드가 비어 있을 때만 그 접두어를 읽어 옮깁니다(기존 소개 글은 그대로 둡니다).
@@ -111,6 +131,7 @@ export async function loadPreferences(): Promise<AppPreferences> {
     if (!raw) return defaultPreferences;
     const value = JSON.parse(raw) as Partial<AppPreferences>;
     const experienceLevel = migrateExperienceLevel(value);
+    const preferredRacePreference = sanitizeRacePreference(value.preferredRacePreference);
     return {
       ...defaultPreferences,
       ...value,
@@ -119,6 +140,7 @@ export async function loadPreferences(): Promise<AppPreferences> {
       ...(experienceLevel ? { experienceLevel } : { experienceLevel: undefined }),
       interestedRaceGroupKeys: sanitizeStringList(value.interestedRaceGroupKeys),
       interestedRaceIds: sanitizeStringList(value.interestedRaceIds),
+      ...(preferredRacePreference ? { preferredRacePreference } : { preferredRacePreference: undefined }),
       interestedShoeIds: sanitizeStringList(value.interestedShoeIds),
     };
   } catch {

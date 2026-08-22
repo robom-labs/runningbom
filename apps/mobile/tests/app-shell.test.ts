@@ -29,6 +29,7 @@ import {
 import {
   experienceFromLegacyBio,
   migrateExperienceLevel,
+  sanitizeRacePreference,
   sanitizeStringList,
   stripLegacyExperiencePrefix,
 } from '../services/storage/preferences';
@@ -156,6 +157,15 @@ describe('저장된 관심 식별자 복원', () => {
       ['race-a', 'race-b'],
     );
     assert.deepEqual(sanitizeStringList('race-a'), []);
+  });
+});
+
+describe('저장된 내 대회 조건 복원', () => {
+  it('하나 이상 고른 지역·거리는 살리고 손상 값과 빈 조건은 비운다', () => {
+    assert.deepEqual(sanitizeRacePreference({ region: '서울', distance: '10K' }), { region: '서울', distance: '10K' });
+    assert.deepEqual(sanitizeRacePreference({ region: '서울', distance: '알 수 없음' }), { region: '서울', distance: '전체' });
+    assert.equal(sanitizeRacePreference({ region: '전체', distance: '전체' }), undefined);
+    assert.equal(sanitizeRacePreference('서울 10K'), undefined);
   });
 });
 

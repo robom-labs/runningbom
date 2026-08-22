@@ -11,6 +11,12 @@ import { upcomingPlans } from '../../../domains/activities/plans';
 import { groupRaces, raceGroupLinkStatus } from '../../../domains/races/aggregate';
 import { goalRaceCountdown, goalRacePhaseLabels } from '../../../domains/races/goalRace';
 import { useGoalRace } from '../../../domains/races/useGoalRace';
+import {
+  hasRacePreference,
+  raceGroupMatchesPreference,
+  raceGroupVisitPriority,
+  type RacePreference,
+} from '../../../domains/races/preference';
 import { raceVisitChangeLabel } from '../../../domains/races/visitChanges';
 import type { RouteKey } from '../../navigation/types';
 import { dayCountLabel, greetingLine, registrationDeadlineLabel } from './model';
@@ -18,6 +24,7 @@ import { dayCountLabel, greetingLine, registrationDeadlineLabel } from './model'
 type Props = {
   onNavigate: (route: RouteKey) => void;
   onOpenRace: (raceId?: string) => void;
+  onOpenPreferredRaces: (preference: RacePreference) => void;
 };
 
 type UpcomingRow = {
@@ -33,7 +40,7 @@ type UpcomingRow = {
 
 const UPCOMING_LIMIT = 4;
 
-export function HomeScreen({ onNavigate, onOpenRace }: Props) {
+export function HomeScreen({ onNavigate, onOpenRace, onOpenPreferredRaces }: Props) {
   const { preferences, storageError, plans } = useAppState();
   const { feed, loading, visitChanges, dismissVisitChanges } = useRaceState();
   const [showAllVisitChanges, setShowAllVisitChanges] = useState(false);
@@ -41,6 +48,7 @@ export function HomeScreen({ onNavigate, onOpenRace }: Props) {
   const now = useMemo(() => Date.now(), []);
   const openAllRaces = useCallback(() => onOpenRace(undefined), [onOpenRace]);
   const openCalendar = useCallback(() => onNavigate('calendar'), [onNavigate]);
+  const preferredRacePreference = preferences.preferredRacePreference;
   const raceGroups = useMemo(
     () => groupRaces(feed.races, now),
     [feed.races, now],
@@ -55,17 +63,35 @@ export function HomeScreen({ onNavigate, onOpenRace }: Props) {
       const group = groupByRaceId.get(change.raceId);
       if (!group) return [];
       return [{
-        key: `${change.kind}-${group.id}`,
-        badge: raceVisitChangeLabel(change.kind),
-        title: group.name,
-        meta: `${group.status} · ${group.region} · ${group.raceDate}`,
-        detail: change.detail,
-        linkStatus: raceGroupLinkStatus(group),
-        accessibilityHint: '새로 확인할 대회 상세를 열어요',
-        onPress: () => onOpenRace(group.id),
-      } satisfies UpcomingRow];
-    });
-  }, [onOpenRace, raceGroups, visitChanges]);
+        priority: raceGroupVisitPriority(group, {
+          goalGroupKey: goalRace?.groupKey,
+          interestedGroupKeys: preferences.interestedRaceGroupKeys,
+          legacyInterestedRaceIds: preferences.interestedRaceIds,
+          preference: preferredRacePreference,
+        }),
+        row: {
+          key: `${change.kind}-${group.id}`,
+          badge: raceVisitChangeLabel(change.kind),
+          title: group.name,
+          meta: `${group.status} · ${group.region} · ${group.raceDate}`,
+          detail: change.detail,
+          linkStatus: raceGroupLinkStatus(group),
+          accessibilityHint: '새로 확인할 대회 상세를 열어요',
+          onPress: () => onOpenRace(group.id),
+        } satisfies UpcomingRow,
+      }];
+    })
+      .sort((left, right) => left.priority - right.priority)
+      .map(({ row }) => row);
+  }, [goalRace?.groupKey, onOpenRace, preferredRacePreference, preferences.interestedRaceGroupKeys, preferences.interestedRaceIds, raceGroups, visitChanges]);
+  const preferredVisitCount = useMemo(() => {
+    if (!hasRacePreference(preferredRacePreference)) return 0;
+    const groupByRaceId = new Map(raceGroups.flatMap((group) => group.raceIds.map((id) => [id, group])));
+    return visitChanges.filter((change) => {
+      const group = groupByRaceId.get(change.raceId);
+      return group ? raceGroupMatchesPreference(group, preferredRacePreference) : false;
+    }).length;
+  }, [preferredRacePreference, raceGroups, visitChanges]);
   const visitChangeRows = useMemo(
     () => allVisitChangeRows.slice(0, showAllVisitChanges ? allVisitChangeRows.length : 3),
     [allVisitChangeRows, showAllVisitChanges],
@@ -129,7 +155,9 @@ export function HomeScreen({ onNavigate, onOpenRace }: Props) {
         <>
           <SectionHeader
             title="지난번 이후 새로 확인한 대회"
-            subtitle="새 대회, 접수 시작, 링크와 일정 변경만 먼저 모았어요."
+            subtitle={preferredVisitCount > 0
+              ? `내 조건에 맞는 변화 ${preferredVisitCount}건을 먼저 모았어요. 전체 변화도 빠짐없이 확인할 수 있어요.`
+              : '새 대회, 접수 시작, 링크와 일정 변경만 먼저 모았어요.'}
             action={allVisitChangeRows.length > 3 ? <Button label={showAllVisitChanges ? '접기' : `전체 ${allVisitChangeRows.length}건 보기`} onPress={() => setShowAllVisitChanges((current) => !current)} tone="quiet" /> : undefined}
           />
           <View style={styles.rowList}>
@@ -145,6 +173,14 @@ export function HomeScreen({ onNavigate, onOpenRace }: Props) {
               </Pressable>
             ))}
           </View>
+          {hasRacePreference(preferredRacePreference) ? (
+            <Button
+              label="내 조건 대회 보기"
+              onPress={() => onOpenPreferredRaces(preferredRacePreference)}
+              style={styles.visitChangesAction}
+              tone="quiet"
+            />
+          ) : null}
           {showAllVisitChanges ? <Button label="이 변경을 확인했어요" onPress={() => void dismissVisitChanges()} style={styles.visitChangesAction} tone="quiet" /> : null}
         </>
       ) : null}
