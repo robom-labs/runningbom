@@ -191,15 +191,15 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe, onStartTraining
 
       {/* 첫 30초는 접수 중인 대회를 찾고, 그 다음에 훈련과 기록을 이어 갑니다. */}
       <Card
-        accessibilityLabel={`접수 중인 대회 ${openRaceGroups.length}개 찾기`}
+        accessibilityLabel="접수 중 대회 찾기"
         style={styles.hero}
         tone="navy"
       >
-        <Text style={styles.heroEyebrow}>{greetingLine(preferences.nickname, now)} · 러닝 대회 일정</Text>
+        <Text style={styles.heroEyebrow}>{greetingLine(preferences.nickname, now)} · 대회 일정과 접수 알림</Text>
         <Text style={styles.heroHeadline}>지금 접수 중인{`\n`}대회를 찾아보세요</Text>
         <Button
           accessibilityHint="접수 중인 대회를 지역과 거리로 찾아봐요"
-          label={loading ? '대회 일정 불러오는 중' : `접수 중 대회 ${openRaceGroups.length}개 보기`}
+          label={loading ? '대회 일정 불러오는 중' : '접수 중 대회 보기'}
           onPress={openAllRaces}
           size="lg"
           style={styles.heroAction}
