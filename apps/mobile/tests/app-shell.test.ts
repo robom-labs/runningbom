@@ -27,8 +27,11 @@ import {
   weeklyGoalProgress,
 } from '../domains/badges/goals';
 import {
+  type AppPreferences,
+  defaultPreferences,
   experienceFromLegacyBio,
   migrateExperienceLevel,
+  persistPreferredRacePreference,
   sanitizeRacePreference,
   sanitizeStringList,
   stripLegacyExperiencePrefix,
@@ -166,6 +169,27 @@ describe('저장된 내 대회 조건 복원', () => {
     assert.deepEqual(sanitizeRacePreference({ region: '서울', distance: '알 수 없음' }), { region: '서울', distance: '전체' });
     assert.equal(sanitizeRacePreference({ region: '전체', distance: '전체' }), undefined);
     assert.equal(sanitizeRacePreference('서울 10K'), undefined);
+  });
+
+  it('저장 성공 뒤에만 새 내 대회 조건을 확정한다', async () => {
+    const saved: AppPreferences[] = [];
+    const current = { ...defaultPreferences, preferredRacePreference: { region: '부산', distance: 'Half' } };
+    const next = await persistPreferredRacePreference(current, { region: '서울', distance: '10K' }, async (value) => {
+      saved.push(value);
+    });
+    assert.deepEqual(saved, [{ ...current, preferredRacePreference: { region: '서울', distance: '10K' } }]);
+    assert.deepEqual(next, saved[0]);
+  });
+
+  it('저장 실패에서는 새 내 대회 조건을 확정할 값을 만들지 않는다', async () => {
+    const current = { ...defaultPreferences, preferredRacePreference: { region: '부산', distance: 'Half' } };
+    await assert.rejects(
+      persistPreferredRacePreference(current, { region: '서울', distance: '10K' }, async () => {
+        throw new Error('storage unavailable');
+      }),
+      /storage unavailable/,
+    );
+    assert.deepEqual(current.preferredRacePreference, { region: '부산', distance: 'Half' });
   });
 });
 

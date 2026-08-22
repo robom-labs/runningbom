@@ -151,3 +151,14 @@ export async function loadPreferences(): Promise<AppPreferences> {
 export async function savePreferences(preferences: AppPreferences): Promise<void> {
   await AsyncStorage.setItem(KEY, JSON.stringify(preferences));
 }
+
+/** 내 대회 조건은 저장이 끝난 뒤에만 새 설정값으로 돌려줍니다. */
+export async function persistPreferredRacePreference(
+  current: AppPreferences,
+  preferredRacePreference: AppPreferences['preferredRacePreference'],
+  persist: (preferences: AppPreferences) => Promise<void> = savePreferences,
+): Promise<AppPreferences> {
+  const next = { ...current, preferredRacePreference };
+  await persist(next);
+  return next;
+}

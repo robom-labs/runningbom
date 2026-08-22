@@ -37,6 +37,7 @@ import {
   type AppPreferences,
   defaultPreferences,
   loadPreferences,
+  persistPreferredRacePreference,
   savePreferences,
 } from '../../services/storage/preferences';
 import { saveCoachVoicePreference } from '../../domains/coaching/voicePreference';
@@ -73,6 +74,8 @@ type AppStateValue = {
   badges: ReturnType<typeof unlockedBadges>;
   badgeProgress: BadgeProgress[];
   updatePreferences: (next: Partial<AppPreferences>) => Promise<void>;
+  /** 내 대회 조건은 기기 저장 성공 뒤에만 화면 상태를 확정합니다. */
+  savePreferredRacePreference: (next: AppPreferences['preferredRacePreference']) => Promise<boolean>;
   completeActivity: (input: CompleteActivityInput) => Promise<ActivityRecord>;
   refreshActivities: () => Promise<void>;
   addPlan: (value: RunPlanValue) => Promise<RunPlan>;
@@ -98,6 +101,7 @@ const AppStateContext = createContext<AppStateValue>({
   badges: [],
   badgeProgress: [],
   updatePreferences: async () => undefined,
+  savePreferredRacePreference: async () => false,
   completeActivity: async () => {
     throw new Error('app state unavailable');
   },
@@ -237,6 +241,19 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       return merged;
     });
   }, []);
+
+  const savePreferredRacePreference = useCallback(async (
+    preferredRacePreference: AppPreferences['preferredRacePreference'],
+  ) => {
+    try {
+      const next = await persistPreferredRacePreference(preferences, preferredRacePreference);
+      setPreferences(next);
+      return true;
+    } catch {
+      setStorageError('내 대회 조건을 저장하지 못했어요. 다시 시도해 주세요.');
+      return false;
+    }
+  }, [preferences]);
 
   const completeActivity = useCallback(async (input: CompleteActivityInput) => {
     let localUuid = memoryLocalUuidRef.current;
@@ -394,6 +411,7 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       badges,
       badgeProgress,
       updatePreferences,
+      savePreferredRacePreference,
       completeActivity,
       refreshActivities,
       addPlan,
@@ -417,6 +435,7 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       ready,
       refreshActivities,
       removePlan,
+      savePreferredRacePreference,
       setWeeklyGoal,
       storageError,
       streak,

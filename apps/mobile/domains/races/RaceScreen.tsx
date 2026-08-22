@@ -104,7 +104,7 @@ function sourceCheckedLabel(race: Race): string {
 
 export function RaceScreen({ focusedRaceId, initialPreference, preferenceNonce }: Props) {
   const { width } = useWindowDimensions();
-  const { preferences, updatePreferences } = useAppState();
+  const { preferences, savePreferredRacePreference, updatePreferences } = useAppState();
   const {
     feed,
     notice,
@@ -128,6 +128,8 @@ export function RaceScreen({ focusedRaceId, initialPreference, preferenceNonce }
   const [activeGroupId, setActiveGroupId] = useState<string | undefined>();
   const [expandedGroupId, setExpandedGroupId] = useState<string | undefined>();
   const [visibleCount, setVisibleCount] = useState(20);
+  const [savingPreference, setSavingPreference] = useState(false);
+  const [preferenceError, setPreferenceError] = useState<string>();
 
   const groups = useMemo(() => groupRaces(feed.races), [feed.races]);
 
@@ -280,6 +282,14 @@ export function RaceScreen({ focusedRaceId, initialPreference, preferenceNonce }
         (raceId) => !group.raceIds.includes(raceId),
       ),
     });
+  }
+
+  async function saveRacePreference(preference: RacePreference | undefined) {
+    if (savingPreference) return;
+    setSavingPreference(true);
+    const saved = await savePreferredRacePreference(preference);
+    setPreferenceError(saved ? undefined : '조건을 저장하지 못했어요. 다시 시도해 주세요.');
+    setSavingPreference(false);
   }
 
   const twoColumns = width >= 840;
@@ -484,18 +494,20 @@ export function RaceScreen({ focusedRaceId, initialPreference, preferenceNonce }
               ? `저장됨 · ${savedPreference!.region} · ${distanceLabels[savedPreference!.distance] ?? savedPreference!.distance}`
               : '지금 고른 지역과 거리를 기기에만 저장해 다음 변화에서 먼저 보여드려요.'}
           </Text>
+          {preferenceError ? <Text accessibilityLiveRegion="polite" style={styles.preferenceError}>{preferenceError}</Text> : null}
         </View>
         <View style={styles.preferenceActions}>
           <Button
-            disabled={!hasRacePreference(selectedPreference) || selectedPreferenceSaved}
-            label={selectedPreferenceSaved ? '저장됨' : '이 조건 저장'}
-            onPress={() => void updatePreferences({ preferredRacePreference: selectedPreference })}
+            disabled={savingPreference || !hasRacePreference(selectedPreference) || selectedPreferenceSaved}
+            label={savingPreference ? '저장 중' : selectedPreferenceSaved ? '저장됨' : '이 조건 저장'}
+            onPress={() => void saveRacePreference(selectedPreference)}
             tone="quiet"
           />
           {hasRacePreference(savedPreference) ? (
             <Button
+              disabled={savingPreference}
               label="조건 지우기"
-              onPress={() => void updatePreferences({ preferredRacePreference: undefined })}
+              onPress={() => void saveRacePreference(undefined)}
               tone="quiet"
             />
           ) : null}
@@ -943,6 +955,7 @@ const styles = StyleSheet.create({
   preferenceCopy: { flex: 1, minWidth: 180, gap: spacing.xxs },
   preferenceTitle: { color: palette.ink, fontSize: typeScale.bodySmall, fontWeight: '900' },
   preferenceBody: { color: palette.inkSoft, fontSize: typeScale.caption, lineHeight: 18 },
+  preferenceError: { color: palette.danger, fontSize: typeScale.caption, fontWeight: '800', lineHeight: 18 },
   preferenceActions: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   notice: {
     backgroundColor: palette.warningSoft,
