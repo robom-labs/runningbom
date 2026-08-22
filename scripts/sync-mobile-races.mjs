@@ -22,8 +22,13 @@ function stableId(race, prefix) {
 }
 
 function normalizeRace(race, prefix) {
-  const externalUrl = [race.registrationUrl, race.sourceDetailUrl]
-    .find((value) => typeof value === "string" && value.startsWith("https://"));
+  const registrationUrl = typeof race.registrationUrl === "string" && race.registrationUrl.startsWith("https://")
+    ? race.registrationUrl
+    : undefined;
+  const sourceDetailUrl = typeof race.sourceDetailUrl === "string" && race.sourceDetailUrl.startsWith("https://")
+    ? race.sourceDetailUrl
+    : undefined;
+  const externalUrl = registrationUrl ?? sourceDetailUrl;
   return {
     id: stableId(race, prefix),
     name: race.name,
@@ -55,11 +60,14 @@ function normalizeRace(race, prefix) {
     sourceCheckedAt: typeof race.dataVerifiedAt === "string" && !Number.isNaN(Date.parse(race.dataVerifiedAt))
       ? race.dataVerifiedAt
       : undefined,
+    registrationUrl,
+    sourceDetailUrl,
+    linkReference: typeof race.linkVerifiedFrom === "string" ? race.linkVerifiedFrom : undefined,
     verifiedAt: race.registrationTimeVerifiedAt ?? race.linkVerifiedFrom ?? undefined,
     externalUrl,
     // 0.21.0 이하가 원격 피드를 읽어도 링크를 잃지 않도록 다음 출시 한 번은 별칭을 함께 냅니다.
     officialUrl: externalUrl,
-    externalLinkKind: externalUrl ? (race.registrationUrl ? "registration" : "source") : undefined,
+    externalLinkKind: externalUrl ? (registrationUrl ? "registration" : "source") : undefined,
     sourceName: race.sourceName,
   };
 }

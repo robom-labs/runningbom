@@ -56,6 +56,9 @@ function isRace(value: unknown): value is Race {
     (race.registrationDataStatus === undefined || race.registrationDataStatus === 'needs-review') &&
     (race.registrationDataIssue === undefined || typeof race.registrationDataIssue === 'string') &&
     (race.sourceCheckedAt === undefined || (typeof race.sourceCheckedAt === 'string' && Number.isFinite(Date.parse(race.sourceCheckedAt)))) &&
+    (race.registrationUrl === undefined || (typeof race.registrationUrl === 'string' && race.registrationUrl.startsWith('https://'))) &&
+    (race.sourceDetailUrl === undefined || (typeof race.sourceDetailUrl === 'string' && race.sourceDetailUrl.startsWith('https://'))) &&
+    (race.linkReference === undefined || typeof race.linkReference === 'string') &&
     (race.externalUrl === undefined || (typeof race.externalUrl === 'string' && race.externalUrl.startsWith('https://'))) &&
     (race.officialUrl === undefined || (typeof race.officialUrl === 'string' && race.officialUrl.startsWith('https://'))) &&
     (race.externalLinkKind === undefined || ['registration', 'source', 'official'].includes(race.externalLinkKind)) &&
@@ -148,7 +151,7 @@ export async function fetchLatestRaces(signal?: AbortSignal): Promise<RaceFeed> 
 
 export function formatRegistrationTime(race: Race): string {
   if (race.registrationDataStatus === 'needs-review') {
-    return '공식 접수 기간 재확인 중';
+    return '접수 기간 재확인 중';
   }
   if (race.registrationPeriodLabel) {
     return race.registrationPeriodLabel;
@@ -189,7 +192,7 @@ export function registrationCountdownLabel(race: Race, now = Date.now()): string
   return days === 0 ? '오늘 접수 시작' : `접수 시작 D-${days}`;
 }
 
-/** 현재 접수 중이며 공식 마감일이 지정 일수 안에 오는 대회만 고릅니다. */
+/** 현재 접수 중이며 확인된 마감일이 지정 일수 안에 오는 대회만 고릅니다. */
 export function isRegistrationClosingSoon(
   race: Race,
   now = Date.now(),

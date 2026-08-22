@@ -33,7 +33,6 @@ import {
   findGroupByRaceId,
   formatDDay,
   formatRaceFeedRevision,
-  formatRaceVerification,
   groupRaces,
   isRaceGroupInterested,
   migrateRaceInterests,
@@ -76,15 +75,19 @@ function statusTone(status: string): 'positive' | 'warning' | 'neutral' {
   return 'neutral';
 }
 
-function externalUrlFor(race: Race): string | undefined {
+function compatibleExternalUrlFor(race: Race): string | undefined {
   const value = race.externalUrl ?? race.officialUrl;
   return value?.startsWith('https://') ? value : undefined;
 }
 
-function externalLinkLabel(race: Race, detail = false): string {
-  const isSource = race.externalLinkKind === 'source';
-  if (isSource) return detail ? '대회 정보 출처 열기' : '대회 정보 출처';
-  return detail ? '접수 페이지 열기' : '접수 페이지';
+function registrationUrlFor(race: Race): string | undefined {
+  if (race.registrationUrl?.startsWith('https://')) return race.registrationUrl;
+  return race.externalLinkKind === 'registration' ? compatibleExternalUrlFor(race) : undefined;
+}
+
+function sourceDetailUrlFor(race: Race): string | undefined {
+  if (race.sourceDetailUrl?.startsWith('https://')) return race.sourceDetailUrl;
+  return race.externalLinkKind === 'source' ? compatibleExternalUrlFor(race) : undefined;
 }
 
 function sourceCheckedLabel(race: Race): string {
@@ -219,8 +222,7 @@ export function RaceScreen({ focusedRaceId }: Props) {
 
   const renderedGroups = visibleGroups.slice(0, visibleCount);
 
-  async function openExternalUrl(race: Race) {
-    const externalUrl = externalUrlFor(race);
+  async function openExternalUrl(externalUrl?: string) {
     if (!externalUrl) return;
     try {
       if (!(await Linking.canOpenURL(externalUrl))) throw new Error('unsupported');
@@ -540,10 +542,12 @@ export function RaceScreen({ focusedRaceId }: Props) {
           const scheduledEntry = group.entries.find((entry) => Boolean(scheduledRaceIds[entry.id]));
           const scheduled = Boolean(scheduledEntry);
           const canSchedule = canScheduleRegistrationAlert(registrationTarget);
-          const linkTarget = externalUrlFor(registrationTarget)
-            ? registrationTarget
-            : primary;
-          const canOpenExternal = Boolean(externalUrlFor(linkTarget));
+          const registrationLinkRace = group.entries.find((entry) => Boolean(registrationUrlFor(entry)));
+          const sourceLinkRace = group.entries.find((entry) => Boolean(sourceDetailUrlFor(entry)));
+          const registrationUrl = registrationLinkRace ? registrationUrlFor(registrationLinkRace) : undefined;
+          const sourceDetailUrl = sourceLinkRace ? sourceDetailUrlFor(sourceLinkRace) : undefined;
+          const provenanceRace = registrationLinkRace ?? sourceLinkRace ?? primary;
+          const linkReference = provenanceRace.linkReference;
           const busy = busyRaceId !== null && group.raceIds.includes(busyRaceId);
           const focused = activeGroupId === group.id;
           const expanded = expandedGroupId === group.id;
@@ -623,10 +627,17 @@ export function RaceScreen({ focusedRaceId }: Props) {
 
               <View style={styles.actions}>
                 {group.status === '접수 중' ? (
-                  canOpenExternal ? (
+                  registrationUrl ? (
                     <Button
-                      label={externalLinkLabel(linkTarget)}
-                      onPress={() => void openExternalUrl(linkTarget)}
+                      label="접수 페이지 열기"
+                      onPress={() => void openExternalUrl(registrationUrl)}
+                      style={styles.action}
+                      tone="primary"
+                    />
+                  ) : sourceDetailUrl ? (
+                    <Button
+                      label="대회 정보 출처 열기"
+                      onPress={() => void openExternalUrl(sourceDetailUrl)}
                       style={styles.action}
                       tone="primary"
                     />
@@ -654,10 +665,17 @@ export function RaceScreen({ focusedRaceId }: Props) {
                       style={styles.action}
                       tone={scheduled ? 'quiet' : 'primary'}
                     />
-                    {canOpenExternal ? (
+                    {registrationUrl ? (
                       <Button
-                        label={externalLinkLabel(linkTarget)}
-                        onPress={() => void openExternalUrl(linkTarget)}
+                        label="접수 페이지 열기"
+                        onPress={() => void openExternalUrl(registrationUrl)}
+                        style={styles.action}
+                        tone="secondary"
+                      />
+                    ) : sourceDetailUrl ? (
+                      <Button
+                        label="대회 정보 출처 열기"
+                        onPress={() => void openExternalUrl(sourceDetailUrl)}
                         style={styles.action}
                         tone="secondary"
                       />
@@ -700,19 +718,34 @@ export function RaceScreen({ focusedRaceId }: Props) {
                     </Text>
                   ))}
                   <Text style={styles.detailLabel}>외부 정보</Text>
-                  {canOpenExternal ? (
+                  {registrationUrl ? (
                     <Button
-                      label={externalLinkLabel(linkTarget, true)}
-                      onPress={() => void openExternalUrl(linkTarget)}
+                      label="접수 페이지 열기"
+                      onPress={() => void openExternalUrl(registrationUrl)}
                       style={styles.detailButton}
                       tone="secondary"
                     />
-                  ) : (
+                  ) : null}
+                  {sourceDetailUrl ? (
+                    <Button
+                      label="대회 정보 출처 열기"
+                      onPress={() => void openExternalUrl(sourceDetailUrl)}
+                      style={styles.detailButton}
+                      tone="secondary"
+                    />
+                  ) : null}
+                  {!registrationUrl && !sourceDetailUrl ? (
                     <Text style={styles.detailValue}>접수 페이지 또는 대회 정보 출처를 확인 중이에요.</Text>
-                  )}
+                  ) : null}
                   <Text style={styles.detailSource}>
-                    출처 {linkTarget.sourceName} · {sourceCheckedLabel(linkTarget)}
+                    출처 {provenanceRace.sourceName} · {sourceCheckedLabel(provenanceRace)}
                   </Text>
+                  {linkReference ? <Text style={styles.detailSource}>링크 안내 근거 {linkReference}</Text> : null}
+                  {registrationUrl ? (
+                    <Text style={styles.detailSource}>
+                      신청 전 대회명, 개최일과 주최 정보를 접수 페이지에서 다시 확인해 주세요.
+                    </Text>
+                  ) : null}
 
                   <Text style={styles.detailLabel}>준비 체크리스트</Text>
                   {goalRace?.groupKey === group.key ? (
@@ -739,7 +772,7 @@ export function RaceScreen({ focusedRaceId }: Props) {
                     </>
                   )}
                   <Text style={styles.detailSource}>
-                    {formatRaceVerification(primary.verifiedAt)} · 외부 페이지의 최종 접수 조건을 확인하세요.
+                    외부 페이지의 최종 접수 조건을 확인하세요.
                   </Text>
                 </View>
               ) : null}
