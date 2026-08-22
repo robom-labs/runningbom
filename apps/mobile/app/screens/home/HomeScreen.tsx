@@ -11,6 +11,7 @@ import { upcomingPlans } from '../../../domains/activities/plans';
 import { groupRaces, raceGroupLinkStatus } from '../../../domains/races/aggregate';
 import { goalRaceCountdown, goalRacePhaseLabels } from '../../../domains/races/goalRace';
 import { useGoalRace } from '../../../domains/races/useGoalRace';
+import { raceVisitChangeLabel } from '../../../domains/races/visitChanges';
 import type { RouteKey } from '../../navigation/types';
 import { dayCountLabel, greetingLine, registrationDeadlineLabel } from './model';
 
@@ -33,15 +34,35 @@ const UPCOMING_LIMIT = 4;
 
 export function HomeScreen({ onNavigate, onOpenRace }: Props) {
   const { preferences, storageError, plans } = useAppState();
-  const { feed, loading } = useRaceState();
+  const { feed, loading, visitChanges } = useRaceState();
   const { goalRace } = useGoalRace();
   const now = useMemo(() => Date.now(), []);
   const openAllRaces = useCallback(() => onOpenRace(undefined), [onOpenRace]);
   const openCalendar = useCallback(() => onNavigate('calendar'), [onNavigate]);
-  const openRaceGroups = useMemo(
-    () => groupRaces(feed.races, now).filter((group) => group.status === '접수 중'),
+  const raceGroups = useMemo(
+    () => groupRaces(feed.races, now),
     [feed.races, now],
   );
+  const openRaceGroups = useMemo(
+    () => raceGroups.filter((group) => group.status === '접수 중'),
+    [raceGroups],
+  );
+  const visitChangeRows = useMemo(() => {
+    const groupByRaceId = new Map(raceGroups.flatMap((group) => group.raceIds.map((id) => [id, group])));
+    return visitChanges.flatMap((change) => {
+      const group = groupByRaceId.get(change.raceId);
+      if (!group) return [];
+      return [{
+        key: `${change.kind}-${group.id}`,
+        badge: raceVisitChangeLabel(change.kind),
+        title: group.name,
+        meta: `${group.status} · ${group.region} · ${group.raceDate}`,
+        linkStatus: raceGroupLinkStatus(group),
+        accessibilityHint: '새로 확인할 대회 상세를 열어요',
+        onPress: () => onOpenRace(group.id),
+      } satisfies UpcomingRow];
+    }).slice(0, 3);
+  }, [onOpenRace, raceGroups, visitChanges]);
 
   const upcoming = useMemo<UpcomingRow[]>(() => {
     const rows: UpcomingRow[] = [];
@@ -96,6 +117,24 @@ export function HomeScreen({ onNavigate, onOpenRace }: Props) {
         <Button accessibilityHint="접수 중인 대회를 지역과 거리로 찾아봐요" label={loading ? '대회 일정 불러오는 중' : '접수 중 대회 보기'} onPress={openAllRaces} size="lg" style={styles.heroAction} testID="home-open-races" tone="secondary" />
         <Text style={styles.heroNote}>출처와 마지막 확인 시각을 보고, 최종 접수 조건은 외부 페이지에서 확인하세요.</Text>
       </Card>
+
+      {visitChangeRows.length > 0 ? (
+        <>
+          <SectionHeader title="지난번 이후 새로 확인한 대회" subtitle="새 대회, 접수 시작, 링크와 일정 변경만 먼저 모았어요." />
+          <View style={styles.rowList}>
+            {visitChangeRows.map((row, index) => (
+              <Pressable accessibilityHint={row.accessibilityHint} accessibilityLabel={`${row.badge} ${row.title}. ${row.meta}`} accessibilityRole="button" key={row.key} onPress={row.onPress} style={({ pressed }) => [styles.row, index < visitChangeRows.length - 1 && styles.rowDivider, pressed && styles.pressed]}>
+                <View style={styles.rowBadge}><Text style={styles.rowBadgeText}>{row.badge}</Text></View>
+                <View style={styles.rowCopy}>
+                  <Text numberOfLines={1} style={styles.rowTitle}>{row.title}</Text>
+                  <Text numberOfLines={1} style={styles.rowMeta}>{row.meta}</Text>
+                  {row.linkStatus ? <Text style={styles.rowLinkStatus}>{row.linkStatus}</Text> : null}
+                </View>
+              </Pressable>
+            ))}
+          </View>
+        </>
+      ) : null}
 
       <SectionHeader title="내 대회와 일정" subtitle="목표 대회, 내가 적어 둔 일정, 접수 마감이 가까운 대회예요." action={<Button label="내 일정" onPress={openCalendar} tone="quiet" />} />
       {loading && upcoming.length === 0 ? (
