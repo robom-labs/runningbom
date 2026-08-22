@@ -1794,6 +1794,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .action-site { background: #fff; color: var(--navy); }
 .action-alert { border-color: var(--coral); background: var(--coral); color: #fff; }
 .mini-btn[disabled] { opacity: .48; }
+.registration-note { display: inline-flex; align-items: center; min-height: 48px; color: var(--muted); font-size: 13px; font-weight: 750; }
 .focus-enabled { margin: -2px 0 0; color: #217a4b; font-size: 12px; font-weight: 750; }
 .race-list-skeleton { min-height: 720px; }
 .skeleton-card {
@@ -2216,7 +2217,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 14px;
   background: var(--app-brand); color: #fff; font-size: 15px; font-weight: 800; text-decoration: none;
 }
-.detail-official.disabled { background: #f8efe3; color: var(--slate); border: 1px dashed #d6c5b3; }
+.detail-registration-note { margin: 0; color: var(--slate); font-size: 14px; line-height: 1.5; }
 .detail-source { color: #99897b; font-size: 12px; text-align: center; line-height: 1.4; }
 
 /* 빈 상태 */
@@ -2379,11 +2380,7 @@ h1, h2, h3 { letter-spacing: -0.02em; }
   background: var(--ink);
   color: var(--peach);
 }
-.race-alert-btn.disabled {
-  border-color: var(--hairline);
-  background: var(--grouped);
-  color: var(--muted);
-}
+.race-action-note { display: inline-flex; align-items: center; min-height: 48px; color: var(--muted); font-size: 13px; font-weight: 750; line-height: 1.4; }
 /* 보조 CTA(대회 페이지/자세히): 흰 + 헤어라인 + --ink 글자 */
 .race-expand-btn {
   border: 1px solid var(--hairline);
