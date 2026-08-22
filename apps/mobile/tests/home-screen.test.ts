@@ -472,14 +472,12 @@ describe('홈 화면 구성', () => {
   const home = source('app/screens/home/HomeScreen.tsx');
   const model = source('app/screens/home/model.ts');
 
-  it('접수 중 대회 → 이번 주 → 다가오는 것 → 최근 기록 → 발견 순서로 흐른다', () => {
-    // 파일 머리말 주석에도 같은 낱말이 나오므로 화면에서 딱 한 번 쓰는 표시로만 순서를 확인합니다.
+  it('접수 중 대회 → 내 대회와 일정 → 이용 안내 순서로 흐른다', () => {
+    // 첫 화면에는 대회 탐색과 일정만 남깁니다.
     const order = [
       '지금 접수 중인',
-      '이번 주 목표 ·',
-      'title="다가오는 것"',
-      'title="최근 기록"',
-      'title="발견"',
+      'title="내 대회와 일정"',
+      'title="이용 안내"',
     ];
     let cursor = -1;
     for (const marker of order) {
@@ -512,22 +510,21 @@ describe('홈 화면 구성', () => {
     }
   });
 
-  it('다른 화면에서 가져온 문구도 어려운 낱말이면 홈에서 거른다', () => {
+  it('어려운 낱말 필터는 기존 지식 데이터에도 유지한다', () => {
     assert.equal(isPlainKorean('무릎이 아프면 어떻게 하나요?'), true);
     assert.equal(isPlainKorean('인터벌은 언제부터 시작하면 좋나요?'), false);
     assert.equal(isPlainKorean('스트릭을 이어 가는 방법'), false);
-    // 실제 목록에도 홈에 내보낼 만한 항목이 넉넉히 남습니다.
+    // 기존 목록에도 쉬운 문구가 넉넉히 남습니다.
     assert.ok(shoeCatalog.filter((entry) => isPlainKorean(entry.pick)).length >= 20);
     assert.ok(knowledgeCards.filter((card) => isPlainKorean(card.question)).length >= 20);
-    assert.match(home, /isPlainKorean/);
+    assert.doesNotMatch(home, /TodayCard|ShoeRankingCard/);
   });
 
   it('부모가 이미 넘겨 주는 이동 수단만 쓰고 새 prop을 만들지 않는다', () => {
     assert.match(home, /onNavigate: \(route: RouteKey\) => void;/);
     assert.match(home, /onOpenRace: \(raceId\?: string\) => void;/);
-    assert.match(home, /onOpenShoe: \(shoeId\?: string\) => void;/);
     const propBlock = home.slice(home.indexOf('type Props = {'), home.indexOf('};', home.indexOf('type Props = {')));
-    assert.equal((propBlock.match(/^\s{2}\w+:/gm) ?? []).length, 3);
+    assert.equal((propBlock.match(/^\s{2}\w+:/gm) ?? []).length, 2);
   });
 
   it('빈 상태와 불러오는 중 상태를 모두 갖는다', () => {

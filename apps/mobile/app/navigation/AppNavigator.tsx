@@ -43,15 +43,8 @@ export function AppNavigator() {
   const [route, setRoute] = useState<RouteKey>(() => routeFromStoredValue(preferences.lastTab));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [focusedRaceId, setFocusedRaceId] = useState<string>();
-  const [focusedShoeId, setFocusedShoeId] = useState<string>();
   // 드로어 하위 메뉴에서 고른 기록·통계 구획입니다. 같은 항목을 다시 골라도 반응하도록 nonce를 둡니다.
   const [statsFocus, setStatsFocus] = useState<{ section: StatsFocus; nonce: number }>();
-  // 홈의 오늘 카드에서 "바로 시작"을 눌렀을 때 훈련 화면에 넘길 요청입니다.
-  const [startRequest, setStartRequest] = useState<{
-    kind: 'plan' | 'workout';
-    workoutId?: string;
-    nonce: number;
-  }>();
   // 뒤로가기가 무조건 홈으로 튀지 않도록, 지나온 화면을 쌓아 둡니다.
   const historyRef = useRef<RouteKey[]>([]);
   const restoredRef = useRef(false);
@@ -87,14 +80,6 @@ export function AppNavigator() {
     (raceId?: string) => {
       setFocusedRaceId(raceId);
       navigate('races');
-    },
-    [navigate],
-  );
-
-  const openShoe = useCallback(
-    (shoeId?: string) => {
-      setFocusedShoeId(shoeId);
-      navigate('shoes');
     },
     [navigate],
   );
@@ -174,7 +159,6 @@ export function AppNavigator() {
           <ProgramsScreen
             onBack={() => goBack()}
             onOpenRaces={() => navigate('races')}
-            {...(startRequest ? { startRequest } : {})}
           />
         );
       case 'calendar':
@@ -182,7 +166,7 @@ export function AppNavigator() {
       case 'races':
         return <RacesScreen focusedRaceId={focusedRaceId} />;
       case 'shoes':
-        return <ShoesScreen focusedShoeId={focusedShoeId} />;
+        return <ShoesScreen />;
       case 'cadence':
         return <CadenceScreen onBack={() => goBack('programs')} />;
       case 'challenges':
@@ -209,22 +193,15 @@ export function AppNavigator() {
           <HomeScreen
             onNavigate={navigate}
             onOpenRace={(raceId) => openRace(raceId)}
-            onOpenShoe={(shoeId) => openShoe(shoeId)}
-            onStartTraining={(intent) => {
-              setStartRequest((current) => ({ ...intent, nonce: (current?.nonce ?? 0) + 1 }));
-            }}
           />
         );
     }
   }, [
     focusedRaceId,
-    focusedShoeId,
     goBack,
     navigate,
     openRace,
-    openShoe,
     route,
-    startRequest,
     statsFocus,
   ]);
 

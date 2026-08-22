@@ -16,6 +16,9 @@
 
 import { destinationForRoute, type PrimaryDestination } from './destinations';
 
+// 이전 제품에서 전역 탭이었던 값입니다. 보존 목록을 읽을 수는 있지만 새 탭으로는 그리지 않습니다.
+export type LegacyDestination = 'run' | 'shoes';
+
 export type Visibility =
   | 'PRIMARY'
   | 'CONTEXTUAL'
@@ -32,7 +35,7 @@ export type FeatureMigration = {
   oldEntry: string;
   /** 예전 라우트입니다. 딥링크가 이 값을 씁니다. */
   legacyRoute: string;
-  newPrimary: PrimaryDestination;
+  newPrimary: PrimaryDestination | LegacyDestination;
   /** 새 위치입니다. `라우트 > 구역 > 하위` 형태로 적습니다. */
   newRoute: string;
   visibility: Visibility;
@@ -531,8 +534,15 @@ export function validateMatrix(): MatrixProblem[] {
 }
 
 /** 목적지별 기능 수입니다. 한 곳에만 몰려 있으면 정보구조가 잘못된 것입니다. */
-export function featureCountByDestination(): Record<PrimaryDestination, number> {
-  const counts: Record<PrimaryDestination, number> = { home: 0, races: 0, run: 0, shoes: 0, me: 0 };
+export function featureCountByDestination(): Record<PrimaryDestination | LegacyDestination, number> {
+  const counts: Record<PrimaryDestination | LegacyDestination, number> = {
+    home: 0,
+    races: 0,
+    calendar: 0,
+    me: 0,
+    run: 0,
+    shoes: 0,
+  };
   for (const entry of featureMatrix) counts[entry.newPrimary] += 1;
   return counts;
 }

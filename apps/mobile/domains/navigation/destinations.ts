@@ -10,8 +10,8 @@
 //   Android·Apple 가이드가 공통으로 말하는 것은 하나입니다 —
 //   **최상위 목적지는 한 곳에서만 이동한다.**
 //
-// 그래서 최상위를 정확히 다섯 개로 못 박고, 드로어는 런타임에서 걷어냅니다.
-// 드로어에 있던 화면은 사라지지 않습니다. 각각 **자기 집**이 생깁니다.
+// 그래서 최상위를 대회 여정의 네 단계로 제한합니다. 드로어는 런타임에서 걷어냅니다.
+// 예전 훈련·장비 화면과 저장 데이터는 보존하지만, 대회 탐색 앱의 전역 이동에는 올리지 않습니다.
 //
 // 이름을 "찾기"가 아니라 **대회·러닝화**로 둔 이유:
 //   "찾기"는 무엇을 찾는지 알려 주지 않습니다. 눌러 봐야 압니다.
@@ -19,8 +19,8 @@
 //   "훈련"도 같은 이유로 내렸습니다 — 처음 켠 사람은 오늘 뭘 할지가 궁금하지
 //   훈련 라이브러리가 궁금한 게 아닙니다. 훈련은 홈 안에서 이어집니다.
 
-/** 하단 탭이 가리키는 다섯 곳입니다. 여기 없는 것은 최상위가 아닙니다. */
-export const primaryDestinations = ['home', 'races', 'run', 'shoes', 'me'] as const;
+/** 하단 탭이 가리키는 네 곳입니다. 여기 없는 것은 최상위가 아닙니다. */
+export const primaryDestinations = ['home', 'races', 'calendar', 'me'] as const;
 export type PrimaryDestination = (typeof primaryDestinations)[number];
 
 export type DestinationDefinition = {
@@ -39,12 +39,12 @@ export const destinations: DestinationDefinition[] = [
   {
     id: 'home',
     label: '홈',
-    accessibilityLabel: '홈, 오늘 할 러닝과 내 훈련',
+    accessibilityLabel: '홈, 접수 중 대회와 내 대회 일정',
     icon: 'home-outline',
     activeIcon: 'home',
   },
   {
-    // 대회는 러닝봄이 실제로 가진 콘텐츠입니다. "찾기" 안에 묻어 두면 아무도 못 찾습니다.
+    // 대회는 러닝봄의 핵심 콘텐츠입니다. "찾기" 안에 묻어 두면 아무도 못 찾습니다.
     id: 'races',
     label: '대회',
     accessibilityLabel: '대회, 일정과 접수와 목표 대회',
@@ -52,27 +52,16 @@ export const destinations: DestinationDefinition[] = [
     activeIcon: 'trophy',
   },
   {
-    // 가운데입니다. 시각적으로는 강조하지만 **누르면 준비 화면으로 갑니다.**
-    // 탭을 누르자마자 기록이 시작되면, 잘못 눌렀을 때 되돌릴 방법이 없습니다.
-    // 탭은 이동이고, 시작은 큰 버튼 하나로만 합니다.
-    id: 'run',
-    label: '달리기',
-    accessibilityLabel: '달리기, 러닝 준비 화면으로 이동',
-    icon: 'play-circle-outline',
-    activeIcon: 'play-circle',
-    emphasized: true,
-  },
-  {
-    id: 'shoes',
-    label: '러닝화',
-    accessibilityLabel: '러닝화, 추천과 비교와 내 신발장',
-    icon: 'footsteps-outline',
-    activeIcon: 'footsteps',
+    id: 'calendar',
+    label: '일정',
+    accessibilityLabel: '내 일정, 목표 대회와 내가 적어 둔 일정',
+    icon: 'calendar-outline',
+    activeIcon: 'calendar',
   },
   {
     id: 'me',
     label: '마이',
-    accessibilityLabel: '마이, 기록과 성취와 설정',
+    accessibilityLabel: '마이, 관심 대회와 알림과 설정',
     icon: 'person-outline',
     activeIcon: 'person',
   },
@@ -85,27 +74,16 @@ export const destinations: DestinationDefinition[] = [
  * 바꾸는 것은 "그 화면이 어느 탭 아래에 있는가"뿐입니다.
  */
 const destinationByRoute: Record<string, PrimaryDestination> = {
-  // 홈 — 오늘 할 행동과 내 훈련
-  //
-  // 훈련은 최상위에서 내렸습니다. "훈련" 탭을 눌러 무엇이 나올지 아는 사람은
-  // 이미 이 앱을 아는 사람입니다. 처음 켠 사람은 오늘 뭘 할지가 궁금합니다.
+  // 홈 — 접수 중 대회와 내 대회 일정
   home: 'home',
-  programs: 'home',
-  challenges: 'home',
-  guide: 'home',
 
   // 대회 — 목록·달력·상세·접수 알림
   races: 'races',
-  calendar: 'races',
 
-  // 달리기 — 준비·실행·완료. 박자도 여기서 씁니다.
-  start: 'run',
-  cadence: 'run',
+  // 일정 — 목표 대회와 내가 적어 둔 일정
+  calendar: 'calendar',
 
-  // 러닝화 — 사진으로 고르는 곳
-  shoes: 'shoes',
-
-  // 마이 — 기록·성취·보관함·프로필·설정
+  // 마이 — 관심 대회·알림·프로필·설정
   stats: 'me',
   badges: 'me',
   profile: 'me',
@@ -123,8 +101,7 @@ export function destinationForRoute(route: string): PrimaryDestination | undefin
 const routeByDestination: Record<PrimaryDestination, string> = {
   home: 'home',
   races: 'races',
-  run: 'start',
-  shoes: 'shoes',
+  calendar: 'calendar',
   me: 'stats',
 };
 
@@ -171,12 +148,19 @@ export function destinationFromLegacy(value: string | undefined): PrimaryDestina
   if (direct) return direct;
 
   // V7에서 잠깐 쓰던 이름도 받아 줍니다. 그 사이에 저장된 값이 있을 수 있습니다.
-  const v7: Record<string, PrimaryDestination> = {
+  const legacy: Record<string, PrimaryDestination> = {
+    programs: 'home',
+    start: 'home',
+    cadence: 'home',
+    challenges: 'home',
+    shoes: 'home',
+    community: 'me',
+    guide: 'me',
     today: 'home',
     training: 'home',
     explore: 'races',
   };
-  if (v7[value]) return v7[value];
+  if (legacy[value]) return legacy[value];
 
   return 'home';
 }
