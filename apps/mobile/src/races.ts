@@ -151,7 +151,7 @@ export async function fetchLatestRaces(signal?: AbortSignal): Promise<RaceFeed> 
 
 export function formatRegistrationTime(race: Race): string {
   if (race.registrationDataStatus === 'needs-review') {
-    return '공식 접수 기간 재확인 중';
+    return '접수 기간 재확인 중';
   }
   if (race.registrationPeriodLabel) {
     return race.registrationPeriodLabel;
@@ -192,7 +192,7 @@ export function registrationCountdownLabel(race: Race, now = Date.now()): string
   return days === 0 ? '오늘 접수 시작' : `접수 시작 D-${days}`;
 }
 
-/** 현재 접수 중이며 공식 마감일이 지정 일수 안에 오는 대회만 고릅니다. */
+/** 현재 접수 중이며 확인된 마감일이 지정 일수 안에 오는 대회만 고릅니다. */
 export function isRegistrationClosingSoon(
   race: Race,
   now = Date.now(),
