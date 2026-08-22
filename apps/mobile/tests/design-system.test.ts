@@ -225,10 +225,10 @@ describe('스크린리더 라벨', () => {
     assert.match(screen, /accessibilityState=\{\{ selected, checked: selected \}\}/);
   });
 
-  it('홈의 대표 행동에 힌트와 테스트 아이디가 있다', () => {
+  it('홈의 대회 탐색 대표 행동에 힌트와 테스트 아이디가 있다', () => {
     const home = source('app/screens/home/HomeScreen.tsx');
-    assert.match(home, /testID="home-start-run"/);
-    assert.match(home, /accessibilityHint="음성 코치와 함께 오늘의 러닝을 시작해요"/);
+    assert.match(home, /testID="home-open-races"/);
+    assert.match(home, /accessibilityHint="접수 중인 대회를 지역과 거리로 찾아봐요"/);
   });
 });
 

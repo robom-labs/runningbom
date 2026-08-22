@@ -472,10 +472,10 @@ describe('홈 화면 구성', () => {
   const home = source('app/screens/home/HomeScreen.tsx');
   const model = source('app/screens/home/model.ts');
 
-  it('오늘 → 이번 주 → 다가오는 것 → 최근 기록 → 발견 순서로 흐른다', () => {
+  it('접수 중 대회 → 이번 주 → 다가오는 것 → 최근 기록 → 발견 순서로 흐른다', () => {
     // 파일 머리말 주석에도 같은 낱말이 나오므로 화면에서 딱 한 번 쓰는 표시로만 순서를 확인합니다.
     const order = [
-      '오늘 안내',
+      '지금 접수 중인',
       '이번 주 목표 ·',
       'title="다가오는 것"',
       'title="최근 기록"',
@@ -489,9 +489,9 @@ describe('홈 화면 구성', () => {
     }
   });
 
-  it('시작 버튼이 첫 카드 안에, 섹션 제목보다 앞에 있다', () => {
-    assert.ok(home.indexOf('testID="home-start-run"') < home.indexOf('<SectionHeader'));
-    assert.match(home, /accessibilityHint="음성 코치와 함께 오늘의 러닝을 시작해요"/);
+  it('접수 중 대회 버튼이 첫 카드 안에, 섹션 제목보다 앞에 있다', () => {
+    assert.ok(home.indexOf('testID="home-open-races"') < home.indexOf('<SectionHeader'));
+    assert.match(home, /accessibilityHint="접수 중인 대회를 지역과 거리로 찾아봐요"/);
     assert.match(home, /size="lg"/);
   });
 

@@ -55,7 +55,10 @@ function isRace(value: unknown): value is Race {
     typeof race.registrationTimeConfirmed === 'boolean' &&
     (race.registrationDataStatus === undefined || race.registrationDataStatus === 'needs-review') &&
     (race.registrationDataIssue === undefined || typeof race.registrationDataIssue === 'string') &&
+    (race.sourceCheckedAt === undefined || (typeof race.sourceCheckedAt === 'string' && Number.isFinite(Date.parse(race.sourceCheckedAt)))) &&
+    (race.externalUrl === undefined || (typeof race.externalUrl === 'string' && race.externalUrl.startsWith('https://'))) &&
     (race.officialUrl === undefined || (typeof race.officialUrl === 'string' && race.officialUrl.startsWith('https://'))) &&
+    (race.externalLinkKind === undefined || ['registration', 'source', 'official'].includes(race.externalLinkKind)) &&
     typeof race.sourceName === 'string'
   );
 }
@@ -169,7 +172,7 @@ export function registrationStatusLabel(race: Race, now = Date.now()): string {
   return '접수 예정';
 }
 
-/** 공식 접수 시작·마감 시각을 KST 달력 날짜 기준 D-day 문구로 바꿉니다. */
+/** 확인된 접수 시작·마감 시각을 KST 달력 날짜 기준 D-day 문구로 바꿉니다. */
 export function registrationCountdownLabel(race: Race, now = Date.now()): string {
   const status = registrationStatusLabel(race, now);
   if (status === '확인 필요') return '접수 일정 확인 필요';
