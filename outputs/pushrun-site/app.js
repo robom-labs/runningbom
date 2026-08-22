@@ -126,6 +126,7 @@ function parseScheduleFeed(feed) {
     // (validate-static.mjs 가 배포 전에 FAIL 시키지만, 런타임에서도 한 번 더 방어한다.)
     const venue = entry.venue || "";
     const distances = Array.isArray(entry.distances) ? entry.distances : [];
+    const raceTime = normalizeRaceTime(entry.time);
     return {
       // ★ 내용 기반 안정 ID. 예전엔 배열 index(`schedule-${index}-...`)라 피드가
       // 재정렬·삽입되면 ID가 바뀌어 localStorage 에 저장된 알림이 전부 고아가 됐다.
@@ -135,7 +136,9 @@ function parseScheduleFeed(feed) {
       region: entry.region,
       city: venue.split(" ")[0] || entry.region || "",
       venue,
-      raceDate: `${entry.date}T${normalizeRaceTime(entry.time)}+09:00`,
+      raceDate: `${entry.date}T${raceTime.value}+09:00`,
+      raceTimeConfirmed: raceTime.confirmed,
+      raceTimeLabel: raceTime.label,
       registrationOpenAt: entry.registrationOpenAt || null,
       registrationCloseAt: entry.registrationCloseAt || null,
       registrationOpenTimeConfirmed: openTimeConfirmed,
@@ -197,10 +200,23 @@ function registrationNeedsReview(race) {
 function normalizeRaceTime(value) {
   const text = String(value || "");
   const match = text.match(/(\d{1,2}):(\d{2})/);
-  if (match) return `${pad(Number(match[1]))}:${match[2]}:00`;
+  if (match) {
+    const label = `${pad(Number(match[1]))}:${match[2]}`;
+    return { value: `${label}:00`, label, confirmed: true };
+  }
   const hourMatch = text.match(/(\d{1,2})시/);
-  if (hourMatch) return `${pad(Number(hourMatch[1]))}:00:00`;
-  return "09:00:00";
+  if (hourMatch) {
+    const label = `${pad(Number(hourMatch[1]))}:00`;
+    return { value: `${label}:00`, label, confirmed: true };
+  }
+  return { value: "00:00:00", label: "시간 미확인", confirmed: false };
+}
+
+function raceScheduleLabel(race) {
+  const time = race.raceTimeConfirmed === false
+    ? race.raceTimeLabel || "시간 미확인"
+    : formatRegistrationTime(race.raceDate);
+  return `${formatRegistrationDate(race.raceDate)} ${time}`;
 }
 
 function mergeRaces(primary, secondary) {
@@ -1024,7 +1040,7 @@ function raceDetailHtml(race) {
     return `<div class="detail-window"><span class="detail-window-label">${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`;
   }).join("");
 
-  const raceSchedule = `${formatRegistrationDate(race.raceDate)} ${formatRegistrationTime(race.raceDate)}`;
+  const raceSchedule = raceScheduleLabel(race);
   const capacityLabel = race.capacity ? `${Number(race.capacity).toLocaleString("ko-KR")}명` : null;
   const organizerLine = [race.organizer, capacityLabel].filter(Boolean).join(" · ") || "주최·규모 미확인";
 
@@ -1078,7 +1094,7 @@ function raceCardHtml(race) {
         <div class="race-tags">${tags}</div>
       </div>
       <h3 class="race-name">${escapeHtml(race.name)}</h3>
-      <p class="race-when"><strong>${escapeHtml(formatRegistrationDate(race.raceDate))} ${escapeHtml(formatRegistrationTime(race.raceDate))}</strong><span> · ${escapeHtml(race.region)} ${escapeHtml(race.city)}</span></p>
+      <p class="race-when"><strong>${escapeHtml(raceScheduleLabel(race))}</strong><span> · ${escapeHtml(race.region)} ${escapeHtml(race.city)}</span></p>
       <div class="race-regline"><span class="race-regline-key">접수</span><span class="race-regline-val" style="color:${tone.regLineColor}">${escapeHtml(registrationSummaryLine(race))}</span></div>
       <div class="race-card-actions">
         ${alertButton}

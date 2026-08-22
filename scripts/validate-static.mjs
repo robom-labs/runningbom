@@ -97,6 +97,13 @@ function checkRequiredFields(race, keys, kind) {
   if (!Array.isArray(race.distances) || race.distances.length === 0) {
     errors.push(`${kind} 필수 필드 누락(distances): ${race.name || "이름 없음"}`);
   }
+  if (kind === "scheduleFeed") {
+    for (const key of ["venue", "time"]) {
+      if (["장소", "일자", "시간"].includes(String(race[key] ?? "").trim())) {
+        errors.push(`${kind} 자리표시값(${key}): ${race.name || "이름 없음"}`);
+      }
+    }
+  }
 }
 
 for (const race of featured) checkRequiredFields(race, FEATURED_REQUIRED, "featuredRaces");

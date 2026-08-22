@@ -51,6 +51,32 @@ function validUrl(value) {
   }
 }
 
+// 공개 상세 화면의 항목명이 값으로 잘못 수집되면 사용자는 실제 장소·시각으로 오해한다.
+// 이 값들은 일정으로 게시하지 않고 다음 수집에서 원문 값으로 다시 확인한다.
+const SCHEDULE_PLACEHOLDERS = new Set(["장소", "일자", "시간"]);
+
+function meaningfulScheduleValue(value) {
+  const text = String(value ?? "").trim();
+  return Boolean(text) && !SCHEDULE_PLACEHOLDERS.has(text);
+}
+
+// 자동 수집값은 날짜·장소·시각·종목이 모두 읽혀야 사용자에게 보인다.
+// 접수 시각은 날짜만 확인된 경우가 있어도 대회 시각 자체를 임의로 만들지 않는다.
+export function isPublishableScheduleRace(race) {
+  const date = String(race?.raceDate ?? race?.date ?? "").slice(0, 10);
+  return Boolean(
+    meaningfulScheduleValue(race?.name)
+    && meaningfulScheduleValue(race?.region)
+    && meaningfulScheduleValue(race?.venue)
+    && String(race?.venue ?? "").trim() !== String(race?.region ?? "").trim()
+    && meaningfulScheduleValue(race?.time)
+    && /^20\d{2}-\d{2}-\d{2}$/.test(date)
+    && Number.isFinite(Date.parse(`${date}T00:00:00${KST_OFFSET}`))
+    && Array.isArray(race?.distances)
+    && race.distances.length > 0
+  );
+}
+
 function parseJsonLdArticle(html) {
   for (const match of String(html).matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
     try {
@@ -294,19 +320,31 @@ function schemaDetails(article) {
 // 자정/23:59 경계로 표현하고 timeConfirmed=false를 유지해 정확한 시각으로 위장하지 않는다.
 export function parseMarathonGoDetail(html, sourceDetailUrl, checkedAt = new Date().toISOString()) {
   const lines = htmlLines(html);
-  const dateIndex = lines.findIndex((line) => /^20\d{2}-\d{2}-\d{2}$/.test(line));
+  const dateLabelIndex = lines.findIndex((line) => line === "일자");
+  const dateIndex = dateLabelIndex >= 0 && /^20\d{2}-\d{2}-\d{2}$/.test(lines[dateLabelIndex + 1] || "")
+    ? dateLabelIndex + 1
+    : lines.findIndex((line) => /^20\d{2}-\d{2}-\d{2}$/.test(line));
   if (dateIndex < 0) return null;
   const raceDate = lines[dateIndex];
+  const venueLabelIndex = lines.findIndex((line) => line === "장소");
   const regionIndex = [...Array(dateIndex).keys()].reverse().find((index) => REGION_NAMES.has(lines[index]));
-  if (regionIndex === undefined || regionIndex + 2 >= dateIndex) return null;
+  const venueLines = venueLabelIndex >= 0
+    ? lines.slice(venueLabelIndex + 1, dateLabelIndex >= 0 ? dateLabelIndex : dateIndex).filter((line) => line !== "-")
+    : [lines[dateIndex - 1]];
+  const venue = venueLines.find((line) => !REGION_NAMES.has(line)) || venueLines[0];
+  const regionFromVenue = [...REGION_NAMES].find((name) => new RegExp(`^${name}(?:\\s|[-·]|$)`).test(String(venueLines[0] || venue || "")));
+  const region = regionIndex === undefined ? regionFromVenue : lines[regionIndex];
+  if (!region || !meaningfulScheduleValue(venue)) return null;
   const shareIndex = lines.lastIndexOf("공유하기", regionIndex);
   const distances = lines
-    .slice(shareIndex >= 0 ? shareIndex + 1 : Math.max(0, regionIndex - 6), regionIndex)
+    .slice(shareIndex >= 0 ? shareIndex + 1 : Math.max(0, (regionIndex ?? dateIndex) - 6), regionIndex ?? dateIndex)
     .map(normaliseDistance)
-    .filter((distance) => distance && distance.length <= 20);
+    .filter((distance) => distance && distance.length <= 20 && !SCHEDULE_PLACEHOLDERS.has(distance) && !REGION_NAMES.has(distance));
   const periodIndex = lines.findIndex((line) => line === "접수 기간" || line === "접수기간");
   const period = periodIndex >= 0 ? parseDateRange(lines[periodIndex + 1]) : null;
-  if (!period || !lines[dateIndex - 1] || distances.length === 0) return null;
+  if (!period || distances.length === 0) return null;
+  const timeLabelIndex = lines.findIndex((line) => line === "시간");
+  const time = timeLabelIndex >= 0 ? lines[timeLabelIndex + 1] : lines[dateIndex + 1];
   const article = parseJsonLdArticle(html);
   const articleValues = schemaDetails(article);
   const name = String(article?.name || lines[9] || "").replace(/\s*\|\s*마라톤GO\s*$/i, "").trim();
@@ -314,9 +352,9 @@ export function parseMarathonGoDetail(html, sourceDetailUrl, checkedAt = new Dat
   return {
     name,
     date: raceDate,
-    time: lines[dateIndex + 1] || "시간 미확인",
-    region: lines[regionIndex],
-    venue: lines[dateIndex - 1],
+    time: meaningfulScheduleValue(time) ? time : "시간 미확인",
+    region,
+    venue,
     distances: [...new Set(distances)],
     registrationOpenAt: dateAtStart(period.start),
     registrationCloseAt: dateAtEnd(period.end),
@@ -414,7 +452,10 @@ export function mergeMarathonGoDiscoveries(data, discoveries, { now = Date.now()
   const currentFeatured = Array.isArray(data?.featuredRaces) ? data.featuredRaces : [];
   const currentSchedule = Array.isArray(data?.scheduleFeed) ? data.scheduleFeed : [];
   const today = kstDate(now);
-  const rawValidDiscoveries = discoveries.filter(Boolean).filter((race) => isCurrentOrFutureRace(race, today));
+  const rawValidDiscoveries = discoveries
+    .filter(Boolean)
+    .filter((race) => isCurrentOrFutureRace(race, today))
+    .filter(isPublishableScheduleRace);
   const validDiscoveries = collapseRaceRows(rawValidDiscoveries);
   const byIdentity = new Map(validDiscoveries.map((race) => [raceIdentity(race), race]));
   const byDetailUrl = new Map(rawValidDiscoveries
@@ -442,7 +483,9 @@ export function mergeMarathonGoDiscoveries(data, discoveries, { now = Date.now()
   });
   // featured는 사람이 공식 출처를 교차 확인해 선택한 영역이므로 자동 수집은 상태 갱신만 한다.
   const mergedFeatured = mergeRows(currentFeatured, { discover: false }).filter((race) => isCurrentOrFutureRace(race, today));
-  const mergedSchedule = mergeRows(currentSchedule).filter((race) => isCurrentOrFutureRace(race, today));
+  const mergedSchedule = mergeRows(currentSchedule)
+    .filter((race) => isCurrentOrFutureRace(race, today))
+    .filter(isPublishableScheduleRace);
   const existing = new Set([...mergedFeatured, ...mergedSchedule].map(raceIdentity));
   for (const discovery of validDiscoveries) {
     const identity = raceIdentity(discovery);
