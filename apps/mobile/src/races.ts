@@ -56,6 +56,9 @@ function isRace(value: unknown): value is Race {
     (race.registrationDataStatus === undefined || race.registrationDataStatus === 'needs-review') &&
     (race.registrationDataIssue === undefined || typeof race.registrationDataIssue === 'string') &&
     (race.sourceCheckedAt === undefined || (typeof race.sourceCheckedAt === 'string' && Number.isFinite(Date.parse(race.sourceCheckedAt)))) &&
+    (race.registrationUrl === undefined || (typeof race.registrationUrl === 'string' && race.registrationUrl.startsWith('https://'))) &&
+    (race.sourceDetailUrl === undefined || (typeof race.sourceDetailUrl === 'string' && race.sourceDetailUrl.startsWith('https://'))) &&
+    (race.linkReference === undefined || typeof race.linkReference === 'string') &&
     (race.externalUrl === undefined || (typeof race.externalUrl === 'string' && race.externalUrl.startsWith('https://'))) &&
     (race.officialUrl === undefined || (typeof race.officialUrl === 'string' && race.officialUrl.startsWith('https://'))) &&
     (race.externalLinkKind === undefined || ['registration', 'source', 'official'].includes(race.externalLinkKind)) &&

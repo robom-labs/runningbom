@@ -27,6 +27,12 @@ export type Race = {
   organizer?: string;
   /** 원본 행을 마지막으로 확인한 시각입니다. 없는 값은 확인 시각을 알 수 없다는 뜻입니다. */
   sourceCheckedAt?: string;
+  /** 사용자가 접수 행동을 할 수 있는 HTTPS 주소입니다. 권한을 자동으로 뜻하지는 않습니다. */
+  registrationUrl?: string;
+  /** 일정 값을 확인한 대회 정보 출처의 HTTPS 주소입니다. */
+  sourceDetailUrl?: string;
+  /** 외부 링크를 안내한 원본 근거 설명입니다. 확인 시각이나 공식성의 증거로 쓰지 않습니다. */
+  linkReference?: string;
   /** 현재 앱이 외부로 연결할 HTTPS 주소입니다. `officialUrl`은 구버전 호환용 별칭입니다. */
   externalUrl?: string;
   verifiedAt?: string;
