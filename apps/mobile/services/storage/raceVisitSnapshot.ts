@@ -36,7 +36,13 @@ function isRaceVisitChange(value: unknown): value is RaceVisitChange {
   return (
     typeof change.raceId === 'string' &&
     ['new-race', 'registration-opened', 'link-added', 'schedule-updated'].includes(change.kind ?? '') &&
-    (change.detail === undefined || typeof change.detail === 'string')
+    (change.detail === undefined || typeof change.detail === 'string') &&
+    (change.schedule === undefined || (
+      typeof change.schedule.label === 'string' &&
+      typeof change.schedule.previousValue === 'string' &&
+      typeof change.schedule.currentValue === 'string' &&
+      typeof change.schedule.isDate === 'boolean'
+    ))
   );
 }
 

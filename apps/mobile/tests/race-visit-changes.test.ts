@@ -60,7 +60,17 @@ describe('지난 방문 이후 대회 변화', () => {
       { raceId: 'opened', kind: 'registration-opened' },
       { raceId: 'new', kind: 'new-race' },
       { raceId: 'link', kind: 'link-added' },
-      { raceId: 'schedule', kind: 'schedule-updated', detail: '장소 여의도 한강공원 → 잠실운동장' },
+      {
+        raceId: 'schedule',
+        kind: 'schedule-updated',
+        detail: '장소 여의도 한강공원 → 잠실운동장',
+        schedule: {
+          label: '장소',
+          previousValue: '여의도 한강공원',
+          currentValue: '잠실운동장',
+          isDate: false,
+        },
+      },
     ]);
   });
 
@@ -82,15 +92,30 @@ describe('지난 방문 이후 대회 변화', () => {
     assert.equal(raceVisitChangeLabel('schedule-updated'), '일정 변경');
   });
 
-  it('확인 전 변화는 같은 대회·종류가 반복돼도 하나로 보존한다', () => {
-    const pending = [{ raceId: 'spring', kind: 'schedule-updated' as const, detail: '대회일 2026.10.10 → 2026.10.17' }];
+  it('확인 전 같은 일정이 다시 바뀌면 최초 값과 최신 값을 하나로 보존한다', () => {
+    const pending = [{
+      raceId: 'spring',
+      kind: 'schedule-updated' as const,
+      detail: '대회일 2026.10.10 → 2026.10.17',
+      schedule: { label: '대회일', previousValue: '2026-10-10', currentValue: '2026-10-17', isDate: true },
+    }];
     const merged = mergeRaceVisitChanges(pending, [
-      { raceId: 'spring', kind: 'schedule-updated', detail: '대회일 2026.10.17 → 2026.10.24' },
+      {
+        raceId: 'spring',
+        kind: 'schedule-updated',
+        detail: '대회일 2026.10.17 → 2026.10.24',
+        schedule: { label: '대회일', previousValue: '2026-10-17', currentValue: '2026-10-24', isDate: true },
+      },
       { raceId: 'open', kind: 'registration-opened' },
     ]);
     assert.deepEqual(merged, [
       { raceId: 'open', kind: 'registration-opened' },
-      { raceId: 'spring', kind: 'schedule-updated', detail: '대회일 2026.10.10 → 2026.10.17' },
+      {
+        raceId: 'spring',
+        kind: 'schedule-updated',
+        detail: '대회일 2026.10.10 → 2026.10.24',
+        schedule: { label: '대회일', previousValue: '2026-10-10', currentValue: '2026-10-24', isDate: true },
+      },
     ]);
   });
 });

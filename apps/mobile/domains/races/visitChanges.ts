@@ -5,10 +5,18 @@ export const RACE_VISIT_SNAPSHOT_VERSION = 2;
 
 export type RaceVisitChangeKind = 'new-race' | 'registration-opened' | 'link-added' | 'schedule-updated';
 
+export type RaceVisitScheduleDetail = {
+  label: string;
+  previousValue: string;
+  currentValue: string;
+  isDate: boolean;
+};
+
 export type RaceVisitChange = {
   raceId: string;
   kind: RaceVisitChangeKind;
   detail?: string;
+  schedule?: RaceVisitScheduleDetail;
 };
 
 type RaceVisitEntry = {
@@ -106,9 +114,14 @@ export function raceVisitChanges(
       changes.push({ raceId: entry.id, kind: 'link-added' });
       continue;
     }
-    const detail = scheduleChangeDetail(before, entry);
-    if (detail) {
-      changes.push({ raceId: entry.id, kind: 'schedule-updated', detail });
+    const schedule = scheduleChangeDetail(before, entry);
+    if (schedule) {
+      changes.push({
+        raceId: entry.id,
+        kind: 'schedule-updated',
+        detail: formatScheduleChangeDetail(schedule),
+        schedule,
+      });
     }
   }
 
@@ -126,7 +139,12 @@ export function mergeRaceVisitChanges(
   const merged = new Map<string, RaceVisitChange>();
   for (const change of [...pending, ...incoming]) {
     const key = `${change.raceId}\u0001${change.kind}`;
-    if (!merged.has(key)) merged.set(key, change);
+    const existing = merged.get(key);
+    if (!existing) {
+      merged.set(key, change);
+      continue;
+    }
+    merged.set(key, mergeRaceVisitChange(existing, change));
   }
   return [...merged.values()].sort((left, right) => {
     const priority = changePriority[left.kind] - changePriority[right.kind];
@@ -134,7 +152,23 @@ export function mergeRaceVisitChanges(
   });
 }
 
-function scheduleChangeDetail(before: RaceVisitEntry, entry: RaceVisitEntry): string | undefined {
+function mergeRaceVisitChange(existing: RaceVisitChange, incoming: RaceVisitChange): RaceVisitChange {
+  if (existing.kind !== 'schedule-updated' || incoming.kind !== 'schedule-updated') return existing;
+  if (!existing.schedule || !incoming.schedule || existing.schedule.label !== incoming.schedule.label) {
+    return incoming;
+  }
+  const schedule = {
+    ...existing.schedule,
+    currentValue: incoming.schedule.currentValue,
+  };
+  return {
+    ...existing,
+    detail: formatScheduleChangeDetail(schedule),
+    schedule,
+  };
+}
+
+function scheduleChangeDetail(before: RaceVisitEntry, entry: RaceVisitEntry): RaceVisitScheduleDetail | undefined {
   const fields: Array<[string, string, string, boolean]> = [
     ['대회일', before.raceDate, entry.raceDate, true],
     ['지역', before.region, entry.region, false],
@@ -144,7 +178,11 @@ function scheduleChangeDetail(before: RaceVisitEntry, entry: RaceVisitEntry): st
   const changed = fields.find(([, previous, current]) => previous !== current);
   if (!changed) return undefined;
   const [label, previous, current, isDate] = changed;
-  return `${label} ${formatChangeValue(previous, isDate)} → ${formatChangeValue(current, isDate)}`;
+  return { label, previousValue: previous, currentValue: current, isDate };
+}
+
+function formatScheduleChangeDetail(schedule: RaceVisitScheduleDetail): string {
+  return `${schedule.label} ${formatChangeValue(schedule.previousValue, schedule.isDate)} → ${formatChangeValue(schedule.currentValue, schedule.isDate)}`;
 }
 
 function formatChangeValue(value: string, isDate: boolean): string {
