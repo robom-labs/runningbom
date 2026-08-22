@@ -80,6 +80,15 @@ test("공개 상세의 날짜 단위 접수 기간은 시각 미확정 상태로
   assert.equal(race.registrationUrl, "https://saunarun.com/apply");
 });
 
+test("공개 상세의 장소·일자·시간 레이블을 값으로 저장하지 않는다", () => {
+  const labelledHtml = `
+    <html><body><button>공유하기</button><span>10km</span><span>서울</span><span>장소</span><span>서울</span><span>-</span><span>여의도 한강공원</span><span>일자</span><span>2026-09-20</span><span>시간</span><span>08:30</span><strong>접수 기간</strong><span>2026.08.01 ~ 2026.09.10</span></body></html>`;
+  const race = parseMarathonGoDetail(labelledHtml, "https://marathongo.co.kr/raceDetail/domestic/labelled");
+  assert.equal(race.venue, "여의도 한강공원");
+  assert.equal(race.time, "08:30");
+  assert.equal(race.date, "2026-09-20");
+});
+
 test("공개 상세가 HTTP 신청 주소만 주면 사용자 링크로 게시하지 않는다", () => {
   const insecureHtml = detailHtml.replace("https://saunarun.com/apply", "http://saunarun.com/apply");
   const race = parseMarathonGoDetail(insecureHtml, "https://marathongo.co.kr/raceDetail/domestic/sauna");
@@ -133,6 +142,23 @@ test("지난 대회와 지난 일정은 자동 게시 대상에서 제외한다"
   };
   const merged = mergeMarathonGoDiscoveries(current, [], { now: Date.parse("2026-07-24T00:00:00+09:00"), checkedAt: "2026-07-24T00:00:00.000Z" });
   assert.equal(merged.data.featuredRaces.length, 0);
+});
+
+test("장소·시각 레이블로 잘못 읽힌 기존 자동 수집 행은 다음 갱신에서 게시하지 않는다", () => {
+  const merged = mergeMarathonGoDiscoveries({
+    version: "test",
+    featuredRaces: [],
+    scheduleFeed: [{
+      name: "잘못 읽힌 대회",
+      date: "2026-09-20",
+      region: "서울",
+      venue: "일자",
+      time: "시간",
+      distances: ["10K"],
+      sourceName: "마라톤GO",
+    }],
+  }, [], { now: Date.parse("2026-08-22T00:00:00+09:00") });
+  assert.equal(merged.data.scheduleFeed.length, 0);
 });
 
 test("대회일보다 늦은 접수 종료일은 공개 원문 값이어도 자동 상태 판정에서 격리한다", () => {
