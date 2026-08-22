@@ -25,9 +25,13 @@ export type Race = {
   note?: string;
   capacity?: number;
   organizer?: string;
+  /** 원본 행을 마지막으로 확인한 시각입니다. 없는 값은 확인 시각을 알 수 없다는 뜻입니다. */
+  sourceCheckedAt?: string;
+  /** 현재 앱이 외부로 연결할 HTTPS 주소입니다. `officialUrl`은 구버전 호환용 별칭입니다. */
+  externalUrl?: string;
   verifiedAt?: string;
   officialUrl?: string;
-  externalLinkKind?: 'official' | 'source';
+  externalLinkKind?: 'registration' | 'source' | 'official';
   sourceName: string;
 };
 

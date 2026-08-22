@@ -70,11 +70,11 @@ function sortedDistances(values: RaceDistance[]): RaceDistance[] {
   });
 }
 
-// 공식 링크가 있고 접수가 먼저 열리는 행을 대표 행으로 삼습니다.
+// 안전한 외부 링크가 있고 접수가 먼저 열리는 행을 대표 행으로 삼습니다.
 function primaryEntry(entries: Race[]): Race {
   return [...entries].sort((left, right) => {
-    const leftLink = left.officialUrl ? 0 : 1;
-    const rightLink = right.officialUrl ? 0 : 1;
+    const leftLink = (left.externalUrl ?? left.officialUrl) ? 0 : 1;
+    const rightLink = (right.externalUrl ?? right.officialUrl) ? 0 : 1;
     if (leftLink !== rightLink) return leftLink - rightLink;
     const leftOpens = Date.parse(left.registrationOpensAt);
     const rightOpens = Date.parse(right.registrationOpensAt);
@@ -107,7 +107,7 @@ export function registrationTargetEntry(entries: Race[], now = Date.now()): Race
     if (leftStatus === '접수 예정' && left.registrationTimeConfirmed !== right.registrationTimeConfirmed) {
       return left.registrationTimeConfirmed ? -1 : 1;
     }
-    const linkDiff = Number(!left.officialUrl) - Number(!right.officialUrl);
+    const linkDiff = Number(!(left.externalUrl ?? left.officialUrl)) - Number(!(right.externalUrl ?? right.officialUrl));
     if (linkDiff !== 0) return linkDiff;
     const leftOpens = Date.parse(left.registrationOpensAt);
     const rightOpens = Date.parse(right.registrationOpensAt);

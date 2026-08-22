@@ -22,7 +22,7 @@ function stableId(race, prefix) {
 }
 
 function normalizeRace(race, prefix) {
-  const officialUrl = [race.registrationUrl, race.sourceDetailUrl]
+  const externalUrl = [race.registrationUrl, race.sourceDetailUrl]
     .find((value) => typeof value === "string" && value.startsWith("https://"));
   return {
     id: stableId(race, prefix),
@@ -52,9 +52,14 @@ function normalizeRace(race, prefix) {
     note: race.note ?? undefined,
     capacity: Number.isFinite(race.capacity) ? race.capacity : undefined,
     organizer: race.organizer ?? undefined,
+    sourceCheckedAt: typeof race.dataVerifiedAt === "string" && !Number.isNaN(Date.parse(race.dataVerifiedAt))
+      ? race.dataVerifiedAt
+      : undefined,
     verifiedAt: race.registrationTimeVerifiedAt ?? race.linkVerifiedFrom ?? undefined,
-    officialUrl,
-    externalLinkKind: officialUrl ? (race.registrationUrl ? "official" : "source") : undefined,
+    externalUrl,
+    // 0.21.0 이하가 원격 피드를 읽어도 링크를 잃지 않도록 다음 출시 한 번은 별칭을 함께 냅니다.
+    officialUrl: externalUrl,
+    externalLinkKind: externalUrl ? (race.registrationUrl ? "registration" : "source") : undefined,
     sourceName: race.sourceName,
   };
 }

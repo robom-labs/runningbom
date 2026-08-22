@@ -127,14 +127,16 @@ export async function scheduleRegistrationNotification(
   const identifier = await Notifications.scheduleNotificationAsync({
     content: {
       title: `${race.name} 접수가 시작됐어요`,
-      body: '러닝봄에서 공식 접수 페이지를 확인하세요.',
+      body: '러닝봄에서 접수 페이지와 대회 안내를 확인하세요.',
       sound: 'default',
       data: {
         raceId: race.id,
         alertKey: registrationAlertKey(race),
         notificationFamily: NOTIFICATION_FAMILY,
         deepLink: `runningbom://race/${race.id}`,
-        ...(race.officialUrl ? { officialUrl: race.officialUrl } : {}),
+        ...((race.externalUrl ?? race.officialUrl)
+          ? { externalUrl: race.externalUrl ?? race.officialUrl }
+          : {}),
       },
     },
     trigger: {

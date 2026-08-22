@@ -47,7 +47,7 @@ type RaceStateValue = {
 };
 
 const defaultNotice =
-  '알림 권한이 없어도 지역·거리 선택과 공식 대회 링크는 계속 사용할 수 있어요.';
+  '알림 권한이 없어도 지역·거리 선택과 접수 페이지·대회 정보 출처는 계속 사용할 수 있어요.';
 
 const RaceStateContext = createContext<RaceStateValue>({
   feed: { revision: bundledRevision, races },
@@ -160,9 +160,9 @@ export function RaceStateProvider({ children }: PropsWithChildren) {
         setScheduledRaceIds((current) => ({ ...current, [race.id]: result.identifier }));
         setNotice(`${race.name} 접수 알림을 ${formatRegistrationTime(race)}에 예약했어요.`);
       } else if (result.kind === 'denied') {
-        setNotice('알림 권한이 거부됐어요. 대회 탐색과 공식 링크는 그대로 사용할 수 있어요.');
+        setNotice('알림 권한이 거부됐어요. 대회 탐색과 외부 접수·정보 링크는 그대로 사용할 수 있어요.');
       } else if (result.kind === 'time-unconfirmed') {
-        setNotice('공식 접수 시각이 확인된 대회만 정확한 알림을 예약할 수 있어요.');
+        setNotice('접수 시작 시각이 확인된 대회만 정확한 알림을 예약할 수 있어요.');
       } else {
         setNotice('접수 시작 시각이 이미 지나 알림을 예약하지 않았어요.');
       }

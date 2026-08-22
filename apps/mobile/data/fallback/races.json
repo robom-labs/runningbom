@@ -28,9 +28,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "08/06 - 08/20",
       "organizer": "서울시",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://inthetrail.com/shop_view/?idx=54",
       "officialUrl": "https://inthetrail.com/shop_view/?idx=54",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -66,9 +68,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "12/23 - 06/23",
       "organizer": "대구광역시, 세계마스터즈육상연",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.wmac2026.com/",
       "officialUrl": "https://www.wmac2026.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -88,9 +92,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "12/23 - 06/23",
       "organizer": "대구광역시,세계마스터즈육상연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.wmac2026.com/",
       "officialUrl": "https://www.wmac2026.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -108,7 +114,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "08/09 - 08/17",
       "organizer": "삼삼이즈",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gyoryongsanseong-backyard-survival-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gyoryongsanseong-backyard-survival-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -128,9 +136,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "04/07 - 05/31",
       "organizer": "제천시산악연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.runnerking.com/",
       "officialUrl": "https://www.runnerking.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -168,9 +178,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/25 - 08/21",
       "organizer": "플랜인",
+      "sourceCheckedAt": "2026-07-28T10:13:36.762Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://funandrun.co.kr/",
       "officialUrl": "https://funandrun.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -189,8 +201,9 @@
       "registrationPeriodLabel": "6/8 - 6/16",
       "organizer": "전국마라톤협회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://mara1080.com/event/48116855-ac2a-4db5-b343-593a01c5b353",
       "officialUrl": "https://mara1080.com/event/48116855-ac2a-4db5-b343-593a01c5b353",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -209,9 +222,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/15 - 08/10",
       "organizer": "성북구육상연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://cafe.naver.com/sblovemarathon/?viewType=pc",
       "officialUrl": "https://cafe.naver.com/sblovemarathon/?viewType=pc",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -231,8 +246,9 @@
       "registrationPeriodLabel": "5/22 - 7/31",
       "organizer": "국대레포츠, 대관령면체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://daegwallyeongrun.com/",
       "officialUrl": "https://daegwallyeongrun.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -253,8 +269,9 @@
       "registrationPeriodLabel": "5/13 - 8/23",
       "organizer": "(사)국민성공시대",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://seoulhalfrun.kr/",
       "officialUrl": "https://seoulhalfrun.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -272,9 +289,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "12/23 - 06/23",
       "organizer": "대구광역시, 세계마스터즈육상연맹(WMA)",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.wmac2026.com/",
       "officialUrl": "https://www.wmac2026.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -295,9 +314,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "12/23 - 06/23",
       "organizer": "대구광역시, 세계마스터즈육상연맹(WMA)",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://wmac2026.com/kr/",
       "officialUrl": "https://wmac2026.com/kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -316,9 +337,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/06 - 08/31",
       "organizer": "사우나런",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://saunarun.com/products/e5d5rnduj37y?page=1",
       "officialUrl": "https://saunarun.com/products/e5d5rnduj37y?page=1",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -339,7 +362,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "02/02 - 02/27",
       "organizer": "철원군, 한국일보",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/23rd-cheorwon-dmz-international-peace-marathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/23rd-cheorwon-dmz-international-peace-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -361,8 +386,9 @@
       "registrationPeriodLabel": "6/19 - 7/15",
       "organizer": "(주)러닝브레이커, 전국러닝협회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://runten.co.kr/",
       "officialUrl": "https://runten.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -382,8 +408,9 @@
       "registrationPeriodLabel": "6/30 - 7/31",
       "organizer": "한국방송통신대학교 전국 총동문",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://runbs.co.kr/",
       "officialUrl": "https://runbs.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -421,9 +448,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/14 - 08/18",
       "organizer": "이일선기념사업회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://docs.google.com/forms/d/e/1FAIpQLSer842gNV8u5RtevhmDK6zGUgl-0Ccfjc2C4h_-tZ9MyYVOLg/viewform?usp=send_form",
       "officialUrl": "https://docs.google.com/forms/d/e/1FAIpQLSer842gNV8u5RtevhmDK6zGUgl-0Ccfjc2C4h_-tZ9MyYVOLg/viewform?usp=send_form",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -461,9 +490,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "05/11 - 05/11",
       "organizer": "태백시, 태백시 철인3종 협회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://taebaektrail.com/",
       "officialUrl": "https://taebaektrail.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -482,8 +513,9 @@
       "registrationStatus": "closed",
       "note": "10km 2,000명, 5km 1,000명 선착순 모집으로 확인됩니다.",
       "capacity": 3000,
+      "externalUrl": "https://mara1080.com/event/a9780087-8fc3-4849-a234-7659978f6792",
       "officialUrl": "https://mara1080.com/event/a9780087-8fc3-4849-a234-7659978f6792",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -502,8 +534,9 @@
       "registrationPeriodLabel": "3/16 - 7/6",
       "organizer": "(주)메이드인피플",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://sandrun.co.kr/",
       "officialUrl": "https://sandrun.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -541,7 +574,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "08/10 - 08/10",
       "organizer": "파브코리아",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-mungyongsaejae-trailrun",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-mungyongsaejae-trailrun",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -581,9 +616,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "05/12 - 06/30",
       "organizer": "(사)한국마라톤협회",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://amarunsb.com/",
       "officialUrl": "https://amarunsb.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -602,8 +639,9 @@
       "registrationPeriodLabel": "6/10 - 6/16",
       "organizer": "인천광역시 체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://www.sgicaaf.co.kr/",
       "officialUrl": "https://www.sgicaaf.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -642,8 +680,9 @@
       "registrationStatus": "sold_out",
       "note": "공식 일정은 6월 17일 14시부터 7월 10일 17시까지이며, 6월 26일 전 종목 선착순 마감 공지가 게시됐습니다.",
       "capacity": 5000,
+      "externalUrl": "https://run.ytn.co.kr/",
       "officialUrl": "https://run.ytn.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "YTN 서울투어마라톤 공식"
     },
     {
@@ -663,8 +702,9 @@
       "registrationPeriodLabel": "4/27 - 8/14",
       "organizer": "청년일보, (주)소풍",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://whiterun.kr/",
       "officialUrl": "https://whiterun.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -684,9 +724,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/17 - 07/17",
       "organizer": "스피드에이전시",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://speedtrailrun.kr/",
       "officialUrl": "https://speedtrailrun.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -706,9 +748,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/16 - 08/31",
       "organizer": "주식회사 락앤런",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://rocknrun.kr/REDFOODRACE",
       "officialUrl": "https://rocknrun.kr/REDFOODRACE",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -727,9 +771,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/20 - 08/31",
       "organizer": "굿피플",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.herorace.kr/",
       "officialUrl": "https://www.herorace.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -747,9 +793,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "08/03 - 08/06",
       "organizer": "현대",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.hyundai.com/kr/ko/brand/forestrun/forestrun-apply/finalrun",
       "officialUrl": "https://www.hyundai.com/kr/ko/brand/forestrun/forestrun-apply/finalrun",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -768,9 +816,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "05/21 - 08/30",
       "organizer": "나이트런 플러스",
+      "sourceCheckedAt": "2026-07-24T17:59:02.557Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://n-runplus.co.kr/",
       "officialUrl": "https://n-runplus.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -790,7 +840,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "02/27 - 03/20",
       "organizer": "G1방송, 양양군",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yangyang-riverside-national-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yangyang-riverside-national-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -812,8 +864,9 @@
       "registrationPeriodLabel": "3/31 - 9/12",
       "organizer": "1986프로덕션",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://2026.bbangtrailrun.co.kr/",
       "officialUrl": "https://2026.bbangtrailrun.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -834,8 +887,9 @@
       "registrationPeriodLabel": "4/13 - 6/16",
       "organizer": "초록우산 대전세종지역본부",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://mara1080.com/event/9443583f-6577-466c-ab2f-43d1dbd820d4",
       "officialUrl": "https://mara1080.com/event/9443583f-6577-466c-ab2f-43d1dbd820d4",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -854,7 +908,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/27 - 08/12",
       "organizer": "굿네이버스",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-goodneighbors-race-seoul-charity-running",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-goodneighbors-race-seoul-charity-running",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -875,9 +931,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "05/21 - 08/30",
       "organizer": "나이트런 플러스",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://n-runplus.co.kr/",
       "officialUrl": "https://n-runplus.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -898,8 +956,9 @@
       "registrationPeriodLabel": "6/29 - 7/31",
       "organizer": "(사)대한치과의사협회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://www.smilerun.co.kr/main/main.php",
       "officialUrl": "https://www.smilerun.co.kr/main/main.php",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -935,7 +994,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "11/13 - 08/25",
       "organizer": "(사)한국산악마라톤연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/14th-seoraksan-dinosaur-ridge-climbathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/14th-seoraksan-dinosaur-ridge-climbathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -958,7 +1019,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "01/01 - 05/31",
       "organizer": "울진군",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-uljin-geumgangsong-healing-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-uljin-geumgangsong-healing-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -979,9 +1042,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/15 - 08/31",
       "organizer": "월드런",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://mara1080.com/event/0674df45-473c-4182-bed4-d15582fb8c73/guide/overview",
       "officialUrl": "https://mara1080.com/event/0674df45-473c-4182-bed4-d15582fb8c73/guide/overview",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1001,8 +1066,9 @@
       "registrationPeriodLabel": "6/29 - 7/29",
       "organizer": "일간스포츠",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://runseoulrun.com/",
       "officialUrl": "https://runseoulrun.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1021,7 +1087,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "08/03 - 08/14",
       "organizer": "구로구육상연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-guro-mayor-anyangcheon-autumn-run-2026-09-13",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-guro-mayor-anyangcheon-autumn-run-2026-09-13",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -1041,9 +1109,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/14 - 08/14",
       "organizer": "MBN",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://web.runit.co.kr/races/1120",
       "officialUrl": "https://web.runit.co.kr/races/1120",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1064,8 +1134,9 @@
       "registrationPeriodLabel": "6/8 - 7/31",
       "organizer": "인천일보,(사)인천마라톤조직위",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://www.ganghwamarathon.co.kr/",
       "officialUrl": "https://www.ganghwamarathon.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1086,8 +1157,9 @@
       "registrationPeriodLabel": "6/29 - 7/20",
       "organizer": "매일신문사",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://energyrun.co.kr/",
       "officialUrl": "https://energyrun.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1106,9 +1178,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/30 - 08/30",
       "organizer": "쿠팡플레이",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.coupangplay.com/",
       "officialUrl": "https://www.coupangplay.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1128,9 +1202,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "02/20 - 06/10",
       "organizer": "(주)락앤런",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://rocknrun.kr/",
       "officialUrl": "https://rocknrun.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1149,7 +1225,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/28 - 09/01",
       "organizer": "디지틀조선일보C&M",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-chungnyeon-day-namdong-run",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-chungnyeon-day-namdong-run",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -1170,9 +1248,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/13 - 08/03",
       "organizer": "문경시, 문경시 청년센터",
+      "sourceCheckedAt": "2026-08-03T22:16:40.220Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://omijarun.com/",
       "officialUrl": "https://omijarun.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1192,9 +1272,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/13 - 08/31",
       "organizer": "경기신문",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://kgseasiderun.co.kr/",
       "officialUrl": "https://kgseasiderun.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1213,7 +1295,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/16 - 08/31",
       "organizer": "HLL중앙 / 코틴스포츠",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/sipore-run-fit-discovery-2026-09-19",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/sipore-run-fit-discovery-2026-09-19",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -1234,9 +1318,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/03 - 07/31",
       "organizer": "(주)러닝브레이커, 전국러닝협회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://runten.co.kr/",
       "officialUrl": "https://runten.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1256,9 +1342,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/06 - 09/10",
       "organizer": "(사)행복한가게",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://aychalf.kr/",
       "officialUrl": "https://aychalf.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1279,8 +1367,9 @@
       "registrationPeriodLabel": "6/17 - 8/12",
       "organizer": "(사)21세기경제사회연구원",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://www.cyber-run.com/main/main.php",
       "officialUrl": "https://www.cyber-run.com/main/main.php",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1298,7 +1387,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/28 - 09/18",
       "organizer": "파브코리아",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yeosu-nangdo-trail",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yeosu-nangdo-trail",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -1320,8 +1411,9 @@
       "registrationPeriodLabel": "4/17 - 8/19",
       "organizer": "전마협",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://mara1080.com/event/2044eb82-fcdb-4e56-b79b-f3543a6a360d",
       "officialUrl": "https://mara1080.com/event/2044eb82-fcdb-4e56-b79b-f3543a6a360d",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1339,7 +1431,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/07 - 09/10",
       "organizer": "윌슨컴퍼니 주식회사",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-sachal-run",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-sachal-run",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -1382,7 +1476,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "06/08 - 06/11",
       "organizer": "강동구 육상연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-20th-sunsa-marathon-festival-internet-registration",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-20th-sunsa-marathon-festival-internet-registration",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -1404,8 +1500,9 @@
       "registrationPeriodLabel": "6/23 - 8/20",
       "organizer": "마포구체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://mara1080.com/event/53b338c6-d38a-47b3-9479-080b00c6113a",
       "officialUrl": "https://mara1080.com/event/53b338c6-d38a-47b3-9479-080b00c6113a",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1426,8 +1523,9 @@
       "registrationPeriodLabel": "5/14 - 5/21",
       "organizer": "동아일보",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://www.gongjumarathon.com/",
       "officialUrl": "https://www.gongjumarathon.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1447,8 +1545,9 @@
       "registrationPeriodLabel": "7/13 - 8/30",
       "organizer": "한돈자조금위원회, 런코리아",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://handonrun.com/marathon/code/8047/",
       "officialUrl": "https://handonrun.com/marathon/code/8047/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1468,9 +1567,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/06 - 07/20",
       "organizer": "안산시체육",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://ansanrun.com/",
       "officialUrl": "https://ansanrun.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1490,9 +1591,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/08 - 08/07",
       "organizer": "(주)경인일보",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://songdorun.net/",
       "officialUrl": "https://songdorun.net/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1513,9 +1616,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "04/01 - 05/30",
       "organizer": "가평군체육회, 세계일보",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://gprun.com/",
       "officialUrl": "https://gprun.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1534,9 +1639,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/15 - 07/30",
       "organizer": "울산광역시 남구 육상연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://modern-infinity-9e6.notion.site/2026-395918810cc28075b602c0e076d8d3ea",
       "officialUrl": "https://modern-infinity-9e6.notion.site/2026-395918810cc28075b602c0e076d8d3ea",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1556,8 +1663,9 @@
       "registrationPeriodLabel": "6/20 - 9/30",
       "organizer": "(사)희망지킴이 천사운동본부",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://hope1004.org/",
       "officialUrl": "https://hope1004.org/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1594,8 +1702,9 @@
       "registrationPeriodLabel": "6/19 - 8/31",
       "organizer": "완주군/삼삼이즈",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://samsamis.com/",
       "officialUrl": "https://samsamis.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1616,8 +1725,9 @@
       "registrationPeriodLabel": "3/20 - 9/3",
       "organizer": "서산시체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://mara1080.com/event/fcaa0bc8-1489-47c3-8fec-8e5a5c17284e",
       "officialUrl": "https://mara1080.com/event/fcaa0bc8-1489-47c3-8fec-8e5a5c17284e",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1637,9 +1747,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/07 - 09/21",
       "organizer": "(사)사회안전예방중앙회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://mastershalf.kr/",
       "officialUrl": "https://mastershalf.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1659,7 +1771,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "05/20 - 06/20",
       "organizer": "김제스포츠클럽",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/25th-kimje-saemangeum-horizon-national-marathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/25th-kimje-saemangeum-horizon-national-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -1679,9 +1793,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/06 - 08/30",
       "organizer": "SM, KREAM",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://smtownrunclub.com/",
       "officialUrl": "https://smtownrunclub.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1701,9 +1817,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/16 - 08/31",
       "organizer": "연합뉴스, 춘천시육상연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.yonma.kr/",
       "officialUrl": "https://www.yonma.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1722,9 +1840,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "04/13 - 04/30",
       "organizer": "월드비전",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://global6kforwater.com/frt/application/applicationOverview.do?CMPT_AREA_TYPE=6&utm_source=marathongo&utm_medium=MRG_01&utm_campaign=26Running6K",
       "officialUrl": "https://global6kforwater.com/frt/application/applicationOverview.do?CMPT_AREA_TYPE=6&utm_source=marathongo&utm_medium=MRG_01&utm_campaign=26Running6K",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1743,9 +1863,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/14 - 08/14",
       "organizer": "(주)러닝브레이커, 전국러닝협",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://runten.co.kr/",
       "officialUrl": "https://runten.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1785,8 +1907,9 @@
       "registrationPeriodLabel": "7/13 - 8/29",
       "organizer": "(주)경남신문사",
       "verifiedAt": "2026-07-12",
+      "externalUrl": "https://www.knmarathon.co.kr/",
       "officialUrl": "https://www.knmarathon.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1807,8 +1930,9 @@
       "registrationPeriodLabel": "5/19 - 8/31",
       "organizer": "홍천시체육회, 홍천육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://www.hongcheonrun.net/",
       "officialUrl": "https://www.hongcheonrun.net/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1849,8 +1973,9 @@
       "registrationPeriodLabel": "5/4 - 8/10",
       "organizer": "(사)파주출판도시입주기업체협의",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://runbookcity.com/",
       "officialUrl": "https://runbookcity.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -1868,7 +1993,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/31 - 08/02",
       "organizer": "뉴발란스",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-run-your-way-seoul-10k",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-run-your-way-seoul-10k",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -1889,9 +2016,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/20 - 07/31",
       "organizer": "광명시육상연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://gmaf.kr/",
       "officialUrl": "https://gmaf.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1911,7 +2040,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/01 - 08/31",
       "organizer": "더윙, S오일",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-soil-gamdong-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-soil-gamdong-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -1932,9 +2063,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/08 - 08/27",
       "organizer": "(주)일요신문사 (주)비즈한국",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.runsense.co.kr/",
       "officialUrl": "https://www.runsense.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -1954,7 +2087,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/22 - 07/22",
       "organizer": "경기일보, 시흥시체육회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/12th-siheung-national-half-marathon-2026-10-05",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/12th-siheung-national-half-marathon-2026-10-05",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -1975,7 +2110,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/19 - 10/02",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yangju-cheonilhong-autumn-festa-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yangju-cheonilhong-autumn-festa-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -1998,7 +2135,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "08/10 - 08/13",
       "organizer": "강남구,미8군사령부",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/23rd-gangnam-international-peace-marathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/23rd-gangnam-international-peace-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -2020,9 +2159,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/14 - 09/14",
       "organizer": "한경닷컴/런코리아",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.hk-marathon.com/marathon/code/8048/",
       "officialUrl": "https://www.hk-marathon.com/marathon/code/8048/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2042,8 +2183,9 @@
       "registrationPeriodLabel": "4/26 - 5/26",
       "organizer": "(사)한국체육개발원 등",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://seoulopen.or.kr/main.php",
       "officialUrl": "https://seoulopen.or.kr/main.php",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2065,9 +2207,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "03/25 - 05/29",
       "organizer": "홍성군체육회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://amarunhs.com/",
       "officialUrl": "https://amarunhs.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2087,8 +2231,9 @@
       "registrationPeriodLabel": "7/1 - 8/30",
       "organizer": "헤럴드경제",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://hangeulrun.com/",
       "officialUrl": "https://hangeulrun.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2107,7 +2252,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/19 - 09/20",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-goheung-space-aviation-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-goheung-space-aviation-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -2129,8 +2276,9 @@
       "registrationPeriodLabel": "8/2 - 8/23",
       "organizer": "마라톤선교연합회/천주교수원교구",
       "verifiedAt": "2026-07-12",
+      "externalUrl": "https://cafe.naver.com/browna6seu",
       "officialUrl": "https://cafe.naver.com/browna6seu",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2150,8 +2298,9 @@
       "registrationPeriodLabel": "5/8 - 9/10",
       "organizer": "거제시, 거제시체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://mara1080.com/event/b43655f0-60be-4c97-ad62-d377f6586ae0",
       "officialUrl": "https://mara1080.com/event/b43655f0-60be-4c97-ad62-d377f6586ae0",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2171,7 +2320,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/09 - 07/17",
       "organizer": "강서구",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/4th-gangseo-heojun-run-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/4th-gangseo-heojun-run-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -2192,9 +2343,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/10 - 08/30",
       "organizer": "성동구체육회 / 성동구육상연맹",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://samsamis.com/",
       "officialUrl": "https://samsamis.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2233,9 +2386,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "05/18 - 06/18",
       "organizer": "광주,전라남도,담양군,화순군",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://georun.kr/ko/",
       "officialUrl": "https://georun.kr/ko/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2255,9 +2410,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "05/18 - 06/23",
       "organizer": "(주)강원도민일보",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.xn--289av7rnxbd06bmrc.com/",
       "officialUrl": "https://www.xn--289av7rnxbd06bmrc.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2275,7 +2432,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "08/05 - 08/05",
       "organizer": "서울울트라랠리",
+      "sourceCheckedAt": "2026-08-07T00:18:19.474Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/3rd-seoul-trail-run-2026-10-10",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/3rd-seoul-trail-run-2026-10-10",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -2296,9 +2455,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/15 - 09/10",
       "organizer": "앙성면체육회",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://mara1080.com/event/380079d2-ab1c-4351-b1f2-d21ccaba5cdd/guide/overview",
       "officialUrl": "https://mara1080.com/event/380079d2-ab1c-4351-b1f2-d21ccaba5cdd/guide/overview",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2318,8 +2479,9 @@
       "registrationPeriodLabel": "6/15 - 7/31",
       "organizer": "구미시산악연맹, 구미트레일런",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://cafe.naver.com/gumitrailrunnerclub",
       "officialUrl": "https://cafe.naver.com/gumitrailrunnerclub",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2338,9 +2500,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/08 - 09/04",
       "organizer": "주식회사 어디감수광, 수원리",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://jejuwindmillrun.com/",
       "officialUrl": "https://jejuwindmillrun.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2360,9 +2524,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/27 - 08/31",
       "organizer": "울산광역시 육상연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://run.uaf.co.kr/",
       "officialUrl": "https://run.uaf.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2380,9 +2546,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/25 - 08/30",
       "organizer": "월드 비전",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://wvgumi6k2026-self.vercel.app/",
       "officialUrl": "https://wvgumi6k2026-self.vercel.app/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2422,9 +2590,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "05/11 - 05/27",
       "organizer": "동아일보",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.seoul-race.co.kr/",
       "officialUrl": "https://www.seoul-race.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2444,9 +2614,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/10 - 08/28",
       "organizer": "영남일보",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://mgmarathon.kr/",
       "officialUrl": "https://mgmarathon.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2465,7 +2637,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/10 - 09/20",
       "organizer": "대학문화유니온",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-collegestudent-run-independence-donation-run",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-collegestudent-run-independence-donation-run",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -2486,7 +2660,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/07 - 09/04",
       "organizer": "기호일보",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-robotland-futurerun",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-robotland-futurerun",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -2510,8 +2686,9 @@
       "registrationPeriodLabel": "5/15 - 7/19",
       "organizer": "나주시, MBN, 매일경제",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://najumarathon.com/",
       "officialUrl": "https://najumarathon.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2530,9 +2707,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/27 - 08/07",
       "organizer": "한국유방건강재단",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.pinkrun.kr/",
       "officialUrl": "https://www.pinkrun.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2552,9 +2731,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/31 - 08/28",
       "organizer": "천안시체육회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://bjlee.casports.or.kr/",
       "officialUrl": "https://bjlee.casports.or.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2574,8 +2755,9 @@
       "registrationStatus": "closed",
       "note": "풀·하프·10km 참가비와 접수 기간이 확인됩니다.",
       "capacity": 10000,
+      "externalUrl": "https://www.gyeongjumarathon.com/home",
       "officialUrl": "https://www.gyeongjumarathon.com/home",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2595,9 +2777,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/07 - 10/07",
       "organizer": "(사)행복한동행",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://storyrun.kr/",
       "officialUrl": "https://storyrun.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2617,7 +2801,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/12 - 09/11",
       "organizer": "의정부체육회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ujb-waterway-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ujb-waterway-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -2638,8 +2824,9 @@
       "registrationPeriodLabel": "6/17 - 9/17",
       "organizer": "대전광역시 중구체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://dtrail.co.kr/",
       "officialUrl": "https://dtrail.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2659,7 +2846,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/10 - 09/17",
       "organizer": "전남광주통합특별시남구육상연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jeonnam-gwangju-namgu-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jeonnam-gwangju-namgu-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -2680,7 +2869,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/24 - 09/20",
       "organizer": "뉴스탑전남",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2nd-1019-peace-marathon-2026-yeosu",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2nd-1019-peace-marathon-2026-yeosu",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -2704,9 +2895,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "05/04 - 06/12",
       "organizer": "청주시체육회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://race.cjsports.or.kr/",
       "officialUrl": "https://race.cjsports.or.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2727,9 +2920,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/22 - 09/17",
       "organizer": "충청남도장애인체육회",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.xn--3e0b74d44h2nczb998h9tb24ds3tnvj.kr/",
       "officialUrl": "https://www.xn--3e0b74d44h2nczb998h9tb24ds3tnvj.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2750,8 +2945,9 @@
       "registrationPeriodLabel": "6/23 - 7/22",
       "organizer": "정선군",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://jsrun.kr/",
       "officialUrl": "https://jsrun.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2770,9 +2966,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/22 - 09/14",
       "organizer": "(주)엘지유플러스",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://119memorial.com/",
       "officialUrl": "https://119memorial.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2793,8 +2991,9 @@
       "registrationPeriodLabel": "6/10 - 7/13",
       "organizer": "대덕구",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://www.dcmarathon.or.kr/",
       "officialUrl": "https://www.dcmarathon.or.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2814,8 +3013,9 @@
       "registrationPeriodLabel": "6/2 - 6/29",
       "organizer": "여주시육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://mara1080.com/event/edaee6e1-0d92-4248-9927-06ed3b0abfd0",
       "officialUrl": "https://mara1080.com/event/edaee6e1-0d92-4248-9927-06ed3b0abfd0",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2852,7 +3052,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/05 - 09/20",
       "organizer": "창원을 사랑하는 시민연합",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/28th-changwon-citizen-health-run-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/28th-changwon-citizen-health-run-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -2874,7 +3076,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/30 - 10/11",
       "organizer": "중랑구육상연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-jungnang-mayor-rose-marathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-jungnang-mayor-rose-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -2916,8 +3120,9 @@
       "registrationPeriodLabel": "4/14 - 5/18",
       "organizer": "아시아투데이",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://asiarun.kr/",
       "officialUrl": "https://asiarun.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -2937,9 +3142,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "04/30 - 05/30",
       "organizer": "전북",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.facebook.com/jeonbuk.kr/posts/1441578457998057",
       "officialUrl": "https://www.facebook.com/jeonbuk.kr/posts/1441578457998057",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2958,9 +3165,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/28 - 08/10",
       "organizer": "기후에너지환경부,안동시",
+      "sourceCheckedAt": "2026-07-27T22:17:11.088Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://runmusicfestival.localvibehub.com/",
       "officialUrl": "https://runmusicfestival.localvibehub.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -2979,7 +3188,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/14 - 09/30",
       "organizer": "(사)함께하는 사랑밭",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-petlympic-run-with-go",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-petlympic-run-with-go",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3019,9 +3230,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/31 - 08/30",
       "organizer": "세종시 육상연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://sejongrun26.com/",
       "officialUrl": "https://sejongrun26.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -3041,7 +3254,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/03 - 09/18",
       "organizer": "뉴시스",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-newsis-seaside-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-newsis-seaside-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3062,9 +3277,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/07 - 10/14",
       "organizer": "청운의꿈(주)",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://hnrun.kr/",
       "officialUrl": "https://hnrun.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -3083,7 +3300,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/21 - 08/31",
       "organizer": "청주충북환경운동연합",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-muthrun-eco-friendly-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-muthrun-eco-friendly-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3104,9 +3323,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/09 - 08/08",
       "organizer": "경기도",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://ggcrun.kr/",
       "officialUrl": "https://ggcrun.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -3125,9 +3346,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/14 - 08/31",
       "organizer": "(사)크레파스",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://iksangiverun.or.kr/",
       "officialUrl": "https://iksangiverun.or.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -3158,8 +3381,9 @@
       "registrationStatus": "closed",
       "note": "공식 사이트 기준 Full 일반접수는 7월 14일 14시, 10km 일반접수는 7월 16일 14시에 열립니다.",
       "capacity": 12000,
+      "externalUrl": "https://www.chuncheonmarathon.com/apply/part-application.html",
       "officialUrl": "https://www.chuncheonmarathon.com/apply/part-application.html",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "공식 · 마라톤GO"
     },
     {
@@ -3178,7 +3402,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/19 - 09/20",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ulsan-runfesta-u-run",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ulsan-runfesta-u-run",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3201,8 +3427,9 @@
       "registrationPeriodLabel": "7/1 - 7/13",
       "organizer": "광명시체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://gmrun.kr/",
       "officialUrl": "https://gmrun.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -3222,9 +3449,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/28 - 08/18",
       "organizer": "부산일보사",
+      "sourceCheckedAt": "2026-07-27T22:17:11.088Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://busan.raceplan.co.kr/",
       "officialUrl": "https://busan.raceplan.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -3264,7 +3493,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/31 - 07/31",
       "organizer": "인천일보,인천마라톤조직위원회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/14th-jeongseojin-arabaetgil-marathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/14th-jeongseojin-arabaetgil-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3287,8 +3518,9 @@
       "registrationPeriodLabel": "7/1 - 8/28",
       "organizer": "청도군체육회, 대구일보",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://xn--hq1bo4en6bw9cp5mzkpmgi.kr/main.php",
       "officialUrl": "https://xn--hq1bo4en6bw9cp5mzkpmgi.kr/main.php",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -3325,7 +3557,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/20 - 09/20",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-taejongdae-beat-on-zombie-race",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-taejongdae-beat-on-zombie-race",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3346,7 +3580,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/11 - 09/11",
       "organizer": "(주)러닝브레이커,전국러닝협회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-just-run10-pocheon-easy-pb-official-race",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-just-run10-pocheon-easy-pb-official-race",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3368,7 +3604,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/08 - 09/30",
       "organizer": "한국자폐인사랑협회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-autism-race-awareness",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-autism-race-awareness",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3390,7 +3628,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "08/06 - 08/06",
       "organizer": "경남일보",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/21st-sacheon-noeul-marathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/21st-sacheon-noeul-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3411,8 +3651,9 @@
       "registrationStatus": "closed",
       "note": "러너블에서 미등록 추가접수 선응모가 7월 한 달간 진행 중입니다.",
       "capacity": 30000,
+      "externalUrl": "https://runable.me/",
       "officialUrl": "https://runable.me/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "러너블 · JTBC 공식"
     },
     {
@@ -3431,7 +3672,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "08/01 - 08/01",
       "organizer": "경기도",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-dmz-open-peace-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-dmz-open-peace-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3452,9 +3695,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "04/17 - 04/21",
       "organizer": "jtbc",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://runable.me/product/17639?comp=3402",
       "officialUrl": "https://runable.me/product/17639?comp=3402",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -3474,7 +3719,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/10 - 10/02",
       "organizer": "서울동행마라톤조직위원회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/26seoul-donghaeng-marathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/26seoul-donghaeng-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3496,8 +3743,9 @@
       "registrationPeriodLabel": "6/15 - 10/1",
       "organizer": "무안군체육회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://mara1080.com/event/d596615e-cf32-4f20-bdbe-13b633f51c4e",
       "officialUrl": "https://mara1080.com/event/d596615e-cf32-4f20-bdbe-13b633f51c4e",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -3538,8 +3786,9 @@
       "registrationPeriodLabel": "7/10 - 7/31",
       "organizer": "대전시 중구 육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://www.djmarathon.co.kr/",
       "officialUrl": "https://www.djmarathon.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -3560,8 +3809,9 @@
       "registrationPeriodLabel": "8/18 - 9/18",
       "organizer": "울산인권마라톤대회 조직위원회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://www.humanrun.org/",
       "officialUrl": "https://www.humanrun.org/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -3581,7 +3831,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "08/12 - 08/12",
       "organizer": "에코라인",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-mungyeong-legend-trail-baekdudaegan",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-mungyeong-legend-trail-baekdudaegan",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3602,7 +3854,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/19 - 10/09",
       "organizer": "(주)경남신문사",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-jinhae-navy-marathon-2026-11-07",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-jinhae-navy-marathon-2026-11-07",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3642,7 +3896,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "scheduled",
       "registrationPeriodLabel": "08/26 - 09/23",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-purmerun-miracle365-nexon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-purmerun-miracle365-nexon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3666,8 +3922,9 @@
       "registrationPeriodLabel": "6/30 - 10/7",
       "organizer": "부여군마라톤연합회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://mara1080.com/event/ffc023fc-7a54-4610-bdd6-2bb9a1028122",
       "officialUrl": "https://mara1080.com/event/ffc023fc-7a54-4610-bdd6-2bb9a1028122",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -3685,7 +3942,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/27 - 10/16",
       "organizer": "한국해운신문, 부산항발전협의회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-maritime-run-festa",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-maritime-run-festa",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3725,7 +3984,9 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "07/20 - 07/31",
       "organizer": "과천시체육회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gwacheon-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gwacheon-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3746,7 +4007,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "scheduled",
       "registrationPeriodLabel": "08/24 - 09/10",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/24th-naju-geumseongsan-forest-marathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/24th-naju-geumseongsan-forest-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3768,7 +4031,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/07 - 10/23",
       "organizer": "서린컴퍼니(주), 강원일보",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-roundlab-run-1108",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-roundlab-run-1108",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3790,7 +4055,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/13 - 10/14",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-haenam-tanggeut-national-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-haenam-tanggeut-national-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3812,7 +4079,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/18 - 10/11",
       "organizer": "사상구청,사상구체육회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jeon-guk-sasang-eco-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jeon-guk-sasang-eco-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3834,8 +4103,9 @@
       "registrationPeriodLabel": "6/15 - 7/15",
       "organizer": "배내골 주민자치위원회",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://k-marathon.or.kr/main.php",
       "officialUrl": "https://k-marathon.or.kr/main.php",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -3853,9 +4123,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/02 - 09/30",
       "organizer": "서울신문, 한국익스트림앤스포츠",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://cafe.naver.com/seoultrailrun/?viewType=pc",
       "officialUrl": "https://cafe.naver.com/seoultrailrun/?viewType=pc",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -3875,7 +4147,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/20 - 10/25",
       "organizer": "아산시 마라톤 협회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/12th-asans-ginkgo-tree-road-national-marathon-2026-11-08",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/12th-asans-ginkgo-tree-road-national-marathon-2026-11-08",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3916,7 +4190,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/21 - 10/08",
       "organizer": "경주시육상연맹",
+      "sourceCheckedAt": "2026-07-24T17:59:02.557Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/gyeongju-athletic-federation-marathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/gyeongju-athletic-federation-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3937,7 +4213,9 @@
       "registrationStatus": "scheduled",
       "registrationPeriodLabel": "08/25 - 10/09",
       "organizer": "아시아경제",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-heritage-run",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-heritage-run",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3958,7 +4236,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/27 - 10/18",
       "organizer": "(사)대한생활체육마라톤협회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/20th-volunteer-love-goodfun-marathon-2026-11-08",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/20th-volunteer-love-goodfun-marathon-2026-11-08",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -3981,7 +4261,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/03 - 10/16",
       "organizer": "순천시체육회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/26th-suncheon-namseungryong-marathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/26th-suncheon-namseungryong-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4002,9 +4284,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "04/13 - 08/30",
       "organizer": "kthcn",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://pohangmarathon.com/",
       "officialUrl": "https://pohangmarathon.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4023,8 +4307,9 @@
       "registrationStatus": "closed",
       "note": "HALF 6월 25일, 10km 6월 26일 접수로 확인됩니다.",
       "capacity": 12000,
+      "externalUrl": "https://www.mbn-seoulmarathon.com/",
       "officialUrl": "https://www.mbn-seoulmarathon.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4046,9 +4331,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "05/06 - 10/15",
       "organizer": "전국마라톤협회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.mara1080.com/event/c8dc2c22-a83a-4743-9e34-c884e9809dbb",
       "officialUrl": "https://www.mara1080.com/event/c8dc2c22-a83a-4743-9e34-c884e9809dbb",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4066,7 +4353,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "scheduled",
       "registrationPeriodLabel": "08/24 - 09/06",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-nanumrace-yongin",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-nanumrace-yongin",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4088,9 +4377,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/06 - 09/11",
       "organizer": "한라일보",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathon.ihalla.com/",
       "officialUrl": "https://marathon.ihalla.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4110,8 +4401,9 @@
       "registrationPeriodLabel": "7/1 - 7/3",
       "organizer": "가민,러너블",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://runable.me/product/18977?comp=18962",
       "officialUrl": "https://runable.me/product/18977?comp=18962",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -4131,8 +4423,9 @@
       "registrationPeriodLabel": "6/20 - 7/29",
       "organizer": "세종특별자치시육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://sjrun.com/",
       "officialUrl": "https://sjrun.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -4151,9 +4444,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/08 - 10/16",
       "organizer": "서울자주통일평화연대",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://seoultongilrun.org/",
       "officialUrl": "https://seoultongilrun.org/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4191,9 +4486,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "05/04 - 10/15",
       "organizer": "한국백혈병소아암협회/시유케이컴",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.cuk-sports.com/",
       "officialUrl": "https://www.cuk-sports.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4211,9 +4508,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "06/08 - 08/31",
       "organizer": "{사}소아암환우돕기 조직위",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://happytrailrun.com/",
       "officialUrl": "https://happytrailrun.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4231,7 +4530,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "04/01 - 10/30",
       "organizer": "(사)한국산악마라톤연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/24th-daemosan-guryongsan-trailrun-2026-11-15",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/24th-daemosan-guryongsan-trailrun-2026-11-15",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4254,8 +4555,9 @@
       "registrationPeriodLabel": "9/1 - 9/30",
       "organizer": "울산광역시 울주군육상연맹",
       "verifiedAt": "마라톤온라인 home 아이콘",
+      "externalUrl": "https://xn--q20bn3kn1bg9oekd84a785cnfg.kr/",
       "officialUrl": "https://xn--q20bn3kn1bg9oekd84a785cnfg.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
     },
     {
@@ -4275,9 +4577,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/02 - 09/18",
       "organizer": "국제신문",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://kjmarathon.com/",
       "officialUrl": "https://kjmarathon.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4298,9 +4602,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/08 - 11/07",
       "organizer": "주식회사 세정",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://urfesta.com/",
       "officialUrl": "https://urfesta.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4320,7 +4626,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/10 - 10/15",
       "organizer": "주식회사 락앤런",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-namhae-trail-race-fall-42k-30k-12k",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-namhae-trail-race-fall-42k-30k-12k",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4342,7 +4650,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/17 - 10/30",
       "organizer": "아시아투데이(사)한국마라톤연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-eoksapul-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-eoksapul-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4363,7 +4673,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "scheduled",
       "registrationPeriodLabel": "09/21 - 09/21",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-marathon-asiad-stadium-start",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-marathon-asiad-stadium-start",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4384,7 +4696,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/03 - 11/15",
       "organizer": "세계평화사랑연맹",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-peace-forest-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-peace-forest-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4405,7 +4719,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "scheduled",
       "registrationPeriodLabel": "09/01 - 10/01",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-kim-dae-jung-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-kim-dae-jung-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4425,7 +4741,9 @@
       "registrationStatus": "scheduled",
       "registrationPeriodLabel": "08/31 - 10/31",
       "organizer": "주식회사 락앤런",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-mujinjang-trail-pre-race",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-mujinjang-trail-pre-race",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4448,9 +4766,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/07 - 10/28",
       "organizer": "남원시체육회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://mara1080.com/event/c2cec79b-c38a-4832-bf4f-7ecb499cdcd5/guide/overview",
       "officialUrl": "https://mara1080.com/event/c2cec79b-c38a-4832-bf4f-7ecb499cdcd5/guide/overview",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4469,7 +4789,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/14 - 10/24",
       "organizer": "2027 서울WYD, CPBC",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2027-seoul-youth-peace-run",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2027-seoul-youth-peace-run",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4490,9 +4812,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/10 - 08/30",
       "organizer": "사우나 민족",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://mokyokrun.shop/",
       "officialUrl": "https://mokyokrun.shop/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4512,7 +4836,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/18 - 11/15",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jeongeup-community-freemarket-marathon",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-jeongeup-community-freemarket-marathon",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4534,7 +4860,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/31 - 11/28",
       "organizer": "주식회사 오소컴퍼니",
+      "sourceCheckedAt": "2026-08-04T03:42:39.727Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2nd-cheonan-independence-memorial-marathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2nd-cheonan-independence-memorial-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4555,7 +4883,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/17 - 11/16",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-saehanmedia-marathon-celebrating-baekbeom-kim-gu-150th-anniversary",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-saehanmedia-marathon-celebrating-baekbeom-kim-gu-150th-anniversary",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4576,7 +4906,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/31 - 11/22",
       "organizer": "안중근평화재단청년아카데미",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/14th-ahn-jung-geun-peace-marathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/14th-ahn-jung-geun-peace-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4598,7 +4930,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/01 - 10/28",
       "organizer": "(사)대한생활체육회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/23rd-hangang-citizen-marathon-2026",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/23rd-hangang-citizen-marathon-2026",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4619,9 +4953,11 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "07/02 - 09/01",
       "organizer": "전국마라톤협회",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://mara1080.com/event/df4b4e7d-4fbc-4843-858c-f15c032e92cb",
       "officialUrl": "https://mara1080.com/event/df4b4e7d-4fbc-4843-858c-f15c032e92cb",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4640,7 +4976,9 @@
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/03 - 11/26",
       "organizer": "(사)행복한가게",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hanam-misa-lake-energy-run",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hanam-misa-lake-energy-run",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4661,9 +4999,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "08/01 - 08/16",
       "organizer": "KNN,부산시",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.busanmarathon.com/",
       "officialUrl": "https://www.busanmarathon.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4681,7 +5021,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/14 - 10/30",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hwang-youngjo-roadrace",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hwang-youngjo-roadrace",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4702,7 +5044,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/18 - 11/06",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-boys-girls-head-donation-run",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-boys-girls-head-donation-run",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4725,7 +5069,9 @@
       "registrationStatus": "scheduled",
       "registrationPeriodLabel": "10/22 - 11/16",
       "organizer": "진주시육상연맹",
+      "sourceCheckedAt": "2026-08-04T03:42:39.727Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/36th-jinju-marathon-2026-rooted-community-run",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/36th-jinju-marathon-2026-rooted-community-run",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4745,7 +5091,9 @@
       "registrationTimeConfirmed": false,
       "registrationStatus": "open",
       "registrationPeriodLabel": "08/14 - 12/12",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hangang-run-festival-of-health-and-unity",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hangang-run-festival-of-health-and-unity",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
@@ -4768,9 +5116,11 @@
       "registrationStatus": "scheduled",
       "registrationPeriodLabel": "10/12 - 01/10",
       "organizer": "(사)한국마라톤연맹",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://dkrun.co.kr/",
       "officialUrl": "https://dkrun.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4789,9 +5139,11 @@
       "registrationStatus": "closed",
       "registrationPeriodLabel": "06/08 - 06/18",
       "organizer": "동아일보,서울시",
+      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://seoul-marathon.com/",
       "officialUrl": "https://seoul-marathon.com/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     },
     {
@@ -4811,9 +5163,11 @@
       "registrationStatus": "scheduled",
       "registrationPeriodLabel": "11/01 - 12/31",
       "organizer": "기장바다마라톤조직위",
+      "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
       "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://www.badarun.co.kr/",
       "officialUrl": "https://www.badarun.co.kr/",
-      "externalLinkKind": "official",
+      "externalLinkKind": "registration",
       "sourceName": "마라톤GO"
     }
   ]

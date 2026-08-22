@@ -1,9 +1,8 @@
 // 러닝봄 홈입니다. 오늘 → 이번 주 → 다가오는 것 → 최근 기록 → 발견 순서로 한 화면에 맥락을 담습니다.
 //
 // 화면 규칙
-// - 맨 위는 숫자 나열이 아니라 "오늘 뭘 하면 되는지" 한 문장입니다(model.ts의 todayHeadline).
-// - 숫자에는 반드시 비교나 의미를 붙입니다(weekInsight.meaning, 최근 기록의 note).
-// - 달리기 시작 버튼은 스크롤 없이 보이는 첫 카드 안에 크게 둡니다.
+// - 맨 위는 사용자가 가장 먼저 할 수 있는 행동인 접수 중 대회 탐색으로 시작합니다.
+// - 훈련·기록은 사라지지 않고, 대회 탐색 다음 카드부터 자연스럽게 이어집니다.
 // - 카드마다 사용자가 할 행동은 하나입니다.
 // - 기록 수(0 / 1~4 / 5+)에 따라 보여 줄 카드를 바꿔 빈 화면을 만들지 않습니다.
 import { memo, useCallback, useMemo } from 'react';
@@ -53,11 +52,8 @@ import {
   homeStage,
   isPlainKorean,
   pickForToday,
-  planForToday,
   recentActivityCards,
   registrationDeadlineLabel,
-  startActionLabel,
-  todayHeadline,
   weekDayMarks,
   weekInsight,
   weekMovementCaption,
@@ -107,21 +103,6 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe, onStartTraining
   const openAllRaces = useCallback(() => onOpenRace(undefined), [onOpenRace]);
 
   const stage = useMemo(() => homeStage(activities), [activities]);
-  const todayPlan = useMemo(() => planForToday(plans, now), [now, plans]);
-
-  const headline = useMemo(
-    () =>
-      todayHeadline({
-        activities,
-        weeklyGoal,
-        plans,
-        coachMinutes: preferences.coachMinutes,
-        ...(goalRace ? { goalRace: { name: goalRace.name, raceDate: goalRace.raceDate } } : {}),
-        now,
-      }),
-    [activities, goalRace, now, plans, preferences.coachMinutes, weeklyGoal],
-  );
-
   const week = useMemo(() => weekInsight(activities, weeklyGoal, now), [activities, now, weeklyGoal]);
   const dayMarks = useMemo(() => weekDayMarks(activities, now), [activities, now]);
   const dayCaption = useMemo(
@@ -130,6 +111,10 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe, onStartTraining
   );
   const movedDays = useMemo(() => dayMarks.filter((mark) => mark.moved).length, [dayMarks]);
   const recent = useMemo(() => recentActivityCards(activities, 2), [activities]);
+  const openRaceGroups = useMemo(
+    () => groupRaces(feed.races, now).filter((group) => group.status === '접수 중'),
+    [feed.races, now],
+  );
 
   const upcoming = useMemo<UpcomingRow[]>(() => {
     const rows: UpcomingRow[] = [];
@@ -157,8 +142,7 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe, onStartTraining
       });
     }
 
-    const openGroups = groupRaces(feed.races, now).filter((group) => group.status === '접수 중');
-    const closingSoon = openGroups
+    const closingSoon = openRaceGroups
       .map((group) => ({
         group,
         deadline: registrationDeadlineLabel(group.primary.registrationClosesAt, now),
@@ -167,7 +151,7 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe, onStartTraining
     const raceCandidates =
       closingSoon.length > 0
         ? closingSoon
-        : openGroups.slice(0, 2).map((group) => ({ group, deadline: undefined }));
+        : openRaceGroups.slice(0, 2).map((group) => ({ group, deadline: undefined }));
 
     for (const { group, deadline } of raceCandidates) {
       if (goalRace && group.raceIds.includes(goalRace.raceId)) continue;
@@ -182,7 +166,7 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe, onStartTraining
     }
 
     return rows.slice(0, UPCOMING_LIMIT);
-  }, [feed.races, goalRace, now, onOpenRace, openCalendar, plans]);
+  }, [goalRace, now, onOpenRace, openCalendar, openRaceGroups, plans]);
 
   // 발견 자리는 앱 안의 기존 목록에서 그날 하나씩만 고릅니다(없는 항목을 지어내지 않습니다).
   // 러닝화는 하나만 뽑던 것을 순위 다섯 줄(ShoeRankingCard)로 바꿨습니다. 가격이 같이 보입니다.
@@ -205,25 +189,25 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenShoe, onStartTraining
     >
       {storageError ? <Banner title="저장 상태 안내" body={storageError} tone="warning" /> : null}
 
-      {/* ① 인사 + 오늘 한 문장 + ② 큰 시작 버튼: 스크롤 없이 여기까지 보입니다. */}
+      {/* 첫 30초는 접수 중인 대회를 찾고, 그 다음에 훈련과 기록을 이어 갑니다. */}
       <Card
-        accessibilityLabel={`오늘 안내. ${headline.text}`}
+        accessibilityLabel={`접수 중인 대회 ${openRaceGroups.length}개 찾기`}
         style={styles.hero}
         tone="navy"
       >
-        <Text style={styles.heroEyebrow}>{greetingLine(preferences.nickname, now)}</Text>
-        <Text style={styles.heroHeadline}>{headline.text}</Text>
+        <Text style={styles.heroEyebrow}>{greetingLine(preferences.nickname, now)} · 러닝 대회 일정</Text>
+        <Text style={styles.heroHeadline}>지금 접수 중인{`\n`}대회를 찾아보세요</Text>
         <Button
-          accessibilityHint="음성 코치와 함께 오늘의 러닝을 시작해요"
-          label={startActionLabel(todayPlan)}
-          onPress={openStart}
+          accessibilityHint="접수 중인 대회를 지역과 거리로 찾아봐요"
+          label={loading ? '대회 일정 불러오는 중' : `접수 중 대회 ${openRaceGroups.length}개 보기`}
+          onPress={openAllRaces}
           size="lg"
           style={styles.heroAction}
-          testID="home-start-run"
+          testID="home-open-races"
           tone="secondary"
         />
         <Text style={styles.heroNote}>
-          시간과 유형은 시작 화면에서 바꿀 수 있어요. 몸 상태가 우선이에요.
+          출처와 마지막 확인 시각을 보고, 최종 접수 조건은 외부 페이지에서 확인하세요.
         </Text>
       </Card>
 

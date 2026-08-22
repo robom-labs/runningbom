@@ -27,5 +27,8 @@ test("모바일 번들은 웹 정본의 접수 상태·마감·종목 창·검�
   );
   assert.deepEqual(target.registrationWindows, expectedWindows);
   assert.equal(target.verifiedAt, source.registrationTimeVerifiedAt ?? source.linkVerifiedFrom ?? undefined);
-  assert.equal(target.externalLinkKind, source.registrationUrl ? "official" : "source");
+  assert.equal(target.sourceCheckedAt, source.dataVerifiedAt ?? undefined);
+  assert.equal(target.externalUrl, source.registrationUrl ?? source.sourceDetailUrl ?? undefined);
+  assert.equal(target.officialUrl, target.externalUrl, "구버전 원격 피드 호환 별칭을 유지합니다.");
+  assert.equal(target.externalLinkKind, source.registrationUrl ? "registration" : "source");
 });
