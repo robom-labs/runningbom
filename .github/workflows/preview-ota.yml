@@ -1,4 +1,4 @@
-# 화면·글·계산 로직만 바뀌었을 때는 APK를 새로 받지 않아도 되게, 앱이 스스로 내려받을 새 내용을 올린다.
+# 화면·글·계산 로직만 바뀌었을 때는 명시적인 수동 실행에서만 앱이 새 내용을 받게 한다.
 # 네이티브 구성이 바뀌면 fingerprint 값이 달라져 이 업데이트가 예전 APK에 적용되지 않으므로,
 # 그때는 preview-apk.yml이 만든 새 APK를 설치해야 한다(앱이 그 사실을 화면으로 알려 준다).
 name: Preview 자동 업데이트
@@ -10,11 +10,6 @@ on:
         description: '업데이트 설명(비우면 커밋 메시지 사용)'
         required: false
         type: string
-  push:
-    branches: [main]
-    paths:
-      - 'apps/mobile/**'
-
 permissions:
   contents: read
 

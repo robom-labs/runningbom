@@ -1,4 +1,4 @@
-# 러닝봄 Preview APK를 GitHub Actions에서 빌드해 항상 최신 설치본을 배포한다. 정식 Play 앱은 건드리지 않는다.
+# 러닝봄 Preview APK를 명시적인 수동 실행에서만 빌드한다. 정식 Play 앱은 건드리지 않는다.
 name: Preview APK
 
 on:
@@ -13,12 +13,6 @@ on:
         required: false
         default: true
         type: boolean
-  push:
-    branches: [main]
-    paths:
-      - 'apps/mobile/**'
-      - '.github/workflows/preview-apk.yml'
-
 permissions:
   contents: read
 
