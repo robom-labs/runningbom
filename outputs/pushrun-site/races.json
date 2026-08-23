@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.23-race-data-53",
+  "version": "2026.08.24-race-data-54",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -152,99 +152,6 @@
   ],
   "scheduleFeed": [
     {
-      "name": "2026 교룡산성 백야드",
-      "date": "2026-08-23",
-      "time": "07:00 집결",
-      "region": "전북",
-      "venue": "전북 남원시 산곡동 251-2",
-      "distances": [
-        "1회전 7K"
-      ],
-      "registrationOpenAt": "2026-08-09T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-17T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "08/09 - 08/17",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gyoryongsanseong-backyard-survival-marathon",
-      "sourceName": "마라톤GO",
-      "organizer": "삼삼이즈",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "closed",
-      "courseLabel": "1회전 7K",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "name": "2026 금수산트레일러닝대회",
-      "date": "2026-08-23",
-      "time": "08:00 집결",
-      "region": "충북",
-      "venue": "청풍리조트",
-      "distances": [
-        "22km"
-      ],
-      "registrationOpenAt": "2026-04-07T00:00:00+09:00",
-      "registrationCloseAt": "2026-05-31T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "04/07 - 05/31",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "registrationUrl": "https://www.runnerking.com/",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-geumsusan-trail-running",
-      "sourceName": "마라톤GO",
-      "organizer": "제천시산악연맹",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "closed",
-      "courseLabel": "22km",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "name": "2026 대구세계마스터즈 10km마라톤",
-      "date": "2026-08-23",
-      "time": "７：００ 집결",
-      "region": "대구",
-      "venue": "대구스타디움 일원",
-      "distances": [
-        "10K"
-      ],
-      "registrationOpenAt": "2025-12-23T00:00:00+09:00",
-      "registrationCloseAt": "2026-06-23T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "12/23 - 06/23",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "registrationUrl": "https://www.wmac2026.com/",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-daegu-world-masters-10km-marathon",
-      "sourceName": "마라톤GO",
-      "organizer": "대구광역시, 세계마스터즈육상연",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "closed",
-      "courseLabel": "10K",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "name": "2026대구세계마스터즈 10km대회",
-      "date": "2026-08-23",
-      "time": "７：００ 집결",
-      "region": "대구",
-      "venue": "대구스타디움 일원",
-      "distances": [
-        "10K",
-        "35세이상일반인",
-        "3000명"
-      ],
-      "registrationOpenAt": "2025-12-23T00:00:00+09:00",
-      "registrationCloseAt": "2026-06-23T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "12/23 - 06/23",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "registrationUrl": "https://www.wmac2026.com/",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-daegu-world-masters-10km",
-      "sourceName": "마라톤GO",
-      "organizer": "대구광역시,세계마스터즈육상연맹",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "closed",
-      "courseLabel": "10K,35세이상일반인,3000명",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
       "date": "2026-08-29",
       "status": "closed",
       "name": "2026 단양달빛레이스",
@@ -383,7 +290,7 @@
     },
     {
       "date": "2026-08-30",
-      "status": "open",
+      "status": "closed",
       "name": "제3회 한강 서울 하프 마라톤",
       "region": "서울",
       "venue": "여의도 한강공원 물빛광장",
@@ -2342,7 +2249,7 @@
     },
     {
       "date": "2026-10-09",
-      "status": "open",
+      "status": "closed",
       "name": "WYD와 함께하는 생명사랑 마라톤/걷기 대회",
       "region": "경기",
       "venue": "안성 미리내 성지",
@@ -4246,8 +4153,8 @@
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/24th-naju-geumseongsan-forest-marathon-2026",
       "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-23T15:56:26.873Z",
+      "status": "open",
       "courseLabel": "Half,6km,11km,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4381,8 +4288,8 @@
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-nanumrace-yongin",
       "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-08-23T15:56:26.873Z",
+      "status": "open",
       "courseLabel": "10K,15km,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -5190,7 +5097,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-22T15:55:41.005Z",
+  "lastSuccessfulRefreshAt": "2026-08-23T15:56:26.873Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
