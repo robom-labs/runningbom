@@ -1,5 +1,5 @@
 {
-  "revision": "2026.08.25-race-data-55",
+  "revision": "2026.08.26-race-data-56",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -1083,10 +1083,10 @@
       "registrationOpensAt": "2025-11-13T00:00:00+09:00",
       "registrationClosesAt": "2026-08-25T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "11/13 - 08/25",
       "organizer": "(사)한국산악마라톤연맹",
-      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
+      "sourceCheckedAt": "2026-08-25T19:01:01.869Z",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/14th-seoraksan-dinosaur-ridge-climbathon-2026",
       "linkReference": "마라톤GO 공개 일정 상세",
       "verifiedAt": "마라톤GO 공개 일정 상세",
@@ -4251,9 +4251,9 @@
       "registrationOpensAt": "2026-08-26T00:00:00+09:00",
       "registrationClosesAt": "2026-09-23T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "08/26 - 09/23",
-      "sourceCheckedAt": "2026-08-22T05:55:10.039Z",
+      "sourceCheckedAt": "2026-08-25T19:01:01.869Z",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-purmerun-miracle365-nexon",
       "linkReference": "마라톤GO 공개 일정 상세",
       "verifiedAt": "마라톤GO 공개 일정 상세",
