@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026.08.26-race-data-56",
-  "generatedAt": "2026-08-26T20:07:49.971Z",
+  "contentVersion": "2026.08.28-race-data-57",
+  "generatedAt": "2026-08-27T22:19:22.871Z",
   "source": {
     "kind": "verified-web-normalization",
     "path": "outputs/pushrun-site/races.json",
@@ -2197,7 +2197,7 @@
       "registrationOpensAt": "2026-07-08T00:00:00+09:00",
       "registrationClosesAt": "2026-08-27T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "07/08 - 08/27",
       "organizer": "(주)일요신문사 (주)비즈한국",
       "sourceCheckedAt": "2026-07-23T23:48:14.890Z",
