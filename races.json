@@ -1,5 +1,5 @@
 {
-  "version": "2026.08.28-race-data-58",
+  "version": "2026.08.29-race-data-59",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -2566,8 +2566,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-mungyeong-omija-halfmarathon",
       "sourceName": "마라톤GO",
       "organizer": "영남일보",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-28T22:26:09.325Z",
+      "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2663,8 +2663,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-cheonan-leebongjoo-marathon",
       "sourceName": "마라톤GO",
       "organizer": "천안시체육회",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-08-28T22:26:09.325Z",
+      "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -3500,7 +3500,7 @@
     },
     {
       "date": "2026-10-25",
-      "status": "open",
+      "status": "closed",
       "name": "제19회 청도반시 전국마라톤",
       "region": "경북",
       "venue": "청도공설운동장",
@@ -5187,7 +5187,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-27T22:19:22.871Z",
+  "lastSuccessfulRefreshAt": "2026-08-28T22:26:09.325Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
