@@ -1,5 +1,5 @@
 {
-  "revision": "2026.08.28-race-data-57",
+  "revision": "2026.08.28-race-data-58",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -2464,6 +2464,30 @@
       "sourceName": "마라톤GO"
     },
     {
+      "id": "schedule-0d184baf2018",
+      "name": "2026 하트런",
+      "region": "서울",
+      "venue": "올림픽공원 피크닉장",
+      "raceDate": "2026-10-10",
+      "distances": [
+        "10K",
+        "5K"
+      ],
+      "registrationOpensAt": "2026-08-24T00:00:00+09:00",
+      "registrationClosesAt": "2026-09-11T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "open",
+      "registrationPeriodLabel": "08/24 - 09/11",
+      "sourceCheckedAt": "2026-08-28T11:29:46.591Z",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-heartrun-vision-impaired-children",
+      "linkReference": "마라톤GO 공개 일정 상세",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-heartrun-vision-impaired-children",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-heartrun-vision-impaired-children",
+      "externalLinkKind": "source",
+      "sourceName": "마라톤GO"
+    },
+    {
       "id": "schedule-2cbbdd4fd8c9",
       "name": "제3회 성동구연맹회장기 마라톤",
       "region": "서울",
@@ -3242,6 +3266,30 @@
       "officialUrl": "https://asiarun.kr/",
       "externalLinkKind": "registration",
       "sourceName": "마라톤온라인"
+    },
+    {
+      "id": "schedule-a6b1441556f8",
+      "name": "2026 하남시 시장기 당정마라톤",
+      "region": "경기",
+      "venue": "하남스타필드 앞 당정뜰",
+      "raceDate": "2026-10-18",
+      "distances": [
+        "10K",
+        "5K"
+      ],
+      "registrationOpensAt": "2026-09-02T00:00:00+09:00",
+      "registrationClosesAt": "2026-09-18T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "scheduled",
+      "registrationPeriodLabel": "09/02 - 09/18",
+      "sourceCheckedAt": "2026-08-28T11:29:46.591Z",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hanam-dangjeong-marathon",
+      "linkReference": "마라톤GO 공개 일정 상세",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hanam-dangjeong-marathon",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hanam-dangjeong-marathon",
+      "externalLinkKind": "source",
+      "sourceName": "마라톤GO"
     },
     {
       "id": "schedule-c7f2d9f8c8a4",
@@ -4641,6 +4689,31 @@
       "sourceName": "마라톤온라인"
     },
     {
+      "id": "schedule-bf6926fdeb0a",
+      "name": "2026 영종 하늘길 마라톤",
+      "region": "인천",
+      "venue": "인천, 영종 씨사이드파크 일대",
+      "raceDate": "2026-11-14",
+      "distances": [
+        "Half",
+        "10K",
+        "5K"
+      ],
+      "registrationOpensAt": "2026-08-24T00:00:00+09:00",
+      "registrationClosesAt": "2026-10-08T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "open",
+      "registrationPeriodLabel": "08/24 - 10/08",
+      "sourceCheckedAt": "2026-08-28T11:29:46.591Z",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yeongjong-skyway-marathon",
+      "linkReference": "마라톤GO 공개 일정 상세",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yeongjong-skyway-marathon",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yeongjong-skyway-marathon",
+      "externalLinkKind": "source",
+      "sourceName": "마라톤GO"
+    },
+    {
       "id": "schedule-edc5d53f90d9",
       "name": "2026 포항마라톤챔피언십",
       "region": "경북",
@@ -5563,6 +5636,31 @@
       "verifiedAt": "마라톤GO 공개 일정 상세",
       "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/36th-jinju-marathon-2026-rooted-community-run",
       "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/36th-jinju-marathon-2026-rooted-community-run",
+      "externalLinkKind": "source",
+      "sourceName": "마라톤GO"
+    },
+    {
+      "id": "schedule-ee939bf465d5",
+      "name": "2026 코리아 시즌 레이스",
+      "region": "서울",
+      "venue": "상암월드컵공원 평화광장",
+      "raceDate": "2026-12-26",
+      "distances": [
+        "Half",
+        "10K",
+        "5K"
+      ],
+      "registrationOpensAt": "2026-08-25T00:00:00+09:00",
+      "registrationClosesAt": "2026-12-16T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "open",
+      "registrationPeriodLabel": "08/25 - 12/16",
+      "sourceCheckedAt": "2026-08-28T11:29:46.591Z",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-korea-season-race",
+      "linkReference": "마라톤GO 공개 일정 상세",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-korea-season-race",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-korea-season-race",
       "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
