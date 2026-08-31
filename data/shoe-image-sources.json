@@ -1,6 +1,6 @@
 {
-  "note": "공식 제품 페이지가 스스로 공개한 제품 이미지 주소만 담습니다. 사람이 만들지 않고 scripts/collect-shoe-images.mjs가 채웁니다. 권리 상태는 사람이 약관을 확인한 뒤에만 올립니다.",
-  "revision": 0,
-  "checkedAt": "2026-07-28",
+  "note": "공식 제품 페이지가 스스로 공개한 제품 이미지 주소만 담습니다. 사람이 만들지 않고 scripts/collect-shoe-images.mjs가 채웁니다. 권리 상태는 사람이 확인해 올립니다.",
+  "revision": 1,
+  "checkedAt": "2026-08-31",
   "items": {}
 }
