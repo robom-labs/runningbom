@@ -1,5 +1,5 @@
 {
-  "version": "2026.09.01-race-data-62",
+  "version": "2026.09.02-race-data-63",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -1090,8 +1090,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-chungnyeon-day-namdong-run",
       "sourceName": "마라톤GO",
       "organizer": "디지틀조선일보C&M",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-09-01T16:43:34.321Z",
+      "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2809,8 +2809,8 @@
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hanam-dangjeong-marathon",
       "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-08-28T11:29:46.591Z",
-      "status": "scheduled",
+      "dataVerifiedAt": "2026-09-01T16:43:34.321Z",
+      "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4716,8 +4716,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-goldrun-gumsan-marathon",
       "sourceName": "마라톤GO",
       "organizer": "전국마라톤협회",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-09-01T16:43:34.321Z",
+      "status": "closed",
       "courseLabel": "5K,12km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4983,7 +4983,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-08-31T21:05:26.409Z",
+  "lastSuccessfulRefreshAt": "2026-09-01T16:43:34.321Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
