@@ -1,5 +1,5 @@
 {
-  "revision": "2026.09.03-race-data-64",
+  "revision": "2026.09.04-race-data-65",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -1551,7 +1551,7 @@
       "registrationOpensAt": "2026-03-20T00:00:00+09:00",
       "registrationClosesAt": "2026-09-03T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationDataStatus": "needs-review",
       "registrationDataIssue": "마지막 데이터 확인 시각이 없어 접수 상태를 안내하지 않아요.",
       "registrationPeriodLabel": "3/20 - 9/3",
@@ -4220,9 +4220,9 @@
       "registrationOpensAt": "2026-09-04T00:00:00+09:00",
       "registrationClosesAt": "2026-10-18T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "scheduled",
+      "registrationStatus": "open",
       "registrationPeriodLabel": "09/04 - 10/18",
-      "sourceCheckedAt": "2026-09-03T04:38:44.980Z",
+      "sourceCheckedAt": "2026-09-03T16:30:39.930Z",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-gyeonggi-hwaseong-ecorun",
       "linkReference": "마라톤GO 공개 일정 상세",
       "verifiedAt": "마라톤GO 공개 일정 상세",
