@@ -1,5 +1,5 @@
 {
-  "version": "2026.09.08-race-data-69",
+  "version": "2026.09.09-race-data-70",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -185,22 +185,56 @@
       "region": "서울",
       "venue": "서울월드컵경기장 평화광장",
       "distances": [
-        "10K",
-        "5K"
+        "5K",
+        "10K"
       ],
       "registrationOpenAt": "2026-07-20T00:00:00+09:00",
       "registrationCloseAt": "2026-08-31T23:59:00+09:00",
       "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "07/20 - 08/31",
+      "registrationPeriodLabel": "종목별 접수 일정",
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "registrationUrl": "https://www.herorace.kr/",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-energy-hero-race",
       "sourceName": "마라톤GO",
       "organizer": "굿피플",
-      "dataVerifiedAt": "2026-08-31T21:05:26.409Z",
+      "dataVerifiedAt": "2026-09-09T11:30:55.217Z",
       "status": "closed",
       "courseLabel": "10K,5K",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
+      "registrationWindows": [
+        {
+          "label": "10K",
+          "distance": "10K",
+          "opensAt": "2026-07-20T00:00:00+09:00",
+          "closesAt": "2026-08-31T23:59:00+09:00",
+          "timeConfirmed": false,
+          "id": "10k"
+        },
+        {
+          "label": "5K",
+          "distance": "5K",
+          "opensAt": "2026-07-20T00:00:00+09:00",
+          "closesAt": "2026-08-31T23:59:00+09:00",
+          "timeConfirmed": false,
+          "id": "5k"
+        },
+        {
+          "label": "10K",
+          "distance": "10K",
+          "opensAt": "2026-07-27T00:00:00+09:00",
+          "closesAt": "2026-08-31T23:59:00+09:00",
+          "timeConfirmed": false,
+          "id": "10k-2"
+        },
+        {
+          "label": "5K",
+          "distance": "5K",
+          "opensAt": "2026-07-27T00:00:00+09:00",
+          "closesAt": "2026-08-31T23:59:00+09:00",
+          "timeConfirmed": false,
+          "id": "5k-2"
+        }
+      ]
     },
     {
       "name": "2026 여수 백리섬섬트레일런",
@@ -300,6 +334,28 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
+      "name": "비포 선라이즈 슬로우 마라톤",
+      "date": "2026-09-12",
+      "time": "05:00 집결",
+      "region": "강원",
+      "venue": "강릉 경포호수 일대",
+      "distances": [
+        "10K",
+        "5K"
+      ],
+      "registrationOpenAt": "2026-08-10T00:00:00+09:00",
+      "registrationCloseAt": "2026-08-23T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/10 - 08/23",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/before-sunrise-slow-marathon-2026-09-12",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-09-09T11:30:55.217Z",
+      "status": "closed",
+      "courseLabel": "10K,5K",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
       "date": "2026-09-12",
       "status": "open",
       "name": "빵트레일런 2026",
@@ -319,6 +375,51 @@
       "registrationPeriodSource": "2026년3월31일~2026년9월12일",
       "courseLabel": "10km,30K,20K",
       "organizer": "1986프로덕션"
+    },
+    {
+      "name": "서울올림픽기념 88RUN",
+      "date": "2026-09-12",
+      "time": "오전 8시 30분 집결",
+      "region": "경기",
+      "venue": "미사경정공원",
+      "distances": [
+        "10K",
+        "5K"
+      ],
+      "registrationOpenAt": "2026-08-05T00:00:00+09:00",
+      "registrationCloseAt": "2026-08-05T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/05 - 08/05",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/seoul-olympic-88run-2026-09-12",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-09-09T11:30:55.217Z",
+      "status": "closed",
+      "courseLabel": "10K,5K",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
+      "name": "제 6회 계란 마라톤",
+      "date": "2026-09-12",
+      "time": "오전 08시 30분 집결",
+      "region": "경기",
+      "venue": "경인아라뱃길여객터미널 아라타워",
+      "distances": [
+        "Half",
+        "10K",
+        "5K"
+      ],
+      "registrationOpenAt": "2026-08-06T00:00:00+09:00",
+      "registrationCloseAt": "2026-08-26T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/06 - 08/26",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/6th-egg-marathon-2026",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-09-09T11:30:55.217Z",
+      "status": "closed",
+      "courseLabel": "Half,10K,5K",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
       "date": "2026-09-12",
@@ -829,15 +930,15 @@
         "5K"
       ],
       "registrationOpenAt": "2026-07-13T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-31T23:59:00+09:00",
+      "registrationCloseAt": "2026-08-14T23:59:00+09:00",
       "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "07/13 - 08/31",
+      "registrationPeriodLabel": "07/13 - 08/14",
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "registrationUrl": "https://kgseasiderun.co.kr/",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2nd-gyeonggi-newspaper-seaside-marathon-2026",
       "sourceName": "마라톤GO",
       "organizer": "경기신문",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
+      "dataVerifiedAt": "2026-09-09T11:30:55.217Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
