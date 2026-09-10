@@ -1,5 +1,5 @@
 {
-  "version": "2026.09.09-race-data-70",
+  "version": "2026.09.11-race-data-71",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -749,8 +749,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-sachal-run",
       "sourceName": "마라톤GO",
       "organizer": "윌슨컴퍼니 주식회사",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-09-10T16:29:30.813Z",
+      "status": "closed",
       "courseLabel": "6.3km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -775,7 +775,7 @@
       "sourceName": "마라톤GO",
       "organizer": "(사)행복한가게",
       "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2006,7 +2006,7 @@
     },
     {
       "date": "2026-10-10",
-      "status": "open",
+      "status": "closed",
       "name": "제9회 거제시장배 섬꽃 전국 마라톤",
       "region": "경남",
       "venue": "거제스포츠파크",
@@ -2069,7 +2069,7 @@
       "sourceName": "마라톤GO",
       "organizer": "앙성면체육회",
       "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2313,7 +2313,7 @@
     },
     {
       "date": "2026-10-11",
-      "status": "open",
+      "status": "closed",
       "name": "제10회 가을철 산불조심마라톤",
       "region": "서울",
       "venue": "광평교운동장",
@@ -3885,7 +3885,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/24th-naju-geumseongsan-forest-marathon-2026",
       "sourceName": "마라톤GO",
       "dataVerifiedAt": "2026-08-23T15:56:26.873Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "Half,6km,11km,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4136,7 +4136,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-fila-run-espresso",
       "sourceName": "마라톤GO",
       "dataVerifiedAt": "2026-09-03T04:38:44.980Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -5010,7 +5010,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-09-09T16:43:24.769Z",
+  "lastSuccessfulRefreshAt": "2026-09-10T16:29:30.813Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
