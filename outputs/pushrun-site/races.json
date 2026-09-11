@@ -1,5 +1,5 @@
 {
-  "version": "2026.09.11-race-data-71",
+  "version": "2026.09.12-race-data-72",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -1864,7 +1864,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-heartrun-vision-impaired-children",
       "sourceName": "마라톤GO",
       "dataVerifiedAt": "2026-08-28T11:29:46.591Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2351,7 +2351,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/22nd-geumcheon-mayor-health-run-2026-10-11",
       "sourceName": "마라톤GO",
       "dataVerifiedAt": "2026-09-03T04:38:44.980Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2420,7 +2420,7 @@
       "sourceName": "마라톤GO",
       "organizer": "의정부체육회",
       "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -3222,7 +3222,7 @@
       "sourceName": "마라톤GO",
       "organizer": "(주)러닝브레이커,전국러닝협회",
       "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4115,7 +4115,7 @@
       "sourceName": "마라톤GO",
       "organizer": "한라일보",
       "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "Full,Half,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -5010,7 +5010,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-09-10T16:29:30.813Z",
+  "lastSuccessfulRefreshAt": "2026-09-11T16:34:01.586Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
