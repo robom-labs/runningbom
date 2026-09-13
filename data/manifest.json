@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "static-2c7634bafa91b573339c",
-  "generatedAt": "2026-09-12T15:35:54.688Z",
+  "contentVersion": "static-e82ae649cee1df71b614",
+  "generatedAt": "2026-09-13T16:24:46.216Z",
   "minimumAppVersion": "0.19.0",
   "checksums": {
-    "races.json": "c783d8b81b3a5810bff8c555918d89a67d36d794091bbc46165dc1bf62923799",
+    "races.json": "1b952116f429ef5dec126a7dacb699b6842fe6bf33c0179a705438f941f54d90",
     "shoes.json": "6995c88202f71b27a4683bde2cdd48521e25f6be18d8013f375e0d0f62bb7ea3",
     "upcoming-shoes.json": "8cb8da12ddd7b39aaa145571c915d3521cc9398a713879ddb8ca9c462cd23378",
     "coaching.json": "b74bb0f52aed26946bbdd9fe1a9f36c8b4d3b25e9d5dd1ab90643467aa0f3ce4"
   },
   "sizes": {
-    "races.json": 220032,
+    "races.json": 209000,
     "shoes.json": 7183,
     "upcoming-shoes.json": 238,
     "coaching.json": 1582015
   },
   "recordCounts": {
-    "races.json": 201,
+    "races.json": 191,
     "shoes.json": 8,
     "upcoming-shoes.json": 0,
     "coaching.json": 60

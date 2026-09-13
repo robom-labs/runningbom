@@ -1,5 +1,5 @@
 {
-  "version": "2026.09.13-race-data-73",
+  "version": "2026.09.14-race-data-74",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -107,229 +107,6 @@
     }
   ],
   "scheduleFeed": [
-    {
-      "date": "2026-09-13",
-      "status": "closed",
-      "name": "2026 런서울런",
-      "region": "서울",
-      "venue": "서울 광장",
-      "time": "07:30",
-      "distances": [
-        "Half",
-        "10K"
-      ],
-      "registrationUrl": "https://runseoulrun.com/",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-06-29T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-29T23:59:00+09:00",
-      "registrationPeriodLabel": "6/29 - 7/29",
-      "registrationPeriodSource": "2026년6월29일~2026년7월29일",
-      "courseLabel": "하프,10km",
-      "organizer": "일간스포츠"
-    },
-    {
-      "name": "2026 울진 금강송배 힐링마라톤",
-      "date": "2026-09-13",
-      "time": "09:00 집결",
-      "region": "경북",
-      "venue": "울진종합운동장",
-      "distances": [
-        "Half",
-        "10K",
-        "5K",
-        "7인1조 단체전"
-      ],
-      "registrationOpenAt": "2026-01-01T00:00:00+09:00",
-      "registrationCloseAt": "2026-05-31T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "01/01 - 05/31",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-uljin-geumgangsong-healing-marathon",
-      "sourceName": "마라톤GO",
-      "organizer": "울진군",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "closed",
-      "courseLabel": "Half,10K,5K,7인1조 단체전",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "name": "2026 히어로레이스",
-      "date": "2026-09-13",
-      "time": "07:30 집결",
-      "region": "서울",
-      "venue": "여의도공원 문화의마당",
-      "distances": [
-        "15km"
-      ],
-      "registrationOpenAt": "2026-07-14T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-14T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "07/14 - 08/14",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "registrationUrl": "https://web.runit.co.kr/races/1120",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hero-race-15km-yeouido",
-      "sourceName": "마라톤GO",
-      "organizer": "MBN",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "closed",
-      "courseLabel": "15km",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "date": "2026-09-13",
-      "status": "closed",
-      "name": "2026포항이차전지전국마라톤",
-      "region": "경북",
-      "venue": "포항운하관주차장",
-      "time": "08:00",
-      "distances": [
-        "Half",
-        "10K",
-        "5K"
-      ],
-      "registrationUrl": "https://energyrun.co.kr/",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-06-29T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-20T23:59:00+09:00",
-      "registrationPeriodLabel": "6/29 - 7/20",
-      "registrationPeriodSource": "2026년6월29일~2026년7월20일",
-      "courseLabel": "하프,10km,5km",
-      "organizer": "매일신문사"
-    },
-    {
-      "name": "달리는 세상 10km 런",
-      "date": "2026-09-13",
-      "time": "오전 7시 30분 집결",
-      "region": "대전",
-      "venue": "대전엑스포시민광장",
-      "distances": [
-        "10K",
-        "5K"
-      ],
-      "registrationOpenAt": "2026-07-15T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-31T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "07/15 - 08/31",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "registrationUrl": "https://mara1080.com/event/0674df45-473c-4182-bed4-d15582fb8c73/guide/overview",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/running-world-10km-run-2026-09-13",
-      "sourceName": "마라톤GO",
-      "organizer": "월드런",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "closed",
-      "courseLabel": "10K,5K",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "date": "2026-09-13",
-      "status": "closed",
-      "name": "제 16회 스마일 런 페스티벌",
-      "region": "서울",
-      "venue": "상암동 평화의공원 평화광장",
-      "time": "08:30",
-      "distances": [
-        "Half",
-        "10K",
-        "5K"
-      ],
-      "registrationUrl": "https://www.smilerun.co.kr/main/main.php",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-06-29T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-31T23:59:00+09:00",
-      "registrationPeriodLabel": "6/29 - 7/31",
-      "registrationPeriodSource": "2026년6월29일~2026년7월31일",
-      "courseLabel": "하프,10km,5km,걷기",
-      "organizer": "(사)대한치과의사협회"
-    },
-    {
-      "name": "제14회 설악산공룡능선 UTMB CLIMBATHON",
-      "date": "2026-09-13",
-      "time": "03:00 집결",
-      "region": "강원",
-      "venue": "설익산한계령휴계소",
-      "distances": [
-        "27km"
-      ],
-      "registrationOpenAt": "2025-11-13T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-25T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "11/13 - 08/25",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/14th-seoraksan-dinosaur-ridge-climbathon-2026",
-      "sourceName": "마라톤GO",
-      "organizer": "(사)한국산악마라톤연맹",
-      "dataVerifiedAt": "2026-08-25T19:01:01.869Z",
-      "status": "closed",
-      "courseLabel": "27km",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "date": "2026-09-13",
-      "status": "closed",
-      "name": "제14회설악산공룡능선UTMB",
-      "region": "강원",
-      "venue": "설익산한계령휴계소",
-      "time": "03:00",
-      "distances": [
-        "Trail"
-      ],
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2025-11-13T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-31T23:59:00+09:00",
-      "registrationPeriodLabel": "25.11/13 - 26.8/31",
-      "registrationPeriodSource": "2025년11월13일~2026년8월31일",
-      "courseLabel": "27km",
-      "organizer": "(사)한국산악마라톤연맹"
-    },
-    {
-      "name": "제19회 구로구청장배 안양천 단풍마라톤",
-      "date": "2026-09-13",
-      "time": "09:30 집결",
-      "region": "서울",
-      "venue": "구일역 하부 인라인스케이트장",
-      "distances": [
-        "10K",
-        "5K"
-      ],
-      "registrationOpenAt": "2026-08-03T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-14T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "08/03 - 08/14",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/19th-guro-mayor-anyangcheon-autumn-run-2026-09-13",
-      "sourceName": "마라톤GO",
-      "organizer": "구로구육상연맹",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "closed",
-      "courseLabel": "10K,5K",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "date": "2026-09-13",
-      "status": "closed",
-      "name": "제26회 강화해변마라톤대회",
-      "region": "인천",
-      "venue": "강화함상공원",
-      "time": "08:30",
-      "distances": [
-        "Half",
-        "10K",
-        "5K"
-      ],
-      "registrationUrl": "https://www.ganghwamarathon.co.kr/",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-06-08T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-31T23:59:00+09:00",
-      "registrationPeriodLabel": "6/8 - 7/31",
-      "registrationPeriodSource": "2026년6월8일~2026년7월31일",
-      "courseLabel": "하프,10km,5km",
-      "organizer": "인천일보,(사)인천마라톤조직위"
-    },
     {
       "date": "2026-09-19",
       "status": "closed",
@@ -3593,7 +3370,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-tongkeunrun-charity-marathon",
       "sourceName": "마라톤GO",
       "dataVerifiedAt": "2026-09-03T04:38:44.980Z",
-      "status": "scheduled",
+      "status": "open",
       "courseLabel": "10K,5K,3km(가족런)",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4653,7 +4430,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-09-12T15:35:54.688Z",
+  "lastSuccessfulRefreshAt": "2026-09-13T16:24:46.216Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
