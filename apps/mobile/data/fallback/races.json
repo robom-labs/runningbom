@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "contentVersion": "2026.09.16-race-data-76",
-  "generatedAt": "2026-09-15T17:05:09.897Z",
+  "generatedAt": "2026-09-16T17:05:12.553Z",
   "source": {
     "kind": "verified-web-normalization",
     "path": "outputs/pushrun-site/races.json",
