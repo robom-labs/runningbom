@@ -1,5 +1,5 @@
 {
-  "version": "2026.09.19-race-data-78",
+  "version": "2026.09.19-race-data-79",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -980,6 +980,28 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
+      "name": "소노 런트립 180K in 경주",
+      "date": "2026-10-04",
+      "time": "18:00 집결",
+      "region": "경북",
+      "venue": "경주시 소노캄 경주 및 보문호반길 일원",
+      "distances": [
+        "9km",
+        "7km 펫런"
+      ],
+      "registrationOpenAt": "2026-08-12T00:00:00+09:00",
+      "registrationCloseAt": "2026-09-30T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/12 - 09/30",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/sono-runtrip-180k-gyeongju-2026-10-04",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-09-19T04:43:33.039Z",
+      "status": "open",
+      "courseLabel": "9km,7km 펫런",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
+    },
+    {
       "name": "제14회 광명시장배건강달리기",
       "date": "2026-10-04",
       "time": "09:00 집결",
@@ -1047,6 +1069,29 @@
       "registrationPeriodSource": "2026년7월13일~2026년8월29일",
       "courseLabel": "10km,3km",
       "organizer": "(주)경남신문사"
+    },
+    {
+      "name": "S-OIL과 함께하는 감동의 마라톤",
+      "date": "2026-10-04",
+      "time": "07:00 집결",
+      "region": "서울",
+      "venue": "상암동 평화의 광장",
+      "distances": [
+        "Half",
+        "10K",
+        "5K"
+      ],
+      "registrationOpenAt": "2026-08-01T00:00:00+09:00",
+      "registrationCloseAt": "2026-08-31T23:59:00+09:00",
+      "registrationOpenTimeConfirmed": false,
+      "registrationPeriodLabel": "08/01 - 08/31",
+      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/s-oil-emotional-marathon-2026-10-04",
+      "sourceName": "마라톤GO",
+      "dataVerifiedAt": "2026-09-19T04:43:33.039Z",
+      "status": "closed",
+      "courseLabel": "Half,10K,5K",
+      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
     {
       "date": "2026-10-05",

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026.09.19-race-data-78",
+  "contentVersion": "2026.09.19-race-data-79",
   "generatedAt": "2026-09-18T16:29:58.775Z",
   "source": {
     "kind": "verified-web-normalization",
@@ -991,6 +991,30 @@
       "sourceName": "마라톤온라인"
     },
     {
+      "id": "schedule-65c5509f185b",
+      "name": "소노 런트립 180K in 경주",
+      "region": "경북",
+      "venue": "경주시 소노캄 경주 및 보문호반길 일원",
+      "raceDate": "2026-10-04",
+      "distances": [
+        "9km",
+        "7km 펫런"
+      ],
+      "registrationOpensAt": "2026-08-12T00:00:00+09:00",
+      "registrationClosesAt": "2026-09-30T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "open",
+      "registrationPeriodLabel": "08/12 - 09/30",
+      "sourceCheckedAt": "2026-09-19T04:43:33.039Z",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/sono-runtrip-180k-gyeongju-2026-10-04",
+      "linkReference": "마라톤GO 공개 일정 상세",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/sono-runtrip-180k-gyeongju-2026-10-04",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/sono-runtrip-180k-gyeongju-2026-10-04",
+      "externalLinkKind": "source",
+      "sourceName": "마라톤GO"
+    },
+    {
       "id": "schedule-6f7a200aaee9",
       "name": "2026 Run Your Way Seoul 10K",
       "region": "서울",
@@ -1038,6 +1062,31 @@
       "externalUrl": "https://gmaf.kr/",
       "officialUrl": "https://gmaf.kr/",
       "externalLinkKind": "registration",
+      "sourceName": "마라톤GO"
+    },
+    {
+      "id": "schedule-e01ec2ec0f17",
+      "name": "S-OIL과 함께하는 감동의 마라톤",
+      "region": "서울",
+      "venue": "상암동 평화의 광장",
+      "raceDate": "2026-10-04",
+      "distances": [
+        "Half",
+        "10K",
+        "5K"
+      ],
+      "registrationOpensAt": "2026-08-01T00:00:00+09:00",
+      "registrationClosesAt": "2026-08-31T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "closed",
+      "registrationPeriodLabel": "08/01 - 08/31",
+      "sourceCheckedAt": "2026-09-19T04:43:33.039Z",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/s-oil-emotional-marathon-2026-10-04",
+      "linkReference": "마라톤GO 공개 일정 상세",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/s-oil-emotional-marathon-2026-10-04",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/s-oil-emotional-marathon-2026-10-04",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
