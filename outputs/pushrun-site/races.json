@@ -1,5 +1,5 @@
 {
-  "version": "2026.09.21-race-data-81",
+  "version": "2026.09.22-race-data-82",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -173,8 +173,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-masters-half-marathon",
       "sourceName": "마라톤GO",
       "organizer": "(사)사회안전예방중앙회",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-09-21T22:01:23.429Z",
+      "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2218,7 +2218,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hangang-run-festival-of-health-and-unity",
       "sourceName": "마라톤GO",
       "dataVerifiedAt": "2026-09-03T04:38:44.980Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -3528,7 +3528,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-marathon-asiad-stadium-start",
       "sourceName": "마라톤GO",
       "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "Full,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4029,7 +4029,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-09-20T16:12:57.011Z",
+  "lastSuccessfulRefreshAt": "2026-09-21T22:01:23.429Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
