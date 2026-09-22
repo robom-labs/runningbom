@@ -1,5 +1,5 @@
 {
-  "version": "2026.09.22-race-data-82",
+  "version": "2026.09.23-race-data-83",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -1829,7 +1829,7 @@
       "sourceName": "마라톤GO",
       "organizer": "청주충북환경운동연합",
       "dataVerifiedAt": "2026-09-07T21:34:25.397Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4029,7 +4029,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-09-21T22:01:23.429Z",
+  "lastSuccessfulRefreshAt": "2026-09-22T17:01:28.912Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
