@@ -1,5 +1,5 @@
 {
-  "revision": "2026.09.23-race-data-83",
+  "revision": "2026.09.24-race-data-84",
   "source": "RunningBom 웹 정본의 검증된 대회 데이터",
   "races": [
     {
@@ -1114,7 +1114,7 @@
       "registrationOpensAt": "2026-08-31T00:00:00+09:00",
       "registrationClosesAt": "2026-09-23T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "08/31 - 09/23",
       "sourceCheckedAt": "2026-09-03T04:38:44.980Z",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-dangjin-golden-fields-health-marathon",
@@ -2756,7 +2756,7 @@
       "registrationOpensAt": "2026-08-26T00:00:00+09:00",
       "registrationClosesAt": "2026-09-23T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "08/26 - 09/23",
       "sourceCheckedAt": "2026-08-25T19:01:01.869Z",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-purmerun-miracle365-nexon",
