@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026.09.24-race-data-84",
-  "generatedAt": "2026-09-23T17:10:09.013Z",
+  "contentVersion": "2026.09.25-race-data-85",
+  "generatedAt": "2026-09-24T17:17:11.179Z",
   "source": {
     "kind": "verified-web-normalization",
     "path": "outputs/pushrun-site/races.json",
@@ -697,6 +697,29 @@
       "externalUrl": "https://www.hk-marathon.com/marathon/code/8048/",
       "officialUrl": "https://www.hk-marathon.com/marathon/code/8048/",
       "externalLinkKind": "registration",
+      "sourceName": "마라톤GO"
+    },
+    {
+      "id": "schedule-f0f1b59d1a43",
+      "name": "인삼런 2026",
+      "region": "서울",
+      "venue": "남산공원 백범광장",
+      "raceDate": "2026-10-05",
+      "distances": [
+        "3km"
+      ],
+      "registrationOpensAt": "2026-09-17T00:00:00+09:00",
+      "registrationClosesAt": "2026-09-30T23:59:00+09:00",
+      "registrationTimeConfirmed": false,
+      "registrationStatus": "open",
+      "registrationPeriodLabel": "09/17 - 09/30",
+      "sourceCheckedAt": "2026-09-24T17:17:11.179Z",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ginseng-run",
+      "linkReference": "마라톤GO 공개 일정 상세",
+      "verifiedAt": "마라톤GO 공개 일정 상세",
+      "externalUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ginseng-run",
+      "officialUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ginseng-run",
+      "externalLinkKind": "source",
       "sourceName": "마라톤GO"
     },
     {
