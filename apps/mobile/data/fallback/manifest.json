@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "static-278aaca3f855a3bbbf3e",
-  "generatedAt": "2026-09-27T17:02:11.276Z",
+  "contentVersion": "static-f345ca7284d091ae6b61",
+  "generatedAt": "2026-09-28T23:20:24.907Z",
   "minimumAppVersion": "0.19.0",
   "checksums": {
-    "races.json": "8d233d32ab301d3df52fb72604dbfaa242b48f9af5b2a95b7b9fb85d45371936",
+    "races.json": "700184351dd3889ee8aa1d326380e07c47f3461af54b31be21c6feeaafface48",
     "shoes.json": "6995c88202f71b27a4683bde2cdd48521e25f6be18d8013f375e0d0f62bb7ea3",
     "upcoming-shoes.json": "8cb8da12ddd7b39aaa145571c915d3521cc9398a713879ddb8ca9c462cd23378",
     "coaching.json": "b74bb0f52aed26946bbdd9fe1a9f36c8b4d3b25e9d5dd1ab90643467aa0f3ce4"
