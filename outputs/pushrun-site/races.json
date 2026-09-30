@@ -1,5 +1,5 @@
 {
-  "version": "2026.09.25-race-data-85",
+  "version": "2026.10.01-race-data-86",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -107,28 +107,6 @@
     }
   ],
   "scheduleFeed": [
-    {
-      "name": "사우나런 in 뚝섬한강공원",
-      "date": "2026-09-30",
-      "time": "상시 집결",
-      "region": "서울",
-      "venue": "뚝섬한강공원 인근",
-      "distances": [
-        "10K",
-        "5K"
-      ],
-      "registrationOpenAt": "2026-07-06T00:00:00+09:00",
-      "registrationCloseAt": "2026-09-30T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "07/06 - 09/30",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/saunarun-2026-08-31-ttukseom-hangang-park",
-      "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-09-15T17:05:09.897Z",
-      "status": "open",
-      "courseLabel": "10K,5K",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
     {
       "name": "2026 글로벌 6K 포 워터 부산",
       "date": "2026-10-03",
@@ -244,7 +222,7 @@
     },
     {
       "date": "2026-10-03",
-      "status": "open",
+      "status": "closed",
       "name": "2026 천사데이기념 동두천천사마라톤",
       "region": "경기",
       "venue": "경기도 동두천시 캠프보산",
@@ -373,8 +351,8 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-smtown-run-club",
       "sourceName": "마라톤GO",
       "organizer": "SM, KREAM",
-      "dataVerifiedAt": "2026-09-03T04:38:44.980Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-09-30T22:21:12.512Z",
+      "status": "closed",
       "courseLabel": "10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -506,8 +484,8 @@
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/sono-runtrip-180k-gyeongju-2026-10-04",
       "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-09-19T04:43:33.039Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-09-30T22:21:12.512Z",
+      "status": "closed",
       "courseLabel": "9km,7km 펫런",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -712,8 +690,8 @@
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ginseng-run",
       "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-09-24T17:17:11.179Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-09-30T22:21:12.512Z",
+      "status": "closed",
       "courseLabel": "3km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -1027,7 +1005,7 @@
     },
     {
       "date": "2026-10-10",
-      "status": "open",
+      "status": "closed",
       "name": "제7회 천안삼거리 흥타령울트라마라톤",
       "region": "충남",
       "venue": "천안삼거리공원",
@@ -1873,7 +1851,7 @@
       "sourceName": "마라톤GO",
       "organizer": "(사)함께하는 사랑밭",
       "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2157,7 +2135,7 @@
     },
     {
       "date": "2026-10-25",
-      "status": "open",
+      "status": "closed",
       "name": "K-RUN 챌린지",
       "region": "서울",
       "venue": "서울 뚝섬한강공원 수변광장",
@@ -2196,7 +2174,7 @@
       "sourceName": "마라톤GO",
       "organizer": "한국자폐인사랑협회",
       "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "Half,10K,4.2km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2473,7 +2451,7 @@
     },
     {
       "date": "2026-11-07",
-      "status": "open",
+      "status": "closed",
       "name": "2026 영천댐 마라톤",
       "region": "경북",
       "venue": "영천댐 하류공원",
@@ -2719,7 +2697,7 @@
       "sourceName": "마라톤GO",
       "organizer": "서울신문, 한국익스트림앤스포츠",
       "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "Trail",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2931,7 +2909,7 @@
     },
     {
       "date": "2026-11-08",
-      "status": "open",
+      "status": "closed",
       "name": "제5회 거제시체육회장배 거제앵산트레일레이스",
       "region": "경남",
       "venue": "경남 거제시 하청면스포츠타운",
@@ -3390,7 +3368,7 @@
     },
     {
       "date": "2026-11-15",
-      "status": "open",
+      "status": "closed",
       "name": "제4회 영남알프스 전국 하프마라톤",
       "region": "울산",
       "venue": "울주군 영남알프스 일원",
@@ -4050,7 +4028,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-09-29T22:21:11.500Z",
+  "lastSuccessfulRefreshAt": "2026-09-30T22:21:12.512Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
