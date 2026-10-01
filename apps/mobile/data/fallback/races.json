@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026.10.01-race-data-86",
-  "generatedAt": "2026-09-30T22:21:12.512Z",
+  "contentVersion": "2026.10.02-race-data-87",
+  "generatedAt": "2026-10-01T22:45:13.348Z",
   "source": {
     "kind": "verified-web-normalization",
     "path": "outputs/pushrun-site/races.json",
@@ -2590,7 +2590,7 @@
       "registrationOpensAt": "2026-06-15T00:00:00+09:00",
       "registrationClosesAt": "2026-10-01T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationDataStatus": "needs-review",
       "registrationDataIssue": "마지막 데이터 확인 시각이 없어 접수 상태를 안내하지 않아요.",
       "registrationPeriodLabel": "6/15 - 10/1",
@@ -3936,7 +3936,7 @@
       "registrationOpensAt": "2026-09-01T00:00:00+09:00",
       "registrationClosesAt": "2026-10-01T23:59:00+09:00",
       "registrationTimeConfirmed": false,
-      "registrationStatus": "open",
+      "registrationStatus": "closed",
       "registrationPeriodLabel": "09/01 - 10/01",
       "sourceCheckedAt": "2026-08-31T21:05:26.409Z",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-kim-dae-jung-marathon",

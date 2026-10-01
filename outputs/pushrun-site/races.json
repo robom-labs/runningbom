@@ -1,5 +1,5 @@
 {
-  "version": "2026.10.01-race-data-86",
+  "version": "2026.10.02-race-data-87",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -2291,7 +2291,7 @@
     },
     {
       "date": "2026-11-01",
-      "status": "open",
+      "status": "closed",
       "name": "2026 무안 해안 노을길 걷기 및 마라톤",
       "region": "전남",
       "venue": "무안낙지공원",
@@ -3457,7 +3457,7 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-kim-dae-jung-marathon",
       "sourceName": "마라톤GO",
       "dataVerifiedAt": "2026-08-31T21:05:26.409Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "Half,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4028,7 +4028,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-09-30T22:21:12.512Z",
+  "lastSuccessfulRefreshAt": "2026-10-01T22:45:13.348Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
