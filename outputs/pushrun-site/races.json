@@ -1,5 +1,5 @@
 {
-  "version": "2026.10.02-race-data-87",
+  "version": "2026.10.03-race-data-88",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -620,8 +620,8 @@
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yangju-cheonilhong-autumn-festa-marathon",
       "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "dataVerifiedAt": "2026-10-02T22:18:59.502Z",
+      "status": "closed",
       "courseLabel": "10K,5K,20km코스,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -2377,7 +2377,7 @@
       "sourceName": "마라톤GO",
       "organizer": "서울동행마라톤조직위원회",
       "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "open",
+      "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     },
@@ -4028,7 +4028,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-10-01T22:45:13.348Z",
+  "lastSuccessfulRefreshAt": "2026-10-02T22:18:59.502Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
