@@ -1,5 +1,5 @@
 {
-  "version": "2026.10.05-race-data-90",
+  "version": "2026.10.06-race-data-91",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -107,169 +107,6 @@
     }
   ],
   "scheduleFeed": [
-    {
-      "date": "2026-10-05",
-      "status": "closed",
-      "name": "2026 서울오픈마라톤",
-      "region": "서울",
-      "venue": "광화문광장(예정)",
-      "time": "07:30",
-      "distances": [
-        "Half",
-        "10K"
-      ],
-      "registrationUrl": "https://seoulopen.or.kr/main.php",
-      "sourceName": "마라톤온라인",
-      "linkVerifiedFrom": "마라톤온라인 home 아이콘",
-      "registrationOpenAt": "2026-04-26T00:00:00+09:00",
-      "registrationCloseAt": "2026-05-26T23:59:00+09:00",
-      "registrationPeriodLabel": "4/26 - 5/26",
-      "registrationPeriodSource": "2026년4월26일~2026년5월26일",
-      "courseLabel": "하프,10km",
-      "organizer": "(사)한국체육개발원 등"
-    },
-    {
-      "name": "2026 양주 천일홍 가을 페스타 마라톤",
-      "date": "2026-10-05",
-      "time": "08시 집결",
-      "region": "경기",
-      "venue": "양주시 나리공원",
-      "distances": [
-        "10K",
-        "5K",
-        "20km코스"
-      ],
-      "registrationOpenAt": "2026-08-19T00:00:00+09:00",
-      "registrationCloseAt": "2026-10-02T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "08/19 - 10/02",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-yangju-cheonilhong-autumn-festa-marathon",
-      "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-10-02T22:18:59.502Z",
-      "status": "closed",
-      "courseLabel": "10K,5K,20km코스,장소",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "name": "2026 한경서울마라톤",
-      "date": "2026-10-05",
-      "time": "07:30 집결",
-      "region": "서울",
-      "venue": "여의도 문화의공원 일원",
-      "distances": [
-        "Half",
-        "10K",
-        "5K"
-      ],
-      "registrationOpenAt": "2026-07-14T00:00:00+09:00",
-      "registrationCloseAt": "2026-09-14T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "07/14 - 09/14",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "registrationUrl": "https://www.hk-marathon.com/marathon/code/8048/",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-hankyung-seoul-marathon",
-      "sourceName": "마라톤GO",
-      "organizer": "한경닷컴/런코리아",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "closed",
-      "courseLabel": "Half,10K,5K",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "name": "런센스 2026",
-      "date": "2026-10-05",
-      "time": "08:00 집결",
-      "region": "서울",
-      "venue": "상암동 평화의공원 평화광장",
-      "distances": [
-        "10K",
-        "5K"
-      ],
-      "registrationOpenAt": "2026-07-08T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-27T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "07/08 - 08/27",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "registrationUrl": "https://www.runsense.co.kr/",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/runsense-2026-10-05-5k-10k",
-      "sourceName": "마라톤GO",
-      "organizer": "(주)일요신문사 (주)비즈한국",
-      "dataVerifiedAt": "2026-07-23T23:48:14.890Z",
-      "status": "closed",
-      "courseLabel": "10K,5K",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "name": "인삼런 2026",
-      "date": "2026-10-05",
-      "time": "09:00",
-      "region": "서울",
-      "venue": "남산공원 백범광장",
-      "distances": [
-        "3km"
-      ],
-      "registrationOpenAt": "2026-09-17T00:00:00+09:00",
-      "registrationCloseAt": "2026-09-30T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "09/17 - 09/30",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ginseng-run",
-      "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-09-30T22:21:12.512Z",
-      "status": "closed",
-      "courseLabel": "3km",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "name": "제12회 시흥시 전국하프마라톤",
-      "date": "2026-10-05",
-      "time": "09:00 집결",
-      "region": "경기",
-      "venue": "한국공학대학교 제2캠퍼스",
-      "distances": [
-        "Half",
-        "10K",
-        "5K"
-      ],
-      "registrationOpenAt": "2026-07-22T00:00:00+09:00",
-      "registrationCloseAt": "2026-07-22T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "07/22 - 07/22",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/12th-siheung-national-half-marathon-2026-10-05",
-      "sourceName": "마라톤GO",
-      "organizer": "경기일보, 시흥시체육회",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "closed",
-      "courseLabel": "Half,10K,5K",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
-    {
-      "name": "제23회 강남국제평화마라톤",
-      "date": "2026-10-05",
-      "time": "09:00 집결",
-      "region": "서울",
-      "venue": "봉은사로 삼성1동 주민센터 앞",
-      "distances": [
-        "Full",
-        "Half",
-        "10K",
-        "5K"
-      ],
-      "registrationOpenAt": "2026-08-10T00:00:00+09:00",
-      "registrationCloseAt": "2026-08-13T23:59:00+09:00",
-      "registrationOpenTimeConfirmed": false,
-      "registrationPeriodLabel": "08/10 - 08/13",
-      "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/23rd-gangnam-international-peace-marathon-2026",
-      "sourceName": "마라톤GO",
-      "organizer": "강남구,미8군사령부",
-      "dataVerifiedAt": "2026-08-22T05:55:10.039Z",
-      "status": "closed",
-      "courseLabel": "Full,Half,10K,5K",
-      "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
-    },
     {
       "name": "2026 고흥우주항공배 마라톤",
       "date": "2026-10-09",
@@ -2345,7 +2182,7 @@
     },
     {
       "date": "2026-11-08",
-      "status": "open",
+      "status": "closed",
       "name": "제11회 송파구청장배 마라톤",
       "region": "서울",
       "venue": "송파구 여성축구장",
@@ -3554,7 +3391,7 @@
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-10-04T21:34:58.497Z",
+  "lastSuccessfulRefreshAt": "2026-10-06T00:07:28.089Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
