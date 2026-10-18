@@ -37,14 +37,16 @@
       "env": {
         "RUNNINGBOM_VARIANT": "production",
         "EXPO_PUBLIC_RELEASE_CHANNEL": "production",
-        "EXPO_PUBLIC_COMMUNITY_MODE": "CORE_ONLY",
-        "EXPO_PUBLIC_SOCIAL_ENABLED": "false",
+        "EXPO_PUBLIC_COMMUNITY_MODE": "NORMAL",
+        "EXPO_PUBLIC_SOCIAL_ENABLED": "true",
         "EXPO_PUBLIC_AUTH_GOOGLE_ENABLED": "false",
         "EXPO_PUBLIC_AUTH_KAKAO_ENABLED": "false",
         "EXPO_PUBLIC_AUTH_NAVER_ENABLED": "false",
         "EXPO_PUBLIC_AUTH_APPLE_ENABLED": "false",
         "EXPO_PUBLIC_SUPPORT_URL": "https://robom.kr/support",
-        "EXPO_PUBLIC_PRIVACY_URL": "https://robom.kr/privacy/runningbom"
+        "EXPO_PUBLIC_PRIVACY_URL": "https://robom.kr/privacy/runningbom",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://hvwvcockihozxmudltzt.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_V9_IHcaEj2FhHpLEXN2krA_hTTa0sPh"
       },
       "android": {
         "buildType": "app-bundle"

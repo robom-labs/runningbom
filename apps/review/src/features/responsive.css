@@ -1,0 +1,96 @@
+/* User-requested real web presentation. Calibrated phone review remains the default
+   in development and available via ?display=phone; protected runtime is unchanged. */
+html[data-rb-presentation=web] .phone-stage {display:block;padding:0;background:#f7f9f6}
+html[data-rb-presentation=web] .device-menu-bar,
+html[data-rb-presentation=web] .phone-bezel,
+html[data-rb-presentation=web] .device-camera,
+html[data-rb-presentation=web] .status-bar,
+html[data-rb-presentation=web] .home-indicator,
+html[data-rb-presentation=web] .home-indicator-svg,
+html[data-rb-presentation=web] .keyboard-dock,
+html[data-rb-presentation=web] .mobile-cursor {display:none!important}
+html[data-rb-presentation=web] .phone-scale-box {width:100%!important;height:100%!important}
+html[data-rb-presentation=web] .phone-device {position:absolute;inset:0;width:100%!important;height:100%!important;transform:none!important}
+html[data-rb-presentation=web] .device-screen {inset:0!important;width:100%!important;height:100%!important;border-radius:0!important;cursor:auto!important}
+html[data-rb-presentation=web] .mobile-app-viewport {inset:0!important}
+html[data-rb-presentation=web] .running-app {--app-top:0px!important;--keyboard-height:0px!important;--mobile-safe-area-height:0px!important;background:#fbfcfa}
+html[data-rb-presentation=web] .app-header {top:0;height:68px;border-bottom:1px solid #e5ece5;padding:0 22px}
+html[data-rb-presentation=web] .app-header .icon-button {min-width:44px;min-height:44px}
+html[data-rb-presentation=web] .preview-label {display:flex;align-items:center;min-height:32px;font-size:11px!important;padding:0 7px!important;white-space:nowrap}
+html[data-rb-presentation=web] .app-body {top:68px!important;bottom:0!important;touch-action:pan-y;user-select:text}
+html[data-rb-presentation=web] .mobile-carousel {cursor:auto}
+html[data-rb-presentation=web] .home-content,
+html[data-rb-presentation=web] .page-content {width:100%;max-width:1240px;margin:0 auto;padding:26px 22px 128px}
+html[data-rb-presentation=web] .bottom-nav {bottom:max(12px,env(safe-area-inset-bottom))!important;left:50%;right:auto;width:calc(100% - 24px);max-width:520px;transform:translateX(-50%)}
+html[data-rb-presentation=web] .bottom-sheet {left:max(0px,calc(50% - 310px));right:max(0px,calc(50% - 310px));bottom:0!important;max-height:90dvh!important}
+html[data-rb-presentation=web] .sheet-overlay {position:fixed}
+html[data-rb-presentation=web] .toast {bottom:112px!important;left:50%;right:auto;width:min(400px,calc(100% - 32px));transform:translateX(-50%)}
+html[data-rb-presentation=web] .floating-compare {bottom:105px!important;left:50%;right:auto;width:min(440px,calc(100% - 36px));transform:translateX(-50%)}
+html[data-rb-presentation=web] .shoe-grid {gap:24px 18px}
+html[data-rb-presentation=web] .hero.official-event {height:280px}
+html[data-rb-presentation=web] .community-page {max-width:760px}
+html[data-rb-presentation=web] .calendar-wrap {max-width:720px;margin-left:auto;margin-right:auto}
+html[data-rb-presentation=web] .calendar-help,
+html[data-rb-presentation=web] .calendar-legend {max-width:720px;margin-left:auto;margin-right:auto}
+html[data-rb-presentation=web] .calendar-day-button {min-height:65px}
+html[data-rb-presentation=web] .calendar-day-number {font-size:18px}
+html[data-rb-presentation=web] .calendar-day-count {font-size:12px}
+@media(max-width:600px){
+ html[data-rb-presentation=web] .home-content,html[data-rb-presentation=web] .page-content {padding:20px 16px 124px}
+ html[data-rb-presentation=web] .app-header {padding:0 16px;height:64px}
+ html[data-rb-presentation=web] .app-body {top:64px!important}
+ html[data-rb-presentation=web] .header-actions {gap:0}
+ html[data-rb-presentation=web] .preview-label {display:none}
+ html[data-rb-presentation=web] input,html[data-rb-presentation=web] textarea {font-size:16px!important}
+ html[data-rb-presentation=web] .greeting {padding-left:3px;padding-right:3px}
+ html[data-rb-presentation=web] .greeting h1 {font-size:clamp(23px,6.6vw,28px);white-space:normal;word-break:keep-all}
+ html[data-rb-presentation=web] .running-app[data-keyboard-visible=true] .bottom-nav {display:none}
+ html[data-rb-presentation=web] .gear-heading h1 {font-size:21px!important}
+ html[data-rb-presentation=web] .filter-trigger>span {font-size:12px;letter-spacing:-.5px;gap:2px}
+ html[data-rb-presentation=web] .filter-trigger>span svg {width:13px;height:13px}
+}
+@media(min-width:700px){
+ html[data-rb-presentation=web] .shoe-grid {grid-template-columns:repeat(3,minmax(0,1fr))}
+ html[data-rb-presentation=web] .race-list-item {max-width:100%}
+ html[data-rb-presentation=web] .race-row {grid-template-columns:112px minmax(0,1fr)}
+ html[data-rb-presentation=web] .race-thumbnail,html[data-rb-presentation=web] .compact .race-thumbnail {width:112px;height:110px}
+ html[data-rb-presentation=web] .hero.official-event {height:300px}
+ html[data-rb-presentation=web] .official-event .hero-title {font-size:26px!important;min-height:74px;max-height:74px;line-height:1.4!important}
+ html[data-rb-presentation=web] .official-event .hero-content {padding:24px;width:52%}
+ html[data-rb-presentation=web] .official-event .hero-image {width:48%;padding:16px}
+ html[data-rb-presentation=web] .official-event .hero-content>p {font-size:14px;line-height:23px}
+ html[data-rb-presentation=web] .calendar-agenda {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+ html[data-rb-presentation=web] .calendar-agenda .race-list-item {margin:0}
+ html[data-rb-presentation=web] .gear-filter-triggers {max-width:650px}
+ html[data-rb-presentation=web] .social-topic-rail {gap:25px}
+}
+@media(min-width:1100px){
+ html[data-rb-presentation=web] .app-header {height:76px;padding-left:30px;padding-right:34px}
+ html[data-rb-presentation=web] .app-body {top:76px!important;left:206px!important}
+ html[data-rb-presentation=web] .home-content,html[data-rb-presentation=web] .page-content {padding:30px 34px 64px}
+ html[data-rb-presentation=web] .bottom-nav {position:absolute;top:76px;bottom:0!important;left:0;right:auto;transform:none;width:206px;max-width:none;height:auto;padding:22px 13px;border:0;border-right:1px solid #e2eae1;border-radius:0;display:flex;flex-direction:column;justify-content:flex-start;gap:8px;background:#fff;box-shadow:none}
+ html[data-rb-presentation=web] .nav-item {width:100%;display:flex;flex-direction:row;justify-content:flex-start;gap:12px;min-height:56px;padding:5px 13px;border-radius:14px}
+ html[data-rb-presentation=web] .nav-item.active {background:#eef6ee!important}
+ html[data-rb-presentation=web] .nav-label {font-size:15px;line-height:24px}
+ html[data-rb-presentation=web] .nav-icon {width:35px;min-width:35px;height:34px}
+ html[data-rb-presentation=web] .shoe-grid {grid-template-columns:repeat(4,minmax(0,1fr))}
+ html[data-rb-presentation=web] .home-content {display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px}
+ html[data-rb-presentation=web] .greeting {grid-column:1/-1;padding:0 0 1px}
+ html[data-rb-presentation=web] .home-content>.hero {margin:0;height:355px}
+ html[data-rb-presentation=web] .home-content>.weekly {grid-column:2;grid-row:2/4;padding-top:0}
+ html[data-rb-presentation=web] .home-content>.gear-banner {margin:0;min-height:160px}
+ html[data-rb-presentation=web] .home-content>.home-community {grid-column:1/-1}
+ html[data-rb-presentation=web] .home-content .official-event .hero-title {font-size:25px!important}
+ html[data-rb-presentation=web] .home-content .official-event .hero-content {padding:20px 14px;width:58%}
+ html[data-rb-presentation=web] .home-content .official-event .hero-image {width:42%;padding:12px}
+ html[data-rb-presentation=web] .community-page {max-width:800px}
+ html[data-rb-presentation=web] .races-page:not(.calendar-page) {max-width:1000px}
+ html[data-rb-presentation=web] .races-page .race-row {grid-template-columns:150px minmax(0,1fr)}
+ html[data-rb-presentation=web] .races-page .race-thumbnail {width:150px;height:116px}
+ html[data-rb-presentation=web] .race-copy>strong {font-size:18px;line-height:26px;min-height:52px;max-height:52px}
+ html[data-rb-presentation=web] .race-copy>small {font-size:14px;line-height:22px}
+ html[data-rb-presentation=web] .race-copy>small:nth-of-type(2) {font-size:14px;line-height:22px;min-height:44px;max-height:44px}
+ html[data-rb-presentation=web] .calendar-agenda .race-row {grid-template-columns:74px minmax(0,1fr)}
+ html[data-rb-presentation=web] .calendar-agenda .race-thumbnail {width:74px;height:105px}
+ html[data-rb-presentation=web] .calendar-agenda .race-copy>strong {font-size:16px;line-height:24px;min-height:48px;max-height:48px}
+}

@@ -1,0 +1,285 @@
+{
+  "checkedAt": "2026-10-18T08:54:07.478Z",
+  "engine": "@crawlee/cheerio 3.18.2",
+  "parsed": 16,
+  "verified": 2,
+  "added": 0,
+  "updated": 2,
+  "retained": 197,
+  "sourceHealth": [
+    {
+      "id": "nike-0",
+      "brand": "NIKE",
+      "region": "한국",
+      "checked": 1,
+      "parsed": 24,
+      "verified": 1,
+      "failures": 0
+    },
+    {
+      "id": "asics-1",
+      "brand": "ASICS",
+      "region": "한국",
+      "checked": 1,
+      "parsed": 0,
+      "verified": 0,
+      "failures": 0
+    },
+    {
+      "id": "adidas-2",
+      "brand": "adidas",
+      "region": "한국",
+      "checked": 1,
+      "parsed": 0,
+      "verified": 0,
+      "failures": 0
+    },
+    {
+      "id": "hoka-3",
+      "brand": "HOKA",
+      "region": "호주",
+      "checked": 1,
+      "parsed": 0,
+      "verified": 0,
+      "failures": 0
+    },
+    {
+      "id": "new-balance-4",
+      "brand": "New Balance",
+      "region": "미국",
+      "checked": 1,
+      "parsed": 0,
+      "verified": 0,
+      "failures": 0
+    },
+    {
+      "id": "topo-athletic-5",
+      "brand": "Topo Athletic",
+      "region": "호주",
+      "checked": 1,
+      "parsed": 1,
+      "verified": 0,
+      "failures": 0
+    },
+    {
+      "id": "altra-6",
+      "brand": "Altra",
+      "region": "미국",
+      "checked": 1,
+      "parsed": 2,
+      "verified": 0,
+      "failures": 0
+    },
+    {
+      "id": "on-7",
+      "brand": "On",
+      "region": "한국",
+      "checked": 1,
+      "parsed": 1,
+      "verified": 1,
+      "failures": 0
+    },
+    {
+      "id": "saucony-8",
+      "brand": "Saucony",
+      "region": "한국",
+      "checked": 1,
+      "parsed": 0,
+      "verified": 0,
+      "failures": 0
+    },
+    {
+      "id": "karhu-9",
+      "brand": "KARHU",
+      "region": "미국",
+      "checked": 1,
+      "parsed": 12,
+      "verified": 0,
+      "failures": 0
+    },
+    {
+      "id": "kiprun-10",
+      "brand": "KIPRUN",
+      "region": "미국",
+      "checked": 1,
+      "parsed": 22,
+      "verified": 0,
+      "failures": 0
+    },
+    {
+      "id": "puma-11",
+      "brand": "PUMA",
+      "region": "미국",
+      "checked": 1,
+      "parsed": 7,
+      "verified": 0,
+      "failures": 6
+    },
+    {
+      "id": "mizuno-12",
+      "brand": "Mizuno",
+      "region": "유럽",
+      "checked": 1,
+      "parsed": 0,
+      "verified": 0,
+      "failures": 0
+    },
+    {
+      "id": "salomon-13",
+      "brand": "Salomon",
+      "region": "한국",
+      "checked": 1,
+      "parsed": 1,
+      "verified": 0,
+      "failures": 0
+    },
+    {
+      "id": "brooks-14",
+      "brand": "Brooks",
+      "region": "호주",
+      "checked": 1,
+      "parsed": 116,
+      "verified": 0,
+      "failures": 0
+    },
+    {
+      "id": "asics-15",
+      "brand": "ASICS",
+      "region": "호주",
+      "checked": 1,
+      "parsed": 0,
+      "verified": 0,
+      "failures": 0
+    }
+  ],
+  "failures": [
+    {
+      "source": "puma-11",
+      "url": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=03",
+      "reason": "original image HTTP 404"
+    },
+    {
+      "source": "puma-11",
+      "url": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=05",
+      "reason": "original image HTTP 404"
+    },
+    {
+      "source": "puma-11",
+      "url": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=06",
+      "reason": "original image HTTP 404"
+    },
+    {
+      "source": "puma-11",
+      "url": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=07",
+      "reason": "original image HTTP 404"
+    },
+    {
+      "source": "puma-11",
+      "url": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=08",
+      "reason": "original image HTTP 404"
+    },
+    {
+      "source": "puma-11",
+      "url": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=09",
+      "reason": "original image HTTP 404"
+    }
+  ],
+  "checks": [
+    {
+      "source": "asics-1",
+      "url": "https://asics.co.kr/p/AKR_112630234-400",
+      "models": 0,
+      "status": "no-structured-products"
+    },
+    {
+      "source": "hoka-3",
+      "url": "https://au.hoka.com/products/m-mach-7-1171904-fyz-fyz",
+      "models": 0,
+      "status": "no-structured-products"
+    },
+    {
+      "source": "new-balance-4",
+      "url": "https://www.newbalance.com/pd/1080v15-pykrete/M1080V15_RU-FTW-829191.html/",
+      "models": 0,
+      "status": "no-structured-products"
+    },
+    {
+      "source": "adidas-2",
+      "url": "https://www.adidas.co.kr/men-running-shoes",
+      "models": 0,
+      "status": "no-structured-products"
+    },
+    {
+      "source": "topo-athletic-5",
+      "url": "https://topoathletic.com.au/products/mens-terraventure-5?variant=46569263530180",
+      "models": 1,
+      "status": "parsed"
+    },
+    {
+      "source": "on-7",
+      "url": "https://www.on.com/ko-kr/products/cloudmonster-61/womens/black-magnet-shoes-61.99024",
+      "models": 1,
+      "status": "parsed"
+    },
+    {
+      "source": "nike-0",
+      "url": "https://www.nike.com/kr/w/running-shoes-37v7jz7p17azy7ok",
+      "models": 24,
+      "status": "parsed"
+    },
+    {
+      "source": "altra-6",
+      "url": "https://www.altrarunning.com/en-us/products/mens-experience-wild-3-gtx-al0a85se?variant=51414816719015",
+      "models": 2,
+      "status": "parsed"
+    },
+    {
+      "source": "saucony-8",
+      "url": "https://www.saucony.co.kr/product/detail.html?product_no=571",
+      "models": 0,
+      "status": "no-structured-products"
+    },
+    {
+      "source": "puma-11",
+      "url": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=09",
+      "models": 7,
+      "status": "parsed"
+    },
+    {
+      "source": "kiprun-10",
+      "url": "https://www.decathlon.com/products/kiprun-kipride-mens-running-shoes-380020",
+      "models": 22,
+      "status": "parsed"
+    },
+    {
+      "source": "salomon-13",
+      "url": "https://salomon.co.kr/products/l45403000",
+      "models": 1,
+      "status": "parsed"
+    },
+    {
+      "source": "karhu-9",
+      "url": "https://us.karhu.com/products/karhu-mens-ikoni-atr-wr-silver-lining-steeple-gray",
+      "models": 12,
+      "status": "parsed"
+    },
+    {
+      "source": "mizuno-12",
+      "url": "https://emea.mizuno.com/eu/en/enerzy-runnerz-2/K1GA251132.html",
+      "models": 0,
+      "status": "no-structured-products"
+    },
+    {
+      "source": "asics-15",
+      "url": "https://www.asics.com/au/en-au/mens-running-shoes/c/au10202000/",
+      "models": 0,
+      "status": "no-structured-products"
+    },
+    {
+      "source": "brooks-14",
+      "url": "https://www.brooksrunning.com.au/ghost-amp-womens-neutral-running-shoe/120486.html?colour=612&width=1B",
+      "models": 116,
+      "status": "parsed"
+    }
+  ]
+}

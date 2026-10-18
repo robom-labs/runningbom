@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   self-improve:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: ANTHROPIC_API_KEY 확인
         env:

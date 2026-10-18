@@ -1,0 +1,249 @@
+[
+  {
+    "id": "nike-0",
+    "brand": "NIKE",
+    "hosts": [
+      "www.nike.com"
+    ],
+    "imageHosts": [
+      "static.nike.com"
+    ],
+    "region": "한국",
+    "collections": [
+      "https://www.nike.com/kr/w/running-shoes-37v7jz7p17azy7ok",
+      "https://www.nike.com/kr/w/road-running-shoes-3qxw3z7p17azy7ok",
+      "https://www.nike.com/kr/w/trail-running-shoes-75jcnz7p17azy7ok"
+    ],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "nike"
+  },
+  {
+    "id": "asics-1",
+    "brand": "ASICS",
+    "hosts": [
+      "asics.co.kr"
+    ],
+    "imageHosts": [
+      "d26wss9rw703v0.cloudfront.net"
+    ],
+    "region": "한국",
+    "collections": [],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "adidas-2",
+    "brand": "adidas",
+    "hosts": [
+      "www.adidas.co.kr"
+    ],
+    "imageHosts": [
+      "assets.adidas.com"
+    ],
+    "region": "한국",
+    "collections": [
+      "https://www.adidas.co.kr/men-running-shoes"
+    ],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "hoka-3",
+    "brand": "HOKA",
+    "hosts": [
+      "au.hoka.com"
+    ],
+    "imageHosts": [
+      "media.au.hoka.com",
+      "s3.ap-southeast-2.amazonaws.com"
+    ],
+    "region": "호주",
+    "collections": [],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "new-balance-4",
+    "brand": "New Balance",
+    "hosts": [
+      "www.newbalance.com"
+    ],
+    "imageHosts": [
+      "nb.scene7.com"
+    ],
+    "region": "미국",
+    "collections": [],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "topo-athletic-5",
+    "brand": "Topo Athletic",
+    "hosts": [
+      "topoathletic.com.au"
+    ],
+    "imageHosts": [
+      "cdn.shopify.com"
+    ],
+    "region": "호주",
+    "collections": [],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "altra-6",
+    "brand": "Altra",
+    "hosts": [
+      "www.altrarunning.com"
+    ],
+    "imageHosts": [
+      "cdn.shopify.com"
+    ],
+    "region": "미국",
+    "collections": [],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "on-7",
+    "brand": "On",
+    "hosts": [
+      "www.on.com"
+    ],
+    "imageHosts": [
+      "images.ctfassets.net"
+    ],
+    "region": "한국",
+    "collections": [],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "saucony-8",
+    "brand": "Saucony",
+    "hosts": [
+      "www.saucony.co.kr"
+    ],
+    "imageHosts": [
+      "ecimg.cafe24img.com"
+    ],
+    "region": "한국",
+    "collections": [],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "karhu-9",
+    "brand": "KARHU",
+    "hosts": [
+      "us.karhu.com"
+    ],
+    "imageHosts": [
+      "cdn.shopify.com"
+    ],
+    "region": "미국",
+    "collections": [],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "kiprun-10",
+    "brand": "KIPRUN",
+    "hosts": [
+      "www.decathlon.com"
+    ],
+    "imageHosts": [
+      "cdn.shopify.com"
+    ],
+    "region": "미국",
+    "collections": [],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "puma-11",
+    "brand": "PUMA",
+    "hosts": [
+      "us.puma.com"
+    ],
+    "imageHosts": [
+      "images.puma.com"
+    ],
+    "region": "미국",
+    "collections": [],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "mizuno-12",
+    "brand": "Mizuno",
+    "hosts": [
+      "emea.mizuno.com"
+    ],
+    "imageHosts": [
+      "emea.mizuno.com"
+    ],
+    "region": "유럽",
+    "collections": [],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "salomon-13",
+    "brand": "Salomon",
+    "hosts": [
+      "salomon.co.kr"
+    ],
+    "imageHosts": [
+      "cdn.shopify.com"
+    ],
+    "region": "한국",
+    "collections": [],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "brooks-14",
+    "brand": "Brooks",
+    "hosts": [
+      "www.brooksrunning.com.au"
+    ],
+    "imageHosts": [
+      "res.cloudinary.com"
+    ],
+    "region": "호주",
+    "collections": [],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "asics-15",
+    "brand": "ASICS",
+    "hosts": [
+      "www.asics.com"
+    ],
+    "imageHosts": [
+      "images.asics.com"
+    ],
+    "region": "호주",
+    "collections": [
+      "https://www.asics.com/au/en-au/mens-running-shoes/c/au10202000/"
+    ],
+    "productPattern": "/(?:products?|p|pd|t)/|\\.html$",
+    "adapter": "schema.org"
+  },
+  {
+    "id": "nike-press-global",
+    "brand": "NIKE",
+    "hosts": [
+      "about.nike.com"
+    ],
+    "imageHosts": [
+      "nmp.about.nike.com"
+    ],
+    "region": "공식 글로벌 발표",
+    "collections": [],
+    "productPattern": "/newsroom/releases/",
+    "adapter": "announcement"
+  }
+]

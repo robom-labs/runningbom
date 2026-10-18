@@ -2,7 +2,7 @@
 
 ## 적용 상태
 
-스키마 정본은 `supabase/migrations/20260726071733_vnext_social_foundation.sql`이다. 이 migration을 로컬 또는 원격 Supabase에 실제 적용하지 않았으므로 배포 상태는 `BLOCKED_EXTERNAL`이다.
+기초 스키마 정본은 `supabase/migrations/20261018090404_vnext_social_foundation.sql`이다. 2026-10-18 전용 프로젝트 `hvwvcockihozxmudltzt`에 기초/회원·채팅/접근 경계/계정 정리/피드 탐색/작성 컬럼 권한의 migration 6개를 실제 적용했다. 실제 DB 검수 26개를 통과했고 테스트 자료는 롤백했다. OAuth·SMTP·실계정 로그인 전체 흐름은 미검수이며, 최신 적용 목록과 출시 관문은 저장소 루트 `HANDOFF.md`와 `outputs/release-review/index.html`을 우선한다.
 
 ## 테이블
 

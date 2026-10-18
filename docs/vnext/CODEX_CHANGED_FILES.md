@@ -31,7 +31,7 @@ git diff --name-status aa8fee4bac96cda5377c761b7e96446eb7922257..HEAD
 ## 소셜 기반
 
 - `supabase/config.toml`
-- `supabase/migrations/20260726071733_vnext_social_foundation.sql`
+- `supabase/migrations/20261018090404_vnext_social_foundation.sql`
 - `supabase/functions/process-deletion-jobs/index.ts`
 - `scripts/supabase-security-contract.test.mjs`
 

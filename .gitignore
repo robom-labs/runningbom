@@ -12,3 +12,6 @@ outputs/cloudflared*
 .vercel
 .vercel-static/
 .env*
+node_modules/
+dist/
+review-preview/dist/

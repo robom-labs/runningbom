@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-18T12:58:46.809Z",
+  "catalogRevision": "2026-10-18-training-v2",
+  "models": 200,
+  "brands": 15,
+  "upcoming": 2,
+  "webExactPhotos": 186,
+  "nativeExactPhotos": 171,
+  "rawRaces": 114,
+  "publicRaces": 87,
+  "publicRaceDate": "2026-10-18",
+  "verifiedRacePhotos": 93,
+  "racePhotoMiB": 35.06,
+  "runtime": "passed",
+  "failures": []
+}

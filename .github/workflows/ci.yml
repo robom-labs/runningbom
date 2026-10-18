@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -21,10 +21,14 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: apps/mobile/package-lock.json
+      - run: npm ci --ignore-scripts
       - run: npm --prefix apps/mobile ci
+      - run: npm --prefix apps/review ci --ignore-scripts
       - run: git diff --check
       - run: npm test
       - run: npm run build
+      - name: 통합 화면·데이터 검증
+        run: npm run review:build && npm run review:test
       - name: Android·iOS 네이티브 검증
         run: npm --prefix apps/mobile run check
       - name: Production dependency audit

@@ -1,0 +1,225 @@
+{
+  "checkedAt": "2026-10-18T11:22:14.844Z",
+  "targets": 114,
+  "verified": 20,
+  "available": 91,
+  "missing": [
+    {
+      "id": "schedule-3ce554297ac3",
+      "name": "제25회 대청호마라톤",
+      "reason": "image verification pending"
+    },
+    {
+      "id": "schedule-5fd4a9ae042b",
+      "name": "2026 무쓰런",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-2b405dfa9bda",
+      "name": "2026 서울 펫림픽 & 런 위드 고 (SEOUL PETLYMPIC & RUN WITH GO)",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-3260d3ad1bb2",
+      "name": "2026 제3회 감성런",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-4cb0f7932538",
+      "name": "불닭 버닝 트레일런",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-3aedd1cf3b44",
+      "name": "서울 대모-구룡산트레일런",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-8f04537cebb5",
+      "name": "2026 부산바다마라톤",
+      "reason": "image verification pending"
+    },
+    {
+      "id": "schedule-f8c69d616324",
+      "name": "2026 청송사과트레일런",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-04f5e475a10f",
+      "name": "2026 DMZ OPEN 평화마라톤",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-a1acb5209782",
+      "name": "2026 해양수도 부산 런페스타",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-32f2905c557a",
+      "name": "제19회 진해마라톤",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-1a89c5db9208",
+      "name": "2026 과천마라톤",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-8b8dfa605681",
+      "name": "2026 서울구석구석 국제 트레일런",
+      "reason": "image verification pending"
+    },
+    {
+      "id": "schedule-80e4f49eb981",
+      "name": "2026 양산 배내골 애플 런",
+      "reason": "image verification pending"
+    },
+    {
+      "id": "schedule-522eeb6aecd9",
+      "name": "2026 해남땅끝 전국마라톤대회",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-363de0daecc0",
+      "name": "제24회 전국 나주 금성산숲길마라톤",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-22568bd194f5",
+      "name": "2026 나눔레이스 인 용인",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-84adcdddea2f",
+      "name": "2026 손기정평화마라톤",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-eb19f6e99dcb",
+      "name": "제24회 대모산,구룡산 트레일런",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-c659f2a14064",
+      "name": "2027 서울 세계청년대회 성공 기원 평화런",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-0103ac98f029",
+      "name": "2026 정읍공동체 프리마켓 마라톤",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-0a1966a96d32",
+      "name": "2026월드 레코드 국제 마라톤 축제 - 사웨",
+      "reason": "organizer URL not confirmed"
+    },
+    {
+      "id": "schedule-4414899b84fb",
+      "name": "희망드림 제24회 동계마라톤대회",
+      "reason": "image verification pending"
+    }
+  ],
+  "failures": [
+    {
+      "id": "schedule-3ce554297ac3",
+      "url": "https://www.dcmarathon.or.kr/",
+      "reason": "No verifiable representative image for this edition"
+    },
+    {
+      "id": "schedule-2b405dfa9bda",
+      "url": "http://runwithgo.com/",
+      "reason": "Redirected 10 times. Aborting."
+    },
+    {
+      "id": "schedule-4cb0f7932538",
+      "url": "http://burningfesta.com/",
+      "reason": "No verifiable representative image for this edition"
+    },
+    {
+      "id": "schedule-8f04537cebb5",
+      "url": "https://busan.raceplan.co.kr/",
+      "reason": "Redirected 10 times. Aborting."
+    },
+    {
+      "id": "schedule-f8c69d616324",
+      "url": "http://csmarathon.co.kr/csmarathon/",
+      "reason": "Redirected 10 times. Aborting."
+    },
+    {
+      "id": "schedule-5fd4a9ae042b",
+      "url": "https://docs.google.com/forms/d/e/1FAIpQLScITbxTg3iX5iLx0n6PDBFH0rpOB8wnDPUDvdy-SXP3anrIMw/closedform",
+      "reason": "No verifiable representative image for this edition"
+    },
+    {
+      "id": "schedule-04f5e475a10f",
+      "url": "https://dmzopenrun.kr/dmzrun/",
+      "reason": "No verifiable representative image for this edition"
+    },
+    {
+      "id": "schedule-a1acb5209782",
+      "url": "http://runfesta.co.kr/",
+      "reason": "Redirected 10 times. Aborting."
+    },
+    {
+      "id": "schedule-32f2905c557a",
+      "url": "https://jinhaemarathon.co.kr/",
+      "reason": "No verifiable representative image for this edition"
+    },
+    {
+      "id": "schedule-1a89c5db9208",
+      "url": "http://gcrun.co.kr/",
+      "reason": "Redirected 10 times. Aborting."
+    },
+    {
+      "id": "schedule-522eeb6aecd9",
+      "url": "http://haenammarathon.co.kr/",
+      "reason": "No verifiable representative image for this edition"
+    },
+    {
+      "id": "schedule-363de0daecc0",
+      "url": "http://www.geumsungsan.co.kr/",
+      "reason": "getaddrinfo ENOTFOUND www.geumsungsan.co.kr"
+    },
+    {
+      "id": "schedule-84adcdddea2f",
+      "url": "http://sonkeechungrun.com/",
+      "reason": "Redirected 10 times. Aborting."
+    },
+    {
+      "id": "schedule-eb19f6e99dcb",
+      "url": "http://koreatrail.net/",
+      "reason": "No verifiable representative image for this edition"
+    },
+    {
+      "id": "schedule-07897dae2bba",
+      "url": "http://www.mara1080.com/event/c8dc2c22-a83a-4743-9e34-c884e9809dbb",
+      "reason": "request timed out after 15 seconds."
+    },
+    {
+      "id": "schedule-c659f2a14064",
+      "url": "https://peacerun.kr/marathon/code/8051/",
+      "reason": "No verifiable representative image for this edition"
+    },
+    {
+      "id": "schedule-4599ea0df6d4",
+      "url": "http://mara1080.com/event/c2cec79b-c38a-4832-bf4f-7ecb499cdcd5/guide/overview",
+      "reason": "request timed out after 15 seconds."
+    },
+    {
+      "id": "schedule-91ff291800b9",
+      "url": "http://www.irunman.kr/",
+      "reason": "requestHandler timed out after 55 seconds."
+    },
+    {
+      "id": "schedule-8eb0ef7668fd",
+      "url": "http://mara1080.com/event/df4b4e7d-4fbc-4843-858c-f15c032e92cb",
+      "reason": "request timed out after 15 seconds."
+    },
+    {
+      "id": "schedule-0a1966a96d32",
+      "url": "http://mara1080.com/event/ccf77de8-1b14-4170-afcb-c2eeaee1a78d/guide/overview",
+      "reason": "request timed out after 15 seconds."
+    }
+  ]
+}

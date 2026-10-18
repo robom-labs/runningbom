@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-18",
+  "entries": [
+    {
+      "id": "schedule-6dace7afa000",
+      "page": "https://rocknrun.kr/",
+      "url": "https://cdn.imweb.me/thumbnail/20260316/15fbfc8c5cfaa.png",
+      "kind": "organizer-logo",
+      "sha256": "97bb5b4a316f5d33fadb64b4df5099c1a6548a3cb16dcf72814178af21c66d68"
+    },
+    {
+      "id": "schedule-91ff291800b9",
+      "page": "http://www.irunman.kr/",
+      "url": "http://www.irunman.kr/new_images/common/head_logo.jpg",
+      "kind": "organizer-logo",
+      "sha256": "432c3b9153e62196112dee2eb9662aab010e010b0730847a449d7b1fb20e9369"
+    },
+    {
+      "id": "schedule-3260d3ad1bb2",
+      "page": "http://xn--439a68tboh.kr/run/9000.asp",
+      "url": "http://xn--439a68tboh.kr/images/2026_top.png",
+      "kind": "event-logo",
+      "sha256": "f768dfb1a4bf0c56899fbb434828a21ec47df6da7869ad83e570902a4099a876"
+    },
+    {
+      "id": "schedule-3aedd1cf3b44",
+      "page": "http://www.mtrailrun.kr/",
+      "url": "http://www.mtrailrun.kr/images/top.png",
+      "kind": "organizer-logo",
+      "sha256": "488da1b38e2434445444791b6a187bec6442b26e4d8894728c5c17de6d9c120a"
+    },
+    {
+      "id": "schedule-22568bd194f5",
+      "page": "https://nanumrun.or.kr/main.php",
+      "url": "https://nanumrun.or.kr/images/main/mainSlideM01.png",
+      "kind": "organizer-hero",
+      "sha256": "b6cf6830fff01fdbdd803abd9bde045bc7300d41f869b2e38194788e54c6fc8a"
+    }
+  ]
+}

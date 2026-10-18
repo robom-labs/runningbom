@@ -40,6 +40,15 @@ export function extractMarathonGoDetailUrls(html) {
   return [...urls].sort();
 }
 
+export function marathonGoRefreshTargets(indexUrls,data,{today,limit=180}={}){
+ const safe=value=>{try{const u=new URL(value);return u.protocol==='https:'&&u.hostname==='marathongo.co.kr'&&!u.username&&!u.password&&/^\/raceDetail\/domestic\/[^/]+$/.test(u.pathname)?u.href:null;}catch{return null;}};
+ const known=[...(data?.featuredRaces||[]),...(data?.scheduleFeed||[])]
+  .filter(r=>String(r.raceDate||r.date).slice(0,10)>=today)
+  .sort((a,b)=>String(a.lastObservedAt||a.dataVerifiedAt||'').localeCompare(String(b.lastObservedAt||b.dataVerifiedAt||'')))
+  .map(r=>safe(r.sourceDetailUrl)).filter(Boolean);
+ return [...new Set([...indexUrls.map(safe).filter(Boolean),...known])].slice(0,limit);
+}
+
 function validUrl(value) {
   try {
     const url = new URL(String(value));

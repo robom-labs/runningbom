@@ -2,7 +2,7 @@
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { BackHandler, StyleSheet, View } from 'react-native';
+import { Alert, BackHandler, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { CalendarScreen } from '../screens/calendar/CalendarScreen';
@@ -14,7 +14,7 @@ import { ProfileScreen } from '../screens/profile/ProfileScreen';
 import { RacesScreen } from '../screens/explore/RacesScreen';
 import { SettingsScreen } from '../screens/settings/SettingsScreen';
 import { ShoesScreen } from '../screens/explore/ShoesScreen';
-import { AuthScreen } from '../screens/auth';
+import {MemberScreen,ProductionAuthScreen} from '../screens/community/MemberScreen';
 import { BadgesScreen } from '../screens/badges';
 import { CadenceScreen } from '../screens/cadence';
 import { ChallengesScreen } from '../screens/challenges';
@@ -27,6 +27,7 @@ import { palette } from '../design-system/theme';
 import { useAppState } from '../state/AppStateProvider';
 import { currentWeekStart, formatDistance, totalsForWeek } from '../../domains/activities/summary';
 import { raceIdFromDeepLink } from '../../src/races';
+import {acceptEmailAuthLink} from '../../domains/identity/auth';
 import type { RacePreference } from '../../domains/races/preference';
 import {
   destinationForRoute,
@@ -43,6 +44,8 @@ export function AppNavigator() {
     useAppState();
   const [route, setRoute] = useState<RouteKey>(() => routeFromStoredValue(preferences.lastTab));
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [emailAuthIntent,setEmailAuthIntent]=useState<'confirm'|'recovery'|null>(null);
+  const emailAuthLinkRef=useRef<string|undefined>(undefined);
   const [focusedRaceId, setFocusedRaceId] = useState<string>();
   const [racePreference, setRacePreference] = useState<{ value: RacePreference; nonce: number }>();
   // 드로어 하위 메뉴에서 고른 기록·통계 구획입니다. 같은 항목을 다시 골라도 반응하도록 nonce를 둡니다.
@@ -97,6 +100,11 @@ export function AppNavigator() {
   );
 
   const initialUrl = Linking.useLinkingURL();
+  useEffect(()=>{
+    if(!initialUrl||emailAuthLinkRef.current===initialUrl)return;
+    emailAuthLinkRef.current=initialUrl;
+    void acceptEmailAuthLink(initialUrl).then(kind=>{if(kind)setEmailAuthIntent(kind);}).catch(()=>Alert.alert('로그인 링크를 확인해 주세요','링크가 만료되었거나 이 기기에서 시작한 요청이 아니에요. 다시 요청해 주세요.'));
+  },[initialUrl]);
   useEffect(() => {
     if (!initialUrl) return;
     const raceId = raceIdFromDeepLink(initialUrl);
@@ -191,7 +199,7 @@ export function AppNavigator() {
         return <ChallengesScreen onBack={() => goBack()} />;
       case 'community':
         // 궁금증 카드의 "관련 기능으로 이동"이 실제 화면 이동으로 동작하게 연결합니다.
-        return <CommunityScreen onNavigate={navigate} onOpenGuide={() => navigate('guide')} />;
+        return <MemberScreen />;
       case 'guide':
         return <GuideScreen onBack={() => goBack('community')} onNavigate={navigate} />;
       case 'stats':
@@ -227,11 +235,12 @@ export function AppNavigator() {
   ]);
 
   // 앱을 처음 연 사람은 드로어 셸 대신 온보딩을 먼저 봅니다. 로그인 단계는 여기서 끼워 넣습니다.
+  if(emailAuthIntent)return <SafeAreaView style={{flex:1,backgroundColor:palette.canvas}}><ProductionAuthScreen initialMode={emailAuthIntent==='recovery'?'reset':'profile'} onDone={()=>setEmailAuthIntent(null)} onSkip={()=>setEmailAuthIntent(null)}/></SafeAreaView>;
   if (onboardingRequired) {
     return (
       <OnboardingScreen
         renderLoginStep={({ onDone, onSkip }) => (
-          <AuthScreen onDone={() => onDone()} onSkip={onSkip} />
+          <ProductionAuthScreen onDone={() => onDone()} onSkip={onSkip} />
         )}
       />
     );
@@ -246,6 +255,7 @@ export function AppNavigator() {
         onBack={() => goBack()}
         title={routeTitles[route]}
         topLevel={isTopLevelRoute(route)}
+        action={<Pressable accessibilityRole="button" accessibilityLabel="내 기록·알림·설정" onPress={()=>navigate('stats')} style={{padding:12}}><Text style={{color:palette.accentStrong,fontWeight:'700'}}>마이</Text></Pressable>}
       />
       <View style={styles.body}>{screen}</View>
       {/* 달리는 중에는 탭을 감춥니다. 뛰면서 잘못 누르면 코칭이 끊깁니다. */}

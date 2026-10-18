@@ -1,0 +1,5 @@
+
+> @robom/runningbom-mobile@0.21.0 verify
+> node scripts/verify-config.mjs
+
+모바일 정적 검증 통과: production kr.robom.runningbom · Preview kr.robom.runningbom.preview · 대회 114개

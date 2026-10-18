@@ -7,6 +7,7 @@ import {
   extractMarathonGoDetailUrls,
   mergeMarathonGoDiscoveries,
   parseMarathonGoDetail,
+  marathonGoRefreshTargets,
 } from "./race-data-core.mjs";
 import { assessRaceRefreshHealth } from "./race-health-core.mjs";
 
@@ -48,7 +49,9 @@ async function runPool(items, size, worker) {
 const checkedAt = new Date().toISOString();
 const current = JSON.parse(readFileSync(sourcePath, "utf8"));
 const catalogue = await fetchText(MARATHONGO_DOMESTIC_URL);
-const detailUrls = extractMarathonGoDetailUrls(catalogue.html).slice(0, detailLimit);
+const indexUrls=extractMarathonGoDetailUrls(catalogue.html);
+const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul'}).format(new Date(checkedAt));
+const detailUrls=marathonGoRefreshTargets(indexUrls,current,{today,limit:detailLimit});
 if (detailUrls.length === 0) throw new Error("마라톤GO 국내 일정에서 상세 URL을 찾지 못했습니다. 기존 데이터는 변경하지 않았습니다.");
 
 const results = await runPool(detailUrls, concurrency, async (url) => {
@@ -66,6 +69,14 @@ const failures = results.filter((result) => !result.ok);
 if (discoveries.length === 0) throw new Error("정규화 가능한 일정이 0건입니다. 기존 데이터는 변경하지 않았습니다.");
 
 const merged = mergeMarathonGoDiscoveries(current, discoveries, { checkedAt });
+// Record successful observation independently of the last content change.
+// A failed or absent source never receives a fresh verification timestamp.
+const observed=new Set(discoveries.map(r=>r.sourceDetailUrl));
+for(const row of [...merged.data.featuredRaces,...merged.data.scheduleFeed]){
+ if(row.sourceName==='마라톤GO'&&observed.has(row.sourceDetailUrl)&&row.lastObservedAt?.slice(0,10)!==checkedAt.slice(0,10)){
+  row.lastObservedAt=checkedAt;merged.changed=true;
+ }
+}
 if (merged.contentChanged) {
   const kst = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Seoul" }).format(new Date()).replaceAll("-", ".");
   const currentRevision = Number(String(current.version || "").match(/race-data-(\d+)$/)?.[1] || 0);
@@ -75,6 +86,8 @@ const health = assessRaceRefreshHealth({
   previousData: current,
   nextData: merged.data,
   catalogueCount: detailUrls.length,
+  indexCount:indexUrls.length,
+  revisitedKnownCount:detailUrls.filter(u=>!indexUrls.includes(u)).length,
   parsedCount: discoveries.length,
   now: Date.parse(checkedAt),
 });
@@ -82,6 +95,8 @@ const report = {
   checkedAt,
   source: { name: "마라톤GO 공개 국내 일정", url: catalogue.finalUrl },
   catalogueCount: detailUrls.length,
+  indexCount:indexUrls.length,
+  revisitedKnownCount:detailUrls.filter(u=>!indexUrls.includes(u)).length,
   parsedCount: discoveries.length,
   rejectedCount: failures.length,
   rejected: failures.slice(0, 30),

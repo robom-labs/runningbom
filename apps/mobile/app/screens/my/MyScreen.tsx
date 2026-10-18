@@ -78,6 +78,7 @@ import {
 import type { StatsFocus } from '../../navigation/types';
 import { useAppState } from '../../state/AppStateProvider';
 import { ManualActivityCard } from './ManualActivityCard';
+import { PersonalHub } from './PersonalHub';
 
 const kindLabels: Record<string, string> = { run: '러닝', walk: '걷기', recovery: '회복' };
 const metricChoices: GoalMetric[] = ['sessions', 'minutes', 'distance'];
@@ -256,6 +257,7 @@ export function MyScreen({ onOpenCalendar, focus }: MyScreenProps) {
       showsVerticalScrollIndicator={false}
       style={screenStyles.root}
     >
+      <PersonalHub />
       {storageError ? <Banner title="저장 상태 안내" body={storageError} tone="warning" /> : null}
 
       {activities.length === 0 ? (

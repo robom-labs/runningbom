@@ -11,9 +11,6 @@
 name: Refresh official images
 
 on:
-  schedule:
-    # 매주 월요일 KST 08:40 (UTC 일요일 23:40) — 러닝화 점검 20분 뒤
-    - cron: "40 23 * * 0"
   workflow_dispatch:
     inputs:
       limit:
@@ -26,12 +23,12 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: official-images-refresh
+  group: runningbom-data-writer
   cancel-in-progress: false
 
 jobs:
   collect:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

@@ -27,7 +27,13 @@ const command = usesPnpm ? "pnpm" : "npm";
 const commandArgs = usesPnpm
   ? [...(existsSync(resolve(targetDir, "pnpm-workspace.yaml")) ? ["-r"] : []), "list", "--prod", "--parseable", "--depth", "Infinity"]
   : ["ls", "--omit=dev", "--all", "--parseable"];
-const listed = spawnSync(command, commandArgs, {
+// npm is a .cmd shim on Windows; use the running npm CLI with Node instead of a shell.
+function runManager(args,options) {
+  return command === 'npm' && process.env.npm_execpath
+    ? spawnSync(process.execPath,[process.env.npm_execpath,...args],options)
+    : spawnSync(command,args,options);
+}
+const listed = runManager(commandArgs, {
   cwd: targetDir,
   encoding: "utf8",
   maxBuffer: 50 * 1024 * 1024
@@ -66,7 +72,7 @@ function proveBuildOnlyDependency(packageName, requiredParent) {
   const proofArgs = usesPnpm
     ? ["-r", "why", packageName, "--json"]
     : ["explain", packageName, "--json"];
-  const proof = spawnSync(command, proofArgs, {
+  const proof = runManager(proofArgs, {
     cwd: targetDir,
     encoding: "utf8",
     maxBuffer: 50 * 1024 * 1024

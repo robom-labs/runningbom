@@ -1,0 +1,39 @@
+
+> runningbom@0.21.0 review:test
+> node --import ./apps/mobile/node_modules/tsx/dist/loader.mjs --test "apps/review/tests/*.test.mjs" apps/review/tests/race-status.test.ts
+
+✔ calendar keeps opening, closing and race dates separate and omits absent dates (15.5046ms)
+✔ Korean day grouping crosses UTC midnight correctly and does not invent midnight registration times (10.244ms)
+✔ every model preserves its exact source, SKU, color and unchanged original photo (388.9689ms)
+✔ prices keep their market and currency, unknown prices stay unknown, and snapshots verify by checksum (5.2262ms)
+✔ release dates retain stated precision and region; upcoming models require a source (0.6101ms)
+✔ topic and coarse region tags remain editable, deduplicated and explicit (3.3947ms)
+✔ stable pagination admits only database-shaped cursors and excludes duplicate posts (0.5595ms)
+✔ feed dates use natural runner-facing labels without fabricated activity (0.236ms)
+✔ negated and unknown phrases do not silently become positive needs (1.4103ms)
+✔ existing SurveyJS engine branches and validates the current-pain question (46.5598ms)
+✔ no disease or unresolved ankle pain is ranked into product recommendations (0.1931ms)
+✔ limited fit data stays explicit while purpose and price candidates obey constraints (0.2548ms)
+✔ latest requires a confirmed release in the last year; collection time cannot imply a launch (17.7719ms)
+✔ upcoming is ordered by the next declared launch, not collection arrival (1.1783ms)
+✔ unannounced prices are filterable and never counted as affordable prices (0.2923ms)
+✔ foreign list prices are not treated as Korean won in budget filtering (0.2108ms)
+✔ 접수 중에는 마감일, 예정 대회는 시작일을 우선 보여 준다 (1.0466ms)
+✔ 지난 마감은 원문에 open이 남아 있어도 마감으로 표시한다 (14.689ms)
+✔ 시간이 확인되지 않은 당일 접수는 자정에 마감됐다고 추정하지 않는다 (0.3619ms)
+✔ 미래 접수·조기 마감·불일치 자료는 각각 그대로 구분한다 (0.4254ms)
+✔ serves existing static assets without a fallback (26.0146ms)
+✔ falls back to index.html for an unknown app route (1.6055ms)
+✔ does not turn missing API or write requests into the app shell (0.6355ms)
+✔ emits the files required by Sites packaging (8.6827ms)
+✔ legacy unknown fields vanish while confirmed portions and zero-drop facts stay visible (1.7908ms)
+✔ short terms distinguish stability from firmness and month releases keep their precision (0.2138ms)
+✔ conflicting races stay in the operation snapshot but do not become public cards (12.7543ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 623.7532

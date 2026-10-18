@@ -15,7 +15,17 @@ import {
   officialImage,
   officialImageCount,
   parseOfficialImages,
+  mergeVerifiedOfficialImages,
+  isUsableSourcePage,
 } from '../domains/media/officialImages';
+
+test('공개 HTTP 출처 페이지와 HTTPS 사진을 구분하고 로컬 주소는 거절한다',()=>{
+ assert.equal(isUsableSourcePage('http://official.example/event'),true);
+ assert.equal(isUsableImageUrl('http://official.example/poster.jpg'),false);
+ assert.equal(isUsableSourcePage('https://runmusic.localvibehub.com/'),true);
+ assert.equal(isUsableSourcePage('http://127.0.0.1/'),false);
+ assert.equal(isUsableSourcePage('http://app.local/'),false);
+});
 
 function source(relative: string): string {
   return readFileSync(join(__dirname, '..', relative), 'utf8');
@@ -55,6 +65,15 @@ test('파일이 깨져도 앱이 죽지 않습니다', () => {
   assert.deepEqual(parseOfficialImages('이상한값'), {});
   assert.deepEqual(parseOfficialImages({ images: '이상한값' }), {});
   assert.deepEqual(parseOfficialImages({}), {});
+});
+test('잘못되거나 오래된 원격 사진은 정상 원본을 비우거나 덮지 않습니다',()=>{
+ const good={url:'https://official.example/poster.jpg',source:'official.example',sourceUrl:'https://official.example/',checkedAt:'2026-10-18',edition:'2026',sha256:'a'.repeat(64)};
+ const current={event:good};
+ assert.equal(mergeVerifiedOfficialImages(current,{images:{event:{...good,sha256:'broken'}}}),current);
+ assert.equal(mergeVerifiedOfficialImages(current,{images:{event:{...good,checkedAt:'2026-10-17'}}}),current);
+ assert.equal(mergeVerifiedOfficialImages(current,{images:{}}),current);
+ const next=mergeVerifiedOfficialImages(current,{images:{another:{...good,url:'https://official.example/another.jpg'}}});
+ assert.equal(next.event,good);assert.ok(next.another);
 });
 
 test('번들에 들어간 파일이 규칙을 지킵니다', () => {
@@ -96,10 +115,15 @@ test('신발 카드와 상세가 둘 다 사진 자리를 씁니다', () => {
   assert.match(source('domains/shoes/ShoeDetail.tsx'), /<ArtImage/);
 });
 
-test('대회 포스터도 공식 이미지를 받을 수 있습니다', () => {
+test('대회 포스터는 검증된 공식 사진만 표시하고 실패한 URL은 다시 그리지 않습니다', () => {
   const poster = source('domains/races/RacePoster.tsx');
   assert.match(poster, /officialImage/);
-  assert.match(poster, /setFailed\(true\)/);
+  assert.match(poster, /photo\?\.sha256&&photo\?\.sourceUrl/);
+  assert.match(poster, /photo\.url!==failedUrl/);
+  assert.match(poster, /setFailedUrl\(photo\.url\)/);
+  assert.doesNotMatch(poster, /확인 중|공식 대표 이미지/);
+  assert.match(poster, /if\(!usable\|\|!photo\)return null/);
+  assert.doesNotMatch(poster, /<Svg|<ArtImage/);
   // 대회 화면이 id를 실제로 넘겨야 사진이 붙습니다.
   assert.match(source('domains/races/RaceScreen.tsx'), /raceId=\{group\.primary\.id\}/);
 });

@@ -1,0 +1,202 @@
+/* App-owned controls and readable typography. Device/runtime styles stay untouched. */
+:is(.running-app,.bottom-sheet) {font-size:14px;line-height:1.6;letter-spacing:-.25px;color:#142438}
+:is(.running-app,.bottom-sheet) .page-heading p,.greeting p:last-child {font-size:14px;color:#586b7d;line-height:1.75}
+:is(.running-app,.bottom-sheet) .page-heading {margin-bottom:22px}
+:is(.running-app,.bottom-sheet) .page-heading h1 {font-size:26px;line-height:1.45}
+:is(.running-app,.bottom-sheet) .eyebrow {font-size:11px;letter-spacing:1.1px}
+:is(.running-app,.bottom-sheet) .greeting p:first-child {font-size:13px;color:#667586}
+:is(.running-app,.bottom-sheet) .greeting h1 {font-size:26px}
+:is(.running-app,.bottom-sheet) .section-heading h2 {font-size:20px}
+:is(.running-app,.bottom-sheet) .section-heading>button {font-size:13px;min-height:44px}
+:is(.running-app,.bottom-sheet) .segmented button {font-size:14px;min-height:48px;padding:12px 4px}
+:is(.running-app,.bottom-sheet) .chip {font-size:13px;min-height:42px;padding:9px 13px;white-space:nowrap}
+:is(.running-app,.bottom-sheet) .search-box input {font-size:15px;min-height:44px}
+:is(.running-app,.bottom-sheet) .result-caption {font-size:12px;align-items:center;gap:10px;line-height:1.6}
+:is(.running-app,.bottom-sheet) .result-caption>button {font-size:12px;min-height:44px;white-space:nowrap}
+:is(.running-app,.bottom-sheet) .catalog-sync-label {font-size:12px;line-height:1.7}
+:is(.running-app,.bottom-sheet) .catalog-sync-label small {font-size:12px;color:#60746d}
+:is(.running-app,.bottom-sheet) .info-note {font-size:12px;line-height:1.8;color:#52675f}
+:is(.running-app,.bottom-sheet) .catalog-note {font-size:12px;line-height:1.7}
+:is(.running-app,.bottom-sheet) .primary,:is(.running-app,.bottom-sheet) .secondary {font-size:14px;min-height:48px}
+:is(.running-app,.bottom-sheet) .fit-entry {padding:14px!important;gap:12px}
+:is(.running-app,.bottom-sheet) .fit-entry strong {font-size:15px}
+:is(.running-app,.bottom-sheet) .fit-entry small {font-size:12px;color:#526f63}
+:is(.running-app,.bottom-sheet) .training-filter>span {font-size:12px}
+:is(.running-app,.bottom-sheet) .shoe-title>small {font-size:12px;color:#4f6e65}
+:is(.running-app,.bottom-sheet) .shoe-title>strong {font-size:16px;line-height:24px;min-height:48px;max-height:48px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+:is(.running-app,.bottom-sheet) .shoe-card>p {font-size:17px;line-height:1.6;font-weight:700}
+:is(.running-app,.bottom-sheet) .product-release {font-size:12px}
+:is(.running-app,.bottom-sheet) .product-price-label {font-size:11.5px;line-height:1.6;min-height:20px;color:#526b61}
+:is(.running-app,.bottom-sheet) .text-check {font-size:13px;min-height:44px}
+:is(.running-app,.bottom-sheet) .upcoming-label {font-size:11px;padding:4px 8px}
+:is(.running-app,.bottom-sheet) .fact-list>div {font-size:14px;grid-template-columns:98px minmax(0,1fr);padding:13px 0;gap:12px;line-height:1.8}
+:is(.running-app,.bottom-sheet) .fact-list dt {color:#5d7080;font-weight:500}
+:is(.running-app,.bottom-sheet) .fact-list dd {color:#253d50}
+:is(.running-app,.bottom-sheet) .shoe-description {font-size:14px;line-height:1.9;color:#435e6a}
+:is(.running-app,.bottom-sheet) .release-source,:is(.running-app,.bottom-sheet) .merchant-link small {font-size:12px;line-height:1.75}
+:is(.running-app,.bottom-sheet) .release-source {min-height:44px;align-items:center}
+:is(.running-app,.bottom-sheet) .comparison-table {font-size:12px}
+:is(.running-app,.bottom-sheet) .comparison-table th,:is(.running-app,.bottom-sheet) .comparison-table td {line-height:1.8;word-break:keep-all}
+:is(.running-app,.bottom-sheet) .personal-heading p {font-size:13px}
+:is(.running-app,.bottom-sheet) .personal-heading small {font-size:10px}
+:is(.running-app,.bottom-sheet) .personal-facts>div {font-size:13px}
+:is(.running-app,.bottom-sheet) .personal-account-link {font-size:14px!important;min-height:48px}
+:is(.running-app,.bottom-sheet) .personal-privacy {font-size:12px}
+:is(.running-app,.bottom-sheet) .bottom-nav {height:76px}
+:is(.running-app,.bottom-sheet) .nav-item {min-height:62px;font-size:12px!important}
+:is(.running-app,.bottom-sheet) .nav-label {line-height:20px}
+:is(.running-app,.bottom-sheet) .nav-icon svg {width:25px;height:25px}
+:is(.running-app,.bottom-sheet) .hero.official-event {height:256px;border:1px solid #dfebe5;border-radius:18px}
+:is(.running-app,.bottom-sheet) .official-event .hero-image {width:42%;padding:10px 8px;background:#f8fbf9}
+:is(.running-app,.bottom-sheet) .official-event .hero-content {width:58%;padding:17px 10px 17px 17px}
+:is(.running-app,.bottom-sheet) .official-event .hero-title {font-size:21px!important;line-height:1.4!important;min-height:59px;max-height:59px;margin:7px 0!important}
+:is(.running-app,.bottom-sheet) .official-event .hero-content>p {font-size:12px;line-height:19px}
+:is(.running-app,.bottom-sheet) .official-event .hero-date span {font-size:12px}
+:is(.running-app,.bottom-sheet) .official-event .hero-date strong {font-size:15px}
+:is(.running-app,.bottom-sheet) .official-event .hero-cta {font-size:14px!important;min-height:44px;height:44px;padding:0 12px!important}
+:is(.running-app,.bottom-sheet) .race-list-item,:is(.running-app,.bottom-sheet) .race-row.compact,:is(.running-app,.bottom-sheet) .race-row.compact:last-child {border-color:#cbded4;border-width:1.5px;border-radius:17px;box-shadow:0 2px 8px #20483608}
+:is(.running-app,.bottom-sheet) .race-list-item {padding:14px 14px 0;margin-bottom:14px}
+:is(.running-app,.bottom-sheet) .race-row.compact {padding:14px;margin-bottom:13px}
+:is(.running-app,.bottom-sheet) .race-row {grid-template-columns:74px minmax(0,1fr);column-gap:12px}
+:is(.running-app,.bottom-sheet) .race-row.without-photo {grid-template-columns:minmax(0,1fr)}
+:is(.running-app,.bottom-sheet) .race-thumbnail,:is(.running-app,.bottom-sheet) .compact .race-thumbnail {width:74px;min-width:74px;height:105px;background:#f3f7f4}
+:is(.running-app,.bottom-sheet) .race-copy>strong {font-size:16px;line-height:24px;min-height:48px;max-height:48px;letter-spacing:-.45px}
+:is(.running-app,.bottom-sheet) .race-copy>small {font-size:13px;line-height:20px;color:#526575}
+:is(.running-app,.bottom-sheet) .race-copy>small:nth-of-type(2),:is(.running-app,.bottom-sheet) .race-list-item .race-copy>small:nth-of-type(2) {font-size:13px;line-height:20px;min-height:40px;max-height:40px}
+:is(.running-app,.bottom-sheet) .race-row-footer .race-date small {font-size:13px}
+:is(.running-app,.bottom-sheet) .race-row-footer .race-date strong {font-size:15px}
+:is(.running-app,.bottom-sheet) .race-status {font-size:12px;line-height:25px;padding:0 7px}
+:is(.running-app,.bottom-sheet) .race-row-footer {gap:7px}
+:is(.running-app,.bottom-sheet) .race-row-footer .alarm-button {width:40px;min-width:40px;min-height:44px;height:44px}
+:is(.running-app,.bottom-sheet) .race-list-item .row-bottom {font-size:12px;color:#596e7c;min-height:44px;padding:0;margin-top:8px}
+:is(.running-app,.bottom-sheet) .weekly .section-heading {margin-bottom:8px}
+
+.gear-filter-triggers {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:14px}
+:is(.running-app,.bottom-sheet) .filter-trigger {padding:11px 10px;border:1px solid #d9e5de;border-radius:13px;background:#f8fbf9;text-align:left;min-width:0;min-height:67px}
+.filter-trigger>small {display:block;font-size:11px;color:#60756c;margin-bottom:2px}
+.filter-trigger>span {display:flex;align-items:center;justify-content:space-between;gap:4px;font-size:13px;font-weight:700;white-space:nowrap;letter-spacing:-.4px}
+.filter-trigger>span>b {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+:is(.running-app,.bottom-sheet) .filter-trigger.applied {color:#0b7064;border-color:#8bb9a7;background:#edf7f1}
+.active-filter-summary {display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;margin-bottom:10px;color:#526f60}
+:is(.running-app,.bottom-sheet) .active-filter-summary>button {color:#0b7064;min-height:44px;font-weight:700;white-space:nowrap}
+.gear-filter-panel {padding:4px 22px 35px}
+.gear-filter-panel>p {font-size:14px;line-height:1.8;color:#536d61;margin:0 0 20px}
+.filter-options {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+:is(.running-app,.bottom-sheet) .filter-option {display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 12px;border:1px solid #dce6df;background:white;border-radius:13px;text-align:left;min-height:57px;min-width:0}
+.filter-option>span {min-width:0}
+.filter-option strong {font-size:14px;line-height:1.55;font-weight:500;white-space:nowrap}
+:is(.running-app,.bottom-sheet) .filter-option.selected {background:#edf7f1;border:1.5px solid #4c9a80;color:#0d6e58}
+.filter-option.selected strong {font-weight:700}
+.selection-check {color:#0d7d69;flex-shrink:0}
+.selection-check.hidden {visibility:hidden}
+.filter-sort-options {grid-template-columns:minmax(0,1fr)}
+.filter-sort-options .filter-option {padding:13px 15px}
+.filter-sort-options .filter-option strong {font-size:16px}
+.filter-option small {display:block;font-size:12px;line-height:1.7;color:#5b7266;margin-top:3px}
+.filter-option {position:relative}
+.filter-option .selection-check {position:absolute;right:12px;top:16px}
+.filter-option strong {padding-right:22px;display:inline-block}
+.filter-option small {word-break:keep-all;overflow-wrap:normal}
+
+.calendar-help {display:flex;align-items:center;gap:8px;color:#426d5b;font-size:13px;line-height:1.7;margin:15px 0 12px}
+:is(.running-app,.bottom-sheet) .calendar-compact {margin:0;border:1px solid #ceded5;border-radius:17px;padding:10px;background:#fff}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc {font-size:13px}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-toolbar.fc-header-toolbar {margin:0 0 8px}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-toolbar-title {font-size:20px;letter-spacing:-.5px;font-weight:700;white-space:nowrap}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-button {width:44px;height:44px;padding:0!important;border:0!important;background:#f1f7f3!important;color:#225c47!important;border-radius:12px!important;box-shadow:none!important}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-button .fc-icon {font-size:21px}
+:is(.running-app,.bottom-sheet) .calendar-compact td,:is(.running-app,.bottom-sheet) .calendar-compact th,:is(.running-app,.bottom-sheet) .calendar-compact .fc-scrollgrid {border:0!important}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-col-header-cell-cushion {font-size:12px;font-weight:500;padding:10px 0;color:#526c5d}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-day-sun .fc-col-header-cell-cushion {color:#aa5a46}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-daygrid-day-frame {min-height:68px}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-daygrid-day-top {display:block}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-daygrid-day-number {display:block;padding:0;width:100%}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-daygrid-day-events,:is(.running-app,.bottom-sheet) .calendar-compact .fc-daygrid-day-bottom {display:none}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-day-today {background:transparent!important}
+:is(.running-app,.bottom-sheet) .calendar-day-button {display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px;min-height:65px;min-width:0;width:100%;border-radius:11px;padding:6px 0;color:#213c4c}
+.calendar-day-number {display:grid;place-items:center;font-size:17px;font-weight:500;line-height:27px;min-width:29px;min-height:29px}
+.calendar-day-count {font-size:12px;line-height:18px;font-weight:700;color:#147758;white-space:nowrap}
+:is(.running-app,.bottom-sheet) .calendar-day-button[aria-pressed="true"] {background:#e6f3ec}
+.calendar-day-button[aria-pressed="true"] .calendar-day-number {background:#14765d;color:white;border-radius:10px}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-day-today .calendar-day-number {font-weight:900;text-decoration:underline;text-underline-offset:4px}
+.calendar-legend {display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:#597364;padding:3px 1px 10px}
+:is(.running-app,.bottom-sheet) .calendar-legend button {min-height:44px;font-size:13px;font-weight:700;color:#0d7460;padding:0 8px}
+.calendar-agenda-heading {display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0 15px}
+.calendar-agenda-heading h2 {font-size:18px;line-height:1.6;font-weight:700}
+.calendar-agenda-tools {display:flex;align-items:center;gap:9px;font-size:12px;white-space:nowrap;color:#597366}
+:is(.running-app,.bottom-sheet) .calendar-agenda-tools button {display:flex;align-items:center;justify-content:center;gap:4px;padding:0 9px;min-height:44px;border:1px solid #d8e7dd;border-radius:11px;color:#0c735c;font-size:13px;background:#f4f9f6;font-weight:700}
+.calendar-agenda .race-list-item {padding-bottom:12px}
+.calendar-empty {padding:25px 16px;text-align:center;border:1px solid #e1e9e3;border-radius:16px;font-size:14px;color:#546e60;background:#f9fbf9}
+:is(.running-app,.bottom-sheet) .calendar-empty button {display:flex;align-items:center;justify-content:center;gap:8px;color:#0a765c;font-weight:700;font-size:14px;min-height:46px;margin:10px auto 0}
+@media (prefers-reduced-motion:reduce) {:is(.running-app,.bottom-sheet) .calendar-compact * {scroll-behavior:auto}}
+
+:is(.running-app,.bottom-sheet) .races-page .view-toggle {display:flex;gap:3px;background:#edf4ef;border-radius:11px;padding:3px;margin-left:auto}
+:is(.running-app,.bottom-sheet) .races-page .view-toggle button {display:flex;align-items:center;justify-content:center;gap:4px;min-width:54px;width:auto;min-height:39px;padding:0 7px;font-size:12px;white-space:nowrap;border-radius:8px}
+:is(.running-app,.bottom-sheet) .races-page .view-toggle button[aria-pressed="true"] {background:white;color:#0b7461;box-shadow:0 1px 4px #264f3510}
+:is(.running-app,.bottom-sheet) .races-page .view-toggle svg {width:17px;height:17px}
+:is(.running-app,.bottom-sheet) .races-page .filter-row {gap:7px;flex-wrap:wrap;align-items:center}
+:is(.running-app,.bottom-sheet) .races-page .filter-row>label {font-size:12px;gap:4px;min-height:44px;align-items:center;display:flex;border-radius:10px;border-color:#d7e4da;padding:7px 8px}
+:is(.running-app,.bottom-sheet) .races-page .filter-row select {font-size:13px;max-width:75px;min-height:28px;color:#254a3c}
+:is(.running-app,.bottom-sheet) .races-page .race-list-item .row-bottom {margin-left:0;margin-right:0}
+:is(.running-app,.bottom-sheet) .calendar-page .page-heading {margin-bottom:9px}
+:is(.running-app,.bottom-sheet) .calendar-page .page-heading h1 {font-size:22px;margin-top:0;line-height:1.5}
+:is(.running-app,.bottom-sheet) .calendar-page .page-heading p,:is(.running-app,.bottom-sheet) .calendar-page .page-heading .eyebrow {display:none}
+:is(.running-app,.bottom-sheet) .calendar-page .segmented {margin-bottom:10px}
+:is(.running-app,.bottom-sheet) .calendar-page .filter-row {margin-bottom:8px}
+:is(.running-app,.bottom-sheet) .calendar-page .calendar-help {margin-top:5px;margin-bottom:10px}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-daygrid-day-frame {min-height:57px}
+:is(.running-app,.bottom-sheet) .calendar-day-button {min-height:57px;padding:3px 0;gap:2px}
+
+/* FullCalendar measures transformed phone bounds. Keep its inner tables at the
+   unscaled content width so all seven columns remain equal at every preview scale. */
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-col-header,
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-daygrid-body,
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-scrollgrid-sync-table {width:100%!important;max-width:100%!important;table-layout:fixed}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-col-header-cell,
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-daygrid-day {width:14.285714%;text-align:center}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-daygrid-day-number {float:none;text-align:center}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-scrollgrid-sync-inner {width:100%}
+:is(.running-app,.bottom-sheet) .calendar-compact .fc-day-disabled {background:transparent!important}
+
+:is(.running-app,.bottom-sheet) .bottom-nav {height:78px;padding:7px 6px;border-radius:24px;border-color:#dce8e1;box-shadow:0 5px 22px #153f2b16,0 1px 3px #153f2b08}
+:is(.running-app,.bottom-sheet) .nav-item {gap:4px;min-height:62px;color:#64717b!important;font-size:12px!important;letter-spacing:0}
+:is(.running-app,.bottom-sheet) .nav-icon {width:44px;height:32px;border-radius:12px;transition:background-color 150ms ease}
+:is(.running-app,.bottom-sheet) .nav-icon svg {width:24px;height:24px}
+:is(.running-app,.bottom-sheet) .nav-item.active {background:transparent!important;color:#0c6d59!important}
+:is(.running-app,.bottom-sheet) .nav-item.active .nav-icon {background:#0d7667;color:white;box-shadow:0 2px 6px #0d766720}
+:is(.running-app,.bottom-sheet) .nav-label {line-height:19px;font-weight:500}
+:is(.running-app,.bottom-sheet) .nav-item.active .nav-label {font-weight:700}
+@media(prefers-reduced-motion:reduce){:is(.running-app,.bottom-sheet) .nav-icon {transition:none}}
+
+/* Keep the first product visible without stacking every filter above it. */
+:is(.running-app,.bottom-sheet) .gear-page .page-heading {margin-bottom:14px}
+:is(.running-app,.bottom-sheet) .gear-page .eyebrow {display:none}
+:is(.running-app,.bottom-sheet) .gear-page .page-heading h1 {font-size:24px;margin:0}
+:is(.running-app,.bottom-sheet) .gear-page .page-heading p {margin-top:4px}
+:is(.running-app,.bottom-sheet) .gear-page .fit-entry {padding:11px 12px!important;min-height:52px;margin-bottom:12px!important}
+:is(.running-app,.bottom-sheet) .gear-page .fit-entry small {display:none}
+:is(.running-app,.bottom-sheet) .gear-page .fit-entry-icon {width:32px;height:32px}
+:is(.running-app,.bottom-sheet) .gear-page .gear-search {min-height:48px;height:48px;margin-bottom:12px}
+:is(.running-app,.bottom-sheet) .gear-page .segmented {margin-bottom:14px}
+:is(.running-app,.bottom-sheet) .gear-page .filter-trigger {min-height:61px;padding-top:8px;padding-bottom:8px}
+:is(.running-app,.bottom-sheet) .training-trigger {display:flex;align-items:center;gap:5px;font-size:13px;min-height:44px;padding:0 9px;border:1px solid #dce6e0;border-radius:10px;color:#426859;background:#f9fbfa}
+:is(.running-app,.bottom-sheet) .training-trigger.applied {background:#eaf5ee;border-color:#91b8a2;color:#0b6e55}
+.gear-heading {display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 18px}
+.gear-heading h1 {font-size:22px!important;line-height:1.5;font-weight:900;letter-spacing:-.8px;white-space:nowrap}
+:is(.running-app,.bottom-sheet) .gear-finder-quick {display:flex;align-items:center;gap:5px;white-space:nowrap;min-height:44px;border:1px solid #d4e6dc;border-radius:12px;background:#eff7f2;color:#0e6f58;padding:0 10px;font-size:13px;font-weight:700}
+.shoe-category-grid {display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 7px}
+:is(.running-app,.bottom-sheet) .shoe-category-grid button {min-height:42px;padding:9px 12px;border:1px solid #eef1ef;border-radius:11px;background:#f3f6f4;color:#54665c;font-size:13px;line-height:22px;font-weight:500;white-space:nowrap}
+:is(.running-app,.bottom-sheet) .shoe-category-grid button[aria-pressed=true] {background:#173f36;color:#fff;border-color:#173f36;font-weight:700;box-shadow:0 2px 5px #173f3610}
+
+/* Product-first gear screen: compact one-line controls and a single type rail. */
+.gear-page .gear-heading {margin-bottom:10px}
+:is(.running-app,.bottom-sheet) .gear-page .segmented {margin-bottom:10px}
+.gear-page .gear-filter-triggers {gap:7px;margin-bottom:8px}
+:is(.running-app,.bottom-sheet) .gear-page .filter-trigger {min-height:44px;padding:8px 11px;border-radius:11px;background:#fff}
+.gear-page .filter-trigger>span {font-size:13px;font-weight:500;line-height:24px}
+.gear-page .filter-trigger>span>b {font-weight:500}
+.shoe-category-rail {display:flex;gap:6px;padding:0 0 2px;align-items:center}
+:is(.running-app,.bottom-sheet) .shoe-kind-tab {flex:0 0 auto;min-height:44px;padding:8px 12px;border:1px solid #e3eae5;border-radius:11px;background:#f5f8f5;color:#52675c;font-size:13px;line-height:24px;font-weight:500;white-space:nowrap}
+:is(.running-app,.bottom-sheet) .shoe-kind-tab[aria-pressed=true] {background:#173f36;border-color:#173f36;color:#fff}
+.gear-page .result-caption {margin-top:6px;margin-bottom:12px}
+.gear-page .active-filter-summary {margin-bottom:4px}

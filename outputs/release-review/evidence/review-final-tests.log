@@ -1,0 +1,27 @@
+
+> runningbom@0.21.0 review:test
+> node --import ./apps/mobile/node_modules/tsx/dist/loader.mjs --test "apps/review/tests/*.test.mjs" apps/review/tests/race-status.test.ts
+
+✔ every model preserves its exact source, SKU, color and unchanged original photo (1494.6114ms)
+✔ prices keep their market and currency, unknown prices stay unknown, and snapshots verify by checksum (33.6107ms)
+✔ release dates retain stated precision and region; upcoming models require a source (1.0643ms)
+✔ negated and unknown phrases do not silently become positive needs (3.0763ms)
+✔ existing SurveyJS engine branches and validates the current-pain question (143.3042ms)
+✔ no disease or unresolved ankle pain is ranked into product recommendations (0.4263ms)
+✔ limited fit data stays explicit while purpose and price candidates obey constraints (0.6222ms)
+✔ 접수 중에는 마감일, 예정 대회는 시작일을 우선 보여 준다 (2.6719ms)
+✔ 지난 마감은 원문에 open이 남아 있어도 마감으로 표시한다 (46.3365ms)
+✔ 시간이 확인되지 않은 당일 접수는 자정에 마감됐다고 추정하지 않는다 (0.5857ms)
+✔ 미래 접수·조기 마감·불일치 자료는 각각 그대로 구분한다 (0.6048ms)
+✔ serves existing static assets without a fallback (26.434ms)
+✔ falls back to index.html for an unknown app route (2.2307ms)
+✔ does not turn missing API or write requests into the app shell (0.9345ms)
+✔ emits the files required by Sites packaging (9.2186ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1791.4573

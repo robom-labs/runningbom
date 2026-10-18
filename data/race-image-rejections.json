@@ -1,0 +1,307 @@
+{
+  "schemaVersion": 1,
+  "entries": {
+    "schedule-5f195091250b": {
+      "hashes": [
+        "4cda43860916c52fb78998bafa49cbded00bd51eccd3c00acde63f8b0dc4beb5"
+      ],
+      "reason": "시각 검수: 행사 포스터 대신 사이트/브랜드 로고·신청 버튼 또는 빈 배너"
+    },
+    "jtbc-seoul": {
+      "hashes": [
+        "40f8a7942634c14acca19b695a8f6afcaaf5fa50508a0056a9cda95973e37d95"
+      ],
+      "reason": "시각 검수: 행사 포스터 대신 사이트/브랜드 로고·신청 버튼 또는 빈 배너"
+    },
+    "schedule-32f2905c557a": {
+      "hashes": [
+        "2d0e597e15ab03a7abfd6bc4e6019e1924a0034691de70c5093899461bfe1fb2",
+        "1c5d21867ccaf67f3fe80772a5c1bf7a4f7eeb1c8c70dbaa7372a4a8b737eb6c"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-4558b2e019ab": {
+      "hashes": [
+        "0e6312f10d4c63cc7d07db15efdb912424aa7b925edf49dab2122db48db9a92a"
+      ],
+      "reason": "시각 검수: 행사 포스터 대신 사이트/브랜드 로고·신청 버튼 또는 빈 배너"
+    },
+    "schedule-b94c08230354": {
+      "hashes": [
+        "302353c9476abb0cd52f116c37ad0107ab220da4b1354ea4f870386ed62a2f39",
+        "53d8bff8cb74cff8b33527140d82bd839cea96092e1a9fe4e20b08a9adbd78a8"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-bf6926fdeb0a": {
+      "hashes": [
+        "294df7f6d341914359505f39ad91664d6874972f9258cc700dbd77ae97ed5778",
+        "d183b611caa27f7890eb4b36844cdc30739f31c8e9ce846b33c11e81e00615e7"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-4917c05f3b4f": {
+      "hashes": [
+        "3ae247fb403047b0dde19b540c9ec30c3b3961639ab4b707d4689a8c5000eb77",
+        "51f2f8a19168cd6d049488b7a2253d5e712aedd09457d2ac993913ead5078a75"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-a02680686514": {
+      "hashes": [
+        "b79f15557b5ab15f74f9e446a3edb5ee50e0f45e5ed5674f7c4b0849c5e3a529"
+      ],
+      "reason": "시각 검수: 행사 포스터 대신 사이트/브랜드 로고·신청 버튼 또는 빈 배너"
+    },
+    "schedule-a67364223bae": {
+      "hashes": [
+        "ab390e302193e4277f0bcfd0ef13043a87079a9abda1eb46bf24e41992bfcad7"
+      ],
+      "reason": "시각 검수: 행사 포스터 대신 사이트/브랜드 로고·신청 버튼 또는 빈 배너"
+    },
+    "schedule-5af201a82b25": {
+      "hashes": [
+        "8c2cd190aba29774d459477d1bf0c0c3f86ba71081609f745da425e6de1d9b7f"
+      ],
+      "reason": "시각 검수: 행사 포스터 대신 사이트/브랜드 로고·신청 버튼 또는 빈 배너"
+    },
+    "schedule-6dace7afa000": {
+      "hashes": [
+        "ab390e302193e4277f0bcfd0ef13043a87079a9abda1eb46bf24e41992bfcad7",
+        "01976e8b6440628318114c77c5edb6f9fb9edea18179047c3b4b6e11674b9be4",
+        "36fb2bbf15c7d8816e123a30163717f5fe7aef0cab38fb5b241630c60eb91d1f"
+      ],
+      "reason": "Visual QA: wrong event, merchandise chart or generic site photograph"
+    },
+    "schedule-131f1dcdf8d7": {
+      "hashes": [
+        "7c28e238d5572e085245ed69d1a1c1d0201fbfef70f254f408fa02f50ffa8446"
+      ],
+      "reason": "시각 검수: 행사 포스터 대신 사이트/브랜드 로고·신청 버튼 또는 빈 배너"
+    },
+    "schedule-20532f12abdb": {
+      "hashes": [
+        "bcad0b177a203d9a3e18cef7ed4aa56da3f56195699413686bcda9d4345b13d6",
+        "32138e26ad1d094bde96dd936160ba17f481a90489ec9eb0f415ac1c82a11f7a"
+      ],
+      "reason": "Visual QA: wrong event, merchandise chart or generic site photograph"
+    },
+    "schedule-c69900191f42": {
+      "hashes": [
+        "0608598332a94d8a4a55220b67859da1a4d89fac81a268be66512d7e776d0d44"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-5fd4a9ae042b": {
+      "hashes": [
+        "b08bce0bee63f45cf138f799ca37ee4b91e5013da61316e50417808904910193"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-91ff291800b9": {
+      "hashes": [
+        "2d8b75d107d5e3f52466e924b7e6cae381f0b55b8048160ddddb99614e931b30",
+        "3e53dae62b7822bab0b58ee8d2512cda4bfb5ca239e164511ba6a89a1fbad08c"
+      ],
+      "reason": "Visual QA: wrong event, merchandise chart or generic site photograph"
+    },
+    "schedule-3ce554297ac3": {
+      "hashes": [
+        "5110a70478b36d7c9217335116b64d53a3a602ae8e4e3415a9e2285fd7fe5fa9"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-699c666ab046": {
+      "hashes": [
+        "984407a9c5703e5fead4e30e6dbe844543e1d4ff65506e4d2cd1d239d55c16d8"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-2b405dfa9bda": {
+      "hashes": [
+        "df8868ad91ef365ab5db9c5ac021607a9b20a74be5f705b1208275230808805c"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-3260d3ad1bb2": {
+      "hashes": [
+        "b7378c690a4d195f9b9cc7e7a59caffad3a3d44d0158ce996fae1e01bf525454"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-4cb0f7932538": {
+      "hashes": [
+        "163bb51216bb9c0cd57f848d1cce925617676eea747a5fd1837795731fb87df6"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-3aedd1cf3b44": {
+      "hashes": [
+        "2546bfa3b086b768cff0e399d425289f90979024447c70c470935043ce9fa59b"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-8f04537cebb5": {
+      "hashes": [
+        "2cf4b4d1afd696bace83df886901cb548311a63d7660bc6230ca412794859e44"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-f8c69d616324": {
+      "hashes": [
+        "bcdf814ba9771c05ab5e798d829770aaf99e6773e131fc21a7b412a07878c06f"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-22a8401f5711": {
+      "hashes": [
+        "ddb3c099a6813d1aa36e0b502c13744d2ca01bd35dcbbd62b5f7c6b931dab6e6"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-3b818b7c7267": {
+      "hashes": [
+        "c843e1a5993df423929630889baa90fc8d2d0be4903fd696e23e4a662df01c43"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-328a80917223": {
+      "hashes": [
+        "a799d4059372ecd81a71a687a32400ae0d3876543f2309c43659077b92eb83ad"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-04f5e475a10f": {
+      "hashes": [
+        "22948da9722040678624a1f52ef37e279e8912e855ec828d86f5c5627899f0f7"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-fa83d642c552": {
+      "hashes": [
+        "8720ff277ad84f8f77de09c0af64006e02bd76333481d24f42a413dfa9949583"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-a1acb5209782": {
+      "hashes": [
+        "2334a341004b832a567f6229f17597b66d211c38ec8533db4f4c020e09801eea"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-8dc25f58d104": {
+      "hashes": [
+        "3c9ba48b85915d3e192db1e362da2b19d26b291b05c47f24244e107797a5aa8a"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-8b8dfa605681": {
+      "hashes": [
+        "a43496cb58c0081bee9a9eed08a19676d5f3a3eafceeb05a62b5cf28e63de3d7"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-80e4f49eb981": {
+      "hashes": [
+        "011b5a8ef7a12d8ac38b3c7ee79c09d292a5124015dd002d2679660391301317"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-522eeb6aecd9": {
+      "hashes": [
+        "399ac7361f29216aa5755d8c05b49df60bd5988c06378295ffd2fc4116bb76bd"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-363de0daecc0": {
+      "hashes": [
+        "6c7de25bfc8cab42618436f32dd91e82b7d5b0e8fcdb70f8e0347fc9bd67d946"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-1a89c5db9208": {
+      "hashes": [
+        "4bba6912531ce3d05f0590787d33e4f604fd4b4f528550013e0b23b73649ee1f"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-53f2b853fa3c": {
+      "hashes": [
+        "950d4cf4ae38ba400ac720b08df1929cd4854f93ca3a5430d44b9f5b2bafdf17"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-22568bd194f5": {
+      "hashes": [
+        "3bb2bfdb9b28701484d29d0b5ae845a2a864be4e69481a6bec59b82af7a2141b"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-84adcdddea2f": {
+      "hashes": [
+        "22ded2eb62e41536a908d7e2d3c268783bc4ccf9125cb965da0cd4355d7fc56f"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-eb19f6e99dcb": {
+      "hashes": [
+        "e99d6b9386b6e1896bca73977b37443f1facaa45b7cdd5b886e92ac9e92e13f0"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-07897dae2bba": {
+      "hashes": [
+        "d8b05d47a00ca536ace7681acc8c03e8a1186adf660affb6a258c39aa513a326"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-d9a569750ca3": {
+      "hashes": [
+        "919d35b4073404d9278593f8da3cd431c86e5d8aac69187a3e3c05fd0de96361"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-4599ea0df6d4": {
+      "hashes": [
+        "a93d451126b4b3eb39327b1f0ad497e5cb46d044559ba350ffa1ec426703e10d"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-c659f2a14064": {
+      "hashes": [
+        "2d1a112e4723d8437e98a43de136d1e5682522a91398ede23bbef93056c054f0"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-0103ac98f029": {
+      "hashes": [
+        "10ab21611010de8c5fcd8231f243be9ffaf92a98cbc3b36f571864286d1248d8"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-0a1966a96d32": {
+      "hashes": [
+        "1ce42f194d1ffa2421f37d59fa138b4c9f64f082fdf5fb0880a152c35388b049"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-c376814d0f6a": {
+      "hashes": [
+        "5b1c6963b041bfbf80f4035d59d2383145542f939e6f9b9cd6cbac12df76c820"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-4414899b84fb": {
+      "hashes": [
+        "a68d152352c4e61d6239f5b3ea329102b03a734a58a10a2925c7b32fcafe47c6"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    },
+    "schedule-8eb0ef7668fd": {
+      "hashes": [
+        "3fc8385e6b68fd06967c0933c9e8eec984b9b8e5556558d585ac3172147ead2f"
+      ],
+      "reason": "Manual visual review: website capture, wrong event, merchandise or unsupported representative media"
+    }
+  }
+}

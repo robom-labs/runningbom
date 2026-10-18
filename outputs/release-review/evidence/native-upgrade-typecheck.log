@@ -1,0 +1,4 @@
+
+> @robom/runningbom-mobile@0.21.0 typecheck
+> tsc --noEmit
+

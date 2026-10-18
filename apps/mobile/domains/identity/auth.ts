@@ -5,6 +5,7 @@ import type { Provider, Session, UserIdentity } from '@supabase/supabase-js';
 
 import { featureFlags } from '../../services/feature-flags/flags';
 import { supabase } from '../../services/supabase/client';
+import {emailAuthLinkKind} from './emailAuthLink';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -33,8 +34,8 @@ export function providerMatrix(): ProviderAvailability[] {
     },
     {
       provider: 'naver',
-      enabled: false,
-      blocker: 'Naver Custom OAuth2 UserInfo Adapter 검증 전 비활성',
+      enabled: Boolean(supabase && featureFlags.authNaver && process.env.EXPO_PUBLIC_NAVER_ADAPTER_VERIFIED === 'true'),
+      blocker: 'Naver 앱·Custom OAuth2·UserInfo Adapter의 실제 로그인 검증 후 활성화',
     },
     {
       provider: 'apple',
@@ -49,7 +50,7 @@ export function providerMatrix(): ProviderAvailability[] {
 
 function builtInProvider(provider: LoginProvider): Provider {
   if (provider === 'google' || provider === 'kakao' || provider === 'apple') return provider;
-  throw new Error('Naver custom OAuth2는 검증된 adapter가 필요합니다.');
+  return 'custom:naver' as Provider;
 }
 
 async function finishPkce(url: string): Promise<Session> {
@@ -66,7 +67,6 @@ export async function signIn(provider: LoginProvider): Promise<Session> {
   const availability = providerMatrix().find((item) => item.provider === provider);
   if (!availability?.enabled) throw new Error(availability?.blocker ?? '로그인을 사용할 수 없습니다.');
   if (!supabase) throw new Error('Supabase가 연결되지 않았습니다.');
-  if (provider === 'naver') throw new Error('Naver Custom OAuth2 Adapter 검증 전입니다.');
 
   const redirectTo = Linking.createURL('auth/callback');
   const { data, error } = await supabase.auth.signInWithOAuth({
@@ -84,6 +84,13 @@ export async function signOut(): Promise<void> {
   if (!supabase) return;
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
+}
+
+export async function acceptEmailAuthLink(url:string):Promise<'confirm'|'recovery'|null>{
+ const kind=emailAuthLinkKind(url,Linking.createURL('auth/email-confirm'),Linking.createURL('auth/recovery'));
+ if(!kind)return null;
+ await finishPkce(url);
+ return kind;
 }
 
 export async function currentSession(): Promise<Session | null> {
@@ -104,7 +111,6 @@ export async function linkIdentity(provider: LoginProvider): Promise<UserIdentit
   const availability = providerMatrix().find((item) => item.provider === provider);
   if (!availability?.enabled) throw new Error(availability?.blocker ?? '연결할 수 없습니다.');
   if (!supabase) throw new Error('Supabase가 연결되지 않았습니다.');
-  if (provider === 'naver') throw new Error('Naver Custom OAuth2 Adapter 검증 전입니다.');
 
   const redirectTo = Linking.createURL('auth/link-callback');
   const { data, error } = await supabase.auth.linkIdentity({

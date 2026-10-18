@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { test } from 'node:test';
 
 const migrationUrl = new URL(
-  '../supabase/migrations/20260726071733_vnext_social_foundation.sql',
+  '../supabase/migrations/20261018090404_vnext_social_foundation.sql',
   import.meta.url,
 );
 const migration = await readFile(migrationUrl, 'utf8');

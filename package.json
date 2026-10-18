@@ -18,6 +18,23 @@
     "links:secure": "node scripts/secure-race-links.mjs --write",
     "verify:shoe-photos": "node --import ./apps/mobile/node_modules/tsx/dist/loader.mjs scripts/verify-shoe-photos.mjs",
     "collect:shoe-images": "node scripts/collect-shoe-images.mjs",
-    "collect:race-images": "node scripts/collect-official-images.mjs"
+    "collect:race-images": "node scripts/collect-official-images.mjs",
+    "catalog:refresh": "node scripts/refresh-verified-products.mjs --write",
+    "catalog:check": "node scripts/sync-verified-products.mjs --check",
+    "images:refresh": "node scripts/refresh-race-images.mjs --write",
+    "automation:check": "node --test scripts/catalog-core.test.mjs scripts/race-image-core.test.mjs scripts/automation-contract.test.mjs",
+    "review:sync": "node scripts/sync-review-data.mjs",
+    "review:dev": "node scripts/review.mjs",
+    "review:build": "node scripts/review.mjs --build",
+    "review:test": "node --import ./apps/mobile/node_modules/tsx/dist/loader.mjs --test \"apps/review/tests/*.test.mjs\" apps/review/tests/race-status.test.ts"
+  },
+  "dependencies": {
+    "@crawlee/cheerio": "3.18.2",
+    "cheerio": "1.2.0",
+    "image-size": "2.0.4",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.10"
   }
 }

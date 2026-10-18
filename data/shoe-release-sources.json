@@ -1,0 +1,8 @@
+{
+ "schemaVersion":1,
+ "articles":[
+  {"url":"https://about.nike.com/en-GB/newsroom/releases/introducing-nike-apex-the-next-leap-in-marathon-speed","model":"에이펙스","modelEn":"Apex","id":"nike-apex-announced","release":"2027-01","releaseRegion":"글로벌 · 한국 일정 미공개","plate":"카본 Flyplate","drop":"0mm","description":"마라톤 레이스용 카본화. ZoomX LT 폼과 이중 Air Zoom 구조를 공식 발표했어요."},
+  {"url":"https://about.nike.com/en/newsroom/releases/nike-swooshfly-makes-race-day-feel-more-possible","model":"스우시플라이","modelEn":"Swooshfly","id":"nike-swooshfly-announced","release":"2027-02","releaseRegion":"중국 선출시 · 글로벌 2027년 봄 · 한국 미정","plate":"카본 Flyplate","drop":"공식 수치 미공개","description":"첫 레이스부터 기록 도전까지를 위한 카본화. SkyX 폼과 Vaporweave 갑피를 공식 발표했어요."},
+  {"url":"https://about.nike.com/en/newsroom/releases/nike-alphafly-4-helps-more-runners-go-the-distance-with-speed-and-confidence","model":"알파플라이 4","modelEn":"Alphafly 4","id":"nike-alphafly4-announced","release":"2026-09-17","releaseRegion":"한정 출시 9/17 · 일반 판매 10/29 · 한국 일정 미공개","plate":"카본 Flyplate","drop":"공식 수치 미공개","description":"마라톤 레이스용 카본화. ZoomX LT 폼과 Air Zoom, Atomknit 갑피를 공식 발표했어요."}
+ ]
+}

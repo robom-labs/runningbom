@@ -2,15 +2,15 @@
 import type { MenuGroup, RouteKey } from './types';
 
 export const routeTitles: Record<RouteKey, string> = {
-  home: '홈',
+  home: '러닝봄',
   start: '러닝 시작',
   programs: '연습 계획',
-  calendar: '캘린더',
+  calendar: '내 일정',
   races: '대회',
-  shoes: '러닝화',
+  shoes: '장비',
   cadence: '박자 맞추기',
   challenges: '도전',
-  community: '커뮤니티',
+  community: '소통',
   guide: '러닝 궁금증',
   stats: '기록·통계',
   badges: '배지',
@@ -126,7 +126,7 @@ const legacyTabRoutes: Record<string, RouteKey> = {
 export function routeFromStoredValue(value: string | undefined): RouteKey {
   // 대회 탐색 흐름 밖의 예전 마지막 화면은 홈으로 옮깁니다.
   // 저장값과 활동 데이터는 지우지 않아, 나중에 필요한 화면에서 그대로 읽을 수 있습니다.
-  const eventFirstRoutes: RouteKey[] = ['home', 'races', 'calendar', 'stats', 'profile', 'settings', 'voice', 'help'];
+  const eventFirstRoutes: RouteKey[] = ['home', 'races', 'shoes', 'community', 'calendar', 'stats', 'profile', 'settings', 'voice', 'help'];
   if (isRouteKey(value)) return eventFirstRoutes.includes(value) ? value : 'home';
   if (value && legacyTabRoutes[value]) return legacyTabRoutes[value] as RouteKey;
   return 'home';

@@ -36,7 +36,7 @@ export const PrimaryTabBar = memo(function PrimaryTabBar({ active, onSelect }: P
     <View
       accessibilityRole="tablist"
       // 제스처 바가 있는 기기에서 탭이 가려지지 않게 아래 안전 여백을 더합니다.
-      style={[styles.bar, { paddingBottom: Math.max(insets.bottom, spacing.xs) }]}
+      style={[styles.bar, { marginBottom: Math.max(insets.bottom, spacing.xs) + 8 }]}
     >
       {destinations.map((destination) => {
         const selected = destination.id === active;
@@ -47,22 +47,18 @@ export const PrimaryTabBar = memo(function PrimaryTabBar({ active, onSelect }: P
             accessibilityState={{ selected }}
             key={destination.id}
             onPress={() => onSelect(routeForDestination(destination.id) as RouteKey)}
-            style={({ pressed }) => [styles.tab, pressed && styles.pressed]}
+            style={({ pressed }) => [styles.tab, selected && styles.tabActive, pressed && styles.pressed]}
             testID={`tab-${destination.id}`}
           >
-            {/* 가운데 달리기만 원형으로 강조합니다.
-                강조는 시각적인 것이고, 누르면 준비 화면으로 갑니다. 바로 기록이 시작되지 않습니다. */}
-            <View style={destination.emphasized ? styles.emphasis : undefined}>
+            <View style={[styles.icon,selected&&styles.iconActive]}>
               <Ionicons
                 color={
-                  destination.emphasized
-                    ? palette.surface
-                    : selected
-                      ? palette.accentStrong
+                  selected
+                      ? '#ffffff'
                       : palette.muted
                 }
                 name={(selected ? destination.activeIcon : destination.icon) as never}
-                size={destination.emphasized ? 26 : 22}
+                size={24}
               />
             </View>
             <Text numberOfLines={1} style={[styles.label, selected && styles.labelActive]}>
@@ -78,34 +74,40 @@ export const PrimaryTabBar = memo(function PrimaryTabBar({ active, onSelect }: P
 const styles = StyleSheet.create({
   bar: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    paddingTop: spacing.xs,
+    alignItems: 'center',
+    marginHorizontal: 12,
+    padding: 6,
+    gap: 2,
+    borderRadius: 24,
+    minHeight: 78,
     backgroundColor: palette.surface,
-    borderTopColor: palette.line,
-    borderTopWidth: StyleSheet.hairlineWidth,
+    borderColor: '#e7eeeb',
+    borderWidth: 1,
+    boxShadow: '0 6px 24px rgba(18,58,43,0.09)',
   },
   tab: {
     flex: 1,
-    minHeight: 48,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    gap: 2,
-    paddingHorizontal: 2,
-  },
-  emphasis: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    minHeight: 56,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: palette.accentStrong,
-    marginBottom: 2,
+    gap: 2,
+    paddingHorizontal: 2,
+    borderRadius: 16,
+  },
+  icon: {
+    width: 44,
+    height: 32,
+    borderRadius:12,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   label: {
     color: palette.muted,
-    fontSize: typeScale.micro,
+    fontSize: 12,
     fontWeight: fontWeight.bold,
   },
   labelActive: { color: palette.accentStrong },
+  tabActive: {backgroundColor:'transparent'},
+  iconActive:{backgroundColor:'#0d7667'},
   pressed: { opacity: 0.6 },
 });

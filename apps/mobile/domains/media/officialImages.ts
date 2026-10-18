@@ -1,23 +1,8 @@
-// 공식 페이지가 스스로 공개한 대표 이미지 주소를 다룹니다.
-//
-// 회장 지시: **"러닝화도 이미지도 갖고 와. 대회도."**
-//
-// 어디서 오는가:
-//   각 항목의 **공식 페이지가 `og:image`로 공개한 주소**입니다.
-//   og:image는 "이 페이지를 다른 곳에서 소개할 때 이 그림을 써라"고 페이지가 스스로 밝힌 값이라,
-//   그걸 쓰는 것이 그 태그의 본래 용도입니다. 페이지를 뒤져서 아무 그림이나 긁어 오지 않습니다.
-//
-// 우리가 하지 않는 것:
-//   - 이미지를 우리 서버에 복사해 두지 않습니다. 주소만 들고 있습니다(저장 비용 0).
-//   - 주소를 지어내지 않습니다. 확인된 것만 들어옵니다.
-//   - og:image가 없는 페이지에서 억지로 그림을 찾지 않습니다. 없으면 그림(벡터)이 그대로 나갑니다.
-//
-// 화면이 지키는 것:
-//   이미지가 없거나, 늦게 오거나, 깨져도 **빈 상자가 보이지 않습니다.**
-//   그 자리에는 우리가 그린 벡터 그림이 항상 먼저 깔려 있습니다(`ArtImage`).
-//
-// 이 파일은 순수합니다.
+// Organizer-selected image URLs, source edition and original-byte hashes.
+// OG metadata is provenance, not a commercial image licence.
+// Missing media is omitted; no substitute event artwork.
 import data from '../../src/data/official-images.json';
+import {useSyncExternalStore} from 'react';
 
 export type OfficialImage = {
   /** https 절대 주소입니다. */
@@ -26,6 +11,12 @@ export type OfficialImage = {
   source: string;
   /** 언제 확인했는지입니다. YYYY-MM-DD */
   checkedAt: string;
+  sourceUrl?:string;
+  sha256?:string;
+  edition?:string;
+  kind?:string;
+  width?:number;
+  height?:number;
 };
 
 export type OfficialImageFile = {
@@ -56,14 +47,39 @@ export function parseOfficialImages(raw: unknown): Record<string, OfficialImage>
     if (!isUsableImageUrl(item.url)) continue;
     if (typeof item.source !== 'string' || item.source.length === 0) continue;
     if (typeof item.checkedAt !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(item.checkedAt)) continue;
-    parsed[id] = { url: item.url, source: item.source, checkedAt: item.checkedAt };
+    parsed[id] = { url: item.url, source: item.source, checkedAt: item.checkedAt,sourceUrl:item.sourceUrl,sha256:item.sha256,edition:item.edition,kind:item.kind,
+      width:typeof item.width==='number'&&item.width>0?item.width:undefined,
+      height:typeof item.height==='number'&&item.height>0?item.height:undefined };
   }
   return parsed;
 }
 
-const images = parseOfficialImages(data);
+export function mergeVerifiedOfficialImages(current:Record<string,OfficialImage>,raw:unknown){
+ const next=parseOfficialImages(raw);let merged=current;
+ for(const [id,p] of Object.entries(next)){
+  if(!p.sha256||!(/^[a-f0-9]{64}$/.test(p.sha256))||!isUsableSourcePage(p.sourceUrl)||!/^20\d{2}$/.test(p.edition||''))continue;
+  if(current[id]&&p.checkedAt<current[id].checkedAt)continue;
+  if(JSON.stringify(current[id])===JSON.stringify(p))continue;
+  if(merged===current)merged={...current};merged[id]=p;
+ }
+ return merged;
+}
+export function isUsableSourcePage(value:unknown):value is string{
+ if(typeof value!=='string')return false;
+ try{const u=new URL(value);return ['https:','http:'].includes(u.protocol)&&!u.username&&!u.password&&!/^(localhost$|.*\.local$|127\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|\[)/i.test(u.hostname);}catch{return false;}
+}
+let images = parseOfficialImages(data);
+const listeners=new Set<()=>void>();let timer:ReturnType<typeof setInterval>|undefined;let pending=false;
+async function refreshOfficialImages(){if(pending)return;pending=true;const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),15000);try{
+ const base=(process.env.EXPO_PUBLIC_CATALOG_URL||'https://robom-labs.github.io/runningbom/data/').replace(/\/?$/,'/');if(!base.startsWith('https://'))return;
+ const res=await fetch(base+'race-images.json',{signal:controller.signal,cache:'no-cache'});if(!res.ok)return;const raw=await res.json();if(raw.schemaVersion!==1||!raw.images)return;
+ const next=mergeVerifiedOfficialImages(images,raw);if(next===images)return;
+ images=next;for(const fn of listeners)fn();
+}catch{/* retain verified bundle/cache */}finally{clearTimeout(timeout);pending=false;}}
+function subscribeOfficialImages(fn:()=>void){listeners.add(fn);if(!timer){void refreshOfficialImages();timer=setInterval(()=>void refreshOfficialImages(),15*60*1000);}return()=>{listeners.delete(fn);if(!listeners.size){clearInterval(timer);timer=undefined;}};}
+export function useOfficialImage(id:string|undefined){return useSyncExternalStore(subscribeOfficialImages,()=>id?images[id]:undefined,()=>id?images[id]:undefined);}
 
-/** 이 항목의 공식 이미지입니다. 없으면 undefined이고, 화면은 벡터 그림을 그대로 씁니다. */
+/** Verified image metadata. Missing media stays omitted in customer screens. */
 export function officialImage(id: string): OfficialImage | undefined {
   return images[id];
 }

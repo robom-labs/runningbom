@@ -1,20 +1,20 @@
 // 러닝봄 vNext의 색상, 간격, 글자 크기 토큰을 한곳에서 정의합니다.
 // 값은 추가·개선만 하고 기존 export 이름은 지우지 않습니다(화면들이 이 이름으로 참조합니다).
 export const palette = {
-  canvas: '#F8F7F4',
+  canvas: '#FFFFFF',
   surface: '#FFFFFF',
-  surfaceWarm: '#FFF2EA',
-  surfaceMuted: '#EEEDE8',
-  ink: '#182033',
+  surfaceWarm: '#EFF8F5',
+  surfaceMuted: '#F2F5F4',
+  ink: '#16292B',
   inkSoft: '#4F5B6D',
   // 흰 배경에서 4.5:1을 넘도록 조정한 보조 텍스트 색입니다(이전 #768091은 3.99:1로 AA 미달).
   muted: '#5E6979',
-  line: '#DEDCD5',
-  accent: '#F26B3A',
+  line: '#E2EAE6',
+  accent: '#16866F',
   // 흰 글자를 얹는 상호작용 면(기본 버튼·D-day 배지)에 쓰는 진한 주황입니다. 흰 글자와 4.7:1.
-  accentStrong: '#C9481B',
-  accentDark: '#A63B18',
-  accentSoft: '#FFE2D4',
+  accentStrong: '#126D5A',
+  accentDark: '#0D5D4C',
+  accentSoft: '#E3F3EC',
   positive: '#1F7A5A',
   positiveSoft: '#E3F3EC',
   warning: '#8B671C',
@@ -27,11 +27,11 @@ export const palette = {
   onNavy: '#FFFFFF',
   onNavySoft: '#CCD5E3',
   onNavyMuted: '#A9B5C6',
-  onNavyAccent: '#FFB596',
+  onNavyAccent: '#A9E5CF',
   // 드로어·모달 뒤에 까는 반투명 막입니다.
   scrim: 'rgba(17, 17, 17, 0.42)',
   // 로딩 자리표시자(스켈레톤) 색입니다.
-  skeleton: '#E7E5DF',
+  skeleton: '#EBF0ED',
   white: '#FFFFFF',
   black: '#111111',
 } as const;

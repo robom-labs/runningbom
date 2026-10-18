@@ -49,6 +49,7 @@ import { goalRaceChecklist, goalRaceCountdown, goalRaceDisclaimer, goalRacePhase
 import { racePosterSpec } from './poster';
 import { RacePoster } from './RacePoster';
 import { RaceCalendarView } from './RaceCalendarView';
+import {publicRaceRows} from './publication';
 import { useGoalRace } from './useGoalRace';
 import { hasRacePreference, type RacePreference } from './preference';
 
@@ -131,7 +132,7 @@ export function RaceScreen({ focusedRaceId, initialPreference, preferenceNonce }
   const [savingPreference, setSavingPreference] = useState(false);
   const [preferenceError, setPreferenceError] = useState<string>();
 
-  const groups = useMemo(() => groupRaces(feed.races), [feed.races]);
+  const groups = useMemo(() => groupRaces(publicRaceRows(feed.races,new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul'}).format(new Date()))), [feed.races]);
 
   useEffect(() => {
     const migrated = migrateRaceInterests(
@@ -694,13 +695,13 @@ export function RaceScreen({ focusedRaceId, initialPreference, preferenceNonce }
                     />
                   ) : sourceDetailUrl ? (
                     <Button
-                      label="대회 정보 출처 열기"
+                      label="대회 정보 보기"
                       onPress={() => void openExternalUrl(sourceDetailUrl)}
                       style={styles.action}
                       tone="primary"
                     />
                   ) : (
-                    <Text style={styles.note}>안전하게 안내할 접수 페이지를 확인 중이에요.</Text>
+                    null
                   )
                 ) : (
                   <>
@@ -732,7 +733,7 @@ export function RaceScreen({ focusedRaceId, initialPreference, preferenceNonce }
                       />
                     ) : sourceDetailUrl ? (
                       <Button
-                        label="대회 정보 출처 열기"
+                        label="대회 정보 보기"
                         onPress={() => void openExternalUrl(sourceDetailUrl)}
                         style={styles.action}
                         tone="secondary"
@@ -763,11 +764,7 @@ export function RaceScreen({ focusedRaceId, initialPreference, preferenceNonce }
                   {primary.organizer ? (
                     <Text style={styles.detailValue}>주최 {primary.organizer}</Text>
                   ) : null}
-                  <Text style={styles.detailValue}>
-                    {primary.capacity
-                      ? `모집 규모 ${primary.capacity.toLocaleString('ko-KR')}명`
-                      : '모집 규모 정보 없음'}
-                  </Text>
+                  {!!primary.capacity&&<Text style={styles.detailValue}>모집 규모 {primary.capacity.toLocaleString('ko-KR')}명</Text>}
                   <Text style={styles.detailLabel}>종목별 접수 일정</Text>
                   {group.entries.map((entry) => (
                     <Text key={entry.id} style={styles.detailValue}>
@@ -786,19 +783,12 @@ export function RaceScreen({ focusedRaceId, initialPreference, preferenceNonce }
                   ) : null}
                   {sourceDetailUrl ? (
                     <Button
-                      label="대회 정보 출처 열기"
+                      label="대회 정보 보기"
                       onPress={() => void openExternalUrl(sourceDetailUrl)}
                       style={styles.detailButton}
                       tone="secondary"
                     />
                   ) : null}
-                  {!registrationUrl && !sourceDetailUrl ? (
-                    <Text style={styles.detailValue}>접수 페이지 또는 대회 정보 출처를 확인 중이에요.</Text>
-                  ) : null}
-                  <Text style={styles.detailSource}>
-                    출처 {provenanceRace.sourceName} · {sourceCheckedLabel(provenanceRace)}
-                  </Text>
-                  {linkReference ? <Text style={styles.detailSource}>링크 안내 근거 {linkReference}</Text> : null}
                   {registrationUrl ? (
                     <Text style={styles.detailSource}>
                       신청 전 대회명, 개최일과 주최 정보를 접수 페이지에서 다시 확인해 주세요.
@@ -834,7 +824,6 @@ export function RaceScreen({ focusedRaceId, initialPreference, preferenceNonce }
                   </Text>
                 </View>
               ) : null}
-              <Text style={styles.source}>출처 {group.sourceNames.join(', ')}</Text>
             </Card>
           );
         })}

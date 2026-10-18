@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
+import { normalizeRace } from "./mobile-race-core.mjs";
 
 const web = JSON.parse(readFileSync(new URL("../outputs/pushrun-site/races.json", import.meta.url), "utf8"));
 const mobile = JSON.parse(readFileSync(new URL("../apps/mobile/src/data/races.json", import.meta.url), "utf8"));
@@ -63,17 +64,10 @@ test("접수 페이지와 대회 정보 출처가 함께 있으면 둘 다 보�
 });
 
 test("마지막 데이터 확인 시각이 없는 원본 행은 삭제하지 않고 확인 필요로 격리한다", () => {
-  const source = webRows.find((race) => !race.dataVerifiedAt && race.status === "open");
-  assert.ok(source, "확인 시각이 없는 접수 중 원본 행이 필요합니다.");
-  const sourceRaceDate = String(source.raceDate ?? source.date).slice(0, 10);
-  const target = mobile.races.find(
-    (race) =>
-      race.name === source.name &&
-      race.region === source.region &&
-      race.venue === source.venue &&
-      race.raceDate === sourceRaceDate,
-  );
-  assert.ok(target, "원본 행은 모바일 번들에도 남아 있어야 합니다.");
+  // A regression fixture must not require stale/incomplete rows in today's live feed.
+  const source = { id:"missing-check-fixture", name:"확인 시각 없는 원본", region:"서울", venue:"공원", raceDate:"2026-12-20", registrationOpenAt:"2026-11-01T09:00:00+09:00", status:"open", distances:["10K"], sourceName:"테스트 원문" };
+  const target = normalizeRace(source,"schedule");
+  assert.equal(target.id, source.id, "원본 행을 보존합니다.");
   assert.equal(target.sourceCheckedAt, undefined);
   assert.equal(target.registrationDataStatus, "needs-review");
   assert.match(target.registrationDataIssue ?? "", /마지막 데이터 확인 시각/);

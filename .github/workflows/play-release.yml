@@ -53,7 +53,7 @@ concurrency:
 jobs:
   guarded-dry-run:
     name: Validate release intent and artifact
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout approved release control
@@ -137,7 +137,7 @@ jobs:
     name: Protected submit
     if: ${{ inputs.execute }}
     needs: guarded-dry-run
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     environment:
       name: play-${{ inputs.target_track }}-approval

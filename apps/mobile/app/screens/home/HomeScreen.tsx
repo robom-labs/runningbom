@@ -9,6 +9,7 @@ import { useRaceState } from '../../state/RaceStateProvider';
 import { kstDayKey } from '../../../domains/activities/summary';
 import { upcomingPlans } from '../../../domains/activities/plans';
 import { groupRaces, raceGroupLinkStatus } from '../../../domains/races/aggregate';
+import {publicRaceRows} from '../../../domains/races/publication';
 import { goalRaceCountdown, goalRacePhaseLabels } from '../../../domains/races/goalRace';
 import { useGoalRace } from '../../../domains/races/useGoalRace';
 import {
@@ -18,6 +19,10 @@ import {
   type RacePreference,
 } from '../../../domains/races/preference';
 import { raceVisitChangeLabel } from '../../../domains/races/visitChanges';
+import {RacePoster} from '../../../domains/races/RacePoster';
+import {racePosterSpec} from '../../../domains/races/poster';
+import {officialImage} from '../../../domains/media/officialImages';
+import {RunningbomPick} from './RunningbomPick';
 import type { RouteKey } from '../../navigation/types';
 import { dayCountLabel, greetingLine, registrationDeadlineLabel } from './model';
 
@@ -50,7 +55,7 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenPreferredRaces }: Pro
   const openCalendar = useCallback(() => onNavigate('calendar'), [onNavigate]);
   const preferredRacePreference = preferences.preferredRacePreference;
   const raceGroups = useMemo(
-    () => groupRaces(feed.races, now),
+    () => groupRaces(publicRaceRows(feed.races,kstDayKey(new Date(now))), now),
     [feed.races, now],
   );
   const openRaceGroups = useMemo(
@@ -141,16 +146,18 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenPreferredRaces }: Pro
     return rows.slice(0, UPCOMING_LIMIT);
   }, [goalRace, now, onOpenRace, openCalendar, openRaceGroups, plans]);
 
+  const featured=openRaceGroups.find(g=>officialImage(g.id))||raceGroups.find(g=>officialImage(g.id));
   return (
     <ScrollView contentContainerStyle={screenStyles.content} showsVerticalScrollIndicator={false} style={screenStyles.root}>
       {storageError ? <Banner title="저장 상태 안내" body={storageError} tone="warning" /> : null}
+      {featured&&<Pressable accessibilityRole="button" accessibilityLabel={`${featured.name} 대회 상세`} onPress={()=>onOpenRace(featured.id)}><RacePoster height={170} raceId={featured.id} raceName={featured.name} spec={racePosterSpec(featured.primary)}/><Text style={{fontSize:18,fontWeight:'700',color:palette.ink,paddingTop:10}}>{featured.name}</Text></Pressable>}
       <Card accessibilityLabel="접수 중 대회 찾기" style={styles.hero} tone="navy">
         <Text style={styles.heroEyebrow}>{greetingLine(preferences.nickname, now)} · 대회 일정과 접수 알림</Text>
         <Text style={styles.heroHeadline}>지금 접수 중인{`\n`}대회를 찾아보세요</Text>
         <Button accessibilityHint="접수 중인 대회를 지역과 거리로 찾아봐요" label={loading ? '대회 일정 불러오는 중' : '접수 중 대회 보기'} onPress={openAllRaces} size="lg" style={styles.heroAction} testID="home-open-races" tone="secondary" />
-        <Text style={styles.heroNote}>출처와 마지막 확인 시각을 보고, 최종 접수 조건은 외부 페이지에서 확인하세요.</Text>
       </Card>
 
+      <RunningbomPick onOpenGear={()=>onNavigate('shoes')}/>
       {visitChangeRows.length > 0 ? (
         <>
           <SectionHeader
@@ -168,7 +175,6 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenPreferredRaces }: Pro
                   <Text numberOfLines={1} style={styles.rowTitle}>{row.title}</Text>
                   <Text numberOfLines={1} style={styles.rowMeta}>{row.meta}</Text>
                   {row.detail ? <Text numberOfLines={1} style={styles.rowDetail}>{row.detail}</Text> : null}
-                  {row.linkStatus ? <Text style={styles.rowLinkStatus}>{row.linkStatus}</Text> : null}
                 </View>
               </Pressable>
             ))}
@@ -200,7 +206,6 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenPreferredRaces }: Pro
               <View style={styles.rowCopy}>
                 <Text numberOfLines={1} style={styles.rowTitle}>{row.title}</Text>
                 <Text numberOfLines={1} style={styles.rowMeta}>{row.meta}</Text>
-                {row.linkStatus ? <Text style={styles.rowLinkStatus}>{row.linkStatus}</Text> : null}
               </View>
             </Pressable>
           ))}
@@ -211,7 +216,7 @@ export function HomeScreen({ onNavigate, onOpenRace, onOpenPreferredRaces }: Pro
 
       <SectionHeader title="이용 안내" subtitle="접수 전에는 언제나 공식 페이지를 한 번 더 확인하세요." />
       <Card style={styles.guidanceCard}>
-        <Text style={styles.guidanceTitle}>대회 정보는 확인 시각과 출처를 함께 보여드려요.</Text>
+        <Text style={styles.guidanceTitle}>관심 대회와 접수 일정을 한곳에서.</Text>
         <Text style={styles.guidanceBody}>관심 대회로 저장하면 접수·대회·결과 알림을 관리할 수 있고, 실제 신청은 검증된 외부 페이지에서 진행합니다.</Text>
         <Button label="대회와 알림 확인" onPress={openAllRaces} tone="quiet" />
       </Card>

@@ -95,7 +95,7 @@ describe('기존 로그인 안내는 그대로 둔다', () => {
     for (const blocker of [
       'Supabase Google OAuth 설정 필요',
       'Kakao 앱과 Supabase provider 설정 필요',
-      'Naver Custom OAuth2 UserInfo Adapter 검증 전 비활성',
+      'Naver 앱·Custom OAuth2·UserInfo Adapter의 실제 로그인 검증 후 활성화',
       'Apple Developer 자격과 서비스 설정 확인 전 비활성',
     ]) {
       assert.ok(auth.includes(blocker), `${blocker} 설명이 사라졌습니다`);

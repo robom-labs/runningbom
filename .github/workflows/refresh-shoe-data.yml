@@ -5,9 +5,6 @@ name: Refresh running shoe data
 # - 검증에 실패하면 워크플로를 실패시킨다.
 # - 변경이 있으면 main 직접 push 대신 PR을 만든다. 변경이 없으면 조용히 종료한다.
 on:
-  schedule:
-    # 매주 월요일 KST 08:20 (UTC 일요일 23:20)
-    - cron: "20 23 * * 0"
   workflow_dispatch:
 
 permissions:
@@ -15,12 +12,12 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: running-shoe-data-refresh
+  group: runningbom-data-writer
   cancel-in-progress: false
 
 jobs:
   refresh:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

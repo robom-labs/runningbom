@@ -1,0 +1,75 @@
+name: Refresh verified catalog and event images
+
+on:
+  schedule:
+    # UTC 01:37/07:37/13:37/19:37 = KST 10:37/16:37/22:37/04:37.
+    - cron: "37 1-23/6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: runningbom-data-writer
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: 상품 원본 검증·신규 모델 발견
+        id: catalog
+        continue-on-error: true
+        run: npm run catalog:refresh
+      - name: 주최 측 대표 사진 검증
+        id: images
+        continue-on-error: true
+        run: node scripts/discover-race-official-sources.mjs && npm run images:refresh
+      - name: 대회별 포스터 대체 경로·원본 캐시 확인
+        id: posters
+        continue-on-error: true
+        run: node scripts/refresh-reviewed-race-media.mjs && node scripts/complete-race-posters.mjs && node scripts/cache-race-images.mjs
+      - name: 공식 신제품·출시 예정 발표 확인
+        id: releases
+        continue-on-error: true
+        run: node scripts/refresh-shoe-releases.mjs
+      - name: 스냅샷·출처·실패 복구 계약 검증
+        run: npm run automation:check && npm run catalog:check
+      - name: 운영 리포트 보관
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: runningbom-catalog-health
+          path: outputs/operations/
+          if-no-files-found: warn
+      - name: 검증된 변경 자동 반영
+        id: publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git add data apps/mobile/data/catalog apps/mobile/src/data/official-images.json outputs/pushrun-site/data outputs/pushrun-site/assets/races
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "robom-data-bot"
+          git config user.email "actions@github.com"
+          git commit -m "chore(data): verified catalog and official event images"
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          gh workflow run pages.yml --ref main
+      - name: 수집 실패를 숨기지 않기
+        if: steps.catalog.outcome == 'failure' || steps.images.outcome == 'failure' || steps.posters.outcome == 'failure' || steps.releases.outcome == 'failure'
+        run: |
+          echo "Some sources failed. Valid snapshots were preserved/published independently. Inspect the health artifact."
+          exit 1

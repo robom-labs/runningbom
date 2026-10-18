@@ -1,0 +1,48 @@
+.featured-race {border:1px solid #dce8df;border-radius:20px;background:#fff;overflow:hidden;margin:0 0 20px}
+:is(.running-app,.bottom-sheet) .featured-race-media {display:block;width:100%;overflow:hidden;background:#f5f8f4}
+.featured-race-media img {display:block;width:100%;height:auto;object-fit:contain}
+.featured-race-content {padding:17px 18px 16px}
+.featured-race-topline {display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+.featured-race-topline small {font-size:12px;line-height:1.7;color:#61756a;white-space:nowrap}
+:is(.running-app,.bottom-sheet) .featured-race-title {display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;text-align:left;font-size:22px;font-weight:900;letter-spacing:-.7px;line-height:1.45;color:#142d26;width:100%;margin-bottom:8px}
+.featured-race-location {font-size:13px;line-height:1.7;color:#5b7063;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.featured-race-distance {font-size:13px;line-height:1.7;color:#4c6856;margin-top:3px!important}
+.featured-race-footer {display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid #e8eee7;padding-top:12px;margin:0 18px 16px}
+.featured-race-footer>div {display:grid;gap:2px}
+.featured-race-footer small {font-size:12px;color:#63796a;line-height:1.5}
+.featured-race-footer strong {font-size:17px;color:#193e2a;white-space:nowrap}
+:is(.running-app,.bottom-sheet) .featured-race-footer>button {display:flex;align-items:center;justify-content:center;gap:7px;min-height:46px;padding:0 14px;border-radius:12px;background:#0b7b6e;color:#fff;font-size:14px;font-weight:700;white-space:nowrap}
+.featured-race.layout-logo,.featured-race.layout-poster {display:grid;grid-template-columns:100px minmax(0,1fr);gap:14px;padding:16px}
+.featured-race.layout-poster {grid-template-columns:108px minmax(0,1fr)}
+.featured-race.layout-logo .featured-race-content,.featured-race.layout-poster .featured-race-content {padding:0}
+.featured-race.layout-logo .featured-race-media,.featured-race.layout-poster .featured-race-media {align-self:start;border-radius:10px;background:#fff}
+.featured-race.layout-logo .featured-race-media {padding:6px}
+.featured-race.layout-logo .featured-race-topline,.featured-race.layout-poster .featured-race-topline {flex-wrap:wrap;gap:5px}
+.featured-race.layout-logo .featured-race-title,.featured-race.layout-poster .featured-race-title {font-size:19px}
+.featured-race.layout-logo .featured-race-footer,.featured-race.layout-poster .featured-race-footer {grid-column:1/-1;margin:0}
+.featured-race-media:not(:has(img)) {display:none}
+.featured-race:not(:has(img)) {display:block}
+:is(.running-app,.bottom-sheet) article.race-row {display:grid;grid-template-columns:88px minmax(0,1fr);column-gap:12px;align-items:start}
+:is(.running-app,.bottom-sheet) .race-row .race-copy {min-width:0;width:100%;align-self:start}
+:is(.running-app,.bottom-sheet) .race-row .race-copy>strong {font-size:16px;line-height:24px;min-height:48px;max-height:48px}
+:is(.running-app,.bottom-sheet) .race-row .race-copy>small {font-size:13px;line-height:20px}
+:is(.running-app,.bottom-sheet) .race-row .race-copy>small:nth-of-type(2) {font-size:13px;line-height:20px;min-height:40px;max-height:40px}
+:is(.running-app,.bottom-sheet) .race-thumbnail,:is(.running-app,.bottom-sheet) .compact .race-thumbnail {width:88px;min-width:88px;height:88px;border-radius:11px;background:#f3f7f3}
+.race-thumbnail .race-media-photo {display:block;width:100%;height:100%;object-fit:cover}
+.race-thumbnail.layout-logo,.race-thumbnail.layout-poster {background:#fff}
+.race-thumbnail.layout-logo .race-media-photo {object-fit:contain;padding:4px}
+.race-thumbnail.layout-poster .race-media-photo {object-fit:contain}
+:is(.running-app,.bottom-sheet) .race-thumbnail.layout-banner {grid-column:1/-1;width:100%;height:auto;max-height:none}
+.race-thumbnail.layout-banner .race-media-photo {width:100%;height:auto;object-fit:contain}
+.race-row:has(.race-thumbnail.layout-banner) .race-copy {grid-column:1/-1}
+:is(.running-app,.bottom-sheet) article.race-row:not(:has(.race-thumbnail img)) {grid-template-columns:minmax(0,1fr)}
+.race-thumbnail:not(:has(img)) {display:none}
+:is(.running-app,.bottom-sheet) .race-media-detail {display:block;width:100%;height:auto;max-height:none;border-radius:12px;margin-bottom:16px;object-fit:contain;background:#fff}
+:is(.running-app,.bottom-sheet) .race-media-detail.layout-logo {max-width:190px;max-height:100px;width:auto;height:auto;margin:0 auto 18px}
+@media(min-width:1100px){
+ html[data-rb-presentation=web] .home-content>.featured-race {margin:0;align-self:start}
+ html[data-rb-presentation=web] .home-content>.home-social {grid-column:1/-1}
+ html[data-rb-presentation=web] .running-app article.race-row {grid-template-columns:112px minmax(0,1fr)}
+ html[data-rb-presentation=web] .race-thumbnail,html[data-rb-presentation=web] .compact .race-thumbnail,html[data-rb-presentation=web] .races-page .race-thumbnail {width:112px;height:112px}
+ html[data-rb-presentation=web] .race-thumbnail.layout-banner {width:100%;height:auto}
+}

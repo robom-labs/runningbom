@@ -1,0 +1,41 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.webp binary
+*.aab binary
+*.apk binary
+*.ttf binary
+*.woff2 binary
+
+# Preserve protected runtime bytes across Windows and macOS; hashes remain unchanged.
+apps/review/public/assets/android/Keyboard.png -text
+apps/review/public/assets/android/navigation-bar.svg -text
+apps/review/public/assets/android/Pixel10.png -text
+apps/review/public/assets/iphone/Bezel.png -text
+apps/review/public/assets/iphone/Keyboard.png -text
+apps/review/public/assets/status/ios-status-icons.svg -text
+apps/review/public/assets/status/status-icons.svg -text
+apps/review/scripts/check-mobile-runtime.mjs -text
+apps/review/scripts/prepare-sites-build.mjs -text
+apps/review/scripts/update-mobile-runtime-lock.mjs -text
+apps/review/src/App.tsx -text
+apps/review/src/main.tsx -text
+apps/review/src/mobile/assets.ts -text
+apps/review/src/mobile/BottomSheet.tsx -text
+apps/review/src/mobile/Carousel.tsx -text
+apps/review/src/mobile/components.tsx -text
+apps/review/src/mobile/Device.tsx -text
+apps/review/src/mobile/FlowStack.tsx -text
+apps/review/src/mobile/geometry.ts -text
+apps/review/src/mobile/index.ts -text
+apps/review/src/mobile/Keyboard.tsx -text
+apps/review/src/mobile/MobileCursor.tsx -text
+apps/review/src/mobile/MobileRuntime.tsx -text
+apps/review/src/mobile/MobileScroll.tsx -text
+apps/review/src/mobile/PhoneFrame.tsx -text
+apps/review/src/styles.css -text
+apps/review/vite.config.ts -text
+apps/review/worker/index.js -text
+
+# Keep raw diagnostic logs verbatim, including tool-emitted whitespace.
+outputs/release-review/evidence/*.log -whitespace

@@ -1,0 +1,8 @@
+{
+  "branch": "handoff/runningbom-upgrade-20261018",
+  "stagedFiles": 881,
+  "uncompressedStagedMiB": 320.31,
+  "protectedRuntimeFiles": 28,
+  "secretScan": "common private credential patterns; values never printed",
+  "findings": []
+}

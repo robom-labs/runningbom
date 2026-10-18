@@ -493,9 +493,9 @@ describe('홈 화면 구성', () => {
     assert.match(home, /size="lg"/);
   });
 
-  it('홈 대회 카드는 링크 성격을 보여 주고, 고른 대회는 상세를 바로 연다', () => {
+  it('홈 대회는 링크 메타데이터를 보존하고, 고른 대회는 상세를 바로 연다', () => {
     assert.match(home, /raceGroupLinkStatus\(group\)/);
-    assert.match(home, /row\.linkStatus/);
+    assert.doesNotMatch(home, /<Text[^>]*>\{row\.linkStatus\}/);
     const races = source('domains/races/RaceScreen.tsx');
     assert.match(races, /setExpandedGroupId\(focused\.id\)/);
   });

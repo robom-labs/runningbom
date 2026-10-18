@@ -1,0 +1,909 @@
+{
+  "schemaVersion": 1,
+  "entries": {
+    "schedule-a6b1441556f8": {
+      "urls": [
+        "http://runcop.com/event/hanam"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-hanam-dangjeong-marathon",
+      "title": "2026 하남시 시장기 당정마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-94c2184098f6": {
+      "urls": [
+        "http://www.cwrun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/28th-changwon-citizen-health-run-2026",
+      "title": "제28회 창원 시민건강달리기",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-c59fad5366bc": {
+      "urls": [
+        "http://ggcrun.kr/",
+        "https://ggcrun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-gyeonggi-old-road-together-run",
+      "title": "2026 경기옛길 함께RUN",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-4d07153f4ae8": {
+      "urls": [
+        "http://marathon.newsis.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-newsis-seaside-marathon",
+      "title": "2026 뉴시스 바다마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-9722957a6b7c": {
+      "urls": [
+        "http://www.jnrun.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/19th-jungnang-mayor-rose-marathon-2026",
+      "title": "제19회 중랑구청장배 장미 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-5fd4a9ae042b": {
+      "urls": [
+        "http://forms.gle/ga7gKHnRJB7pfLFY6"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-muthrun-eco-friendly-marathon",
+      "title": "2026 무쓰런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-2b405dfa9bda": {
+      "urls": [
+        "http://runwithgo.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-petlympic-run-with-go",
+      "title": "2026 서울 펫림픽 & 런 위드 고 (SEOUL PETLYMPIC & RUN WITH GO)",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-e7f54f0af73e": {
+      "urls": [
+        "http://iksangiverun.or.kr/",
+        "https://iksangiverun.or.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-iksan-donation-run",
+      "title": "2026 익산 기부런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-57b64bb58f18": {
+      "urls": [
+        "http://hnrun.kr/",
+        "https://hnrun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-hanam-autumn-family-marathon",
+      "title": "2026 하남 어텀 패밀리 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-5f195091250b": {
+      "urls": [
+        "http://hgrun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-hangang-run-festival-of-health-and-unity",
+      "title": "2026 한강런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-4c1a70609360": {
+      "urls": [
+        "https://sejongrun26.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-sejongrun-with-naver-works",
+      "title": "네이버웍스와 함께하는 세종런 26",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-4cb0f7932538": {
+      "urls": [
+        "http://burningfesta.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/bulldak-burning-trailrun-2026-pyeongchang",
+      "title": "불닭 버닝 트레일런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-3aedd1cf3b44": {
+      "urls": [
+        "http://www.mtrailrun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/seoul-daemo-guryongsan-trailrun-2026-10-24",
+      "title": "서울 대모-구룡산트레일런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-0e4e73276928": {
+      "urls": [
+        "https://fwr.libertyinnorthkorea.or.kr/2026"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-freedom-walk-run-liberty-in-northkorea",
+      "title": "프리덤 워크 & 런 2026",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-dd6c6bcc11f2": {
+      "urls": [
+        "http://fwr.libertyinnorthkorea.or.kr/2026/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/freedom-walk-run-2026-10-24",
+      "title": "Freedom Walk & Run",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-a86475dc9c85": {
+      "urls": [
+        "http://mypb.info/competition/666"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/tour-5k-beach-ploggin-mangsang-2026-10-24",
+      "title": "TOUR 5K & Beach Ploggin망상",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-2d32e8b79907": {
+      "urls": [
+        "https://www.ulsanrunfesta.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-ulsan-runfesta-u-run",
+      "title": "울산 런 페스타 (U-RUN)",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-8f04537cebb5": {
+      "urls": [
+        "https://busan.raceplan.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/busan-ocean-marathon-2026",
+      "title": "2026 부산바다마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-a32d31a4ba0b": {
+      "urls": [
+        "http://www.jeongseojin.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/14th-jeongseojin-arabaetgil-marathon-2026",
+      "title": "제14회 정서진아라뱃길 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-35c9c31cde30": {
+      "urls": [
+        "http://autismrace.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-autism-race-awareness",
+      "title": "2026 오티즘 레이스",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-1dc17fe7150d": {
+      "urls": [
+        "http://taejongdaezombie.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-taejongdae-beat-on-zombie-race",
+      "title": "2026 태종대 BEAT ON 좀비레이스",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-22a8401f5711": {
+      "urls": [
+        "http://runten.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-just-run10-pocheon-easy-pb-official-race",
+      "title": "2026 JUST RUN10 포천",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-04f5e475a10f": {
+      "urls": [
+        "http://dmzopenrun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-dmz-open-peace-marathon",
+      "title": "2026 DMZ OPEN 평화마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-897e2789cb6d": {
+      "urls": [
+        "http://sunset.or.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/21st-sacheon-noeul-marathon-2026",
+      "title": "제21회 사천노을 마라톤대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-20532f12abdb": {
+      "urls": [
+        "https://runable.me/product/17639?comp=3402"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-jtbc-marathon-entry-fee",
+      "title": "2026 jtbc 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-328a80917223": {
+      "urls": [
+        "http://seoulrun.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/26seoul-donghaeng-marathon-2026",
+      "title": "26서울동행마라톤대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-a1acb5209782": {
+      "urls": [
+        "http://runfesta.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-maritime-run-festa",
+      "title": "2026 해양수도 부산 런페스타",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-2d990c21bbb2": {
+      "urls": [
+        "http://legendtrail.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-mungyeong-legend-trail-baekdudaegan",
+      "title": "2026 문경 레전드 트레일 백두대간",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-86b634b13a49": {
+      "urls": [
+        "http://purmerun.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-purmerun-miracle365-nexon",
+      "title": "넥슨과 함께하는 2026 푸르메런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-32f2905c557a": {
+      "urls": [
+        "http://www.jinhaemarathon.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/19th-jinhae-navy-marathon-2026-11-07",
+      "title": "제19회 진해마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-4558b2e019ab": {
+      "urls": [
+        "https://kiccrace.com/hwasung1"
+      ],
+      "discoveredVia": "https://kiccrace.com/hwasung1",
+      "title": "2026 경기화성 생태마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-dadb0767110a": {
+      "urls": [
+        "http://1004.tbc.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-gyeongbuk-newcity-marathon",
+      "title": "2026 경상북도 신도시 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-4ef8821bc0f3": {
+      "urls": [
+        "http://kw-marathon.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-roundlab-run-1108",
+      "title": "2026 라운드랩 RUN",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-1a89c5db9208": {
+      "urls": [
+        "http://gcrun.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-gwacheon-marathon",
+      "title": "2026 과천마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-bd6cd6e2d155": {
+      "urls": [
+        "http://heritagerun.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-heritage-run",
+      "title": "2026 부산 헤리티지 런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-6fe5050d5706": {
+      "urls": [
+        "http://ssecorun.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-jeon-guk-sasang-eco-marathon",
+      "title": "2026 전국사상에코마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-3e00e6873832": {
+      "urls": [
+        "https://cymarathon.imweb.me/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-cheongyang-gun-chilgab-marathon",
+      "title": "2026 청양군 칠갑마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-b94c08230354": {
+      "urls": [
+        "http://xn--289a04w1ifu9bvwfi4b78e.com/resv/competition.php"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/gyeongju-athletic-federation-marathon-2026",
+      "title": "경주시육상연맹회장배 마라톤대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-522eeb6aecd9": {
+      "urls": [
+        "http://haenammarathon.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-haenam-tanggeut-national-marathon",
+      "title": "2026 해남땅끝 전국마라톤대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-b8d486bdbafd": {
+      "urls": [
+        "http://asanmarathon.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/12th-asans-ginkgo-tree-road-national-marathon-2026-11-08",
+      "title": "제12회 아산 은행나무길 전국마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-363de0daecc0": {
+      "urls": [
+        "http://www.geumsungsan.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/24th-naju-geumseongsan-forest-marathon-2026",
+      "title": "제24회 전국 나주 금성산숲길마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-db5420686000": {
+      "urls": [
+        "http://xn--oi2bo7bn3do4es0j56afy5b.kr/"
+      ],
+      "discoveredVia": "https://runin.kr/race/%EC%A0%9C20%ED%9A%8C-%EC%9E%90%EC%9B%90%EB%B4%89%EC%82%AC-%EC%82%AC%EB%9E%91-%EA%B5%BF%ED%8E%80-%EB%A7%88%EB%9D%BC%ED%86%A4/",
+      "title": "제20회 자원봉사 사랑 굿펀 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-bf6926fdeb0a": {
+      "urls": [
+        "http://www.leaveit.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-yeongjong-skyway-marathon",
+      "title": "2026 영종 하늘길 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-260ab9f489b4": {
+      "urls": [
+        "http://tongkeun-run.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-tongkeunrun-charity-marathon",
+      "title": "2026 통큰런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-edc5d53f90d9": {
+      "urls": [
+        "http://pohangmarathon.com/",
+        "https://pohangmarathon.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-pohang-marathon-championship",
+      "title": "2026 포항마라톤챔피언십",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-53f2b853fa3c": {
+      "urls": [
+        "http://sc-marathon.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/26th-suncheon-namseungryong-marathon-2026",
+      "title": "제26회 순천 남승룡마라톤대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-22568bd194f5": {
+      "urls": [
+        "http://nanumrun.or.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-nanumrace-yongin",
+      "title": "2026 나눔레이스 인 용인",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-c2c7dc166e72": {
+      "urls": [
+        "http://seoultongilrun.org/",
+        "https://seoultongilrun.org/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-peace-marathon-9th",
+      "title": "2026 9회 서울평화마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-84adcdddea2f": {
+      "urls": [
+        "http://sonkeechungrun.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-son-gijeong-peace-marathon",
+      "title": "2026 손기정평화마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-4917c05f3b4f": {
+      "urls": [
+        "http://marathon.ihalla.com/",
+        "https://marathon.ihalla.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-jeju-citrus-marathon",
+      "title": "2026 제주감귤마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-a02680686514": {
+      "urls": [
+        "http://www.fila.co.kr/pages/fila-run-espresso-10k-seoul"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-fila-run-espresso",
+      "title": "2026 FILA RUN & ESPRESSO",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "mbn-seoul": {
+      "urls": [
+        "http://mbn-seoulmarathon.com/",
+        "https://www.mbn-seoulmarathon.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-mbn-seoul-marathon",
+      "title": "2026 MBN 서울마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-33712298689b": {
+      "urls": [
+        "http://www.cwaaf.kr/bbs/board.php?bo_table=rally&wr_id=3"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/12th-changwon-mayor-cup-gwangryeocheon-marathon-2026",
+      "title": "제12회 창원특례시장배 광려천마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-8863d26955b1": {
+      "urls": [
+        "http://jgmrun.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/16th-daejeon-seogu-mayor-marathon-2026",
+      "title": "제16회 대전서구청장배 마라톤대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-cf79975a8527": {
+      "urls": [
+        "http://happytrailrun.com/",
+        "https://happytrailrun.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/17th-happiness-trail-run-festival-charity-marathon-2026",
+      "title": "제17회 행복트레일런 축제",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-eb19f6e99dcb": {
+      "urls": [
+        "http://koreatrail.net/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/24th-daemosan-guryongsan-trailrun-2026-11-15",
+      "title": "제24회 대모산,구룡산 트레일런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-07897dae2bba": {
+      "urls": [
+        "http://www.mara1080.com/event/c8dc2c22-a83a-4743-9e34-c884e9809dbb",
+        "https://www.mara1080.com/event/c8dc2c22-a83a-4743-9e34-c884e9809dbb"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/24th-sangju-gotgam-marathon-2026",
+      "title": "제24회 상주 곶감 마라톤 대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-f8c567d031eb": {
+      "urls": [
+        "https://kjmarathon.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/28th-busan-international-news-marathon",
+      "title": "제28회 부산국제마라톤대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-a67364223bae": {
+      "urls": [
+        "http://rocknrun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-namhae-trail-race-fall-42k-30k-12k",
+      "title": "2026 남해트레일레이스(가을)",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-cd4cd11e5f81": {
+      "urls": [
+        "http://www.cuk-sports.com/",
+        "https://www.cuk-sports.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/mudeungsan-doubleheart-international-trailrun-2026",
+      "title": "제3회 무등산더블하트국제트레일런대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-320f17393a81": {
+      "urls": [
+        "http://urfesta.com/",
+        "https://urfesta.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-sejong-autumn-breeze-eurunning-festa",
+      "title": "2026 세정 가을바람 유러닝페스타",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-d9a569750ca3": {
+      "urls": [
+        "http://www.djrun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-kim-dae-jung-marathon",
+      "title": "2026 김대중마라톤대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-5af201a82b25": {
+      "urls": [
+        "http://mujumarathon.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-muju-firefly-peace-marathon",
+      "title": "2026 무주반딧불평화마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-1dbe478388d1": {
+      "urls": [
+        "http://ssrun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-eoksapul-marathon",
+      "title": "2026 서울 억새풀 마라톤대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-b640dcd365a5": {
+      "urls": [
+        "https://incheonmarathon.or.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-incheon-marathon-asiad-stadium-start",
+      "title": "2026 인천마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-d4394bec0c27": {
+      "urls": [
+        "http://peace-run.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-peace-forest-marathon",
+      "title": "2026 평화의숲 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-6dace7afa000": {
+      "urls": [
+        "http://rocknrun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-mujinjang-trail-pre-race",
+      "title": "2026 무진장트레일레이스",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-4599ea0df6d4": {
+      "urls": [
+        "http://mara1080.com/event/c2cec79b-c38a-4832-bf4f-7ecb499cdcd5/guide/overview",
+        "https://mara1080.com/event/c2cec79b-c38a-4832-bf4f-7ecb499cdcd5/guide/overview"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-namwon-chunhyang-national-marathon",
+      "title": "2026 남원 춘향 전국 마라톤대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-c659f2a14064": {
+      "urls": [
+        "http://www.peacerun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2027-seoul-youth-peace-run",
+      "title": "2027 서울 세계청년대회 성공 기원 평화런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-c69900191f42": {
+      "urls": [
+        "http://mokyokrun.shop/",
+        "https://mokyokrun.shop/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/mokyokrun-2026-nov28",
+      "title": "목욕런 2026",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-a63a87b3ffd2": {
+      "urls": [
+        "http://sh-run.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-saehanmedia-marathon-celebrating-baekbeom-kim-gu-150th-anniversary",
+      "title": "2026 새한미디어 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-0103ac98f029": {
+      "urls": [
+        "http://www.xn--ob0bs4k27c8xc9da633vynbkyur2ft5hckl.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-jeongeup-community-freemarket-marathon",
+      "title": "2026 정읍공동체 프리마켓 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-d69c5917f56a": {
+      "urls": [
+        "http://ajgrun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/14th-ahn-jung-geun-peace-marathon-2026",
+      "title": "제14회 안중근 평화 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-8eb0ef7668fd": {
+      "urls": [
+        "http://mara1080.com/event/df4b4e7d-4fbc-4843-858c-f15c032e92cb",
+        "https://mara1080.com/event/df4b4e7d-4fbc-4843-858c-f15c032e92cb"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-goldrun-gumsan-marathon",
+      "title": "2026 전국마라톤협회 금산 골드런 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-ea1078c4a6be": {
+      "urls": [
+        "http://energyrun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-hanam-misa-lake-energy-run",
+      "title": "2026 하남 미사 호수 에너지런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-0a1966a96d32": {
+      "urls": [
+        "http://mara1080.com/event/ccf77de8-1b14-4170-afcb-c2eeaee1a78d/guide/overview"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-world-record-international-marathon-festival-sawe",
+      "title": "2026월드 레코드 국제 마라톤 축제 - 사웨",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-33d3fa60ce84": {
+      "urls": [
+        "http://www.hangangmarathon.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/23rd-hangang-citizen-marathon-2026",
+      "title": "제23회 한강시민마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-131f1dcdf8d7": {
+      "urls": [
+        "http://www.busanmarathon.com/",
+        "https://www.busanmarathon.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-busan-bridge-marathon",
+      "title": "2026 부산브릿지 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-2de9b74c248d": {
+      "urls": [
+        "http://roadracing.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-hwang-youngjo-roadrace",
+      "title": "2026 황영조 로드레이스",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-5949f7d5a414": {
+      "urls": [
+        "http://gibukidsrun.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-boys-girls-head-donation-run",
+      "title": "2026 소년소녀 가장 돕기 기부런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-221be78438dc": {
+      "urls": [
+        "http://www.jinma.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/36th-jinju-marathon-2026-rooted-community-run",
+      "title": "제36회 진주마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-ee939bf465d5": {
+      "urls": [
+        "http://k-run.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-korea-season-race",
+      "title": "2026 코리아 시즌 레이스",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-4414899b84fb": {
+      "urls": [
+        "http://dkrun.co.kr/",
+        "https://dkrun.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/hope-dream-24th-winter-marathon-2027",
+      "title": "희망드림 제24회 동계마라톤대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-4630dd861837": {
+      "urls": [
+        "http://seoul-marathon.com/",
+        "https://seoul-marathon.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2027-seoul-international-marathon",
+      "title": "2027 서울마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-c0e2f01b26d3": {
+      "urls": [
+        "http://www.badarun.co.kr/",
+        "https://www.badarun.co.kr/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/9th-oceanview-gijang-sea-marathon-2027",
+      "title": "제9회 오션뷰 기장바다마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-e27407303eb6": {
+      "urls": [
+        "https://asiarun.kr/"
+      ],
+      "discoveredVia": "https://asiarun.kr/",
+      "title": "2026 아시아 오픈 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-699c666ab046": {
+      "urls": [
+        "https://mara1080.com/event/edaee6e1-0d92-4248-9927-06ed3b0abfd0"
+      ],
+      "discoveredVia": "https://mara1080.com/event/edaee6e1-0d92-4248-9927-06ed3b0abfd0",
+      "title": "제23회 여주 세종대왕 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-3ce554297ac3": {
+      "urls": [
+        "https://www.dcmarathon.or.kr/"
+      ],
+      "discoveredVia": "https://www.dcmarathon.or.kr/",
+      "title": "제25회 대청호마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-1fb6211ae2da": {
+      "urls": [
+        "https://gmrun.kr/"
+      ],
+      "discoveredVia": "https://gmrun.kr/",
+      "title": "2026 광명평화마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "chuncheon-marathon": {
+      "urls": [
+        "https://www.chuncheonmarathon.com/apply/part-application.html"
+      ],
+      "discoveredVia": "https://www.chuncheonmarathon.com/apply/part-application.html",
+      "title": "2026 춘천마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-c25823ce5bec": {
+      "urls": [
+        "https://xn--hq1bo4en6bw9cp5mzkpmgi.kr/main.php"
+      ],
+      "discoveredVia": "https://xn--hq1bo4en6bw9cp5mzkpmgi.kr/main.php",
+      "title": "제19회 청도반시 전국마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-3b818b7c7267": {
+      "urls": [
+        "https://mara1080.com/event/d596615e-cf32-4f20-bdbe-13b633f51c4e"
+      ],
+      "discoveredVia": "https://mara1080.com/event/d596615e-cf32-4f20-bdbe-13b633f51c4e",
+      "title": "2026 무안 해안 노을길 걷기 및 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "jtbc-seoul": {
+      "urls": [
+        "https://runable.me/"
+      ],
+      "discoveredVia": "https://runable.me/",
+      "title": "2026 JTBC 서울마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-fa83d642c552": {
+      "urls": [
+        "https://www.humanrun.org/"
+      ],
+      "discoveredVia": "https://www.humanrun.org/",
+      "title": "제21회 울산인권마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-b3f6efa48181": {
+      "urls": [
+        "https://www.djmarathon.co.kr/"
+      ],
+      "discoveredVia": "https://www.djmarathon.co.kr/",
+      "title": "제2회 대전 신채호 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-8dc25f58d104": {
+      "urls": [
+        "https://mara1080.com/event/ffc023fc-7a54-4610-bdd6-2bb9a1028122"
+      ],
+      "discoveredVia": "https://mara1080.com/event/ffc023fc-7a54-4610-bdd6-2bb9a1028122",
+      "title": "제15회 부여 굿뜨래 마라톤 대회",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-8b8dfa605681": {
+      "urls": [
+        "https://cafe.naver.com/seoultrailrun/?viewType=pc"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/2026-seoul-guseokguseok-international-trailrun",
+      "title": "2026 서울구석구석 국제 트레일런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-80e4f49eb981": {
+      "urls": [
+        "https://k-marathon.or.kr/main.php"
+      ],
+      "discoveredVia": "https://k-marathon.or.kr/main.php",
+      "title": "2026 양산 배내골 애플 런",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-51d8319f0085": {
+      "urls": [
+        "https://runable.me/product/18977?comp=18962"
+      ],
+      "discoveredVia": "https://runable.me/product/18977?comp=18962",
+      "title": "2026 가민런 코리아",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-9f4925b1137c": {
+      "urls": [
+        "https://sjrun.com/"
+      ],
+      "discoveredVia": "https://sjrun.com/",
+      "title": "제2회 세종특별자치시 전국 마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-ecd21c0a09f3": {
+      "urls": [
+        "https://xn--q20bn3kn1bg9oekd84a785cnfg.kr/"
+      ],
+      "discoveredVia": "https://xn--q20bn3kn1bg9oekd84a785cnfg.kr/",
+      "title": "제4회 영남알프스 전국 하프마라톤",
+      "checkedAt": "2026-10-18T10:21:38.606Z"
+    },
+    "schedule-c7f2d9f8c8a4": {
+      "urls": [
+        "http://www.greenstep.co.kr/"
+      ],
+      "discoveredVia": "https://runxel.com/events/geurinseutep-2026-2026-10-18"
+    },
+    "schedule-71fe1b7a51c9": {
+      "urls": [
+        "https://maraton.dbsfa365.co.kr/"
+      ],
+      "discoveredVia": "https://www.runzoa.com/marathon/bukgu-love-marathon-2026"
+    },
+    "schedule-3260d3ad1bb2": {
+      "urls": [
+        "http://xn--439a68tboh.kr/run/9000.asp"
+      ],
+      "discoveredVia": "https://www.runzoa.com/marathon/gamseong-run-marathon-2026"
+    },
+    "schedule-072dd0d48e95": {
+      "urls": [
+        "https://mujutrail.com/"
+      ],
+      "discoveredVia": "https://www.runzoa.com/marathon/gtws-muju-trail-grand-final-2026"
+    },
+    "schedule-1ef05642b1de": {
+      "urls": [
+        "https://runmusicfestival.localvibehub.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/run-music-festival-andong-2026"
+    },
+    "schedule-f8c69d616324": {
+      "urls": [
+        "http://csmarathon.co.kr/csmarathon/"
+      ],
+      "discoveredVia": "https://runningwikii.com/entry/2026-cheongsong-apple-trail-run/"
+    },
+    "schedule-91ff291800b9": {
+      "urls": [
+        "http://www.irunman.kr/"
+      ],
+      "discoveredVia": "https://www.runneron.com/marathon/k-run-%EC%B1%8C%EB%A6%B0%EC%A7%80"
+    },
+    "schedule-7dda3bb3a200": {
+      "urls": [
+        "https://gcmarathon.co.kr/home/main.ubs"
+      ],
+      "discoveredVia": "https://gcmarathon.co.kr/home/main.ubs"
+    },
+    "schedule-43b4c20e7358": {
+      "urls": [
+        "https://runyc.kr/"
+      ],
+      "discoveredVia": "https://www.runzoa.com/marathon/yeongcheon-dam-marathon-2026"
+    },
+    "schedule-c376814d0f6a": {
+      "urls": [
+        "http://www.gcrun.com/"
+      ],
+      "discoveredVia": "https://marathongo.co.kr/raceDetail/domestic/24th-gochang-gointdol-marathon-2026"
+    },
+    "schedule-8545440939c1": {
+      "urls": [
+        "https://runwithus.co.kr/index"
+      ],
+      "discoveredVia": "https://runwithus.co.kr/index"
+    },
+    "schedule-b8f5765d35e8": {
+      "urls": [
+        "http://www.songparunsportal.com/Home"
+      ],
+      "discoveredVia": "https://www.everytrail.co.kr/marathon/songpa-gu-mayors-cup-marathon-2026"
+    },
+    "schedule-11f6d639b02d": {
+      "urls": [
+        "http://www.거제앵산트레일레이스.com/"
+      ],
+      "discoveredVia": "https://runxel.com/events/geojesicheyukhoejangbae-geojeaengsan-trail-race-2026-11-08"
+    }
+  }
+}

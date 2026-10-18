@@ -1,0 +1,55 @@
+
+> runningbom@0.21.0 review:build
+> node scripts/review.mjs --build
+
+
+> running-platform@0.1.0 prebuild
+> npm run check:runtime
+
+
+> running-platform@0.1.0 check:runtime
+> node scripts/check-mobile-runtime.mjs
+
+Mobile runtime integrity check passed (28 protected files).
+
+> running-platform@0.1.0 build
+> tsc && vite build && node scripts/prepare-sites-build.mjs
+
+vite v8.1.3 building client environment for production...
+[2K
+transforming...✓ 5172 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/client/index.html                                                0.57 kB │ gzip:   0.41 kB
+dist/client/assets/roboto-latin-500-normal-DQZyH_nt.woff             21.92 kB
+dist/client/assets/roboto-latin-500-normal-7RbcRiD8.woff2            22.20 kB
+dist/client/assets/noto-sans-kr-korean-900-normal-Bq1UbSRC.woff2    489.23 kB
+dist/client/assets/noto-sans-kr-korean-400-normal-CERZrUqY.woff2    542.26 kB
+dist/client/assets/noto-sans-kr-korean-500-normal-Ckzu_fXz.woff2    552.28 kB
+dist/client/assets/noto-sans-kr-korean-700-normal-C6l4wo6f.woff2    559.39 kB
+dist/client/assets/noto-sans-kr-korean-900-normal-CfzIAdhd.woff     801.62 kB
+dist/client/assets/noto-sans-kr-korean-400-normal-DGATwn9d.woff     849.96 kB
+dist/client/assets/noto-sans-kr-korean-500-normal-Q_fPcz9k.woff     859.28 kB
+dist/client/assets/noto-sans-kr-korean-700-normal-CiarQsWG.woff     866.59 kB
+dist/client/assets/MemberHub-BcvT_gTW.css                             8.06 kB │ gzip:   2.05 kB
+dist/client/assets/index-nagMajNi.css                                90.85 kB │ gzip:  17.95 kB
+dist/client/assets/ShoeFinder-BZ7M_jSz.css                          526.37 kB │ gzip:  50.42 kB
+dist/client/assets/ArrowLeft.es-ChedssBe.js                           1.54 kB │ gzip:   0.61 kB
+dist/client/assets/MemberHub-BlA0O0oy.js                             42.46 kB │ gzip:  12.75 kB
+dist/client/assets/RaceCalendar-B3U2UxLQ.js                         304.22 kB │ gzip:  92.03 kB
+dist/client/assets/index-D86_hKTw.js                              1,239.25 kB │ gzip: 317.16 kB
+dist/client/assets/ShoeFinder-mXOM4GIz.js                         1,849.67 kB │ gzip: 421.15 kB
+
+[PLUGIN_TIMINGS] Your build spent significant time in plugins. Here is a breakdown:
+  - vite:css (82%)
+  - vite:css-post (7%)
+  - rolldown:vite-resolve (7%)
+See https://rolldown.rs/reference/InputOptions.checks#plugintimings for more details.
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 43.50s
+Prepared Sites build: dist/server/index.js and dist/.openai/hosting.json
