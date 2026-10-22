@@ -2,7 +2,7 @@
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import {publicationFields} from './catalog-publication-core.mjs';
-import {catalogIdentityIssue,productVariantKey} from './catalog-identity.mjs';
+import {catalogIdentityIssue,catalogRecordKey} from './catalog-identity.mjs';
 export const categoryLabels = {daily:'입문·매일 러닝',cushion:'푹신한 쿠션',stability:'탄탄한 지지',supertrainer:'슈퍼 트레이너',speed:'빠른 훈련',carbon:'대회용 카본',trail:'트레일',unknown:'분류 확인 중'};
 const https = z.string().url().refine(v=>new URL(v).protocol==='https:' && !new URL(v).username && !new URL(v).password);
 export const productSchema = z.object({
@@ -102,11 +102,14 @@ export function classify(name,description=''){
  return ['unknown',[]];
 }
 export function mergeVerified(previous,incoming){
- const byId=new Map(previous.map(p=>[p.id,publicationFields(p)]));const byModel=new Map(previous.map(p=>[fingerprint(p),p.id]));
- const byVariant=new Map(previous.filter(p=>productVariantKey(p)).map(p=>[productVariantKey(p),p.id]));let added=0,updated=0;
+ const byId=new Map(previous.map(p=>[p.id,publicationFields(p)]));
+ const byVariant=new Map(previous.map(p=>[catalogRecordKey(p),p.id]));let added=0,updated=0;
  for(const candidate of incoming){
   const parsed=productSchema.safeParse(candidate);if(!parsed.success)throw new Error(`invalid candidate ${candidate.id}: ${parsed.error.issues[0].message}`);
-  const p=publicationFields(parsed.data);const oldId=byVariant.get(productVariantKey(p))||byModel.get(fingerprint(p));
+  const p=publicationFields(parsed.data);
+  // A caller-supplied ID cannot authorize replacing another observed variant.
+  if(byId.has(p.id)&&catalogRecordKey(byId.get(p.id))!==catalogRecordKey(p))continue;
+  const oldId=byVariant.get(catalogRecordKey(p));
   if(oldId){
    const old=byId.get(oldId);
    // A different representative color must not overwrite a product's price/photo.
@@ -114,8 +117,9 @@ export function mergeVerified(previous,incoming){
    if(Date.parse(p.checkedAt)<Date.parse(old.checkedAt))continue;
    const evidence=old.useEvidence||[];
    byId.set(oldId,{...old,...p,id:oldId,image:p.image,useEvidence:evidence,uses:[...new Set([...p.uses,...evidence.map(item=>item.use)])]});updated++;
-  }else {byId.set(p.id,p);byModel.set(fingerprint(p),p.id);if(productVariantKey(p))byVariant.set(productVariantKey(p),p.id);added++;}
+  }else {byId.set(p.id,p);byVariant.set(catalogRecordKey(p),p.id);added++;}
  }
  return {products:[...byId.values()],added,updated};
 }
 export function sha256(bytes){return createHash('sha256').update(bytes).digest('hex');}
+export function catalogCandidateId(row,previous){return previous?.id||'shoe-'+sha256(Buffer.from(catalogRecordKey(row))).slice(0,12);}

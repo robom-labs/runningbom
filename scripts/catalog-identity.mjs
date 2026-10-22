@@ -7,6 +7,12 @@ export function productVariantKey(product) {
  return sku ? normalize(product.brand) + '|' + sku : '';
 }
 
+// A source may omit SKU. Keep its exact observed URL (including color query) distinct;
+// never invent a SKU or merge colorways merely because display names are canonical.
+export function catalogRecordKey(product) {
+ return productVariantKey(product)||normalize(product.brand)+'|source:'+String(product.source||product.id);
+}
+
 export function catalogIdentityIssue(product) {
  return [product.model, product.modelEn, product.name, product.color].some(value => galleryText.test(String(value || '')))
   ? 'image-gallery text is not a model or color' : null;

@@ -1,10 +1,10 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';import {load} from 'cheerio';
 import {mergeVerified,extractProductCandidates,fingerprint,productSchema,sha256,declaredReleaseDate,releaseIsUpcoming,declaredProductGender} from './catalog-core.mjs';
-import {catalogIdentityProblems} from './catalog-identity.mjs';
+import {catalogIdentityProblems,catalogRecordKey} from './catalog-identity.mjs';
 const snapshot=JSON.parse(await readFile(new URL('../data/verified-products.json',import.meta.url),'utf8'));const one=snapshot.products[0];
 test('Source catalog has exact original photos, unique models, currencies and no invented release dates',()=>{
  const ids=new Set(),models=new Set();
- for(const p of snapshot.products){productSchema.parse(p);assert(!ids.has(p.id));assert(!models.has(fingerprint(p)));ids.add(p.id);models.add(fingerprint(p));assert(p.imageSha256||p.imageVerification==='official-page-url');if(p.release)assert(p.releaseSource);if(p.upcoming)assert(p.releaseSource);}
+ for(const p of snapshot.products){productSchema.parse(p);const identity=catalogRecordKey(p);assert(!ids.has(p.id));assert(!models.has(identity));ids.add(p.id);models.add(identity);assert(p.imageSha256||p.imageVerification==='official-page-url');if(p.release)assert(p.releaseSource);if(p.upcoming)assert(p.releaseSource);}
  assert(snapshot.products.length>=100);assert(new Set(snapshot.products.map(p=>p.brand)).size>=15);
  assert.deepEqual(catalogIdentityProblems(snapshot.products),[]);
 });
@@ -22,6 +22,8 @@ test('Source failure or an older response cannot erase the last good catalog',()
 });
 test('Prices and images from a different SKU cannot overwrite the selected color',()=>{
  assert.deepEqual(mergeVerified([one],[{...one,sku:'DIFFERENT-COLOR',price:1}]).products,[one]);
+ const other={...one,id:'different-color-id',sku:'DIFFERENT-COLOR',price:1};
+ const result=mergeVerified([one],[other]).products;assert.equal(result.length,2);assert.deepEqual(result[0],one);assert.deepEqual(result[1],other);
 });
 test('Reviewed tempo and recovery use tags survive a later official price refresh',()=>{
  const product=snapshot.products.find(p=>p.uses.includes('tempo'));
@@ -29,7 +31,9 @@ test('Reviewed tempo and recovery use tags survive a later official price refres
  const incoming={...product,uses:product.uses.filter(use=>use!=='tempo'),checkedAt:'2026-10-19T00:00:00Z'};
  const updated=mergeVerified([product],[incoming]).products[0];
  assert(updated.uses.includes('tempo'));assert.deepEqual(updated.useEvidence,product.useEvidence);
- assert.equal(snapshot.products.filter(p=>p.uses.includes('recovery')).length,3);
+ for(const id of ['nike-vomero18','shoe-7c2ef09ece4a','shoe-11d87a800ee4']){
+  const reviewed=snapshot.products.find(p=>p.id===id);assert(reviewed,`missing reviewed recovery ID ${id}`);assert(reviewed.uses.includes('recovery'),`lost reviewed recovery role ${id}`);
+ }
 });
 test('Schema.org parser reads only declared product values and does not manufacture a launch date',()=>{
  const html='<script type="application/ld+json">'+JSON.stringify({'@type':'Product',name:'Pegasus 99',brand:{name:'NIKE'},sku:'ABC-100',image:'https://static.nike.com/exact.jpg',offers:{price:100,priceCurrency:'USD',url:'https://www.nike.com/t/exact'}})+'</script>';

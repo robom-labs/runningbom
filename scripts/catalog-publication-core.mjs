@@ -7,6 +7,6 @@ export function publishedText(value) {
 export function publicationFields(product) {
  const next={...product};
  for(const key of ['plate','weight','drop','gender','releaseRegion'])next[key]=publishedText(product[key]);
- if(next.category==='unknown'){next.purpose='';next.tier='';next.description='';}
+ if(next.category==='unknown'){next.purpose='러닝화';next.tier='러닝화';next.description='';}
  return next;
 }

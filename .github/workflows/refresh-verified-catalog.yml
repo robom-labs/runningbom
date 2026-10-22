@@ -35,7 +35,7 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Tests before any collection
-        run: node --test scripts/catalog-core.test.mjs scripts/catalog-publication-core.test.mjs scripts/catalog-refresh-guard.test.mjs scripts/catalog-only-publication.test.mjs
+        run: node --test scripts/catalog-core.test.mjs scripts/catalog-publication-core.test.mjs scripts/catalog-refresh-guard.test.mjs scripts/catalog-only-publication.test.mjs scripts/catalog-family-metadata.test.mjs
       - name: Robots-respecting official metadata; no image downloads
         run: npm run catalog:refresh
       - run: npm run catalog:check

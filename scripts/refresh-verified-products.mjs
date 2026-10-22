@@ -3,9 +3,10 @@ import { CheerioCrawler, Configuration } from '@crawlee/cheerio';
 import { readFile,writeFile,mkdir,rename } from 'node:fs/promises';
 import { dirname,join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { categoryLabels,classify,extractProductCandidates,fingerprint,mergeVerified,productSchema,sha256,releaseIsUpcoming } from './catalog-core.mjs';
+import { categoryLabels,classify,extractProductCandidates,fingerprint,mergeVerified,productSchema,sha256,releaseIsUpcoming,catalogCandidateId } from './catalog-core.mjs';
 import {catalogIdentityIssue} from './catalog-identity.mjs';
 import {assessCatalogCandidate} from './catalog-refresh-guard.mjs';
+import {applyReviewedMetadata} from './catalog-family-metadata.mjs';
 const root=join(dirname(fileURLToPath(import.meta.url)),'..');
 const write=process.argv.includes('--write');
 const max=Math.min(180,Math.max(1,Number(process.env.CATALOG_MAX_REQUESTS)||60));
@@ -35,8 +36,6 @@ const crawler=new CheerioCrawler({
    if(!permit(row.imageSource,{hosts:source.imageHosts})){failed.push({source:source.id,url:request.url,reason:'page-declared image URL not on approved HTTPS hosts; no download attempted'});continue;}
    const [kind]=classify(row.model,row.description);
    if(kind==='unknown'&&!/running|러닝|레이싱|marathon|trail/i.test(row.model+' '+row.description))continue;
-   const old=previous.products.find(p=>p.sku && p.sku===row.sku && p.brand.toLowerCase()===row.brand.toLowerCase());
-   if(old){row.model=old.model;row.modelEn=old.modelEn;}
    candidates.push({...row,sourceId:source.id});
   }
   if(request.userData.discovery)await enqueueLinks({
@@ -72,11 +71,11 @@ for(const row of candidates){
   // Metadata-only operation: no image download, asset generation or license claim.
   // New models keep only the exact official-page image URL; native mappings are not changed.
   if(!imageSha){imageVerifiedAt=undefined;imageWidth=undefined;imageHeight=undefined;}
-  const [category,uses]=old?[old.category,old.uses]:classify(row.model,row.description);
-  const identity=sha256(Buffer.from(fingerprint(row))).slice(0,12);
+  // Neither marketing text nor a previously misclassified SKU is reviewed role evidence.
+  const {category,uses}=applyReviewedMetadata(row);
   const release=old?.release||row.release||'';
-  const p={...old,id:old?.id||'shoe-'+identity,brand:row.brand,model:row.model,name:old?.name||row.model,
-   source:row.source,imageSource:row.imageSource,image:old?.imageSource===row.imageSource?old.image:row.imageSource,imageSha256:imageSha,imageCheckedAt:imageVerifiedAt,imageVerification:imageSha?'original-bytes':'official-page-url',modelEn:old?.modelEn||row.modelEn||row.model,sku:row.sku,color:row.color||'색상명 미확인',gender:row.gender==='미확인'?(old?.gender||'미확인'):row.gender,
+  const p={...old,id:catalogCandidateId(row,old),brand:row.brand,model:row.model,name:row.model,
+   source:row.source,imageSource:row.imageSource,image:old?.imageSource===row.imageSource?old.image:row.imageSource,imageSha256:imageSha,imageCheckedAt:imageVerifiedAt,imageVerification:imageSha?'original-bytes':'official-page-url',modelEn:row.modelEn||row.model,sku:row.sku,color:row.color||'색상명 미확인',gender:row.gender==='미확인'?(old?.gender||'미확인'):row.gender,
    price:Number.isFinite(row.price)&&row.price>0?row.price:null,regularPrice:row.regularPrice||null,currency:row.currency,sourceRegion:row.sourceRegion,
    checkedAt:new Date().toISOString(),category,uses,purpose:categoryLabels[category],tier:categoryLabels[category],
    description:old?.description||'',
@@ -84,7 +83,8 @@ for(const row of candidates){
    release,releaseSource:old?.release?old.releaseSource:row.release?row.source:'',releaseRegion:old?.releaseRegion||row.sourceRegion,upcoming:release?releaseIsUpcoming(release):!!(old?.upcoming&&old?.releaseSource),
    imageWidth,imageHeight,imageRights:'source-declared-not-license-verified',
    merchant:`${source.brand} ${row.sourceRegion} 공식몰`,priceType:'공식몰 표시가 · 수집 시점'};
-  productSchema.parse(p);verified.push(p);
+  const display=applyReviewedMetadata({...p,sourceTitle:row.model});
+  productSchema.parse(display);verified.push(display);
  }catch(e){failed.push({source:row.sourceId,url:row.source,reason:String(e.message)});}
 }
 const merged=mergeVerified(previous.products,verified);
