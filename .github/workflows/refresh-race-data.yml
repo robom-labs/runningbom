@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: running-race-data-refresh
+  group: runningbom-data-writer
   cancel-in-progress: false
 
 jobs:

@@ -80,3 +80,13 @@ test('pipeline cannot publish broad app/image changes, mutate Pages settings or 
  assert.match(crawler,/noVerifiedSources/);assert.match(crawler,/mergeSkipped/);
  assert.ok(crawler.indexOf("if(!verified.length)throw")<crawler.indexOf('if(write){'));
 });
+test('race and catalog main writers share the same non-cancelling workflow-level mutex',async()=>{
+ const groups=[];
+ for(const name of ['refresh-race-data.yml','refresh-verified-catalog.yml']){
+  const workflow=await readFile(new URL('../.github/workflows/'+name,import.meta.url),'utf8');
+  const global=workflow.match(/^concurrency:\n  group: ([^\n]+)\n  cancel-in-progress: (false)\n/m);
+  assert(global,`${name} must have a non-cancelling global writer mutex`);
+  groups.push(global[1]);
+ }
+ assert.deepEqual(groups,['runningbom-data-writer','runningbom-data-writer']);
+});
