@@ -1,5 +1,5 @@
 {
-  "version": "2026.10.22-race-data-94",
+  "version": "2026.10.23-race-data-95",
   "sources": [
     "마라톤온라인",
     "마라톤GO",
@@ -108,7 +108,7 @@
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 뉴시스 바다마라톤",
@@ -133,7 +133,7 @@
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 무쓰런",
@@ -157,7 +157,7 @@
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 서울 펫림픽 & 런 위드 고 (SEOUL PETLYMPIC & RUN WITH GO)",
@@ -181,7 +181,7 @@
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 익산 기부런",
@@ -206,7 +206,7 @@
       "status": "closed",
       "courseLabel": "10K,6.4km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-10-24",
@@ -251,7 +251,7 @@
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 한강런",
@@ -274,7 +274,7 @@
       "status": "closed",
       "courseLabel": "10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 GTWS 무주 트레일",
@@ -300,7 +300,7 @@
       "status": "closed",
       "courseLabel": "26km,18km,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "네이버웍스와 함께하는 세종런 26",
@@ -325,7 +325,7 @@
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "불닭 버닝 트레일런",
@@ -349,7 +349,7 @@
       "status": "closed",
       "courseLabel": "5K,23K,13K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "서울 대모-구룡산트레일런",
@@ -371,7 +371,7 @@
       "status": "cancelled",
       "courseLabel": "14.6km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z",
+      "lastObservedAt": "2026-10-22T17:16:42.071Z",
       "registrationDataIssue": "주최 측 대회 일정에 대회 취소로 안내됐어요. 신청 전 주최 측 공지를 확인해 주세요.",
       "note": "주최 측 2026년 10월 24일 대회 취소 안내",
       "officialCorrectionSource": "http://www.mtrailrun.kr/"
@@ -396,7 +396,7 @@
       "status": "closed",
       "courseLabel": "6km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "Freedom Walk & Run",
@@ -418,7 +418,7 @@
       "status": "closed",
       "courseLabel": "6km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "RUN&MUSIC FESTIVAL in 안동",
@@ -443,7 +443,7 @@
       "status": "closed",
       "courseLabel": "Half,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "TOUR 5K & Beach Ploggin망상",
@@ -466,7 +466,7 @@
       "status": "closed",
       "courseLabel": "5K,2K 플로깅",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-10-25",
@@ -515,7 +515,7 @@
       "status": "closed",
       "courseLabel": "15km,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-10-25",
@@ -541,9 +541,9 @@
     {
       "name": "울산 런 페스타 (U-RUN)",
       "date": "2026-10-25",
-      "time": "08:30 집결",
+      "time": "07:00 집결",
       "region": "울산",
-      "venue": "울산 문수 국제양궁장",
+      "venue": "울산 문수국제양궁장",
       "distances": [
         "5K",
         "10K",
@@ -554,13 +554,13 @@
       "registrationOpenTimeConfirmed": false,
       "registrationPeriodLabel": "08/19 - 09/20",
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
-      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/ulsan-run-festa-u-run-2026-10-25",
+      "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-ulsan-runfesta-u-run",
       "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-10-22T12:01:22.952Z",
+      "dataVerifiedAt": "2026-10-22T17:16:42.071Z",
       "status": "closed",
       "courseLabel": "Half,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제14회 정서진아라뱃길 마라톤",
@@ -585,7 +585,7 @@
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-10-25",
@@ -653,7 +653,7 @@
       "status": "closed",
       "courseLabel": "Half,10K,4.2km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 태종대 BEAT ON 좀비레이스",
@@ -675,7 +675,7 @@
       "status": "open",
       "courseLabel": "4km 코스,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 JUST RUN10 포천",
@@ -699,7 +699,7 @@
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제21회 사천노을 마라톤대회",
@@ -724,7 +724,7 @@
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-11-01",
@@ -786,11 +786,11 @@
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-dmz-open-peace-marathon",
       "sourceName": "마라톤GO",
       "organizer": "경기도",
-      "dataVerifiedAt": "2026-10-22T12:01:22.952Z",
+      "dataVerifiedAt": "2026-10-22T17:16:42.071Z",
       "status": "unknown",
       "courseLabel": "Half,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z",
+      "lastObservedAt": "2026-10-22T17:16:42.071Z",
       "registrationDataStatus": "needs-review",
       "registrationDataIssue": "공식 접수 일정이 확인되지 않았어요. 일정 사이트의 8월 1일 하루짜리 접수값을 확정 일정으로 안내하지 않아요.",
       "officialCorrectionSource": "http://dmzopenrun.kr/"
@@ -818,7 +818,7 @@
       "status": "closed",
       "courseLabel": "Full,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "26서울동행마라톤대회",
@@ -843,7 +843,7 @@
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-11-01",
@@ -912,7 +912,7 @@
       "status": "closed",
       "courseLabel": "50k,34k,21k",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-11-07",
@@ -956,7 +956,7 @@
       "status": "closed",
       "courseLabel": "10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "넥슨과 함께하는 2026 푸르메런",
@@ -979,7 +979,7 @@
       "status": "closed",
       "courseLabel": "10K,3km,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-11-07",
@@ -1026,7 +1026,7 @@
       "status": "closed",
       "courseLabel": "5K,11.11km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 경기화성 생태마라톤",
@@ -1051,7 +1051,7 @@
       "status": "closed",
       "courseLabel": "Half,10K,5K,5km 가족달리기",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 경상북도 신도시 마라톤",
@@ -1075,7 +1075,7 @@
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 과천마라톤",
@@ -1100,7 +1100,7 @@
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 라운드랩 RUN",
@@ -1125,7 +1125,7 @@
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 부산 헤리티지 런",
@@ -1149,7 +1149,7 @@
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 서울구석구석 국제 트레일런",
@@ -1173,7 +1173,7 @@
       "status": "closed",
       "courseLabel": "Trail",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-11-08",
@@ -1219,7 +1219,7 @@
       "status": "open",
       "courseLabel": "10km 로드레이스,5km 건강달리기,5km 슬로조깅",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 청양군 칠갑마라톤",
@@ -1243,7 +1243,7 @@
       "status": "open",
       "courseLabel": "Half,14km,7km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 해남땅끝 전국마라톤대회",
@@ -1268,7 +1268,7 @@
       "status": "closed",
       "courseLabel": "Full,Half,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "경주시육상연맹회장배 마라톤대회",
@@ -1293,7 +1293,7 @@
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-11-08",
@@ -1338,7 +1338,7 @@
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제20회 자원봉사 사랑 굿펀 마라톤",
@@ -1362,7 +1362,7 @@
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제24회 전국 나주 금성산숲길마라톤",
@@ -1386,7 +1386,7 @@
       "status": "closed",
       "courseLabel": "Half,6km,11km,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-11-08",
@@ -1429,7 +1429,7 @@
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 통큰런",
@@ -1453,7 +1453,7 @@
       "status": "open",
       "courseLabel": "10K,5K,3km(가족런)",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 포항마라톤챔피언십",
@@ -1478,7 +1478,7 @@
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제26회 순천 남승룡마라톤대회",
@@ -1504,7 +1504,7 @@
       "status": "closed",
       "courseLabel": "Full,Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 9회 서울평화마라톤",
@@ -1529,7 +1529,7 @@
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-11-15",
@@ -1573,7 +1573,7 @@
       "status": "closed",
       "courseLabel": "10K,15km,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 손기정평화마라톤",
@@ -1598,7 +1598,7 @@
       "status": "closed",
       "courseLabel": "Full,Half,10K,6km코스",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 제주감귤마라톤",
@@ -1624,7 +1624,7 @@
       "status": "closed",
       "courseLabel": "Full,Half,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 FILA RUN & ESPRESSO",
@@ -1646,7 +1646,7 @@
       "status": "closed",
       "courseLabel": "10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제12회 창원특례시장배 광려천마라톤",
@@ -1669,7 +1669,7 @@
       "status": "closed",
       "courseLabel": "Half,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제16회 대전서구청장배 마라톤대회",
@@ -1694,7 +1694,7 @@
       "status": "open",
       "courseLabel": "10K,5K,가족코스,건강코스",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제17회 행복트레일런 축제",
@@ -1718,7 +1718,7 @@
       "status": "closed",
       "courseLabel": "29km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-11-15",
@@ -1762,7 +1762,7 @@
       "status": "open",
       "courseLabel": "10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제24회 상주 곶감 마라톤 대회",
@@ -1790,7 +1790,7 @@
       "status": "closed",
       "courseLabel": "* 정원이 마감된 것으로 확인되었어요,Full,Half,10K,4.4km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제28회 부산국제마라톤대회",
@@ -1816,7 +1816,7 @@
       "status": "closed",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-11-15",
@@ -1861,7 +1861,7 @@
       "status": "closed",
       "courseLabel": "16km/36km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "date": "2026-11-15",
@@ -1908,7 +1908,7 @@
       "status": "closed",
       "courseLabel": "Full,30km,12km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 세정 가을바람 유러닝페스타",
@@ -1935,7 +1935,7 @@
       "status": "open",
       "courseLabel": "10K,5K,10k 커플런,10k 단체전(5인1조)",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 김대중마라톤대회",
@@ -1959,7 +1959,7 @@
       "status": "closed",
       "courseLabel": "Half,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 무주반딧불평화마라톤",
@@ -1983,7 +1983,7 @@
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 서울 억새풀 마라톤대회",
@@ -2008,7 +2008,7 @@
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 인천마라톤",
@@ -2032,7 +2032,7 @@
       "status": "closed",
       "courseLabel": "Full,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 평화의숲 마라톤",
@@ -2056,7 +2056,7 @@
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 무진장트레일레이스",
@@ -2079,7 +2079,7 @@
       "status": "open",
       "courseLabel": "335km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 남원 춘향 전국 마라톤대회",
@@ -2106,7 +2106,7 @@
       "status": "open",
       "courseLabel": "Full,Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2027 서울 세계청년대회 성공 기원 평화런",
@@ -2130,7 +2130,7 @@
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "목욕런 2026",
@@ -2155,7 +2155,7 @@
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 새한미디어 마라톤",
@@ -2179,7 +2179,7 @@
       "status": "open",
       "courseLabel": "Half,10K,5K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 정읍공동체 프리마켓 마라톤",
@@ -2204,7 +2204,7 @@
       "status": "open",
       "courseLabel": "10K,5K,5km가족부(2인1조),10km 단체전(3인1조),장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제14회 안중근 평화 마라톤",
@@ -2228,7 +2228,7 @@
       "status": "open",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제2회 천안독립기념관 마라톤대회",
@@ -2277,7 +2277,7 @@
       "status": "closed",
       "courseLabel": "5K,12km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 하남 미사 호수 에너지런",
@@ -2301,7 +2301,7 @@
       "status": "closed",
       "courseLabel": "10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026월드 레코드 국제 마라톤 축제 - 사웨",
@@ -2319,11 +2319,11 @@
       "registrationPeriodSource": "마라톤GO 공개 일정 상세",
       "sourceDetailUrl": "https://marathongo.co.kr/raceDetail/domestic/2026-world-record-international-marathon-festival-sawe",
       "sourceName": "마라톤GO",
-      "dataVerifiedAt": "2026-10-22T12:01:22.952Z",
+      "dataVerifiedAt": "2026-10-22T17:16:42.071Z",
       "status": "unknown",
       "courseLabel": "14km",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z",
+      "lastObservedAt": "2026-10-22T17:16:42.071Z",
       "registrationDataStatus": "needs-review",
       "registrationDataIssue": "공식 페이지에 2027년 5월 15일로 일정 연기가 안내돼 있어요. 기존 2026년 12월 5일 회차의 접수 상태는 확정 안내하지 않아요.",
       "officialCorrectionSource": "https://mara1080.com/event/ccf77de8-1b14-4170-afcb-c2eeaee1a78d"
@@ -2351,7 +2351,7 @@
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 부산브릿지 마라톤",
@@ -2376,7 +2376,7 @@
       "status": "closed",
       "courseLabel": "Full,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 황영조 로드레이스",
@@ -2399,7 +2399,7 @@
       "status": "open",
       "courseLabel": "Half,10K,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 소년소녀 가장 돕기 기부런",
@@ -2423,7 +2423,7 @@
       "status": "open",
       "courseLabel": "10K,5K,걷기,장소",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제36회 진주마라톤",
@@ -2449,7 +2449,7 @@
       "status": "open",
       "courseLabel": "Full,Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "2026 코리아 시즌 레이스",
@@ -2473,7 +2473,7 @@
       "status": "open",
       "courseLabel": "Half,10K,5K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "희망드림 제24회 동계마라톤대회",
@@ -2527,7 +2527,7 @@
       "status": "closed",
       "courseLabel": "Full,10K",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     },
     {
       "name": "제9회 오션뷰 기장바다마라톤",
@@ -2553,10 +2553,10 @@
       "status": "scheduled",
       "courseLabel": "Half,10K,3km 슬로우조깅",
       "linkVerifiedFrom": "마라톤GO 공개 일정 상세",
-      "lastObservedAt": "2026-10-22T12:01:22.952Z"
+      "lastObservedAt": "2026-10-22T17:16:42.071Z"
     }
   ],
-  "lastSuccessfulRefreshAt": "2026-10-22T04:37:00.708Z",
+  "lastSuccessfulRefreshAt": "2026-10-22T17:16:42.071Z",
   "refreshPolicy": {
     "provider": "마라톤GO 공개 국내 일정",
     "providerUrl": "https://marathongo.co.kr/raceSchedule/domestic",
@@ -2564,7 +2564,7 @@
     "rule": "필수 필드와 정적 검증을 통과한 값만 게시"
   },
   "sourceRefreshAudit": {
-    "checkedAt": "2026-10-22T12:01:22.952Z",
+    "checkedAt": "2026-10-22T17:16:42.071Z",
     "targets": [
       {
         "url": "https://marathongo.co.kr/raceDetail/domestic/19th-jungnang-mayor-rose-marathon-2026",
@@ -2602,6 +2602,11 @@
         "raceDate": "2026-11-15"
       },
       {
+        "url": "https://marathongo.co.kr/raceDetail/domestic/2026-ulsan-runfesta-u-run",
+        "outcome": "parsed",
+        "raceDate": "2026-10-25"
+      },
+      {
         "url": "https://marathongo.co.kr/raceDetail/domestic/22nd-daegu-bukgu-sarang-marathon-2026",
         "outcome": "parsed",
         "raceDate": "2026-10-18"
@@ -2625,11 +2630,6 @@
         "url": "https://marathongo.co.kr/raceDetail/domestic/greenstep-2026-10-18-haenam-solasido",
         "outcome": "parsed",
         "raceDate": "2026-10-18"
-      },
-      {
-        "url": "https://marathongo.co.kr/raceDetail/domestic/ulsan-run-festa-u-run-2026-10-25",
-        "outcome": "parsed",
-        "raceDate": "2026-10-25"
       },
       {
         "url": "https://marathongo.co.kr/raceDetail/domestic/hope-dream-24th-winter-marathon-2027",
@@ -2932,11 +2932,6 @@
         "raceDate": "2026-11-14"
       },
       {
-        "url": "https://marathongo.co.kr/raceDetail/domestic/2026-ulsan-runfesta-u-run",
-        "outcome": "parsed",
-        "raceDate": "2026-10-25"
-      },
-      {
         "url": "https://marathongo.co.kr/raceDetail/domestic/2026-world-record-international-marathon-festival-sawe",
         "outcome": "parsed",
         "raceDate": "2026-12-05"
@@ -3055,6 +3050,11 @@
         "url": "https://marathongo.co.kr/raceDetail/domestic/tour-5k-beach-ploggin-mangsang-2026-10-24",
         "outcome": "parsed",
         "raceDate": "2026-10-24"
+      },
+      {
+        "url": "https://marathongo.co.kr/raceDetail/domestic/ulsan-run-festa-u-run-2026-10-25",
+        "outcome": "parsed",
+        "raceDate": "2026-10-25"
       }
     ]
   }
