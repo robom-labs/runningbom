@@ -18,6 +18,13 @@
     "links:secure": "node scripts/secure-race-links.mjs --write",
     "verify:shoe-photos": "node --import ./apps/mobile/node_modules/tsx/dist/loader.mjs scripts/verify-shoe-photos.mjs",
     "collect:shoe-images": "node scripts/collect-shoe-images.mjs",
-    "collect:race-images": "node scripts/collect-official-images.mjs"
+    "collect:race-images": "node scripts/collect-official-images.mjs",
+    "catalog:refresh": "node scripts/refresh-verified-products.mjs --write",
+    "catalog:check": "node scripts/sync-verified-products.mjs --check"
+  },
+  "dependencies": {
+    "@crawlee/cheerio": "3.18.2",
+    "cheerio": "1.2.0",
+    "zod": "4.4.3"
   }
 }

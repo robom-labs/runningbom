@@ -1,0 +1,85 @@
+name: Verified catalog metadata only
+on:
+  schedule:
+    - cron: '37 1-23/6 * * *'
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Publish only after parent review; default is collect/validate only'
+        type: boolean
+        default: false
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: runningbom-data-writer
+  cancel-in-progress: false
+jobs:
+  catalog:
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      CATALOG_MAX_REQUESTS: '60'
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Tests before any collection
+        run: node --test scripts/catalog-core.test.mjs scripts/catalog-publication-core.test.mjs scripts/catalog-refresh-guard.test.mjs scripts/catalog-only-publication.test.mjs
+      - name: Robots-respecting official metadata; no image downloads
+        run: npm run catalog:refresh
+      - run: npm run catalog:check
+      - name: Persist last-good pair on main, then overlay existing gh-pages
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.publish) || (github.event_name == 'schedule' && vars.CATALOG_PUBLISH_ENABLED == 'true') }}
+        run: |
+          set -euo pipefail
+          gh api repos/${{ github.repository }}/pages | node scripts/catalog-only-publication.mjs --assert-pages
+          git config user.name robom-data-bot
+          git config user.email actions@github.com
+          git add -- data/verified-products.json data/verified-products.manifest.json
+          test -z "$(git diff --cached --name-only | sed '/^data\/verified-products\.json$/d; /^data\/verified-products\.manifest\.json$/d')"
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(data): verified catalog metadata"
+            git push origin HEAD:main
+          fi
+          git fetch origin gh-pages
+          SITE="$RUNNER_TEMP/catalog-existing-gh-pages"
+          git worktree add --detach "$SITE" origin/gh-pages
+          node scripts/catalog-only-publication.mjs --site-dir "$SITE" --data-dir data
+          git -C "$SITE" add -- data/verified-products.json data/verified-products.manifest.json
+          test -z "$(git -C "$SITE" diff --cached --name-only | sed '/^data\/verified-products\.json$/d; /^data\/verified-products\.manifest\.json$/d')"
+          if ! git -C "$SITE" diff --cached --quiet; then
+            git -C "$SITE" commit -m "chore(data): publish verified catalog pair only"
+            git -C "$SITE" push origin HEAD:gh-pages
+          fi
+          gh api repos/${{ github.repository }}/pages | node scripts/catalog-only-publication.mjs --assert-pages
+          gh api --method POST repos/${{ github.repository }}/pages/builds
+      - name: Verify actual public pair (not just commit/build acceptance)
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.publish) || (github.event_name == 'schedule' && vars.CATALOG_PUBLISH_ENABLED == 'true') }}
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if node scripts/catalog-only-publication.mjs --verify-public; then exit 0; fi
+            sleep 20
+          done
+          exit 1
+      - name: Preserve source failures and publication decision
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: catalog-metadata-health
+          path: outputs/operations/catalog-refresh.json
+          if-no-files-found: warn
+      - name: Do not label partial source coverage as all-sources success
+        if: always()
+        run: |
+          node --input-type=module -e "import fs from 'node:fs'; const r=JSON.parse(fs.readFileSync('outputs/operations/catalog-refresh.json')); console.log(JSON.stringify({decision:r.publicationDecision,verified:r.verified,noVerifiedSources:r.noVerifiedSources,failures:r.failures.length})); if(r.publicationDecision!=='validated'||r.noVerifiedSources.length||r.failures.length)process.exitCode=1;"
