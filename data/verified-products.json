@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": "catalog-d2f0b3becfc51be2",
-  "generatedAt": "2026-10-22T04:49:40.535Z",
+  "revision": "catalog-cb827d69b4aa30db",
+  "generatedAt": "2026-10-22T13:14:00.839Z",
   "products": [
     {
       "id": "nike-pegasus42-105",
@@ -351,7 +351,7 @@
       "source": "https://www.nike.com/kr/t/나이키-페가수스-플러스-2-여성-로드-러닝화-k7TxLWJb/IM2543-310",
       "image": "/assets/products/shoe-8cd3d1ba9dc0.png",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1845a658-b4ef-4022-9013-d7e41e6706bf/W+NIKE+PEGASUS+PLUS+2.png",
-      "checkedAt": "2026-10-22T04:49:40.521Z",
+      "checkedAt": "2026-10-22T13:14:00.821Z",
       "merchant": "NIKE 한국 공식몰",
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": "fb9d90f8377b926dedbabcfe8c37639b78f734af6114dfe7769df4e3756cc9f7",
@@ -361,7 +361,8 @@
       "releaseCheckedAt": "2026-10-20T14:46:01.667Z",
       "imageCheckedAt": "2026-10-18T08:02:26.907870+00:00",
       "imageRights": "source-declared-not-license-verified",
-      "useEvidence": []
+      "useEvidence": [],
+      "sourceTitle": "나이키 페가수스 플러스 2 여성 로드 러닝화 - 펜넬/레몬 베넘/페일리스트 퍼플/그리드아이언 - Size 5"
     },
     {
       "brand": "NIKE",
@@ -393,7 +394,7 @@
       "source": "https://www.nike.com/kr/t/나이키-acg-울트라플라이-트레일-트레일-레이싱화-RxqUulb3/HF5668-401",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/ddb09769-c8eb-4e5d-b123-c1cbfe49081c/NIKE+ACG+ULTRAFLY+TRAIL.png",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/ddb09769-c8eb-4e5d-b123-c1cbfe49081c/NIKE+ACG+ULTRAFLY+TRAIL.png",
-      "checkedAt": "2026-10-22T04:49:40.514Z",
+      "checkedAt": "2026-10-22T13:14:00.813Z",
       "merchant": "NIKE 한국 공식몰",
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": "1ae2f18761b1d4452a0ef70ab8eba43f8c5a88701fde364b7d2d0f2cb31dc5e9",
@@ -402,7 +403,8 @@
       "factualNote": "산길을 위한 접지력을 갖춘 트레일 모델이에요.",
       "imageCheckedAt": "2026-10-18T08:32:42.360Z",
       "useEvidence": [],
-      "imageRights": "source-declared-not-license-verified"
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "ACG 울트라플라이 트레일"
     },
     {
       "brand": "NIKE",
@@ -436,7 +438,7 @@
       "source": "https://www.nike.com/kr/t/나이키-보메로-플러스-여성-로드-러닝화-m47MwihM/HV8154-001",
       "image": "/assets/products/shoe-7c2ef09ece4a.png",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/51a83561-8d77-4803-85f9-8a5fe6bbf136/W+NIKE+VOMERO+PLUS.png",
-      "checkedAt": "2026-10-22T04:49:40.527Z",
+      "checkedAt": "2026-10-22T13:14:00.826Z",
       "merchant": "NIKE 한국 공식몰",
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": "3bf0f920b20c6bdbcf3fdc1a051561cd432b9327af0c53e73a92ee7fa03f0391",
@@ -452,7 +454,8 @@
         }
       ],
       "imageCheckedAt": "2026-10-18T08:02:26.854165+00:00",
-      "imageRights": "source-declared-not-license-verified"
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 보메로 플러스 여성 로드 러닝화 - 블랙/메탈릭 다크 그레이/쿨 그레이/다크 스모크 그레이 - Size 5"
     },
     {
       "brand": "NIKE",
@@ -484,7 +487,7 @@
       "source": "https://www.nike.com/kr/t/나이키-알파플라이-3-남성-로드-레이싱화-8VsWjMgt/FD8311-003",
       "image": "/assets/products/shoe-d46b684f6acb.png",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/ae088d22-67d0-49c0-a1b6-b308f2b53ad4/AIR+ZOOM+ALPHAFLY+NEXT%25+3.png",
-      "checkedAt": "2026-10-22T04:49:40.527Z",
+      "checkedAt": "2026-10-22T13:14:00.829Z",
       "merchant": "NIKE 한국 공식몰",
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": "0669bb87d1de96a4aee6f48de412479c69b4b2e24521c8f07061a2697d5dc8d5",
@@ -493,7 +496,8 @@
       "factualNote": "기록을 목표로 하는 로드 레이스용 모델이에요.",
       "imageCheckedAt": "2026-10-18T08:02:27.389685+00:00",
       "imageRights": "source-declared-not-license-verified",
-      "useEvidence": []
+      "useEvidence": [],
+      "sourceTitle": "나이키 알파플라이 3 남성 로드 레이싱화 - 플래티넘 틴트/오션 큐브/문 파티클/퍼플 다이너스티 - Size 6"
     },
     {
       "brand": "NIKE",
@@ -612,7 +616,7 @@
       "source": "https://www.nike.com/kr/t/acg-제가마-트레일-여성-트레일-러닝화-brBlZXrH/HV8115-500",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b519ea32-1cca-4442-9ed9-fea0e56a6441/W+NIKE+ACG+ZEGAMA+TRAIL.png",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b519ea32-1cca-4442-9ed9-fea0e56a6441/W+NIKE+ACG+ZEGAMA+TRAIL.png",
-      "checkedAt": "2026-10-22T04:49:40.520Z",
+      "checkedAt": "2026-10-22T13:14:00.819Z",
       "merchant": "NIKE 한국 공식몰",
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": "aad2938c2320c6719c78a30e0bc3da5ea29dc6bbf6f285f9602db2c03c0ffba8",
@@ -621,7 +625,8 @@
       "factualNote": "산길을 위한 접지력을 갖춘 트레일 모델이에요.",
       "imageCheckedAt": "2026-10-18T08:32:45.906Z",
       "useEvidence": [],
-      "imageRights": "source-declared-not-license-verified"
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "ACG 제가마 트레일"
     },
     {
       "brand": "NIKE",
@@ -653,7 +658,7 @@
       "source": "https://www.nike.com/kr/t/나이키-acg-페가수스-트레일-여성-트레일-러닝화-vV1RVe5j/HV8121-200",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/99b98297-4753-4c40-8528-08a98a5cd0b7/W+NIKE+ACG+PEGASUS+TRAIL.png",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/99b98297-4753-4c40-8528-08a98a5cd0b7/W+NIKE+ACG+PEGASUS+TRAIL.png",
-      "checkedAt": "2026-10-22T04:49:40.520Z",
+      "checkedAt": "2026-10-22T13:14:00.819Z",
       "merchant": "NIKE 한국 공식몰",
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": "403f6d45da748a694ff424262cb07650b0937caa9f5c1442455195472e4a21eb",
@@ -662,7 +667,8 @@
       "factualNote": "산길을 위한 접지력을 갖춘 트레일 모델이에요.",
       "imageCheckedAt": "2026-10-18T08:32:46.169Z",
       "useEvidence": [],
-      "imageRights": "source-declared-not-license-verified"
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "ACG 페가수스 트레일"
     },
     {
       "brand": "NIKE",
@@ -3327,7 +3333,7 @@
       "source": "https://www.on.com/ko-kr/products/cloudmonster-61/womens/black-magnet-shoes-61.99024",
       "image": "https://images.ctfassets.net/hnk2vsx53n6l/fg6g0ibueZNtxFbrx0JgQ/a82099e03da83cb5fc79673d447e0c21/4cffcc6086bca52f83358fae4bb01f1f09cc252d.png",
       "imageSource": "https://images.ctfassets.net/hnk2vsx53n6l/fg6g0ibueZNtxFbrx0JgQ/a82099e03da83cb5fc79673d447e0c21/4cffcc6086bca52f83358fae4bb01f1f09cc252d.png",
-      "checkedAt": "2026-10-22T04:49:40.518Z",
+      "checkedAt": "2026-10-22T13:14:00.816Z",
       "merchant": "On 한국 공식몰",
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": "f85e1d1009315500c8fb75f360c6b13142a1783486c13e1c7f6019692e6989f4",
@@ -3341,7 +3347,8 @@
       "imageCheckedAt": "2026-10-18T08:32:43.213Z",
       "genderSource": "https://www.on.com/ko-kr/products/cloudmonster-61/womens/black-magnet-shoes-61.99024",
       "useEvidence": [],
-      "imageRights": "source-declared-not-license-verified"
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "여성 Cloudmonster Black | Magnet"
     },
     {
       "brand": "Saucony",
@@ -8047,7 +8054,7 @@
       "source": "https://www.nike.com/kr/t/acg-제가마-트레일-gore-tex-여성-워터프루프-트레일-러닝화-dFsBVb6p/IO7933-002",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/ea3ad6ed-9ff1-46a0-856b-d022b224857b/W+NIKE+ACG+ZEGAMA+TRAIL+GTX.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/ea3ad6ed-9ff1-46a0-856b-d022b224857b/W+NIKE+ACG+ZEGAMA+TRAIL+GTX.png",
-      "checkedAt": "2026-10-22T04:49:40.521Z",
+      "checkedAt": "2026-10-22T13:14:00.820Z",
       "price": 249000,
       "regularPrice": 249000,
       "currency": "KRW",
@@ -8076,7 +8083,8 @@
       "modelEn": "ACG 제가마 트레일 GORE-TEX",
       "imageCheckedAt": "2026-10-18T08:32:46.298Z",
       "useEvidence": [],
-      "imageRights": "source-declared-not-license-verified"
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "ACG 제가마 트레일 GORE-TEX"
     },
     {
       "id": "shoe-2612df1800f4",
@@ -8086,7 +8094,7 @@
       "source": "https://www.nike.com/kr/t/acg-페가수스-트레일-gore-tex-여성-워터프루프-트레일-러닝화-iUOMHeAs/IQ1394-300",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/e83f12e4-8cc5-4c7d-87cd-a395d6daf58b/W+NIKE+ACG+PEGASUS+TRAIL+GTX.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/e83f12e4-8cc5-4c7d-87cd-a395d6daf58b/W+NIKE+ACG+PEGASUS+TRAIL+GTX.png",
-      "checkedAt": "2026-10-22T04:49:40.521Z",
+      "checkedAt": "2026-10-22T13:14:00.820Z",
       "price": 197100,
       "regularPrice": 219000,
       "currency": "KRW",
@@ -8115,7 +8123,8 @@
       "modelEn": "ACG 페가수스 트레일 GORE-TEX",
       "imageCheckedAt": "2026-10-18T08:32:46.376Z",
       "useEvidence": [],
-      "imageRights": "source-declared-not-license-verified"
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "ACG 페가수스 트레일 GORE-TEX"
     },
     {
       "id": "nike-swooshfly-announced",
@@ -8236,7 +8245,7 @@
       "source": "https://www.nike.com/kr/t/나이키-페가수스-플러스-2-여성-로드-러닝화-k7TxLWJb/IM2543-001",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/c69c2e16-f0d9-4047-a945-21dab5ac6041/W+NIKE+PEGASUS+PLUS+2.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/c69c2e16-f0d9-4047-a945-21dab5ac6041/W+NIKE+PEGASUS+PLUS+2.png",
-      "checkedAt": "2026-10-22T04:49:40.526Z",
+      "checkedAt": "2026-10-22T13:14:00.825Z",
       "price": 219000,
       "regularPrice": null,
       "currency": "KRW",
@@ -8276,7 +8285,7 @@
       "source": "https://www.nike.com/kr/t/나이키-페가수스-플러스-2-여성-로드-러닝화-k7TxLWJb/IM2543-004",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/89aa372c-b534-4ebb-8408-a52ae17753b3/W+NIKE+PEGASUS+PLUS+2.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/89aa372c-b534-4ebb-8408-a52ae17753b3/W+NIKE+PEGASUS+PLUS+2.png",
-      "checkedAt": "2026-10-22T04:49:40.526Z",
+      "checkedAt": "2026-10-22T13:14:00.826Z",
       "price": 219000,
       "regularPrice": null,
       "currency": "KRW",
@@ -8316,7 +8325,7 @@
       "source": "https://www.nike.com/kr/t/나이키-페가수스-플러스-2-여성-로드-러닝화-k7TxLWJb/IM2543-600",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/d01528ce-7baf-4e7a-aa8e-87c45085f8c8/W+NIKE+PEGASUS+PLUS+2.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/d01528ce-7baf-4e7a-aa8e-87c45085f8c8/W+NIKE+PEGASUS+PLUS+2.png",
-      "checkedAt": "2026-10-22T04:49:40.526Z",
+      "checkedAt": "2026-10-22T13:14:00.826Z",
       "price": 219000,
       "regularPrice": null,
       "currency": "KRW",
@@ -8356,7 +8365,7 @@
       "source": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=03",
       "imageSource": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/03/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
       "image": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/03/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
-      "checkedAt": "2026-10-22T04:49:40.518Z",
+      "checkedAt": "2026-10-22T13:14:00.816Z",
       "price": 230,
       "regularPrice": null,
       "currency": "USD",
@@ -8384,7 +8393,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "Deviate NITRO Elite 3",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Lapis Lazuli-Sunset Glow-Electric Peppermint"
+      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Lapis Lazuli-Sunset Glow-Electric Peppermint",
+      "useEvidence": []
     },
     {
       "id": "shoe-e68460c9ef68",
@@ -8394,7 +8404,7 @@
       "source": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=05",
       "imageSource": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/05/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
       "image": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/05/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
-      "checkedAt": "2026-10-22T04:49:40.519Z",
+      "checkedAt": "2026-10-22T13:14:00.817Z",
       "price": 230,
       "regularPrice": null,
       "currency": "USD",
@@ -8422,7 +8432,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "Deviate NITRO Elite 3",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - PUMA White-Pure Magenta"
+      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - PUMA White-Pure Magenta",
+      "useEvidence": []
     },
     {
       "id": "shoe-4eeaa7d38283",
@@ -8432,7 +8443,7 @@
       "source": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=06",
       "imageSource": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/06/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
       "image": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/06/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
-      "checkedAt": "2026-10-22T04:49:40.519Z",
+      "checkedAt": "2026-10-22T13:14:00.817Z",
       "price": 230,
       "regularPrice": null,
       "currency": "USD",
@@ -8460,7 +8471,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "Deviate NITRO Elite 3",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Glowing Red-PUMA Black"
+      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Glowing Red-PUMA Black",
+      "useEvidence": []
     },
     {
       "id": "shoe-c3e317d24d14",
@@ -8470,7 +8482,7 @@
       "source": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=07",
       "imageSource": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/07/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
       "image": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/07/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
-      "checkedAt": "2026-10-22T04:49:40.519Z",
+      "checkedAt": "2026-10-22T13:14:00.818Z",
       "price": 230,
       "regularPrice": null,
       "currency": "USD",
@@ -8498,7 +8510,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "Deviate NITRO Elite 3",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Mint Melt-Speed Blue"
+      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Mint Melt-Speed Blue",
+      "useEvidence": []
     },
     {
       "id": "shoe-41548a3b7663",
@@ -8508,7 +8521,7 @@
       "source": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=08",
       "imageSource": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/08/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
       "image": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/08/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
-      "checkedAt": "2026-10-22T04:49:40.519Z",
+      "checkedAt": "2026-10-22T13:14:00.818Z",
       "price": 230,
       "regularPrice": null,
       "currency": "USD",
@@ -8536,7 +8549,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "Deviate NITRO Elite 3",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - PUMA White-Speed Blue"
+      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - PUMA White-Speed Blue",
+      "useEvidence": []
     },
     {
       "id": "shoe-023d51e319a9",
@@ -8546,7 +8560,7 @@
       "source": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=09",
       "imageSource": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/09/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
       "image": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/09/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
-      "checkedAt": "2026-10-22T04:49:40.519Z",
+      "checkedAt": "2026-10-22T13:14:00.818Z",
       "price": 230,
       "regularPrice": null,
       "currency": "USD",
@@ -8574,7 +8588,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "Deviate NITRO Elite 3",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Heat Fire-PUMA Black"
+      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Heat Fire-PUMA Black",
+      "useEvidence": []
     },
     {
       "id": "shoe-c93c61690738",
@@ -8584,7 +8599,7 @@
       "source": "https://www.nike.com/kr/t/나이키-베이퍼플라이-4-남성-로드-레이싱화-LgISdyo8/IM8203-001",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/da9bc6f4-08f8-43ed-975c-8c3e3c7dd796/ZOOMX+VAPORFLY+NEXT%25+4+FK.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/da9bc6f4-08f8-43ed-975c-8c3e3c7dd796/ZOOMX+VAPORFLY+NEXT%25+4+FK.png",
-      "checkedAt": "2026-10-22T04:49:40.527Z",
+      "checkedAt": "2026-10-22T13:14:00.830Z",
       "price": 255200,
       "regularPrice": null,
       "currency": "KRW",
@@ -8609,7 +8624,9 @@
       "imageSha256": null,
       "imageVerification": "official-page-url",
       "modelEn": "나이키 베이퍼플라이 4 남성 로드 레이싱화 - 스프루스 아우라/그레이 포그/아이스 피치/다크 옵시디언 - Size 6",
-      "imageRights": "source-declared-not-license-verified"
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 베이퍼플라이 4 남성 로드 레이싱화 - 스프루스 아우라/그레이 포그/아이스 피치/다크 옵시디언 - Size 6",
+      "useEvidence": []
     },
     {
       "id": "shoe-ce04f61a81a1",
@@ -8619,7 +8636,7 @@
       "source": "https://www.nike.com/kr/t/나이키-보메로-플러스-여성-로드-러닝화-m47MwihM/HV8154-102",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/928e8d59-9440-4f5c-aaaf-03ebc365dbbe/W+NIKE+VOMERO+PLUS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/928e8d59-9440-4f5c-aaaf-03ebc365dbbe/W+NIKE+VOMERO+PLUS.png",
-      "checkedAt": "2026-10-22T04:49:40.527Z",
+      "checkedAt": "2026-10-22T13:14:00.831Z",
       "price": 197100,
       "regularPrice": null,
       "currency": "KRW",
@@ -8649,7 +8666,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "보메로 플러스",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "나이키 보메로 플러스 여성 로드 러닝화 - 화이트/포톤 더스트/메탈릭 실버/서밋 화이트 - Size 5"
+      "sourceTitle": "나이키 보메로 플러스 여성 로드 러닝화 - 화이트/포톤 더스트/메탈릭 실버/서밋 화이트 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-95514d8a0a8c",
@@ -8659,7 +8677,7 @@
       "source": "https://www.nike.com/kr/t/나이키-보메로-프리미엄-여성-신발-01E9TQhQ/IU2827-001",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/3e2c16ec-412f-424a-bf2b-3369f57713cd/W+NIKE+VOMERO+PREMIUM+QS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/3e2c16ec-412f-424a-bf2b-3369f57713cd/W+NIKE+VOMERO+PREMIUM+QS.png",
-      "checkedAt": "2026-10-22T04:49:40.527Z",
+      "checkedAt": "2026-10-22T13:14:00.831Z",
       "price": 299000,
       "regularPrice": null,
       "currency": "KRW",
@@ -8684,7 +8702,9 @@
       "imageSha256": null,
       "imageVerification": "official-page-url",
       "modelEn": "나이키 보메로 프리미엄 여성 신발 - 블랙/화이트/메탈릭 실버 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 보메로 프리미엄 여성 신발 - 블랙/화이트/메탈릭 실버 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-7afadd9685ba",
@@ -8694,7 +8714,7 @@
       "source": "https://www.nike.com/kr/t/나이키-보메로-프리미엄-여성-신발-01E9TQhQ/IU2827-600",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/c125e80f-1310-476e-90b3-c02ca6bdf02b/W+NIKE+VOMERO+PREMIUM+QS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/c125e80f-1310-476e-90b3-c02ca6bdf02b/W+NIKE+VOMERO+PREMIUM+QS.png",
-      "checkedAt": "2026-10-22T04:49:40.527Z",
+      "checkedAt": "2026-10-22T13:14:00.831Z",
       "price": 299000,
       "regularPrice": null,
       "currency": "KRW",
@@ -8719,7 +8739,9 @@
       "imageSha256": null,
       "imageVerification": "official-page-url",
       "modelEn": "나이키 보메로 프리미엄 여성 신발 - 유니버시티 레드/하이퍼 핑크/메탈릭 실버 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 보메로 프리미엄 여성 신발 - 유니버시티 레드/하이퍼 핑크/메탈릭 실버 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-c4f886dfd6e1",
@@ -8729,7 +8751,7 @@
       "source": "https://www.nike.com/kr/t/나이키-보메로-플러스-여성-로드-러닝화-m47MwihM/IO9916-101",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/82000f7b-aa20-4fed-8210-d6f4dd0e35da/W+NIKE+VOMERO+PLUS+ESS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/82000f7b-aa20-4fed-8210-d6f4dd0e35da/W+NIKE+VOMERO+PLUS+ESS.png",
-      "checkedAt": "2026-10-22T04:49:40.527Z",
+      "checkedAt": "2026-10-22T13:14:00.832Z",
       "price": 209000,
       "regularPrice": null,
       "currency": "KRW",
@@ -8759,7 +8781,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "보메로 플러스",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "나이키 보메로 플러스 여성 로드 러닝화 - 서밋 화이트/세일/앤트러사이트/메탈릭 실버 - Size 5"
+      "sourceTitle": "나이키 보메로 플러스 여성 로드 러닝화 - 서밋 화이트/세일/앤트러사이트/메탈릭 실버 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-e225f7b024f3",
@@ -8769,7 +8792,7 @@
       "source": "https://www.nike.com/kr/t/나이키-알파플라이-3-여성-로드-레이싱화-jFKRH2Kh/FD8315-105",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/009b4c6f-c025-47ff-9583-b4b3fbc55ccb/W+AIR+ZOOM+ALPHAFLY+NEXT%25+3.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/009b4c6f-c025-47ff-9583-b4b3fbc55ccb/W+AIR+ZOOM+ALPHAFLY+NEXT%25+3.png",
-      "checkedAt": "2026-10-22T04:49:40.527Z",
+      "checkedAt": "2026-10-22T13:14:00.832Z",
       "price": 237300,
       "regularPrice": null,
       "currency": "KRW",
@@ -8797,7 +8820,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "알파플라이 3",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "나이키 알파플라이 3 여성 로드 레이싱화 - 초크/하이퍼 크림슨/펜넬/퍼플 다이너스티 - Size 5"
+      "sourceTitle": "나이키 알파플라이 3 여성 로드 레이싱화 - 초크/하이퍼 크림슨/펜넬/퍼플 다이너스티 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-0d23067d5918",
@@ -8807,7 +8831,7 @@
       "source": "https://www.nike.com/kr/t/나이키-보메로-플러스-여성-로드-러닝화-m47MwihM/HV8154-110",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/63cac2f4-1888-47c6-94ee-ce3c4ed200fd/W+NIKE+VOMERO+PLUS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/63cac2f4-1888-47c6-94ee-ce3c4ed200fd/W+NIKE+VOMERO+PLUS.png",
-      "checkedAt": "2026-10-22T04:49:40.527Z",
+      "checkedAt": "2026-10-22T13:14:00.832Z",
       "price": 219000,
       "regularPrice": null,
       "currency": "KRW",
@@ -8837,7 +8861,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "보메로 플러스",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "나이키 보메로 플러스 여성 로드 러닝화 - 화이트/블리치트 라일락/서밋 화이트/메탈릭 실버 - Size 5"
+      "sourceTitle": "나이키 보메로 플러스 여성 로드 러닝화 - 화이트/블리치트 라일락/서밋 화이트/메탈릭 실버 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-95dccd06854e",
@@ -8847,7 +8872,7 @@
       "source": "https://www.nike.com/kr/t/나이키-보메로-18-여성-로드-러닝화-t2gD5z3G/HM6804-004",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/597ae1d8-e4cc-4c27-8ae3-cce03b69b288/W+NIKE+VOMERO+18.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/597ae1d8-e4cc-4c27-8ae3-cce03b69b288/W+NIKE+VOMERO+18.png",
-      "checkedAt": "2026-10-22T04:49:40.528Z",
+      "checkedAt": "2026-10-22T13:14:00.833Z",
       "price": 160600,
       "regularPrice": null,
       "currency": "KRW",
@@ -8877,7 +8902,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "Vomero 18",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "나이키 보메로 18 여성 로드 러닝화 - 블랙/다크 스모크 그레이/라이트 스모크 그레이/블랙 - Size 5"
+      "sourceTitle": "나이키 보메로 18 여성 로드 러닝화 - 블랙/다크 스모크 그레이/라이트 스모크 그레이/블랙 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-d68c4dd88599",
@@ -8887,7 +8913,7 @@
       "source": "https://www.nike.com/kr/t/나이키-보메로-18-여성-로드-러닝화-t2gD5z3G/HM6804-104",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/d0fed865-53b4-4f41-9e81-82c1e98b7093/W+NIKE+VOMERO+18.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/d0fed865-53b4-4f41-9e81-82c1e98b7093/W+NIKE+VOMERO+18.png",
-      "checkedAt": "2026-10-22T04:49:40.528Z",
+      "checkedAt": "2026-10-22T13:14:00.834Z",
       "price": 160600,
       "regularPrice": null,
       "currency": "KRW",
@@ -8917,7 +8943,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "Vomero 18",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "나이키 보메로 18 여성 로드 러닝화 - 화이트/포톤 더스트/서밋 화이트/메탈릭 실버 - Size 5"
+      "sourceTitle": "나이키 보메로 18 여성 로드 러닝화 - 화이트/포톤 더스트/서밋 화이트/메탈릭 실버 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-c1dfde342c4c",
@@ -8927,7 +8954,7 @@
       "source": "https://www.nike.com/kr/t/나이키-페가수스-42-여성-로드-러닝화-wsTF7yIV/IB1881-003",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/978fc05d-a2fc-4c69-bdda-ecca00671a1e/W+NIKE+AIR+ZOOM+PEGASUS+42.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/978fc05d-a2fc-4c69-bdda-ecca00671a1e/W+NIKE+AIR+ZOOM+PEGASUS+42.png",
-      "checkedAt": "2026-10-22T04:49:40.528Z",
+      "checkedAt": "2026-10-22T13:14:00.834Z",
       "price": 152100,
       "regularPrice": null,
       "currency": "KRW",
@@ -8955,7 +8982,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "Pegasus 42",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "나이키 페가수스 42 여성 로드 러닝화 - 블랙/앤트러사이트/블랙 - Size 5"
+      "sourceTitle": "나이키 페가수스 42 여성 로드 러닝화 - 블랙/앤트러사이트/블랙 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-0d885e3f36b4",
@@ -8965,7 +8993,7 @@
       "source": "https://www.nike.com/kr/t/나이키-페가수스-42-여성-로드-러닝화-wsTF7yIV/IB1881-001",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/477482d2-8c60-4e50-a9b4-665d2f681d67/W+NIKE+AIR+ZOOM+PEGASUS+42.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/477482d2-8c60-4e50-a9b4-665d2f681d67/W+NIKE+AIR+ZOOM+PEGASUS+42.png",
-      "checkedAt": "2026-10-22T04:49:40.528Z",
+      "checkedAt": "2026-10-22T13:14:00.834Z",
       "price": 152100,
       "regularPrice": null,
       "currency": "KRW",
@@ -8993,7 +9021,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "Pegasus 42",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "나이키 페가수스 42 여성 로드 러닝화 - 블랙/아이언 그레이/화이트 - Size 5"
+      "sourceTitle": "나이키 페가수스 42 여성 로드 러닝화 - 블랙/아이언 그레이/화이트 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-74d8253bc8ec",
@@ -9003,7 +9032,7 @@
       "source": "https://www.nike.com/kr/t/나이키-보메로-18-여성-로드-러닝화-t2gD5z3G/IQ0468-001",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/de572aaa-8ed3-4fe6-81cc-eacd93885a98/W+NIKE+VOMERO+18+VIS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/de572aaa-8ed3-4fe6-81cc-eacd93885a98/W+NIKE+VOMERO+18+VIS.png",
-      "checkedAt": "2026-10-22T04:49:40.528Z",
+      "checkedAt": "2026-10-22T13:14:00.835Z",
       "price": 189000,
       "regularPrice": null,
       "currency": "KRW",
@@ -9033,7 +9062,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "Vomero 18",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "나이키 보메로 18 여성 로드 러닝화 - 배스트 그레이/메탈릭 실버/핑크 스모크/블랙 - Size 5"
+      "sourceTitle": "나이키 보메로 18 여성 로드 러닝화 - 배스트 그레이/메탈릭 실버/핑크 스모크/블랙 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-6a7d80a319d1",
@@ -9043,7 +9073,7 @@
       "source": "https://www.nike.com/kr/t/나이키-보메로-18-gore-tex-여성-로드-러닝화-fnj9giIW/IQ0467-001",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/23bdf15e-09ed-46d2-9ec6-0e8892b02fe0/W+NIKE+VOMERO+18+GTX+VIS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/23bdf15e-09ed-46d2-9ec6-0e8892b02fe0/W+NIKE+VOMERO+18+GTX+VIS.png",
-      "checkedAt": "2026-10-22T04:49:40.528Z",
+      "checkedAt": "2026-10-22T13:14:00.835Z",
       "price": 219000,
       "regularPrice": null,
       "currency": "KRW",
@@ -9068,7 +9098,9 @@
       "imageSha256": null,
       "imageVerification": "official-page-url",
       "modelEn": "나이키 보메로 18 GORE-TEX 여성 로드 러닝화 - 라이트 스모크 그레이/핑크 스모크/메탈릭 실버/블랙 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 보메로 18 GORE-TEX 여성 로드 러닝화 - 라이트 스모크 그레이/핑크 스모크/메탈릭 실버/블랙 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-331c3755f569",
@@ -9078,7 +9110,7 @@
       "source": "https://www.nike.com/kr/t/나이키-보메로-18-gore-tex-여성-워터프루프-리플렉티브-액센트-로드-러닝화-fnj9giIW/HQ7002-005",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/ca74989f-fa6c-4d39-891d-610bc3a5f60c/W+NIKE+VOMERO+18+GTX.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/ca74989f-fa6c-4d39-891d-610bc3a5f60c/W+NIKE+VOMERO+18+GTX.png",
-      "checkedAt": "2026-10-22T04:49:40.529Z",
+      "checkedAt": "2026-10-22T13:14:00.835Z",
       "price": 219000,
       "regularPrice": null,
       "currency": "KRW",
@@ -9103,7 +9135,9 @@
       "imageSha256": null,
       "imageVerification": "official-page-url",
       "modelEn": "나이키 보메로 18 GORE-TEX 여성 워터프루프 리플렉티브 액센트 로드 러닝화 - 블랙/트루 베리/퍼플 펄스/메탈릭 실버 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 보메로 18 GORE-TEX 여성 워터프루프 리플렉티브 액센트 로드 러닝화 - 블랙/트루 베리/퍼플 펄스/메탈릭 실버 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-48a554c6d1aa",
@@ -9148,7 +9182,7 @@
       "source": "https://www.nike.com/kr/t/나이키-스트럭처-26-여성-로드-러닝화-nShOGeEC/IQ0464-001",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/9df50849-c4e2-440e-8a4c-3c600b598da7/W+NIKE+STRUCTURE+26+VIS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/9df50849-c4e2-440e-8a4c-3c600b598da7/W+NIKE+STRUCTURE+26+VIS.png",
-      "checkedAt": "2026-10-22T04:49:40.529Z",
+      "checkedAt": "2026-10-22T13:14:00.835Z",
       "price": 189000,
       "regularPrice": null,
       "currency": "KRW",
@@ -9176,7 +9210,8 @@
       "imageVerification": "official-page-url",
       "modelEn": "Structure 26",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "나이키 스트럭처 26 여성 로드 러닝화 - 배스트 그레이/메탈릭 실버/핑크 스모크/블랙 - Size 5"
+      "sourceTitle": "나이키 스트럭처 26 여성 로드 러닝화 - 배스트 그레이/메탈릭 실버/핑크 스모크/블랙 - Size 5",
+      "useEvidence": []
     },
     {
       "id": "shoe-8ee857e5f26d",
@@ -9186,7 +9221,7 @@
       "source": "https://www.nike.com/kr/t/나이키-페가수스-42-여성-로드-러닝화-wsTF7yIV/IQ0466-001",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/be5bd97a-0fdf-49a6-8dbd-d75c1002aa99/W+AIR+ZOOM+PEGASUS+42+VIS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/be5bd97a-0fdf-49a6-8dbd-d75c1002aa99/W+AIR+ZOOM+PEGASUS+42+VIS.png",
-      "checkedAt": "2026-10-22T04:49:40.529Z",
+      "checkedAt": "2026-10-22T13:14:00.835Z",
       "price": 189000,
       "regularPrice": null,
       "currency": "KRW",
@@ -9214,7 +9249,274 @@
       "imageVerification": "official-page-url",
       "modelEn": "Pegasus 42",
       "imageRights": "source-declared-not-license-verified",
-      "sourceTitle": "나이키 페가수스 42 여성 로드 러닝화 - 배스트 그레이/핑크 스모크/칼리지 그레이/블랙 - Size 5"
+      "sourceTitle": "나이키 페가수스 42 여성 로드 러닝화 - 배스트 그레이/핑크 스모크/칼리지 그레이/블랙 - Size 5",
+      "useEvidence": []
+    },
+    {
+      "id": "shoe-0ab793dd88ce",
+      "brand": "NIKE",
+      "model": "ACG 울트라플라이 트레일",
+      "name": "ACG 울트라플라이 트레일",
+      "source": "https://www.nike.com/kr/t/나이키-acg-울트라플라이-트레일-트레일-레이싱화-RxqUulb3/HF5668-601",
+      "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/3d053046-1b6b-4694-9e5c-107e824c97ef/NIKE+ACG+ULTRAFLY+TRAIL.png",
+      "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/3d053046-1b6b-4694-9e5c-107e824c97ef/NIKE+ACG+ULTRAFLY+TRAIL.png",
+      "checkedAt": "2026-10-22T13:14:00.815Z",
+      "price": 319000,
+      "regularPrice": 319000,
+      "currency": "KRW",
+      "sourceRegion": "한국",
+      "sku": "HF5668-601",
+      "color": "하이퍼 핑크/퍼플 다이너스티/비비드 퍼플/블랙",
+      "gender": "공용",
+      "category": "trail",
+      "uses": [
+        "trail"
+      ],
+      "purpose": "트레일",
+      "tier": "트레일",
+      "description": "",
+      "plate": "",
+      "weight": "",
+      "drop": "",
+      "release": "",
+      "releaseRegion": "한국",
+      "releaseSource": "",
+      "upcoming": false,
+      "merchant": "NIKE 한국 공식몰",
+      "priceType": "공식몰 표시가 · 수집 시점",
+      "imageSha256": null,
+      "imageVerification": "official-page-url",
+      "modelEn": "ACG 울트라플라이 트레일",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "ACG 울트라플라이 트레일"
+    },
+    {
+      "id": "shoe-c332497a98e0",
+      "brand": "NIKE",
+      "model": "ACG 제가마 트레일",
+      "name": "ACG 제가마 트레일",
+      "source": "https://www.nike.com/kr/t/acg-제가마-트레일-여성-트레일-러닝화-brBlZXrH/HV8115-002",
+      "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/0a6a1779-b930-4c09-ada0-3e9fc4769a58/W+NIKE+ACG+ZEGAMA+TRAIL.png",
+      "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/0a6a1779-b930-4c09-ada0-3e9fc4769a58/W+NIKE+ACG+ZEGAMA+TRAIL.png",
+      "checkedAt": "2026-10-22T13:14:00.819Z",
+      "price": 197100,
+      "regularPrice": 219000,
+      "currency": "KRW",
+      "sourceRegion": "한국",
+      "sku": "HV8115-002",
+      "color": "블랙/앤트러사이트",
+      "gender": "여성",
+      "category": "trail",
+      "uses": [
+        "trail"
+      ],
+      "purpose": "트레일",
+      "tier": "트레일",
+      "description": "",
+      "plate": "",
+      "weight": "",
+      "drop": "",
+      "release": "",
+      "releaseRegion": "한국",
+      "releaseSource": "",
+      "upcoming": false,
+      "merchant": "NIKE 한국 공식몰",
+      "priceType": "공식몰 표시가 · 수집 시점",
+      "imageSha256": null,
+      "imageVerification": "official-page-url",
+      "modelEn": "ACG 제가마 트레일",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "ACG 제가마 트레일"
+    },
+    {
+      "id": "shoe-8e5d5e0b4841",
+      "brand": "NIKE",
+      "model": "ACG 울트라플라이 트레일",
+      "name": "ACG 울트라플라이 트레일",
+      "source": "https://www.nike.com/kr/t/나이키-acg-울트라플라이-트레일-트레일-레이싱화-RxqUulb3/HF5668-300",
+      "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/97be2dbb-41f1-4177-8c1d-6a075d9ccd5c/NIKE+ACG+ULTRAFLY+TRAIL.png",
+      "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/97be2dbb-41f1-4177-8c1d-6a075d9ccd5c/NIKE+ACG+ULTRAFLY+TRAIL.png",
+      "checkedAt": "2026-10-22T13:14:00.819Z",
+      "price": 319000,
+      "regularPrice": 319000,
+      "currency": "KRW",
+      "sourceRegion": "한국",
+      "sku": "HF5668-300",
+      "color": "스프루스 포그/씨 글래스/블랙 스프루스",
+      "gender": "공용",
+      "category": "trail",
+      "uses": [
+        "trail"
+      ],
+      "purpose": "트레일",
+      "tier": "트레일",
+      "description": "",
+      "plate": "",
+      "weight": "",
+      "drop": "",
+      "release": "",
+      "releaseRegion": "한국",
+      "releaseSource": "",
+      "upcoming": false,
+      "merchant": "NIKE 한국 공식몰",
+      "priceType": "공식몰 표시가 · 수집 시점",
+      "imageSha256": null,
+      "imageVerification": "official-page-url",
+      "modelEn": "ACG 울트라플라이 트레일",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "ACG 울트라플라이 트레일"
+    },
+    {
+      "id": "shoe-8425d515cd4c",
+      "brand": "NIKE",
+      "model": "ACG 울트라플라이 트레일",
+      "name": "ACG 울트라플라이 트레일",
+      "source": "https://www.nike.com/kr/t/나이키-acg-울트라플라이-트레일-트레일-레이싱화-RxqUulb3/HF5668-600",
+      "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/fd9a7a4c-25a4-4571-b88c-a190357c5c94/NIKE+ACG+ULTRAFLY+TRAIL.png",
+      "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/fd9a7a4c-25a4-4571-b88c-a190357c5c94/NIKE+ACG+ULTRAFLY+TRAIL.png",
+      "checkedAt": "2026-10-22T13:14:00.820Z",
+      "price": 271100,
+      "regularPrice": 319000,
+      "currency": "KRW",
+      "sourceRegion": "한국",
+      "sku": "HF5668-600",
+      "color": "라이트 크림슨/서밋 화이트/서밋 화이트/퓨어 플래티넘",
+      "gender": "공용",
+      "category": "trail",
+      "uses": [
+        "trail"
+      ],
+      "purpose": "트레일",
+      "tier": "트레일",
+      "description": "",
+      "plate": "",
+      "weight": "",
+      "drop": "",
+      "release": "",
+      "releaseRegion": "한국",
+      "releaseSource": "",
+      "upcoming": false,
+      "merchant": "NIKE 한국 공식몰",
+      "priceType": "공식몰 표시가 · 수집 시점",
+      "imageSha256": null,
+      "imageVerification": "official-page-url",
+      "modelEn": "ACG 울트라플라이 트레일",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "ACG 울트라플라이 트레일"
+    },
+    {
+      "id": "shoe-9447affe92ef",
+      "brand": "NIKE",
+      "model": "ACG 페가수스 트레일",
+      "name": "ACG 페가수스 트레일",
+      "source": "https://www.nike.com/kr/t/나이키-acg-페가수스-트레일-여성-트레일-러닝화-vV1RVe5j/HV8121-302",
+      "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/a36f78e4-5e50-493a-895a-0facdfa541b3/W+NIKE+ACG+PEGASUS+TRAIL.png",
+      "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/a36f78e4-5e50-493a-895a-0facdfa541b3/W+NIKE+ACG+PEGASUS+TRAIL.png",
+      "checkedAt": "2026-10-22T13:14:00.820Z",
+      "price": 143200,
+      "regularPrice": 179000,
+      "currency": "KRW",
+      "sourceRegion": "한국",
+      "sku": "HV8121-302",
+      "color": "배얼리 그린/라이트 본/타투/실버 라일락",
+      "gender": "여성",
+      "category": "trail",
+      "uses": [
+        "trail"
+      ],
+      "purpose": "트레일",
+      "tier": "트레일",
+      "description": "",
+      "plate": "",
+      "weight": "",
+      "drop": "",
+      "release": "",
+      "releaseRegion": "한국",
+      "releaseSource": "",
+      "upcoming": false,
+      "merchant": "NIKE 한국 공식몰",
+      "priceType": "공식몰 표시가 · 수집 시점",
+      "imageSha256": null,
+      "imageVerification": "official-page-url",
+      "modelEn": "ACG 페가수스 트레일",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "ACG 페가수스 트레일"
+    },
+    {
+      "id": "shoe-f73b345303f9",
+      "brand": "NIKE",
+      "model": "ACG 제가마 트레일",
+      "name": "ACG 제가마 트레일",
+      "source": "https://www.nike.com/kr/t/acg-제가마-트레일-여성-트레일-러닝화-brBlZXrH/HV8115-300",
+      "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/794521a7-5a84-4fc6-a067-1ac335d4e1a7/W+NIKE+ACG+ZEGAMA+TRAIL.png",
+      "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/794521a7-5a84-4fc6-a067-1ac335d4e1a7/W+NIKE+ACG+ZEGAMA+TRAIL.png",
+      "checkedAt": "2026-10-22T13:14:00.820Z",
+      "price": 186100,
+      "regularPrice": 219000,
+      "currency": "KRW",
+      "sourceRegion": "한국",
+      "sku": "HV8115-300",
+      "color": "배얼리 그린/타투/실버 라일락",
+      "gender": "여성",
+      "category": "trail",
+      "uses": [
+        "trail"
+      ],
+      "purpose": "트레일",
+      "tier": "트레일",
+      "description": "",
+      "plate": "",
+      "weight": "",
+      "drop": "",
+      "release": "",
+      "releaseRegion": "한국",
+      "releaseSource": "",
+      "upcoming": false,
+      "merchant": "NIKE 한국 공식몰",
+      "priceType": "공식몰 표시가 · 수집 시점",
+      "imageSha256": null,
+      "imageVerification": "official-page-url",
+      "modelEn": "ACG 제가마 트레일",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "ACG 제가마 트레일"
+    },
+    {
+      "id": "shoe-e0e7aeb8210c",
+      "brand": "NIKE",
+      "model": "ACG 페가수스 트레일 GORE-TEX",
+      "name": "ACG 페가수스 트레일 GORE-TEX",
+      "source": "https://www.nike.com/kr/t/acg-페가수스-트레일-gore-tex-여성-워터프루프-트레일-러닝화-iUOMHeAs/IQ1394-002",
+      "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/3cb69c01-6c78-424a-8b03-9e677c824d69/W+NIKE+ACG+PEGASUS+TRAIL+GTX.png",
+      "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/3cb69c01-6c78-424a-8b03-9e677c824d69/W+NIKE+ACG+PEGASUS+TRAIL+GTX.png",
+      "checkedAt": "2026-10-22T13:14:00.821Z",
+      "price": 219000,
+      "regularPrice": 219000,
+      "currency": "KRW",
+      "sourceRegion": "한국",
+      "sku": "IQ1394-002",
+      "color": "라이트 실버/라이트 아미/세이프티 오렌지/라이트 실버",
+      "gender": "여성",
+      "category": "trail",
+      "uses": [
+        "trail"
+      ],
+      "purpose": "트레일",
+      "tier": "트레일",
+      "description": "",
+      "plate": "",
+      "weight": "",
+      "drop": "",
+      "release": "",
+      "releaseRegion": "한국",
+      "releaseSource": "",
+      "upcoming": false,
+      "merchant": "NIKE 한국 공식몰",
+      "priceType": "공식몰 표시가 · 수집 시점",
+      "imageSha256": null,
+      "imageVerification": "official-page-url",
+      "modelEn": "ACG 페가수스 트레일 GORE-TEX",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "ACG 페가수스 트레일 GORE-TEX"
     }
   ]
 }
