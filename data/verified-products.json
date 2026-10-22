@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "catalog-638341c8e155012f",
+  "revision": "catalog-d2f0b3becfc51be2",
   "generatedAt": "2026-10-22T04:49:40.535Z",
   "products": [
     {
@@ -8231,8 +8231,8 @@
     {
       "id": "shoe-38be190ab011",
       "brand": "NIKE",
-      "model": "나이키 페가수스 플러스 2 여성 로드 러닝화 - 실버 라일락/파티클 로즈/펜넬/세일 - Size 5",
-      "name": "나이키 페가수스 플러스 2 여성 로드 러닝화 - 실버 라일락/파티클 로즈/펜넬/세일 - Size 5",
+      "model": "페가수스 플러스 2",
+      "name": "페가수스 플러스 2",
       "source": "https://www.nike.com/kr/t/나이키-페가수스-플러스-2-여성-로드-러닝화-k7TxLWJb/IM2543-001",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/c69c2e16-f0d9-4047-a945-21dab5ac6041/W+NIKE+PEGASUS+PLUS+2.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/c69c2e16-f0d9-4047-a945-21dab5ac6041/W+NIKE+PEGASUS+PLUS+2.png",
@@ -8244,13 +8244,13 @@
       "sku": "IM2543-001",
       "color": "실버 라일락/파티클 로즈/펜넬/세일",
       "gender": "여성",
-      "category": "cushion",
+      "category": "supertrainer",
       "uses": [
         "daily",
-        "long"
+        "interval"
       ],
-      "purpose": "푹신한 쿠션",
-      "tier": "푹신한 쿠션",
+      "purpose": "슈퍼 트레이너",
+      "tier": "슈퍼 트레이너",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8263,15 +8263,16 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 페가수스 플러스 2 여성 로드 러닝화 - 실버 라일락/파티클 로즈/펜넬/세일 - Size 5",
+      "modelEn": "페가수스 플러스 2",
       "imageRights": "source-declared-not-license-verified",
-      "useEvidence": []
+      "useEvidence": [],
+      "sourceTitle": "나이키 페가수스 플러스 2 여성 로드 러닝화 - 실버 라일락/파티클 로즈/펜넬/세일 - Size 5"
     },
     {
       "id": "shoe-dd46f089ce07",
       "brand": "NIKE",
-      "model": "나이키 페가수스 플러스 2 여성 로드 러닝화 - 그리드아이언/페르시안 바이올렛/트루 베리/메탈릭 실버 - Size 5",
-      "name": "나이키 페가수스 플러스 2 여성 로드 러닝화 - 그리드아이언/페르시안 바이올렛/트루 베리/메탈릭 실버 - Size 5",
+      "model": "페가수스 플러스 2",
+      "name": "페가수스 플러스 2",
       "source": "https://www.nike.com/kr/t/나이키-페가수스-플러스-2-여성-로드-러닝화-k7TxLWJb/IM2543-004",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/89aa372c-b534-4ebb-8408-a52ae17753b3/W+NIKE+PEGASUS+PLUS+2.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/89aa372c-b534-4ebb-8408-a52ae17753b3/W+NIKE+PEGASUS+PLUS+2.png",
@@ -8283,13 +8284,13 @@
       "sku": "IM2543-004",
       "color": "그리드아이언/페르시안 바이올렛/트루 베리/메탈릭 실버",
       "gender": "여성",
-      "category": "cushion",
+      "category": "supertrainer",
       "uses": [
         "daily",
-        "long"
+        "interval"
       ],
-      "purpose": "푹신한 쿠션",
-      "tier": "푹신한 쿠션",
+      "purpose": "슈퍼 트레이너",
+      "tier": "슈퍼 트레이너",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8302,15 +8303,16 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 페가수스 플러스 2 여성 로드 러닝화 - 그리드아이언/페르시안 바이올렛/트루 베리/메탈릭 실버 - Size 5",
+      "modelEn": "페가수스 플러스 2",
       "imageRights": "source-declared-not-license-verified",
-      "useEvidence": []
+      "useEvidence": [],
+      "sourceTitle": "나이키 페가수스 플러스 2 여성 로드 러닝화 - 그리드아이언/페르시안 바이올렛/트루 베리/메탈릭 실버 - Size 5"
     },
     {
       "id": "shoe-03863318f9c1",
       "brand": "NIKE",
-      "model": "나이키 페가수스 플러스 2 여성 로드 러닝화 - 플래시 크림슨/블랙/화이트/메탈릭 실버 - Size 5",
-      "name": "나이키 페가수스 플러스 2 여성 로드 러닝화 - 플래시 크림슨/블랙/화이트/메탈릭 실버 - Size 5",
+      "model": "페가수스 플러스 2",
+      "name": "페가수스 플러스 2",
       "source": "https://www.nike.com/kr/t/나이키-페가수스-플러스-2-여성-로드-러닝화-k7TxLWJb/IM2543-600",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/d01528ce-7baf-4e7a-aa8e-87c45085f8c8/W+NIKE+PEGASUS+PLUS+2.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/d01528ce-7baf-4e7a-aa8e-87c45085f8c8/W+NIKE+PEGASUS+PLUS+2.png",
@@ -8322,13 +8324,13 @@
       "sku": "IM2543-600",
       "color": "플래시 크림슨/블랙/화이트/메탈릭 실버",
       "gender": "여성",
-      "category": "cushion",
+      "category": "supertrainer",
       "uses": [
         "daily",
-        "long"
+        "interval"
       ],
-      "purpose": "푹신한 쿠션",
-      "tier": "푹신한 쿠션",
+      "purpose": "슈퍼 트레이너",
+      "tier": "슈퍼 트레이너",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8341,15 +8343,16 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 페가수스 플러스 2 여성 로드 러닝화 - 플래시 크림슨/블랙/화이트/메탈릭 실버 - Size 5",
+      "modelEn": "페가수스 플러스 2",
       "imageRights": "source-declared-not-license-verified",
-      "useEvidence": []
+      "useEvidence": [],
+      "sourceTitle": "나이키 페가수스 플러스 2 여성 로드 러닝화 - 플래시 크림슨/블랙/화이트/메탈릭 실버 - Size 5"
     },
     {
       "id": "shoe-8bd93fa37950",
       "brand": "PUMA",
-      "model": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Lapis Lazuli-Sunset Glow-Electric Peppermint",
-      "name": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Lapis Lazuli-Sunset Glow-Electric Peppermint",
+      "model": "Deviate NITRO Elite 3",
+      "name": "Deviate NITRO Elite 3",
       "source": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=03",
       "imageSource": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/03/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
       "image": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/03/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
@@ -8361,13 +8364,12 @@
       "sku": null,
       "color": "Lapis Lazuli-Sunset Glow-Electric Peppermint",
       "gender": "남성",
-      "category": "stability",
+      "category": "carbon",
       "uses": [
-        "daily",
-        "long"
+        "race"
       ],
-      "purpose": "탄탄한 지지",
-      "tier": "탄탄한 지지",
+      "purpose": "대회용 카본",
+      "tier": "대회용 카본",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8380,14 +8382,15 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Lapis Lazuli-Sunset Glow-Electric Peppermint",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "Deviate NITRO Elite 3",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Lapis Lazuli-Sunset Glow-Electric Peppermint"
     },
     {
       "id": "shoe-e68460c9ef68",
       "brand": "PUMA",
-      "model": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - PUMA White-Pure Magenta",
-      "name": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - PUMA White-Pure Magenta",
+      "model": "Deviate NITRO Elite 3",
+      "name": "Deviate NITRO Elite 3",
       "source": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=05",
       "imageSource": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/05/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
       "image": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/05/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
@@ -8399,13 +8402,12 @@
       "sku": null,
       "color": "PUMA White-Pure Magenta",
       "gender": "남성",
-      "category": "stability",
+      "category": "carbon",
       "uses": [
-        "daily",
-        "long"
+        "race"
       ],
-      "purpose": "탄탄한 지지",
-      "tier": "탄탄한 지지",
+      "purpose": "대회용 카본",
+      "tier": "대회용 카본",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8418,14 +8420,15 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - PUMA White-Pure Magenta",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "Deviate NITRO Elite 3",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - PUMA White-Pure Magenta"
     },
     {
       "id": "shoe-4eeaa7d38283",
       "brand": "PUMA",
-      "model": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Glowing Red-PUMA Black",
-      "name": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Glowing Red-PUMA Black",
+      "model": "Deviate NITRO Elite 3",
+      "name": "Deviate NITRO Elite 3",
       "source": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=06",
       "imageSource": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/06/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
       "image": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/06/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
@@ -8437,13 +8440,12 @@
       "sku": null,
       "color": "Glowing Red-PUMA Black",
       "gender": "남성",
-      "category": "stability",
+      "category": "carbon",
       "uses": [
-        "daily",
-        "long"
+        "race"
       ],
-      "purpose": "탄탄한 지지",
-      "tier": "탄탄한 지지",
+      "purpose": "대회용 카본",
+      "tier": "대회용 카본",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8456,14 +8458,15 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Glowing Red-PUMA Black",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "Deviate NITRO Elite 3",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Glowing Red-PUMA Black"
     },
     {
       "id": "shoe-c3e317d24d14",
       "brand": "PUMA",
-      "model": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Mint Melt-Speed Blue",
-      "name": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Mint Melt-Speed Blue",
+      "model": "Deviate NITRO Elite 3",
+      "name": "Deviate NITRO Elite 3",
       "source": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=07",
       "imageSource": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/07/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
       "image": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/07/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
@@ -8475,13 +8478,12 @@
       "sku": null,
       "color": "Mint Melt-Speed Blue",
       "gender": "남성",
-      "category": "stability",
+      "category": "carbon",
       "uses": [
-        "daily",
-        "long"
+        "race"
       ],
-      "purpose": "탄탄한 지지",
-      "tier": "탄탄한 지지",
+      "purpose": "대회용 카본",
+      "tier": "대회용 카본",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8494,14 +8496,15 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Mint Melt-Speed Blue",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "Deviate NITRO Elite 3",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Mint Melt-Speed Blue"
     },
     {
       "id": "shoe-41548a3b7663",
       "brand": "PUMA",
-      "model": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - PUMA White-Speed Blue",
-      "name": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - PUMA White-Speed Blue",
+      "model": "Deviate NITRO Elite 3",
+      "name": "Deviate NITRO Elite 3",
       "source": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=08",
       "imageSource": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/08/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
       "image": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/08/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
@@ -8513,13 +8516,12 @@
       "sku": null,
       "color": "PUMA White-Speed Blue",
       "gender": "남성",
-      "category": "stability",
+      "category": "carbon",
       "uses": [
-        "daily",
-        "long"
+        "race"
       ],
-      "purpose": "탄탄한 지지",
-      "tier": "탄탄한 지지",
+      "purpose": "대회용 카본",
+      "tier": "대회용 카본",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8532,14 +8534,15 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - PUMA White-Speed Blue",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "Deviate NITRO Elite 3",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - PUMA White-Speed Blue"
     },
     {
       "id": "shoe-023d51e319a9",
       "brand": "PUMA",
-      "model": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Heat Fire-PUMA Black",
-      "name": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Heat Fire-PUMA Black",
+      "model": "Deviate NITRO Elite 3",
+      "name": "Deviate NITRO Elite 3",
       "source": "https://us.puma.com/us/en/pd/deviate-nitro-elite-3-mens-road-running-shoes/309809?swatch=09",
       "imageSource": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/09/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
       "image": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/309809/09/sv01/fnd/PNA/fmt/png/Deviate-NITRO™-Elite-3-Men's-Road-Running-Shoes",
@@ -8551,13 +8554,12 @@
       "sku": null,
       "color": "Heat Fire-PUMA Black",
       "gender": "남성",
-      "category": "stability",
+      "category": "carbon",
       "uses": [
-        "daily",
-        "long"
+        "race"
       ],
-      "purpose": "탄탄한 지지",
-      "tier": "탄탄한 지지",
+      "purpose": "대회용 카본",
+      "tier": "대회용 카본",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8570,8 +8572,9 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Heat Fire-PUMA Black",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "Deviate NITRO Elite 3",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "Deviate NITRO™ Elite 3 Men's Road Running Shoes - Heat Fire-PUMA Black"
     },
     {
       "id": "shoe-c93c61690738",
@@ -8591,8 +8594,8 @@
       "gender": "남성",
       "category": "unknown",
       "uses": [],
-      "purpose": "",
-      "tier": "",
+      "purpose": "러닝화",
+      "tier": "러닝화",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8611,8 +8614,8 @@
     {
       "id": "shoe-ce04f61a81a1",
       "brand": "NIKE",
-      "model": "나이키 보메로 플러스 여성 로드 러닝화 - 화이트/포톤 더스트/메탈릭 실버/서밋 화이트 - Size 5",
-      "name": "나이키 보메로 플러스 여성 로드 러닝화 - 화이트/포톤 더스트/메탈릭 실버/서밋 화이트 - Size 5",
+      "model": "보메로 플러스",
+      "name": "보메로 플러스",
       "source": "https://www.nike.com/kr/t/나이키-보메로-플러스-여성-로드-러닝화-m47MwihM/HV8154-102",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/928e8d59-9440-4f5c-aaaf-03ebc365dbbe/W+NIKE+VOMERO+PLUS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/928e8d59-9440-4f5c-aaaf-03ebc365dbbe/W+NIKE+VOMERO+PLUS.png",
@@ -8627,7 +8630,8 @@
       "category": "cushion",
       "uses": [
         "daily",
-        "long"
+        "long",
+        "recovery"
       ],
       "purpose": "푹신한 쿠션",
       "tier": "푹신한 쿠션",
@@ -8643,8 +8647,9 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 보메로 플러스 여성 로드 러닝화 - 화이트/포톤 더스트/메탈릭 실버/서밋 화이트 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "보메로 플러스",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 보메로 플러스 여성 로드 러닝화 - 화이트/포톤 더스트/메탈릭 실버/서밋 화이트 - Size 5"
     },
     {
       "id": "shoe-95514d8a0a8c",
@@ -8662,12 +8667,10 @@
       "sku": "IU2827-001",
       "color": "블랙/화이트/메탈릭 실버",
       "gender": "여성",
-      "category": "daily",
-      "uses": [
-        "daily"
-      ],
-      "purpose": "입문·매일 러닝",
-      "tier": "입문·매일 러닝",
+      "category": "unknown",
+      "uses": [],
+      "purpose": "러닝화",
+      "tier": "러닝화",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8699,12 +8702,10 @@
       "sku": "IU2827-600",
       "color": "유니버시티 레드/하이퍼 핑크/메탈릭 실버",
       "gender": "여성",
-      "category": "daily",
-      "uses": [
-        "daily"
-      ],
-      "purpose": "입문·매일 러닝",
-      "tier": "입문·매일 러닝",
+      "category": "unknown",
+      "uses": [],
+      "purpose": "러닝화",
+      "tier": "러닝화",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8723,8 +8724,8 @@
     {
       "id": "shoe-c4f886dfd6e1",
       "brand": "NIKE",
-      "model": "나이키 보메로 플러스 여성 로드 러닝화 - 서밋 화이트/세일/앤트러사이트/메탈릭 실버 - Size 5",
-      "name": "나이키 보메로 플러스 여성 로드 러닝화 - 서밋 화이트/세일/앤트러사이트/메탈릭 실버 - Size 5",
+      "model": "보메로 플러스",
+      "name": "보메로 플러스",
       "source": "https://www.nike.com/kr/t/나이키-보메로-플러스-여성-로드-러닝화-m47MwihM/IO9916-101",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/82000f7b-aa20-4fed-8210-d6f4dd0e35da/W+NIKE+VOMERO+PLUS+ESS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/82000f7b-aa20-4fed-8210-d6f4dd0e35da/W+NIKE+VOMERO+PLUS+ESS.png",
@@ -8739,7 +8740,8 @@
       "category": "cushion",
       "uses": [
         "daily",
-        "long"
+        "long",
+        "recovery"
       ],
       "purpose": "푹신한 쿠션",
       "tier": "푹신한 쿠션",
@@ -8755,14 +8757,15 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 보메로 플러스 여성 로드 러닝화 - 서밋 화이트/세일/앤트러사이트/메탈릭 실버 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "보메로 플러스",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 보메로 플러스 여성 로드 러닝화 - 서밋 화이트/세일/앤트러사이트/메탈릭 실버 - Size 5"
     },
     {
       "id": "shoe-e225f7b024f3",
       "brand": "NIKE",
-      "model": "나이키 알파플라이 3 여성 로드 레이싱화 - 초크/하이퍼 크림슨/펜넬/퍼플 다이너스티 - Size 5",
-      "name": "나이키 알파플라이 3 여성 로드 레이싱화 - 초크/하이퍼 크림슨/펜넬/퍼플 다이너스티 - Size 5",
+      "model": "알파플라이 3",
+      "name": "알파플라이 3",
       "source": "https://www.nike.com/kr/t/나이키-알파플라이-3-여성-로드-레이싱화-jFKRH2Kh/FD8315-105",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/009b4c6f-c025-47ff-9583-b4b3fbc55ccb/W+AIR+ZOOM+ALPHAFLY+NEXT%25+3.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/009b4c6f-c025-47ff-9583-b4b3fbc55ccb/W+AIR+ZOOM+ALPHAFLY+NEXT%25+3.png",
@@ -8774,10 +8777,12 @@
       "sku": "FD8315-105",
       "color": "초크/하이퍼 크림슨/펜넬/퍼플 다이너스티",
       "gender": "여성",
-      "category": "unknown",
-      "uses": [],
-      "purpose": "",
-      "tier": "",
+      "category": "carbon",
+      "uses": [
+        "race"
+      ],
+      "purpose": "대회용 카본",
+      "tier": "대회용 카본",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8790,14 +8795,15 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 알파플라이 3 여성 로드 레이싱화 - 초크/하이퍼 크림슨/펜넬/퍼플 다이너스티 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "알파플라이 3",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 알파플라이 3 여성 로드 레이싱화 - 초크/하이퍼 크림슨/펜넬/퍼플 다이너스티 - Size 5"
     },
     {
       "id": "shoe-0d23067d5918",
       "brand": "NIKE",
-      "model": "나이키 보메로 플러스 여성 로드 러닝화 - 화이트/블리치트 라일락/서밋 화이트/메탈릭 실버 - Size 5",
-      "name": "나이키 보메로 플러스 여성 로드 러닝화 - 화이트/블리치트 라일락/서밋 화이트/메탈릭 실버 - Size 5",
+      "model": "보메로 플러스",
+      "name": "보메로 플러스",
       "source": "https://www.nike.com/kr/t/나이키-보메로-플러스-여성-로드-러닝화-m47MwihM/HV8154-110",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/63cac2f4-1888-47c6-94ee-ce3c4ed200fd/W+NIKE+VOMERO+PLUS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/63cac2f4-1888-47c6-94ee-ce3c4ed200fd/W+NIKE+VOMERO+PLUS.png",
@@ -8812,7 +8818,8 @@
       "category": "cushion",
       "uses": [
         "daily",
-        "long"
+        "long",
+        "recovery"
       ],
       "purpose": "푹신한 쿠션",
       "tier": "푹신한 쿠션",
@@ -8828,14 +8835,15 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 보메로 플러스 여성 로드 러닝화 - 화이트/블리치트 라일락/서밋 화이트/메탈릭 실버 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "보메로 플러스",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 보메로 플러스 여성 로드 러닝화 - 화이트/블리치트 라일락/서밋 화이트/메탈릭 실버 - Size 5"
     },
     {
       "id": "shoe-95dccd06854e",
       "brand": "NIKE",
-      "model": "나이키 보메로 18 여성 로드 러닝화 - 블랙/다크 스모크 그레이/라이트 스모크 그레이/블랙 - Size 5",
-      "name": "나이키 보메로 18 여성 로드 러닝화 - 블랙/다크 스모크 그레이/라이트 스모크 그레이/블랙 - Size 5",
+      "model": "보메로 18",
+      "name": "보메로 18",
       "source": "https://www.nike.com/kr/t/나이키-보메로-18-여성-로드-러닝화-t2gD5z3G/HM6804-004",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/597ae1d8-e4cc-4c27-8ae3-cce03b69b288/W+NIKE+VOMERO+18.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/597ae1d8-e4cc-4c27-8ae3-cce03b69b288/W+NIKE+VOMERO+18.png",
@@ -8850,7 +8858,8 @@
       "category": "cushion",
       "uses": [
         "daily",
-        "long"
+        "long",
+        "recovery"
       ],
       "purpose": "푹신한 쿠션",
       "tier": "푹신한 쿠션",
@@ -8866,14 +8875,15 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 보메로 18 여성 로드 러닝화 - 블랙/다크 스모크 그레이/라이트 스모크 그레이/블랙 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "Vomero 18",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 보메로 18 여성 로드 러닝화 - 블랙/다크 스모크 그레이/라이트 스모크 그레이/블랙 - Size 5"
     },
     {
       "id": "shoe-d68c4dd88599",
       "brand": "NIKE",
-      "model": "나이키 보메로 18 여성 로드 러닝화 - 화이트/포톤 더스트/서밋 화이트/메탈릭 실버 - Size 5",
-      "name": "나이키 보메로 18 여성 로드 러닝화 - 화이트/포톤 더스트/서밋 화이트/메탈릭 실버 - Size 5",
+      "model": "보메로 18",
+      "name": "보메로 18",
       "source": "https://www.nike.com/kr/t/나이키-보메로-18-여성-로드-러닝화-t2gD5z3G/HM6804-104",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/d0fed865-53b4-4f41-9e81-82c1e98b7093/W+NIKE+VOMERO+18.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/d0fed865-53b4-4f41-9e81-82c1e98b7093/W+NIKE+VOMERO+18.png",
@@ -8888,7 +8898,8 @@
       "category": "cushion",
       "uses": [
         "daily",
-        "long"
+        "long",
+        "recovery"
       ],
       "purpose": "푹신한 쿠션",
       "tier": "푹신한 쿠션",
@@ -8904,14 +8915,15 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 보메로 18 여성 로드 러닝화 - 화이트/포톤 더스트/서밋 화이트/메탈릭 실버 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "Vomero 18",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 보메로 18 여성 로드 러닝화 - 화이트/포톤 더스트/서밋 화이트/메탈릭 실버 - Size 5"
     },
     {
       "id": "shoe-c1dfde342c4c",
       "brand": "NIKE",
-      "model": "나이키 페가수스 42 여성 로드 러닝화 - 블랙/앤트러사이트/블랙 - Size 5",
-      "name": "나이키 페가수스 42 여성 로드 러닝화 - 블랙/앤트러사이트/블랙 - Size 5",
+      "model": "페가수스 42",
+      "name": "페가수스 42",
       "source": "https://www.nike.com/kr/t/나이키-페가수스-42-여성-로드-러닝화-wsTF7yIV/IB1881-003",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/978fc05d-a2fc-4c69-bdda-ecca00671a1e/W+NIKE+AIR+ZOOM+PEGASUS+42.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/978fc05d-a2fc-4c69-bdda-ecca00671a1e/W+NIKE+AIR+ZOOM+PEGASUS+42.png",
@@ -8923,13 +8935,12 @@
       "sku": "IB1881-003",
       "color": "블랙/앤트러사이트/블랙",
       "gender": "여성",
-      "category": "cushion",
+      "category": "daily",
       "uses": [
-        "daily",
-        "long"
+        "daily"
       ],
-      "purpose": "푹신한 쿠션",
-      "tier": "푹신한 쿠션",
+      "purpose": "입문·매일 러닝",
+      "tier": "입문·매일 러닝",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8942,14 +8953,15 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 페가수스 42 여성 로드 러닝화 - 블랙/앤트러사이트/블랙 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "Pegasus 42",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 페가수스 42 여성 로드 러닝화 - 블랙/앤트러사이트/블랙 - Size 5"
     },
     {
       "id": "shoe-0d885e3f36b4",
       "brand": "NIKE",
-      "model": "나이키 페가수스 42 여성 로드 러닝화 - 블랙/아이언 그레이/화이트 - Size 5",
-      "name": "나이키 페가수스 42 여성 로드 러닝화 - 블랙/아이언 그레이/화이트 - Size 5",
+      "model": "페가수스 42",
+      "name": "페가수스 42",
       "source": "https://www.nike.com/kr/t/나이키-페가수스-42-여성-로드-러닝화-wsTF7yIV/IB1881-001",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/477482d2-8c60-4e50-a9b4-665d2f681d67/W+NIKE+AIR+ZOOM+PEGASUS+42.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/477482d2-8c60-4e50-a9b4-665d2f681d67/W+NIKE+AIR+ZOOM+PEGASUS+42.png",
@@ -8961,13 +8973,12 @@
       "sku": "IB1881-001",
       "color": "블랙/아이언 그레이/화이트",
       "gender": "여성",
-      "category": "cushion",
+      "category": "daily",
       "uses": [
-        "daily",
-        "long"
+        "daily"
       ],
-      "purpose": "푹신한 쿠션",
-      "tier": "푹신한 쿠션",
+      "purpose": "입문·매일 러닝",
+      "tier": "입문·매일 러닝",
       "description": "",
       "plate": "",
       "weight": "",
@@ -8980,14 +8991,15 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 페가수스 42 여성 로드 러닝화 - 블랙/아이언 그레이/화이트 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "Pegasus 42",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 페가수스 42 여성 로드 러닝화 - 블랙/아이언 그레이/화이트 - Size 5"
     },
     {
       "id": "shoe-74d8253bc8ec",
       "brand": "NIKE",
-      "model": "나이키 보메로 18 여성 로드 러닝화 - 배스트 그레이/메탈릭 실버/핑크 스모크/블랙 - Size 5",
-      "name": "나이키 보메로 18 여성 로드 러닝화 - 배스트 그레이/메탈릭 실버/핑크 스모크/블랙 - Size 5",
+      "model": "보메로 18",
+      "name": "보메로 18",
       "source": "https://www.nike.com/kr/t/나이키-보메로-18-여성-로드-러닝화-t2gD5z3G/IQ0468-001",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/de572aaa-8ed3-4fe6-81cc-eacd93885a98/W+NIKE+VOMERO+18+VIS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/de572aaa-8ed3-4fe6-81cc-eacd93885a98/W+NIKE+VOMERO+18+VIS.png",
@@ -9002,7 +9014,8 @@
       "category": "cushion",
       "uses": [
         "daily",
-        "long"
+        "long",
+        "recovery"
       ],
       "purpose": "푹신한 쿠션",
       "tier": "푹신한 쿠션",
@@ -9018,8 +9031,9 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 보메로 18 여성 로드 러닝화 - 배스트 그레이/메탈릭 실버/핑크 스모크/블랙 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "Vomero 18",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 보메로 18 여성 로드 러닝화 - 배스트 그레이/메탈릭 실버/핑크 스모크/블랙 - Size 5"
     },
     {
       "id": "shoe-6a7d80a319d1",
@@ -9037,13 +9051,10 @@
       "sku": "IQ0467-001",
       "color": "라이트 스모크 그레이/핑크 스모크/메탈릭 실버/블랙",
       "gender": "여성",
-      "category": "cushion",
-      "uses": [
-        "daily",
-        "long"
-      ],
-      "purpose": "푹신한 쿠션",
-      "tier": "푹신한 쿠션",
+      "category": "unknown",
+      "uses": [],
+      "purpose": "러닝화",
+      "tier": "러닝화",
       "description": "",
       "plate": "",
       "weight": "",
@@ -9075,13 +9086,10 @@
       "sku": "HQ7002-005",
       "color": "블랙/트루 베리/퍼플 펄스/메탈릭 실버",
       "gender": "여성",
-      "category": "cushion",
-      "uses": [
-        "daily",
-        "long"
-      ],
-      "purpose": "푹신한 쿠션",
-      "tier": "푹신한 쿠션",
+      "category": "unknown",
+      "uses": [],
+      "purpose": "러닝화",
+      "tier": "러닝화",
       "description": "",
       "plate": "",
       "weight": "",
@@ -9113,13 +9121,10 @@
       "sku": "HQ3049-100",
       "color": "화이트/포톤 더스트/메탈릭 실버",
       "gender": "여성",
-      "category": "cushion",
-      "uses": [
-        "daily",
-        "long"
-      ],
-      "purpose": "푹신한 쿠션",
-      "tier": "푹신한 쿠션",
+      "category": "unknown",
+      "uses": [],
+      "purpose": "러닝화",
+      "tier": "러닝화",
       "description": "",
       "plate": "",
       "weight": "",
@@ -9138,8 +9143,8 @@
     {
       "id": "shoe-dd45888a1cf5",
       "brand": "NIKE",
-      "model": "나이키 스트럭처 26 여성 로드 러닝화 - 배스트 그레이/메탈릭 실버/핑크 스모크/블랙 - Size 5",
-      "name": "나이키 스트럭처 26 여성 로드 러닝화 - 배스트 그레이/메탈릭 실버/핑크 스모크/블랙 - Size 5",
+      "model": "스트럭처 26",
+      "name": "스트럭처 26",
       "source": "https://www.nike.com/kr/t/나이키-스트럭처-26-여성-로드-러닝화-nShOGeEC/IQ0464-001",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/9df50849-c4e2-440e-8a4c-3c600b598da7/W+NIKE+STRUCTURE+26+VIS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/9df50849-c4e2-440e-8a4c-3c600b598da7/W+NIKE+STRUCTURE+26+VIS.png",
@@ -9151,13 +9156,12 @@
       "sku": "IQ0464-001",
       "color": "배스트 그레이/메탈릭 실버/핑크 스모크/블랙",
       "gender": "여성",
-      "category": "cushion",
+      "category": "stability",
       "uses": [
-        "daily",
-        "long"
+        "daily"
       ],
-      "purpose": "푹신한 쿠션",
-      "tier": "푹신한 쿠션",
+      "purpose": "탄탄한 지지",
+      "tier": "탄탄한 지지",
       "description": "",
       "plate": "",
       "weight": "",
@@ -9170,14 +9174,15 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 스트럭처 26 여성 로드 러닝화 - 배스트 그레이/메탈릭 실버/핑크 스모크/블랙 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "Structure 26",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 스트럭처 26 여성 로드 러닝화 - 배스트 그레이/메탈릭 실버/핑크 스모크/블랙 - Size 5"
     },
     {
       "id": "shoe-8ee857e5f26d",
       "brand": "NIKE",
-      "model": "나이키 페가수스 42 여성 로드 러닝화 - 배스트 그레이/핑크 스모크/칼리지 그레이/블랙 - Size 5",
-      "name": "나이키 페가수스 42 여성 로드 러닝화 - 배스트 그레이/핑크 스모크/칼리지 그레이/블랙 - Size 5",
+      "model": "페가수스 42",
+      "name": "페가수스 42",
       "source": "https://www.nike.com/kr/t/나이키-페가수스-42-여성-로드-러닝화-wsTF7yIV/IQ0466-001",
       "imageSource": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/be5bd97a-0fdf-49a6-8dbd-d75c1002aa99/W+AIR+ZOOM+PEGASUS+42+VIS.png",
       "image": "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/be5bd97a-0fdf-49a6-8dbd-d75c1002aa99/W+AIR+ZOOM+PEGASUS+42+VIS.png",
@@ -9189,13 +9194,12 @@
       "sku": "IQ0466-001",
       "color": "배스트 그레이/핑크 스모크/칼리지 그레이/블랙",
       "gender": "여성",
-      "category": "cushion",
+      "category": "daily",
       "uses": [
-        "daily",
-        "long"
+        "daily"
       ],
-      "purpose": "푹신한 쿠션",
-      "tier": "푹신한 쿠션",
+      "purpose": "입문·매일 러닝",
+      "tier": "입문·매일 러닝",
       "description": "",
       "plate": "",
       "weight": "",
@@ -9208,8 +9212,9 @@
       "priceType": "공식몰 표시가 · 수집 시점",
       "imageSha256": null,
       "imageVerification": "official-page-url",
-      "modelEn": "나이키 페가수스 42 여성 로드 러닝화 - 배스트 그레이/핑크 스모크/칼리지 그레이/블랙 - Size 5",
-      "imageRights": "source-declared-not-license-verified"
+      "modelEn": "Pegasus 42",
+      "imageRights": "source-declared-not-license-verified",
+      "sourceTitle": "나이키 페가수스 42 여성 로드 러닝화 - 배스트 그레이/핑크 스모크/칼리지 그레이/블랙 - Size 5"
     }
   ]
 }
