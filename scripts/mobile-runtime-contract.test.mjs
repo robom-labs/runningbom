@@ -19,6 +19,7 @@ const refreshWorkflowSource = await readFile(
   new URL("../.github/workflows/refresh-race-data.yml", import.meta.url),
   "utf8",
 );
+const dataOnlyWorkflowSource = await readFile(new URL('../.github/workflows/data-only-pages.yml',import.meta.url),'utf8');
 
 test("앱 시작 데이터 갱신은 AbortController와 한 번의 effect로 제한한다", () => {
   assert.match(raceStateSource, /const controller = new AbortController\(\);/);
@@ -47,8 +48,9 @@ test("접수 상태 검색과 예약 알림 취소 흐름을 제공한다", () =
 
 test("검증된 sidecar를 Pages에 배포하고 자동 갱신 commit에 포함한다", () => {
   assert.match(pagesWorkflowSource, /cp -a data\/\. \.pages-release\/data\//);
-  assert.match(pagesWorkflowSource, /cron: "47 18 \* \* \*"/);
+  assert.match(dataOnlyWorkflowSource, /cron: "47 18 \* \* \*"/);
+  assert.match(pagesWorkflowSource, /inputs.publish_app_web == true/);
   assert.match(refreshWorkflowSource, /apps\/mobile\/data\/fallback/);
   assert.match(refreshWorkflowSource, /git add[\s\S]*data/);
-  assert.match(refreshWorkflowSource, /gh workflow run pages\.yml --ref main/);
+  assert.match(refreshWorkflowSource, /gh workflow run data-only-pages\.yml --ref main/);
 });

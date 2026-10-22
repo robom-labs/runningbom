@@ -1,0 +1,78 @@
+name: Publish verified race data only
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Recovery backup formerly owned by full web Pages. Never rebuild or publish app code.
+    - cron: "47 18 * * *"
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - name: Focused data-publication contracts (no native build)
+        run: node --test scripts/data-only-pages.test.mjs scripts/race-health-core.test.mjs scripts/mobile-data-contract.test.mjs
+      - name: Read CURRENT deployed public app as immutable baseline
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: gh-pages
+          path: .published-data-baseline
+      - name: Validate and overlay JSON allowlist only
+        run: node scripts/data-only-pages.mjs --source . --published .published-data-baseline
+      - name: Retain validation evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: data-only-publication
+          path: outputs/operations/data-only-publication.json
+          if-no-files-found: warn
+      - name: Commit only permitted JSON changes to gh-pages
+        working-directory: .published-data-baseline
+        run: |
+          set -euo pipefail
+          node ../scripts/check-data-only-diff.mjs
+          git add -- races.json data/manifest.json data/races.json data/shoes.json data/upcoming-shoes.json data/coaching.json
+          if git diff --cached --quiet; then
+            echo "Verified data already published; app bytes preserved."
+            exit 0
+          fi
+          git config user.name robom-data-bot
+          git config user.email actions@github.com
+          git commit -m "chore(data): publish validated JSON without changing app code"
+          git push origin HEAD:gh-pages
+      - name: Request existing configured Pages build (GITHUB_TOKEN push alone is insufficient)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/pages" --jq '.build_type == "legacy" and .source.branch == "gh-pages" and .source.path == "/"' | grep -qx true
+          gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds" --jq '{status: .status, url: .url}'
+      - name: Verify served JSON AND preserved deployed app bytes
+        run: |
+          node --input-type=module <<'NODE'
+          import {readFile} from 'node:fs/promises';
+          import {setTimeout as delay} from 'node:timers/promises';
+          const paths=['races.json','data/manifest.json','data/races.json','data/shoes.json','data/upcoming-shoes.json','data/coaching.json','index.html','app.js','styles.css','sw.js'];
+          const expected=await Promise.all(paths.map(path=>readFile('.published-data-baseline/'+path)));
+          for(let attempt=0;attempt<18;attempt++){
+            const checks=await Promise.all(paths.map(async(path,index)=>{try{const res=await fetch('https://robom-labs.github.io/runningbom/'+path+'?data-verification='+Date.now(),{cache:'no-store',signal:AbortSignal.timeout(15000)});return res.ok&&Buffer.from(await res.arrayBuffer()).equals(expected[index]);}catch{return false;}}));
+            if(checks.every(Boolean)){console.log('Served data matches and existing app bytes are unchanged.');process.exit(0);}
+            await delay(10000);
+          }
+          throw Error('Public data/app-byte verification did not converge; queued build is not completion.');
+          NODE

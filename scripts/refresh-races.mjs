@@ -9,6 +9,8 @@ import {
   parseMarathonGoDetail,
 } from "./race-data-core.mjs";
 import { assessRaceRefreshHealth } from "./race-health-core.mjs";
+import { applyVerifiedRaceCorrections,correctionProblems } from './race-corrections.mjs';
+import {safeRaceSource,selectRaceRefreshTargets,recordSuccessfulObservations,periodRevisitProblems} from './race-refresh-targets.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dataPath = resolve(root, "outputs/pushrun-site/races.json");
@@ -22,8 +24,8 @@ const timeoutMs = 15_000;
 const concurrency = 4;
 const headers = { "user-agent": "RunningBomDataSync/1.0 (+https://robom.kr)", accept: "text/html,application/xhtml+xml" };
 
-if (!Number.isInteger(detailLimit) || detailLimit < 1 || detailLimit > 250) {
-  throw new Error("--limit은 1~250 사이의 정수여야 합니다.");
+if (!Number.isInteger(detailLimit) || detailLimit < 1 || detailLimit > 180) {
+  throw new Error("--limit은 1~180 사이의 정수여야 합니다.");
 }
 
 async function fetchText(url) {
@@ -48,14 +50,17 @@ async function runPool(items, size, worker) {
 const checkedAt = new Date().toISOString();
 const current = JSON.parse(readFileSync(sourcePath, "utf8"));
 const catalogue = await fetchText(MARATHONGO_DOMESTIC_URL);
-const detailUrls = extractMarathonGoDetailUrls(catalogue.html).slice(0, detailLimit);
+const indexUrls = extractMarathonGoDetailUrls(catalogue.html);
+const today = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul'}).format(new Date(checkedAt));
+const detailUrls = selectRaceRefreshTargets(indexUrls,current,{today,limit:detailLimit});
 if (detailUrls.length === 0) throw new Error("마라톤GO 국내 일정에서 상세 URL을 찾지 못했습니다. 기존 데이터는 변경하지 않았습니다.");
 
 const results = await runPool(detailUrls, concurrency, async (url) => {
   try {
     const page = await fetchText(url);
+    if (safeRaceSource(page.finalUrl) !== url) throw Error('unexpected source redirect');
     const race = parseMarathonGoDetail(page.html, page.finalUrl, checkedAt);
-    return race ? { ok: true, race } : { ok: false, url, reason: "필수 일정 필드 부족" };
+    return race ? { ok: true, url, race } : { ok: false, url, reason: "필수 일정 필드 부족" };
   } catch (error) {
     return { ok: false, url, reason: error?.message || String(error) };
   }
@@ -66,6 +71,13 @@ const failures = results.filter((result) => !result.ok);
 if (discoveries.length === 0) throw new Error("정규화 가능한 일정이 0건입니다. 기존 데이터는 변경하지 않았습니다.");
 
 const merged = mergeMarathonGoDiscoveries(current, discoveries, { checkedAt });
+const observationChanged=recordSuccessfulObservations(merged.data,results,checkedAt);
+if(observationChanged){merged.changed=true;merged.contentChanged=true;}
+const sourceRefreshAudit={checkedAt,targets:results.map(result=>({url:result.url,outcome:result.ok?'parsed':'failed',...(result.ok?{raceDate:result.race.date}:{reason:result.reason})}))};
+merged.data.sourceRefreshAudit=sourceRefreshAudit;
+const corrections=JSON.parse(readFileSync(join(root,'data/race-official-corrections.json'),'utf8'));
+if(applyVerifiedRaceCorrections(merged.data,corrections)){merged.changed=true;merged.contentChanged=true;}
+if(correctionProblems(merged.data,corrections).length)throw new Error('Protected edition corrections are missing; previous snapshot retained.');
 if (merged.contentChanged) {
   const kst = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Seoul" }).format(new Date()).replaceAll("-", ".");
   const currentRevision = Number(String(current.version || "").match(/race-data-(\d+)$/)?.[1] || 0);
@@ -82,6 +94,10 @@ const report = {
   checkedAt,
   source: { name: "마라톤GO 공개 국내 일정", url: catalogue.finalUrl },
   catalogueCount: detailUrls.length,
+  indexCount: indexUrls.length,
+  observationChanged,
+  sourceRefreshAudit,
+  protectedPeriodRevisitProblems: periodRevisitProblems(sourceRefreshAudit,Date.parse(checkedAt)),
   parsedCount: discoveries.length,
   rejectedCount: failures.length,
   rejected: failures.slice(0, 30),
@@ -96,6 +112,7 @@ writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
 if (!health.ok) {
   throw new Error(`대회 데이터 이상 감지로 기존 정상본을 유지합니다: ${health.errors.join(" | ")}`);
 }
+if(periodRevisitProblems(sourceRefreshAudit,Date.parse(checkedAt)).length)throw Error('Six protected period sources were not all attempted; previous snapshot retained.');
 
 if (write) {
   writeFileSync(dataPath, `${JSON.stringify(merged.data, null, 2)}\n`);

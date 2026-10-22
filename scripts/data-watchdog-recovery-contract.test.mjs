@@ -12,6 +12,7 @@ test("데이터 감시는 중복 실행을 막고 수집·배포를 한 번씩 �
   assert.match(source, /refresh_active=.*queued.*in_progress/);
   assert.match(source, /gh workflow run refresh-race-data\.yml --ref main/);
   assert.match(source, /deploy_active=.*queued.*in_progress/);
-  assert.match(source, /gh workflow run pages\.yml --ref main/);
+  assert.match(source, /gh workflow run data-only-pages\.yml --ref main/);
+  assert.doesNotMatch(source, /gh workflow run pages\.yml/);
   assert.ok(source.indexOf("새 장애에서만 수집·배포 자동 복구 시도") < source.indexOf("장애 이슈를 한 번만 생성 또는 재개"));
 });

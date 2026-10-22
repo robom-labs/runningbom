@@ -1,7 +1,7 @@
 // 웹 정본의 검증된 대회 데이터를 네이티브 오프라인 번들 형식으로 재현 가능하게 변환한다.
 import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { collapseRaceRows } from "./race-data-core.mjs";
 
@@ -21,7 +21,7 @@ function stableId(race, prefix) {
   return `${prefix}-${fingerprint}`;
 }
 
-function normalizeRace(race, prefix) {
+export function normalizeRace(race, prefix) {
   const registrationUrl = typeof race.registrationUrl === "string" && race.registrationUrl.startsWith("https://")
     ? race.registrationUrl
     : undefined;
@@ -29,9 +29,9 @@ function normalizeRace(race, prefix) {
     ? race.sourceDetailUrl
     : undefined;
   const externalUrl = registrationUrl ?? sourceDetailUrl;
-  const sourceCheckedAt = typeof race.dataVerifiedAt === "string" && !Number.isNaN(Date.parse(race.dataVerifiedAt))
-    ? race.dataVerifiedAt
-    : undefined;
+  const sourceCheckedAt = [race.lastObservedAt,race.dataVerifiedAt]
+    .filter(value=>typeof value==='string'&&Number.isFinite(Date.parse(value)))
+    .sort((a,b)=>Date.parse(b)-Date.parse(a))[0];
   // 접수 중이라는 상태만 있고 마지막 확인 시각이 없으면, 기본 접수·알림 행동에서 안내하지 않습니다.
   // 원본 행은 남기되 앱에서 확인 필요로 분리해, 확인 시각을 지어내거나 대회를 삭제하지 않습니다.
   const registrationDataStatus = race.registrationDataStatus ?? (sourceCheckedAt ? undefined : "needs-review");
@@ -78,6 +78,8 @@ function normalizeRace(race, prefix) {
   };
 }
 
+// Importing the normalizer in regression tests must never rewrite a real bundle.
+if (resolve(process.argv[1] ?? '') === fileURLToPath(import.meta.url)) {
 const canonicalRows = collapseRaceRows([
   ...(source.featuredRaces ?? []).map((race) => ({ ...race, __syncPrefix: "featured" })),
   ...(source.scheduleFeed ?? []).map((race) => ({ ...race, __syncPrefix: "schedule" })),
@@ -102,4 +104,5 @@ if (process.argv.includes("--check")) {
 } else {
   await writeFile(targetPath, output);
   console.log(`모바일 대회 ${races.length}개를 동기화했습니다.`);
+}
 }

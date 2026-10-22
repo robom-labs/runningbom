@@ -5,10 +5,13 @@ on:
   push:
     branches:
       - main
-  schedule:
-    # 데이터 갱신 뒤 배포 요청이 누락돼도 KST 03:47에 main 정본을 다시 배포한다.
-    - cron: "47 18 * * *"
   workflow_dispatch:
+    inputs:
+      publish_app_web:
+        description: 'Explicitly approve a FULL public web app deployment (not data-only)'
+        type: boolean
+        required: true
+        default: false
 
 permissions:
   contents: write
@@ -40,7 +43,8 @@ jobs:
         run: npm run audit:prod
 
   deploy:
-    if: github.event_name != 'pull_request'
+    # Push/PR are verification only. Routine data recovery must use data-only-pages.yml.
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_app_web == true
     needs: verify
     runs-on: ubuntu-latest
     steps:

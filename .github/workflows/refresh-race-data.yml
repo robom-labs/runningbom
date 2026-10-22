@@ -37,7 +37,9 @@ jobs:
         run: |
           node scripts/validate-static.mjs
           node --test scripts/race-data-core.test.mjs scripts/mobile-data-contract.test.mjs scripts/secure-link-core.test.mjs
+          node --test scripts/race-corrections.test.mjs scripts/race-refresh-targets.test.mjs
       - name: 수집 리포트 보관
+        if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: running-race-data-refresh-report
@@ -65,8 +67,8 @@ jobs:
           git commit -m "chore(data): 자동 대회 일정 동기화"
           git push origin HEAD:main
           echo "changed=true" >> "$GITHUB_OUTPUT"
-      - name: 최신 정적 데이터를 운영 Pages에 배포 요청
+      - name: 앱 코드는 보존하고 검증된 데이터만 게시 요청
         if: steps.publish.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run pages.yml --ref main
+        run: gh workflow run data-only-pages.yml --ref main
