@@ -90,3 +90,17 @@ test('race and catalog main writers share the same non-cancelling workflow-level
  }
  assert.deepEqual(groups,['runningbom-data-writer','runningbom-data-writer']);
 });
+test('CI, Pages and daily automation install root lock before root tests without replacing mobile installation',async()=>{
+ for(const name of ['ci.yml','pages.yml','daily-self-improve.yml']){
+  const workflow=await readFile(new URL('../.github/workflows/'+name,import.meta.url),'utf8');
+  if(name==='daily-self-improve.yml'){
+   const install=workflow.indexOf('run: npm ci --ignore-scripts --no-audit --no-fund'),action=workflow.indexOf('uses: anthropics/claude-code-action@');
+   assert(install>=0&&action>install);assert(workflow.indexOf('npm test',action)>action);assert.match(workflow,/run: npm --prefix apps\/mobile ci/);continue;
+  }
+  const verify=workflow.split('  verify:\n')[1]?.split('\n  deploy:')[0];assert(verify,`${name} verify job missing`);
+  const install=verify.indexOf('run: npm ci --ignore-scripts --no-audit --no-fund');
+  const testAt=verify.indexOf('run: npm test');assert(install>=0&&testAt>install,`${name} must install root lock before tests`);
+  assert.match(verify,/run: npm --prefix apps\/mobile ci/);assert.match(verify,/run: npm run audit:prod/);
+  if(name==='pages.yml'){assert.match(workflow,/default: false/);assert.match(workflow,/if: github.event_name == 'workflow_dispatch' && inputs.publish_app_web == true/);}
+ }
+});

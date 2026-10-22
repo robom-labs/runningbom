@@ -39,6 +39,8 @@ jobs:
       # apps/mobile/node_modules/tsx 로더로 읽습니다. 설치가 없으면 첫 명령부터 실패합니다.
       - name: 모바일 의존성 설치 (TypeScript 정본 로딩용)
         run: npm --prefix apps/mobile ci
+      - name: 루트 데이터 도구 의존성 설치
+        run: npm ci --ignore-scripts --no-audit --no-fund
 
       - name: Claude 자가개선 실행
         uses: anthropics/claude-code-action@c96dd0a84e0232ab86947fca5fe34f1caae8792f # v1
