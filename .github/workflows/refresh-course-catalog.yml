@@ -1,0 +1,91 @@
+name: Refresh and publish verified course data only
+
+on:
+  schedule:
+    # Weekly source-bound DEM check. Stable terrain is not re-scraped every app visit.
+    - cron: '23 2 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: runningbom-data-writer
+  cancel-in-progress: false
+
+jobs:
+  course-data:
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 22
+      - name: Publication contracts before any source collection
+        run: node --test scripts/course-data-publication.test.mjs scripts/course-source-refresh-core.test.mjs
+      - name: Refresh same-edition approved GPX in CI working checkout only
+        run: node scripts/refresh-approved-course-sources.mjs --write
+      - name: Bounded official-GPX elevation enrichment (no Overpass timeout loop)
+        run: node scripts/update-course-elevation.mjs --refresh --osm-api
+      - name: Generate and check independent course registry
+        run: |
+          node scripts/update-course-elevation.mjs --check
+          node scripts/publish-course-catalog.mjs --remote-only
+          node scripts/publish-course-catalog.mjs --remote-only --check
+          node scripts/course-data-publication.mjs --check
+      - name: Preserve source and contract evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: course-source-and-registry-evidence
+          path: |
+            apps/mobile/domains/races/course-elevation.json
+            data/course-catalog.json
+            data/course-catalog.manifest.json
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Persist only validated course pair on main
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/pages" | node scripts/course-data-publication.mjs --assert-pages
+          git config user.name robom-data-bot
+          git config user.email actions@github.com
+          git add -- data/course-catalog.json data/course-catalog.manifest.json
+          test -z "$(git diff --cached --name-only | sed '/^data\/course-catalog\.json$/d; /^data\/course-catalog\.manifest\.json$/d')"
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(data): source-bound course registry"
+            git push origin HEAD:main
+          fi
+      - name: Overlay pair on CURRENT deployed site without changing app/binary files
+        run: |
+          set -euo pipefail
+          git fetch origin gh-pages
+          SITE="$RUNNER_TEMP/course-existing-gh-pages"
+          git worktree add --detach "$SITE" origin/gh-pages
+          node scripts/course-data-publication.mjs --site-dir "$SITE"
+          git -C "$SITE" add -- data/course-catalog.json data/course-catalog.manifest.json
+          test -z "$(git -C "$SITE" diff --cached --name-only | sed '/^data\/course-catalog\.json$/d; /^data\/course-catalog\.manifest\.json$/d')"
+          if ! git -C "$SITE" diff --cached --quiet; then
+            git -C "$SITE" commit -m "chore(data): publish course registry pair only"
+            git -C "$SITE" push origin HEAD:gh-pages
+          fi
+          gh api "repos/$GITHUB_REPOSITORY/pages" | node scripts/course-data-publication.mjs --assert-pages
+          gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds" --jq '{status: .status}'
+      - name: Read back actual public course pair and preserved app bytes
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if node scripts/course-data-publication.mjs --verify-public --site-dir "$RUNNER_TEMP/course-existing-gh-pages"; then exit 0; fi
+            sleep 20
+          done
+          echo "Public readback failed. A queued Pages build is not success."
+          exit 1
