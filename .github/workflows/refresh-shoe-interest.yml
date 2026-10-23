@@ -1,0 +1,81 @@
+name: Refresh and publish measured shoe interest only
+on:
+  schedule:
+    - cron: '11 3-23/12 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: runningbom-data-writer
+  cancel-in-progress: false
+jobs:
+  interest:
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Contract and last-good retention tests
+        run: node --test scripts/shoe-interest-core.test.mjs scripts/shoe-interest-publication.test.mjs
+      - name: Bounded robots-respecting source collection; no native mirrors
+        run: |
+          node scripts/refresh-shoe-interest.mjs --write --data-only
+          node scripts/refresh-shoe-interest.mjs --check
+          node scripts/shoe-interest-publication.mjs --check
+      - name: Preserve source and schema evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: measured-interest-health
+          path: |
+            outputs/operations/shoe-interest-refresh.json
+            data/shoe-interest.json
+            data/shoe-interest.manifest.json
+          if-no-files-found: warn
+      - name: Persist validated measured artifact only
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/pages" | node scripts/shoe-interest-publication.mjs --assert-pages
+          git config user.name robom-data-bot
+          git config user.email actions@github.com
+          git add -- data/shoe-interest.json data/shoe-interest.manifest.json
+          test -z "$(git diff --cached --name-only | sed '/^data\/shoe-interest\.json$/d; /^data\/shoe-interest\.manifest\.json$/d')"
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(data): verified measured shoe interest"
+            git push origin HEAD:main
+          fi
+      - name: Publish exact app-read path; preserve all other site bytes
+        run: |
+          set -euo pipefail
+          git fetch origin gh-pages
+          SITE="$RUNNER_TEMP/interest-existing-gh-pages"
+          git worktree add --detach "$SITE" origin/gh-pages
+          node scripts/shoe-interest-publication.mjs --site-dir "$SITE"
+          git -C "$SITE" add -- data/catalog/shoe-interest.json data/catalog/shoe-interest.manifest.json
+          test -z "$(git -C "$SITE" diff --cached --name-only | sed '/^data\/catalog\/shoe-interest\.json$/d; /^data\/catalog\/shoe-interest\.manifest\.json$/d')"
+          if ! git -C "$SITE" diff --cached --quiet; then
+            git -C "$SITE" commit -m "chore(data): publish measured interest pair only"
+            git -C "$SITE" push origin HEAD:gh-pages
+          fi
+          gh api "repos/$GITHUB_REPOSITORY/pages" | node scripts/shoe-interest-publication.mjs --assert-pages
+          gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds" --jq '{status: .status}'
+      - name: Verify actual served manifest and measured payload
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if node scripts/shoe-interest-publication.mjs --verify-public; then exit 0; fi
+            sleep 20
+          done
+          exit 1
