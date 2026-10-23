@@ -4,6 +4,7 @@ import { z } from 'zod';
 import {publicationFields} from './catalog-publication-core.mjs';
 import {catalogIdentityIssue,catalogRecordKey} from './catalog-identity.mjs';
 import {resolveDeclaredCatalogUrl} from './catalog-source-policy.mjs';
+import {officialBrooksGroups,officialGroupMetadata,isOfficialBrooksSizeVariant} from './catalog-official-groups.mjs';
 export const categoryLabels = {daily:'입문·매일 러닝',cushion:'푹신한 쿠션',stability:'탄탄한 지지',supertrainer:'슈퍼 트레이너',speed:'빠른 훈련',carbon:'대회용 카본',trail:'트레일',unknown:'분류 확인 중'};
 const https = z.string().url().refine(v=>new URL(v).protocol==='https:' && !new URL(v).username && !new URL(v).password);
 export const productSchema = z.object({
@@ -61,6 +62,7 @@ export function announcementForCatalog(products,candidate){
 }
 export function extractProductCandidates($,url,source){
  const found=[];
+ const officialGroups=officialBrooksGroups($,url);
  $('script[type="application/ld+json"]').each((_,node)=>{
   try {for(const p of flattenLd(JSON.parse($(node).text()))){
    if(!['Product','ProductGroup'].includes(p['@type']))continue;
@@ -71,9 +73,14 @@ export function extractProductCandidates($,url,source){
    const brand=typeof p.brand==='object'?p.brand.name:p.brand;
    if(brand && !String(brand).toLowerCase().includes(source.brand.toLowerCase()) && !source.aliases?.some(a=>String(brand).toLowerCase().includes(a.toLowerCase())))continue;
    const release=declaredReleaseDate(p.releaseDate);
-   found.push({brand:source.brand,model:name,source:resolveDeclaredCatalogUrl(offer.url || p.url || url,url),imageSource:resolveDeclaredCatalogUrl(typeof image==='string'?image:image.url,url),...(release?{release}:{}),
+   const candidate={brand:source.brand,model:name,source:resolveDeclaredCatalogUrl(offer.url || p.url || url,url),imageSource:resolveDeclaredCatalogUrl(typeof image==='string'?image:image.url,url),...(release?{release}:{}),
     sku:p.mpn || p.sku || null,color:p.color || null,price:Number(offer.price),currency:offer.priceCurrency,sourceRegion:source.region,
-    description:p.description || '',gender:declaredProductGender(p.gender||p.audience?.suggestedGender||source.gender,offer.url||p.url||url,name),evidenceKind:'schema.org'});
+    description:p.description || '',gender:declaredProductGender(p.gender||p.audience?.suggestedGender||source.gender,offer.url||p.url||url,name),evidenceKind:'schema.org'};
+   const grouping=officialGroupMetadata(candidate,officialGroups);
+   // Unsupported size variants stay out of the candidate, retaining last good
+   // records; a missing official parent must never recreate model-count spam.
+   if(isOfficialBrooksSizeVariant(candidate)&&!grouping)continue;
+   found.push({...candidate,...grouping,sourceTitle:name});
   }}catch{/* An unrelated malformed JSON-LD block doesn't authorize filling gaps. */}
  });
  // Nike publishes exact model, colorway, product code, currency and image together.

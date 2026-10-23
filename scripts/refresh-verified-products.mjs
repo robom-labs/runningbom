@@ -84,7 +84,7 @@ for(const row of candidates){
    release,releaseSource:old?.release?old.releaseSource:row.release?row.source:'',releaseRegion:old?.releaseRegion||row.sourceRegion,upcoming:release?releaseIsUpcoming(release):!!(old?.upcoming&&old?.releaseSource),
    imageWidth,imageHeight,imageRights:'source-declared-not-license-verified',
    merchant:`${source.brand} ${row.sourceRegion} 공식몰`,priceType:'공식몰 표시가 · 수집 시점'};
-  const display=applyReviewedMetadata({...p,sourceTitle:row.model});
+  const display={...applyReviewedMetadata({...p,sourceTitle:row.sourceTitle||row.model}),...(row.modelGroupEvidence?Object.fromEntries(['model','modelEn','name','modelGroup','width','widthLabel','gender','size','officialProductGroup','modelGroupEvidence'].filter(key=>row[key]!==undefined).map(key=>[key,row[key]])):{})};
   productSchema.parse(display);verified.push(display);
  }catch(e){failed.push({source:row.sourceId,url:row.source,reason:String(e.message)});}
 }
