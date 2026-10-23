@@ -7,6 +7,7 @@ import { categoryLabels,classify,extractProductCandidates,fingerprint,mergeVerif
 import {catalogIdentityIssue} from './catalog-identity.mjs';
 import {assessCatalogCandidate} from './catalog-refresh-guard.mjs';
 import {applyReviewedMetadata} from './catalog-family-metadata.mjs';
+import {approvedCatalogUrl,sameApprovedCatalogHost} from './catalog-source-policy.mjs';
 const root=join(dirname(fileURLToPath(import.meta.url)),'..');
 const write=process.argv.includes('--write');
 const max=Math.min(180,Math.max(1,Number(process.env.CATALOG_MAX_REQUESTS)||60));
@@ -18,7 +19,7 @@ const sourceIds=(process.env.CATALOG_SOURCE_IDS||'').split(',').filter(Boolean);
 const registry=JSON.parse(await readFile(join(root,'data/catalog-sources.json'),'utf8')).filter(s=>!sourceIds.length||sourceIds.includes(s.id));
 if(!registry.length)throw new Error('No approved catalog sources selected');
 const candidates=[];const checks=[];const failed=[];
-const permit=(url,source)=>{try{return source.hosts.includes(new URL(url).hostname)&&new URL(url).protocol==='https:';}catch{return false;}};
+const permit=(url,source)=>approvedCatalogUrl(url,source);
 const config=new Configuration({persistStorage:false});
 const crawler=new CheerioCrawler({
  maxConcurrency:1,maxRequestsPerMinute:24,maxRequestsPerCrawl:max,maxRequestRetries:1,
@@ -33,7 +34,7 @@ const crawler=new CheerioCrawler({
   for(const row of rows){
    if(catalogIdentityIssue(row)){failed.push({source:source.id,url:request.url,reason:'Gallery text rejected as product identity'});continue;}
    if(!permit(row.source,source)){failed.push({source:source.id,url:request.url,reason:'product URL not on approved HTTPS hosts'});continue;}
-   if(!permit(row.imageSource,{hosts:source.imageHosts})){failed.push({source:source.id,url:request.url,reason:'page-declared image URL not on approved HTTPS hosts; no download attempted'});continue;}
+   if(!approvedCatalogUrl(row.imageSource,source,{image:true})){failed.push({source:source.id,url:request.url,reason:'page-declared image URL not on approved HTTPS hosts; no download attempted'});continue;}
    const [kind]=classify(row.model,row.description);
    if(kind==='unknown'&&!/running|러닝|레이싱|marathon|trail/i.test(row.model+' '+row.description))continue;
    candidates.push({...row,sourceId:source.id});
@@ -61,7 +62,7 @@ for(const row of candidates){
  const key=row.sku ? row.brand.toLowerCase()+'|'+row.sku.toLowerCase() : fingerprint(row);if(seen.has(key))continue;seen.add(key);
  try{
   const source=registry.find(s=>s.id===row.sourceId);
-  const old=previous.products.find(p=>p.sku&&p.sku===row.sku && p.brand.toLowerCase()===row.brand.toLowerCase()&&p.sourceRegion===row.sourceRegion&&p.currency===row.currency&&new URL(p.source).hostname===new URL(row.source).hostname);
+  const old=previous.products.find(p=>p.sku&&p.sku===row.sku && p.brand.toLowerCase()===row.brand.toLowerCase()&&p.sourceRegion===row.sourceRegion&&p.currency===row.currency&&sameApprovedCatalogHost(p.source,row.source,source));
   if(previous.products.some(p=>p.sku&&p.sku===row.sku&&p.brand.toLowerCase()===row.brand.toLowerCase()&&!old))throw new Error('cross-market SKU update quarantined');
   let imageSha=old?.imageSource===row.imageSource?old.imageSha256:null;
   let imageVerifiedAt=old?.imageCheckedAt||old?.checkedAt;

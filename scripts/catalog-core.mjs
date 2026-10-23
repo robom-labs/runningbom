@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import {publicationFields} from './catalog-publication-core.mjs';
 import {catalogIdentityIssue,catalogRecordKey} from './catalog-identity.mjs';
+import {resolveDeclaredCatalogUrl} from './catalog-source-policy.mjs';
 export const categoryLabels = {daily:'입문·매일 러닝',cushion:'푹신한 쿠션',stability:'탄탄한 지지',supertrainer:'슈퍼 트레이너',speed:'빠른 훈련',carbon:'대회용 카본',trail:'트레일',unknown:'분류 확인 중'};
 const https = z.string().url().refine(v=>new URL(v).protocol==='https:' && !new URL(v).username && !new URL(v).password);
 export const productSchema = z.object({
@@ -70,7 +71,7 @@ export function extractProductCandidates($,url,source){
    const brand=typeof p.brand==='object'?p.brand.name:p.brand;
    if(brand && !String(brand).toLowerCase().includes(source.brand.toLowerCase()) && !source.aliases?.some(a=>String(brand).toLowerCase().includes(a.toLowerCase())))continue;
    const release=declaredReleaseDate(p.releaseDate);
-   found.push({brand:source.brand,model:name,source:offer.url || p.url || url,imageSource:typeof image==='string'?image:image.url,...(release?{release}:{}),
+   found.push({brand:source.brand,model:name,source:resolveDeclaredCatalogUrl(offer.url || p.url || url,url),imageSource:resolveDeclaredCatalogUrl(typeof image==='string'?image:image.url,url),...(release?{release}:{}),
     sku:p.mpn || p.sku || null,color:p.color || null,price:Number(offer.price),currency:offer.priceCurrency,sourceRegion:source.region,
     description:p.description || '',gender:declaredProductGender(p.gender||p.audience?.suggestedGender||source.gender,offer.url||p.url||url,name),evidenceKind:'schema.org'});
   }}catch{/* An unrelated malformed JSON-LD block doesn't authorize filling gaps. */}
@@ -82,8 +83,8 @@ export function extractProductCandidates($,url,source){
    const groups=JSON.parse(next).props?.pageProps?.initialState?.Wall?.productGroupings || [];
    for(const group of groups)for(const p of group.products || []){
     if(!/러닝|레이싱/.test(p.copy?.subTitle || '') || /주니어|베이비/.test(p.copy?.subTitle || ''))continue;
-    found.push({brand:'NIKE',model:p.copy.title.replace(/^나이키\s*/,''),source:p.pdpUrl.url,sku:p.productCode,
-     color:p.displayColors?.colorDescription,imageSource:p.colorwayImages?.squarishURL,price:p.prices.currentPrice,
+    found.push({brand:'NIKE',model:p.copy.title.replace(/^나이키\s*/,''),source:resolveDeclaredCatalogUrl(p.pdpUrl.url,url),sku:p.productCode,
+     color:p.displayColors?.colorDescription,imageSource:resolveDeclaredCatalogUrl(p.colorwayImages?.squarishURL,url),price:p.prices.currentPrice,
      regularPrice:p.prices.initialPrice,currency:p.prices.currency,gender:/여성/.test(p.copy.subTitle)?'여성':/남성/.test(p.copy.subTitle)?'남성':'공용',sourceRegion:'한국',description:'',evidenceKind:'official-catalog'});
    }
   }catch{/* Fails closed and retains previous data. */}
