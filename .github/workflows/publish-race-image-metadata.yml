@@ -1,0 +1,39 @@
+name: Publish verified race image metadata only
+on:
+  schedule:
+    - cron: '23 */6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: runningbom-data-writer
+  cancel-in-progress: false
+jobs:
+  metadata:
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          fetch-depth: 0
+          filter: blob:none
+          sparse-checkout: |
+            data
+            scripts
+            .github
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 22
+      - name: Guard and exact-publication tests before writes
+        run: node --test scripts/race-image-publication.test.mjs
+      - name: Validate current main metadata; do not crawl or retimestamp
+        run: node scripts/race-image-publication.mjs --check
+      - name: CAS overlay one JSON; verify actual served bytes
+        run: node scripts/race-image-publication.mjs --publish

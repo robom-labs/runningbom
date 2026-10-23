@@ -26,6 +26,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {raceRepresentativeRejection} from './race-image-guard.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const racesPath = join(root, 'apps', 'mobile', 'src', 'data', 'races.json');
@@ -137,6 +138,7 @@ async function fetchOgImage(pageUrl) {
     const url = normalizeImageUrl(raw, response.url || pageUrl);
     if (!url) return { ok: false, reason: 'og:image 없음' };
     if (looksLikeSiteMark(url)) return { ok: false, reason: '포스터가 아니라 사이트 아이콘' };
+    if (raceRepresentativeRejection({url})) return {ok:false,reason:'대표 이미지가 아닌 의류 사이즈·제품 규격표'};
     return { ok: true, url };
   } catch (error) {
     return { ok: false, reason: error?.name === 'AbortError' ? '시간 초과' : '연결 실패' };
@@ -230,7 +232,7 @@ const sharedUrls = new Set(
 );
 let dropped = 0;
 for (const [id, value] of Object.entries(images)) {
-  if (sharedUrls.has(value.url) || looksLikeSiteMark(value.url)) {
+  if (sharedUrls.has(value.url) || looksLikeSiteMark(value.url) || raceRepresentativeRejection(value)) {
     delete images[id];
     dropped += 1;
   }

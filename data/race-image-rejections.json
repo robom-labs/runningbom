@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "entries": {
+    "schedule-20532f12abdb": {
+      "hashes": [
+        "bcad0b177a203d9a3e18cef7ed4aa56da3f56195699413686bcda9d4345b13d6",
+        "32138e26ad1d094bde96dd936160ba17f481a90489ec9eb0f415ac1c82a11f7a",
+        "0a8cfd635846f7953bcb483ed82f1560b2654e54a4946dd4f1b1d6782dd15c3d"
+      ],
+      "reason": "Native QA: singlet size/spec chart; not the event representative"
+    }
+  }
+}
