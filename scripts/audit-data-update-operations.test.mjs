@@ -1,7 +1,16 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
-import {assessCatalogPublicPair,assessRunHistory,boundedRead,auditDataUpdates} from './audit-data-update-operations.mjs';
+import {assessCatalogPublicPair,assessRunHistory,boundedRead,auditDataUpdates,githubSourceText} from './audit-data-update-operations.mjs';
 import {interestManifest} from './shoe-interest-publication.mjs';import {createHash} from 'node:crypto';
 const now=Date.parse('2026-10-24T06:00:00Z'),at=new Date(now-3600000).toISOString(),hash=s=>createHash('sha256').update(s).digest('hex');
+test('source audit supports >1 MiB Contents omissions through exact immutable bounded repository blob',()=>{
+ const text='x'.repeat(1_130_880),sha='a'.repeat(40),calls=[];
+ const gh=path=>{calls.push(path);return path.startsWith('contents/')?{type:'file',size:Buffer.byteLength(text),encoding:'none',sha,download_url:'https://untrusted.invalid/ignored'}:{encoding:'base64',content:Buffer.from(text).toString('base64')};};
+ assert.equal(githubSourceText('data/verified-products.json',gh),text);
+ assert.deepEqual(calls,['contents/data/verified-products.json?ref=main','git/blobs/'+sha]);
+ assert.throws(()=>githubSourceText('bad',()=>({size:4_000_001})),/size bound/);
+ assert.throws(()=>githubSourceText('bad',()=>({size:4,encoding:'base64',content:Buffer.from('x').toString('base64')})),/size mismatch/);
+ assert.throws(()=>githubSourceText('bad',()=>({type:'file',size:1,encoding:'none',sha:'../../other-repo'})),/unavailable/);
+});
 test('a recent queued run is never a substitute for an actually completed interest success',()=>{
  const success={status:'completed',conclusion:'success',updated_at:at,html_url:'https://github.com/run/1'};
  assert.equal(assessRunHistory([success],now,30).ok,true);assert.equal(assessRunHistory([{status:'queued',updated_at:at}],now,30).ok,false);

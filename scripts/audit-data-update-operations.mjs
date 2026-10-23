@@ -36,7 +36,17 @@ export async function boundedRead(url,{fetcher=fetch,method='GET',attempts=2,max
   }
 }
 function github(path){return JSON.parse(execFileSync('gh',['api',`repos/${REPO}/${path}`],{encoding:'utf8',timeout:20000,maxBuffer:4_000_000,stdio:['ignore','pipe','pipe']}));}
-function mainText(path){const r=github(`contents/${path}?ref=main`);if(!r.content||r.encoding!=='base64')throw Error('GitHub contents unavailable');return Buffer.from(r.content,'base64').toString('utf8');}
+export function githubSourceText(path,gh=github){
+  const r=gh(`contents/${path}?ref=main`);
+  if(!Number.isSafeInteger(r.size)||r.size<0||r.size>4_000_000)throw Error('GitHub source size bound exceeded');
+  // Contents omits base64 above 1 MiB. Read only its immutable same-repository
+  // blob, never an arbitrary download_url or a different branch snapshot.
+  const blob=r.encoding==='base64'&&r.content?r:r.type==='file'&&/^[a-f0-9]{40}$/.test(r.sha)?gh(`git/blobs/${r.sha}`):null;
+  if(!blob?.content||blob.encoding!=='base64')throw Error('GitHub contents unavailable');
+  const bytes=Buffer.from(blob.content,'base64');if(bytes.length!==r.size)throw Error('GitHub source byte-size mismatch');
+  return bytes.toString('utf8');
+}
+const mainText=path=>githubSourceText(path);
 
 export async function auditDataUpdates({now=Date.now(),read=boundedRead,gh=github,source=mainText}={}){
   const report={checkedAt:new Date(now).toISOString(),repository:REPO,readOnly:true,checks:[],limits:{timeoutMs:12000,maxAttempts:2,publicReadMaxBytes:4_000_000},claims:{device:false,allNetworks:false,liveMapSearchResults:false,futureServiceGuarantee:false}};
