@@ -1,0 +1,32 @@
+name: Read-only data update audit
+on:
+  schedule:
+    - cron: '53 */3 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: runningbom-read-only-data-audit
+  cancel-in-progress: false
+jobs:
+  readback:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 22
+      - name: Public schema/hash/main readback and COMPLETED success heartbeats
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/audit-data-update-operations.mjs --report
+      - name: Preserve failures without dispatching releases or hiding partial coverage
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: data-update-readback
+          path: docs/data-update-audit.json
+          retention-days: 14
+          if-no-files-found: error
