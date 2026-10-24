@@ -1,13 +1,14 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {readFile,writeFile,mkdir,mkdtemp,rm} from 'node:fs/promises';
 import {join} from 'node:path';import {createHash} from 'node:crypto';
-import {verifyCoursePair,overlayCourseRegistry,assertCourseOnlyDelta,assertCoursePagesSource,verifyPublicCourseRegistry} from './course-data-publication.mjs';
+import {verifyCoursePair,overlayCourseRegistry,assertCourseOnlyDelta,assertCoursePagesSource,verifyPublicCourseRegistry,coursePublicationAllowlist} from './course-data-publication.mjs';
+import{readCourseBase,readCourseElevation}from'./course-metadata-inputs.mjs';
 const now=Date.parse('2026-10-24T06:00:00Z'),hash=v=>createHash('sha256').update(v).digest('hex');
-async function pair(){const courses=JSON.parse(await readFile(new URL('../apps/mobile/domains/races/course-examples.json',import.meta.url),'utf8')),e=JSON.parse(await readFile(new URL('../apps/mobile/domains/races/course-elevation.json',import.meta.url),'utf8'));return encode({schemaVersion:1,revision:'courses-'+'a'.repeat(20),generatedAt:new Date(now).toISOString(),courses,elevation:{schemaVersion:1,profiles:e.profiles}});}
+async function pair(){const courses=(await readCourseBase()).courses,e=(await readCourseElevation()).elevation;return encode({schemaVersion:1,revision:'courses-'+'a'.repeat(20),generatedAt:new Date(now).toISOString(),courses,elevation:{schemaVersion:1,profiles:e.profiles}});}
 function encode(data){const text=JSON.stringify(data),manifest={schemaVersion:1,revision:data.revision,generatedAt:data.generatedAt,count:data.courses.length,sha256:hash(text),sizeBytes:Buffer.byteLength(text),minimumAppVersion:'0.23.4'};return {text,manifest,data};}
 async function temp(fn){const dir=await mkdtemp(new URL('./.course-publication-test-',import.meta.url));try{return await fn(dir);}finally{await rm(dir,{recursive:true,force:true});}}
 test('course envelope validates source-bound actual geometry/elevation, manifest SHA, byte size and schema',async()=>{
- const {text,manifest,data}=await pair();assert.equal(verifyCoursePair(text,manifest,{now,approvedCourses:data.courses}).count,4);
+ const {text,manifest,data}=await pair();assert.equal(verifyCoursePair(text,manifest,{now,approvedCourses:data.courses}).count,data.courses.length);
  for(const change of [m=>m.sha256='b'.repeat(64),m=>m.count++,m=>m.sizeBytes++,m=>m.schemaVersion++,m=>m.revision='wrong']){const m={...manifest};change(m);assert.throws(()=>verifyCoursePair(text,m,{now}));}
  const other=structuredClone(data.courses);other[0].eventId='other';assert.throws(()=>verifyCoursePair(text,manifest,{now,approvedCourses:other}),/approved/);
 });
@@ -34,4 +35,15 @@ test('public readback checks served pair, not queued status; mismatch and HTTP e
 }));
 test('course maintenance workflow is data-only, serialized, bounded, uses agreed generator and actual public readback',async()=>{
  const s=await readFile(new URL('../.github/workflows/refresh-course-catalog.yml',import.meta.url),'utf8');assert.match(s,/update-course-elevation.mjs --refresh --osm-api/);assert.match(s,/refresh-approved-course-sources.mjs --write/);assert.match(s,/publish-course-catalog.mjs --remote-only --check/);assert.match(s,/group: pages/);assert.match(s,/group: runningbom-data-writer/);assert.match(s,/course-data-publication.mjs --verify-public/);assert.doesNotMatch(s,/eas |play-release|preview-ota|gh pr|gh workflow run pages.yml/);
+});
+test('periodic workflow persists course metadata only, keeps source CAS and suppresses generic native push checks',async()=>{
+ const source=await readFile(new URL('../.github/workflows/refresh-course-catalog.yml',import.meta.url),'utf8');assert.match(source,/17 \*\/6 \* \* \*/);assert.match(source,/--without-audit --live --max-requests 64/);assert.match(source,/data\/course-base\.json data\/course-elevation\.json/);assert.match(source,/\[skip ci\]/);assert.match(source,/origin\/main\)" = "\$BASE"/);assert.match(source,/origin\/gh-pages\)" = "\$SITE_BASE"/);for(const line of source.split('\n').filter(l=>/git add|git -C .* add/.test(l)))assert.doesNotMatch(line,/apps\/mobile|android|ios|\.apk|\.aab/);
+});
+test('explicit reviewed allowlist matches scheduled staging and excludes apps/native/other catalog ownership',async()=>{
+ const allow=JSON.parse(await readFile(new URL('../docs/course-local-allowlist.json',import.meta.url),'utf8')),workflow=await readFile(new URL('../.github/workflows/refresh-course-catalog.yml',import.meta.url),'utf8');
+ assert.deepEqual(allow.publicWritePaths,coursePublicationAllowlist);
+ const staged=workflow.split('\n').map(l=>l.trim()).find(l=>l.startsWith('git add -- ')).slice('git add -- '.length).split(/\s+/);assert.deepEqual(staged,allow.scheduledMainWritePaths);
+ assert(allow.integrationPaths.includes('data/course-base.json'));assert(allow.integrationPaths.includes('data/course-source-seeds.json'));
+ assert.doesNotMatch(allow.integrationPaths.join('\n'),/^(?:apps\/|android\/|ios\/|node_modules|outputs\/|scripts\/catalog|\.github\/workflows\/refresh-verified)/m);
+ assert.doesNotMatch(workflow,/git add (?:\.|-A|--all)(?:\s|$)/m);assert.equal(allow.appNativeWritesAllowed,false);assert.equal(allow.otherCatalogOwnerWritesAllowed,false);
 });

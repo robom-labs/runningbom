@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "reason": "Current-edition adoption of legacy2023 asset not yet proven; retain verified official-page fallback.",
+  "records": [
+    {
+      "id": "chuncheon-full",
+      "eventId": "chuncheon-marathon",
+      "eventName": "2026 춘천마라톤",
+      "raceDate": "2026-10-25",
+      "distanceLabel": "풀코스",
+      "officialDistanceKm": 42.195,
+      "sourceKind": "official-image",
+      "sourceUrl": "https://www.chuncheonmarathon.com/course/info.html",
+      "sourcePage": "https://www.chuncheonmarathon.com/course/info.html",
+      "imageUrl": "https://image.chosun.com/chuncheonmarathon/2023/course_img.png",
+      "checkedAt": "2026-10-23",
+      "segments": [],
+      "startLabel": "공지천교",
+      "endLabel": "공지천 축구장",
+      "reuseStatus": "remote-image-local-review",
+      "notice": "현재 공식 사이트가 게시한 코스도입니다. 이미지 경로는 2023년 자료이며, 2026 신규 좌표로 검증한 자료가 아닙니다."
+    }
+  ]
+}

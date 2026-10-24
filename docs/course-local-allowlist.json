@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "status": "LOCAL_ONLY_PENDING_MAIN_REVIEW",
+  "baselineHead": "f6ca7b5f2a114553c744f923d109dd4a3b0295b0",
+  "integrationPaths": [
+    ".github/workflows/refresh-course-catalog.yml",
+    "data/course-approved-images.json",
+    "data/course-base-quarantine-v54.json",
+    "data/course-base.json",
+    "data/course-catalog.json",
+    "data/course-catalog.manifest.json",
+    "data/course-elevation.json",
+    "data/course-source-index.json",
+    "data/course-source-seeds.json",
+    "docs/course-local-allowlist.json",
+    "docs/course-local-preparation-review.json",
+    "scripts/course-catalog-build.mjs",
+    "scripts/course-catalog-pipeline.test.mjs",
+    "scripts/course-data-publication.mjs",
+    "scripts/course-data-publication.test.mjs",
+    "scripts/course-dem-candidate-core.mjs",
+    "scripts/course-discover-sources.mjs",
+    "scripts/course-discovery-approval.mjs",
+    "scripts/course-discovery-core.mjs",
+    "scripts/course-discovery-fetch.mjs",
+    "scripts/course-discovery-rejections.test.mjs",
+    "scripts/course-discovery.test.mjs",
+    "scripts/course-metadata-inputs.mjs",
+    "scripts/course-metadata-inputs.test.mjs",
+    "scripts/course-source-index-core.mjs",
+    "scripts/course-source-seeds.mjs",
+    "scripts/publish-course-catalog.mjs",
+    "scripts/refresh-approved-course-sources.mjs",
+    "scripts/update-course-elevation.mjs"
+  ],
+  "scheduledMainWritePaths": [
+    "data/course-base.json",
+    "data/course-elevation.json",
+    "data/course-approved-images.json",
+    "data/course-source-index.json",
+    "data/course-catalog.json",
+    "data/course-catalog.manifest.json"
+  ],
+  "publicWritePaths": [
+    "data/course-catalog.json",
+    "data/course-catalog.manifest.json"
+  ],
+  "localPreviewOnlyPaths": [
+    "outputs/pushrun-site/data/course-catalog.json",
+    "outputs/pushrun-site/data/course-catalog.manifest.json"
+  ],
+  "appNativeWritesAllowed": false,
+  "otherCatalogOwnerWritesAllowed": false,
+  "stageCommitPushPerformed": false
+}

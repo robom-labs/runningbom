@@ -910,5 +910,631 @@
     "endLabel": "상암 월드컵공원 평화광장",
     "reuseStatus": "remote-image-private-apk-review; redistribution-rights-not-established",
     "notice": "공식 코스도 · 이미지형(경로·고도 재생 없음)"
+  },
+  {
+    "id": "v54-image-schedule-320f17393a81-20261121-10k-couple",
+    "eventId": "schedule-320f17393a81",
+    "eventName": "2026 세정 가을바람 유러닝페스타",
+    "raceDate": "2026-11-21",
+    "distanceLabel": "10k 커플런",
+    "officialDistanceKm": 10,
+    "sourceKind": "official-image",
+    "sourcePage": "https://urfesta.com/",
+    "sourceUrl": "https://urfesta.com/images/10km.jpg",
+    "imageUrl": "https://urfesta.com/images/10km.jpg",
+    "sourceSha256": "182f0fc2655ffd07f32aae85a6d14f16321dd084197178f511039eba9f0c439d",
+    "checkedAt": "2026-10-23",
+    "segments": [],
+    "startLabel": "공식 코스도 참고",
+    "endLabel": "공식 코스도 참고",
+    "reuseStatus": "remote-image-private-apk-review; redistribution-rights-not-established",
+    "notice": "공식 코스도 · 이미지형(경로·고도 재생 없음)"
+  },
+  {
+    "id": "v54-image-schedule-320f17393a81-20261121-10k-team",
+    "eventId": "schedule-320f17393a81",
+    "eventName": "2026 세정 가을바람 유러닝페스타",
+    "raceDate": "2026-11-21",
+    "distanceLabel": "10k 단체전(5인1조)",
+    "officialDistanceKm": 10,
+    "sourceKind": "official-image",
+    "sourcePage": "https://urfesta.com/",
+    "sourceUrl": "https://urfesta.com/images/10km.jpg",
+    "imageUrl": "https://urfesta.com/images/10km.jpg",
+    "sourceSha256": "182f0fc2655ffd07f32aae85a6d14f16321dd084197178f511039eba9f0c439d",
+    "checkedAt": "2026-10-23",
+    "segments": [],
+    "startLabel": "공식 코스도 참고",
+    "endLabel": "공식 코스도 참고",
+    "reuseStatus": "remote-image-private-apk-review; redistribution-rights-not-established",
+    "notice": "공식 코스도 · 이미지형(경로·고도 재생 없음)"
+  },
+  {
+    "id": "v54-image-schedule-8863d26955b1-20261115-family-5km",
+    "eventId": "schedule-8863d26955b1",
+    "eventName": "제16회 대전서구청장배 마라톤대회",
+    "raceDate": "2026-11-15",
+    "distanceLabel": "가족코스",
+    "officialDistanceKm": 5,
+    "sourceKind": "official-image",
+    "sourcePage": "https://jgmrun.com/sub/course/course_5km.asp",
+    "sourceUrl": "https://jgmrun.com/images/sub/2026_course_5km.png?202610",
+    "imageUrl": "https://jgmrun.com/images/sub/2026_course_5km.png?202610",
+    "sourceSha256": "80b9998f5f6ee9d14ff8b584c8440ea2203f77e6dc2a50aa1ca5c3bfb5fe6888",
+    "checkedAt": "2026-10-23",
+    "segments": [],
+    "startLabel": "공식 코스도 참고",
+    "endLabel": "공식 코스도 참고",
+    "reuseStatus": "remote-image-private-apk-review; redistribution-rights-not-established",
+    "notice": "공식 코스도 · 이미지형(경로·고도 재생 없음)"
+  },
+  {
+    "id": "discovered-939419c0c1010197-10k",
+    "eventId": "schedule-c2c7dc166e72",
+    "eventName": "2026 9회 서울평화마라톤",
+    "raceDate": "2026-11-15",
+    "distanceLabel": "10K",
+    "officialDistanceKm": 10,
+    "sourceKind": "official-image",
+    "sourcePage": "https://seoultongilrun.org/24",
+    "sourceUrl": "https://cdn.imweb.me/upload/S2022080348b7b32d2640b/a7219cf1026b6.gif",
+    "imageUrl": "https://cdn.imweb.me/upload/S2022080348b7b32d2640b/a7219cf1026b6.gif",
+    "sourceSha256": "538786fb607db6f06244a5b59b8ed09b63907e3a30c2b106a1c9a7efa7fe7219",
+    "checkedAt": "2026-10-24",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://seoultongilrun.org/24",
+      "pageKind": "course",
+      "pageSha256": "b626cbad5b3406317974b50b7f2cca3d4887af52bc2d9dfeb328b52adf441ec9",
+      "pageCheckedAt": "2026-10-23T19:41:00.794Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-11-15",
+        "year": "2026",
+        "matchedDate": "2026년 11월 15",
+        "method": "same-origin-direct-declaration",
+        "matchedWords": [
+          "서울평화"
+        ],
+        "excerpt": "rch MENU 2026 9회 서울평화마라톤대회 장바구니0 site search 대회요강 참가자 유의사항 시상제도안내 기념품안내 1. 대회명칭 9회 서울평화마라톤대회2. 대회일시 2026년 11월 15일(일) 오전 8시(집결시간) 3. 대회장소 신정교하부육상트랙구장(영등포구, 2호선 도림천역) 4. 참가자격 역사를 지키고 평화와 통일을 바라는 누구나 신청 가능5. 대회종목 10km / 5km(건강달리기)6. 대회주최 서울자주통일평화연대7. 대회주관서울평화마라톤 조직위원회 / 서울자주통일평화연대 8. 후원9. 참가비10km5km청소년, 초등학생50,000원(기념티, 기",
+        "inheritedFrom": "https://seoultongilrun.org/20",
+        "directlyDeclared": true
+      },
+      "declaredUrl": "https://cdn.imweb.me/upload/S2022080348b7b32d2640b/a7219cf1026b6.gif",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "10K",
+      "declaredDistanceKeys": [
+        "10K"
+      ],
+      "assetCheckedAt": "2026-10-24T00:02:35.509Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 1920,
+        "height": 712,
+        "bytes": 1234631,
+        "mime": "image/gif; charset=utf-8"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
+  },
+  {
+    "id": "discovered-2cf5cb996516a254-5k",
+    "eventId": "schedule-c2c7dc166e72",
+    "eventName": "2026 9회 서울평화마라톤",
+    "raceDate": "2026-11-15",
+    "distanceLabel": "5K",
+    "officialDistanceKm": 5,
+    "sourceKind": "official-image",
+    "sourcePage": "https://seoultongilrun.org/24",
+    "sourceUrl": "https://cdn.imweb.me/upload/S2022080348b7b32d2640b/10a673fff3073.gif",
+    "imageUrl": "https://cdn.imweb.me/upload/S2022080348b7b32d2640b/10a673fff3073.gif",
+    "sourceSha256": "d9b4cbac8fc0ff44196121712350c7c7b5bcc6f3a5f827e2d45f7123ca796ebf",
+    "checkedAt": "2026-10-24",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://seoultongilrun.org/24",
+      "pageKind": "course",
+      "pageSha256": "b626cbad5b3406317974b50b7f2cca3d4887af52bc2d9dfeb328b52adf441ec9",
+      "pageCheckedAt": "2026-10-23T19:41:00.794Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-11-15",
+        "year": "2026",
+        "matchedDate": "2026년 11월 15",
+        "method": "same-origin-direct-declaration",
+        "matchedWords": [
+          "서울평화"
+        ],
+        "excerpt": "rch MENU 2026 9회 서울평화마라톤대회 장바구니0 site search 대회요강 참가자 유의사항 시상제도안내 기념품안내 1. 대회명칭 9회 서울평화마라톤대회2. 대회일시 2026년 11월 15일(일) 오전 8시(집결시간) 3. 대회장소 신정교하부육상트랙구장(영등포구, 2호선 도림천역) 4. 참가자격 역사를 지키고 평화와 통일을 바라는 누구나 신청 가능5. 대회종목 10km / 5km(건강달리기)6. 대회주최 서울자주통일평화연대7. 대회주관서울평화마라톤 조직위원회 / 서울자주통일평화연대 8. 후원9. 참가비10km5km청소년, 초등학생50,000원(기념티, 기",
+        "inheritedFrom": "https://seoultongilrun.org/20",
+        "directlyDeclared": true
+      },
+      "declaredUrl": "https://cdn.imweb.me/upload/S2022080348b7b32d2640b/10a673fff3073.gif",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "5K",
+      "declaredDistanceKeys": [
+        "5K"
+      ],
+      "assetCheckedAt": "2026-10-24T00:02:36.113Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 1920,
+        "height": 710,
+        "bytes": 1076747,
+        "mime": "image/gif; charset=utf-8"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
+  },
+  {
+    "id": "discovered-cb8b5c1304b4c927-10k",
+    "eventId": "mbn-seoul",
+    "eventName": "2026 MBN 서울마라톤",
+    "raceDate": "2026-11-15",
+    "distanceLabel": "10K",
+    "officialDistanceKm": 10,
+    "sourceKind": "official-image",
+    "sourcePage": "https://www.mbn-seoulmarathon.com/",
+    "sourceUrl": "https://www.mbn-seoulmarathon.com/images/web/coursemap_10k.jpg",
+    "imageUrl": "https://www.mbn-seoulmarathon.com/images/web/coursemap_10k.jpg",
+    "sourceSha256": "816e526d0cfb080e5c5448dfeb3f7e0c7b63a38810680695dc6dd4f046519846",
+    "checkedAt": "2026-10-23",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://www.mbn-seoulmarathon.com/",
+      "pageKind": "course",
+      "pageSha256": "a8e3c69aebcbe259c5c3293cd04c002740fa79f96b66c252e172c006a692ec07",
+      "pageCheckedAt": "2026-10-23T19:41:00.794Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-11-15",
+        "year": "2026",
+        "matchedDate": "2026년 11월 15",
+        "method": "official-structured-event",
+        "matchedWords": [
+          "mbn",
+          "서울"
+        ],
+        "excerpt": "울마라톤의 핵심 정보를 한눈에 확인하세요. 국민통합위원회와 MBN이 함께하는 10km 코스, ‘대한민국 국민통합 런’ 대회명 2026 MBN SEOUL MARATHON 대회 일시 2026년 11월 15일 (일) 07:30 출발집결 06:30 · 준비운동 07:00 부문 · 인원 하프 코스 20,000명 · 국민통합런 10km 코스 10,000명 대회 장소 하프 코스 광화문광장 / 국민통합런 10km 코스 잠실종합운동장 참가비 하프 코스 100,000원 · 국민통합런 10km 코스 70,000원 참가 자격 신체 건강한 남·녀로 참가자 유의사항에 동의한 자만 18세 미만"
+      },
+      "declaredUrl": "https://www.mbn-seoulmarathon.com/images/web/coursemap_10k.jpg",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "10K",
+      "declaredDistanceKeys": [
+        "10K"
+      ],
+      "assetCheckedAt": "2026-10-23T19:41:00.794Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 1800,
+        "height": 1281,
+        "bytes": 360095,
+        "mime": "image/jpeg"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
+  },
+  {
+    "id": "discovered-c42d5cf8d84d6c6b-full",
+    "eventId": "schedule-b640dcd365a5",
+    "eventName": "2026 인천마라톤",
+    "raceDate": "2026-11-22",
+    "distanceLabel": "풀코스",
+    "officialDistanceKm": 42.195,
+    "sourceKind": "official-image",
+    "sourcePage": "https://incheonmarathon.or.kr/FUll",
+    "sourceUrl": "https://cdn.imweb.me/thumbnail/20260903/e91b5d2816b1a.png",
+    "imageUrl": "https://cdn.imweb.me/thumbnail/20260903/e91b5d2816b1a.png",
+    "sourceSha256": "b0e154fa41de62cf05579ae0f8285b5933c8c36714bf010667e2538c888417ae",
+    "checkedAt": "2026-10-24",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://incheonmarathon.or.kr/FUll",
+      "pageKind": "course",
+      "pageSha256": "8fb147ed43539496678757ddd103c1c977dc7bbff131a2d72d4cee569534dc30",
+      "pageCheckedAt": "2026-10-23T19:41:00.794Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-11-22",
+        "year": "2026",
+        "matchedDate": "2026년 11월 22",
+        "method": "same-origin-direct-declaration",
+        "matchedWords": [
+          "인천"
+        ],
+        "excerpt": "인 icon 대회안내 참가신청 기념품 코스안내 공지사항 커뮤니티 0 DAYS : 0 HOURS : 0 MINUTES : 0 SECONDS 대회소개 대회명 2026 인천마라톤대회일시2026년 11월 22일(일) 08:00참가자 모집2026년 9월 7일(월) 14:00참가부문(총 20,000명)· 42.195km (8,000명)· 10km (10,000명)· 5km (2,000명)참가비· 풀코스 : 80,000원· 10km : 50,000원· 5km : 30,000원출발/골인지풀코스 · 출발 : 영종구 운서역 일원· 도착 : 인천아시아드 주경기장10km/5km· 출발/도",
+        "inheritedFrom": "https://incheonmarathon.or.kr/",
+        "directlyDeclared": true
+      },
+      "declaredUrl": "https://cdn.imweb.me/thumbnail/20260903/e91b5d2816b1a.png",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "Full",
+      "declaredDistanceKeys": [
+        "Full"
+      ],
+      "assetCheckedAt": "2026-10-24T00:02:37.441Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 1919,
+        "height": 1073,
+        "bytes": 3034942,
+        "mime": "image/png; charset=utf-8"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
+  },
+  {
+    "id": "discovered-823abe3ccad88082-5k",
+    "eventId": "schedule-d4394bec0c27",
+    "eventName": "2026 평화의숲 마라톤",
+    "raceDate": "2026-11-22",
+    "distanceLabel": "5K",
+    "officialDistanceKm": 5,
+    "sourceKind": "official-image",
+    "sourcePage": "https://peace-run.kr/info/course.asp",
+    "sourceUrl": "https://peace-run.kr/pds/board/upload20260731_152111_0582149.png",
+    "imageUrl": "https://peace-run.kr/pds/board/upload20260731_152111_0582149.png",
+    "sourceSha256": "a7b3132706a0ff1b05324eae14d2f97b71239780780e4368a2e4265b05f2a988",
+    "checkedAt": "2026-10-24",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://peace-run.kr/info/course.asp",
+      "pageKind": "course",
+      "pageSha256": "4525b94dedcb71a8b01030b79565243fbfbec4c5184130d2efe3cbfc2a0a0470",
+      "pageCheckedAt": "2026-10-23T19:41:00.794Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-11-22",
+        "year": "2026",
+        "matchedDate": "2026년 11월 22",
+        "method": "explicit-year-month-day",
+        "matchedWords": [
+          "평화의숲"
+        ],
+        "excerpt": " 공지사항 자유게시판 자주묻는질문 환불신청 대회갤러리 대회기록 개인기록조회 단체기록조회 커뮤니티 공지사항 자유게시판 자주묻는질문 환불신청 대회갤러리 카톡문의 0.003.26(목) 2026년 11월 22일 평화의숲 마라톤 인사말 대회요강 코스안내 참가유의사항 대회장 찾아가기 코스안내 Home > 대회안내> 코스안내 2026 PEACE FOREST MARATHON 2026 평화의숲 마라톤 코스 안내 5km와 10km 종목별 코스를 안내드립니다. 참가 전 본인이 신청한 종목의 코스와 주요 동선을 확인해주시기 바랍니다. 대회 당일에는 현장 운영요원과 코스 안내 표지의 지시에"
+      },
+      "declaredUrl": "https://peace-run.kr/pds/board/upload20260731_152111_0582149.png",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "5K",
+      "declaredDistanceKeys": [
+        "5K"
+      ],
+      "assetCheckedAt": "2026-10-24T00:02:38.269Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 1212,
+        "height": 648,
+        "bytes": 595519,
+        "mime": "image/png"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
+  },
+  {
+    "id": "discovered-77b147b2fc6cc808-10k",
+    "eventId": "schedule-d4394bec0c27",
+    "eventName": "2026 평화의숲 마라톤",
+    "raceDate": "2026-11-22",
+    "distanceLabel": "10K",
+    "officialDistanceKm": 10,
+    "sourceKind": "official-image",
+    "sourcePage": "https://peace-run.kr/info/course.asp",
+    "sourceUrl": "https://peace-run.kr/pds/board/upload20260731_152127_0026607.png",
+    "imageUrl": "https://peace-run.kr/pds/board/upload20260731_152127_0026607.png",
+    "sourceSha256": "79c41861bc6b87ed274a833a608765b24995c5b725a86f7ce358779cd55a8ccc",
+    "checkedAt": "2026-10-24",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://peace-run.kr/info/course.asp",
+      "pageKind": "course",
+      "pageSha256": "4525b94dedcb71a8b01030b79565243fbfbec4c5184130d2efe3cbfc2a0a0470",
+      "pageCheckedAt": "2026-10-23T19:41:00.794Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-11-22",
+        "year": "2026",
+        "matchedDate": "2026년 11월 22",
+        "method": "explicit-year-month-day",
+        "matchedWords": [
+          "평화의숲"
+        ],
+        "excerpt": " 공지사항 자유게시판 자주묻는질문 환불신청 대회갤러리 대회기록 개인기록조회 단체기록조회 커뮤니티 공지사항 자유게시판 자주묻는질문 환불신청 대회갤러리 카톡문의 0.003.26(목) 2026년 11월 22일 평화의숲 마라톤 인사말 대회요강 코스안내 참가유의사항 대회장 찾아가기 코스안내 Home > 대회안내> 코스안내 2026 PEACE FOREST MARATHON 2026 평화의숲 마라톤 코스 안내 5km와 10km 종목별 코스를 안내드립니다. 참가 전 본인이 신청한 종목의 코스와 주요 동선을 확인해주시기 바랍니다. 대회 당일에는 현장 운영요원과 코스 안내 표지의 지시에"
+      },
+      "declaredUrl": "https://peace-run.kr/pds/board/upload20260731_152127_0026607.png",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "10K",
+      "declaredDistanceKeys": [
+        "10K"
+      ],
+      "assetCheckedAt": "2026-10-24T00:02:38.955Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 1208,
+        "height": 646,
+        "bytes": 765029,
+        "mime": "image/png"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
+  },
+  {
+    "id": "discovered-da0106bc81a79553-5k",
+    "eventId": "schedule-d69c5917f56a",
+    "eventName": "제14회 안중근 평화 마라톤",
+    "raceDate": "2026-11-29",
+    "distanceLabel": "5K",
+    "officialDistanceKm": 5,
+    "sourceKind": "official-image",
+    "sourcePage": "https://ajgrun.kr/info/course.asp",
+    "sourceUrl": "https://ajgrun.kr/pds/board/upload20261012_133435_0073482.jpg",
+    "imageUrl": "https://ajgrun.kr/pds/board/upload20261012_133435_0073482.jpg",
+    "sourceSha256": "af58089106ca38fbc2820ada2dca241971d4e1274e4d8a070a5a36fd75796b34",
+    "checkedAt": "2026-10-24",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://ajgrun.kr/info/course.asp",
+      "pageKind": "course",
+      "pageSha256": "019bd6b1cb82819f4b5b39018c6ae4969bee68808c00fd9637db3807b9708cb6",
+      "pageCheckedAt": "2026-10-23T19:41:00.794Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-11-29",
+        "year": "2026",
+        "matchedDate": "2026년 11월 29",
+        "method": "explicit-year-month-day",
+        "matchedWords": [
+          "안중근",
+          "평화"
+        ],
+        "excerpt": "내 기념품안내 참가신청ᆞ조회 참가비안내 참가신청 참가신청조회 / 단체참가자추가 대회기록 커뮤니티 공지사항 자유게시판 자주묻는질문 환불신청 대회갤러리 카톡문의 0.003.26(목) 2026년 11월 29일 제14회 안중근 평화 마라톤 대회 인사말 대회요강 코스안내 참가유의사항 대회장 찾아가기 코스안내 Home > 대회안내> 코스안내 5km 코스 10km 코스 하프코스 서울특별시 영등포구 여의공원로 68(여의도동) 지하철 이용시 9호선 '국회의사당역' 4번 출구에서 516m 버스 이용시 마을 .."
+      },
+      "declaredUrl": "https://ajgrun.kr/pds/board/upload20261012_133435_0073482.jpg",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "5K",
+      "declaredDistanceKeys": [
+        "5K"
+      ],
+      "assetCheckedAt": "2026-10-24T00:02:39.894Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 1857,
+        "height": 1027,
+        "bytes": 1152017,
+        "mime": "image/jpeg"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
+  },
+  {
+    "id": "discovered-b989ab565e0463ab-10k",
+    "eventId": "schedule-d69c5917f56a",
+    "eventName": "제14회 안중근 평화 마라톤",
+    "raceDate": "2026-11-29",
+    "distanceLabel": "10K",
+    "officialDistanceKm": 10,
+    "sourceKind": "official-image",
+    "sourcePage": "https://ajgrun.kr/info/course.asp",
+    "sourceUrl": "https://ajgrun.kr/pds/board/upload20261012_105225_0155437.jpg",
+    "imageUrl": "https://ajgrun.kr/pds/board/upload20261012_105225_0155437.jpg",
+    "sourceSha256": "1452561d7ee43d856dae3080bf0919b9050473e6523dc143ba96af07a96418ce",
+    "checkedAt": "2026-10-24",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://ajgrun.kr/info/course.asp",
+      "pageKind": "course",
+      "pageSha256": "019bd6b1cb82819f4b5b39018c6ae4969bee68808c00fd9637db3807b9708cb6",
+      "pageCheckedAt": "2026-10-23T19:41:00.794Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-11-29",
+        "year": "2026",
+        "matchedDate": "2026년 11월 29",
+        "method": "explicit-year-month-day",
+        "matchedWords": [
+          "안중근",
+          "평화"
+        ],
+        "excerpt": "내 기념품안내 참가신청ᆞ조회 참가비안내 참가신청 참가신청조회 / 단체참가자추가 대회기록 커뮤니티 공지사항 자유게시판 자주묻는질문 환불신청 대회갤러리 카톡문의 0.003.26(목) 2026년 11월 29일 제14회 안중근 평화 마라톤 대회 인사말 대회요강 코스안내 참가유의사항 대회장 찾아가기 코스안내 Home > 대회안내> 코스안내 5km 코스 10km 코스 하프코스 서울특별시 영등포구 여의공원로 68(여의도동) 지하철 이용시 9호선 '국회의사당역' 4번 출구에서 516m 버스 이용시 마을 .."
+      },
+      "declaredUrl": "https://ajgrun.kr/pds/board/upload20261012_105225_0155437.jpg",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "10K",
+      "declaredDistanceKeys": [
+        "10K"
+      ],
+      "assetCheckedAt": "2026-10-24T00:02:40.582Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 1857,
+        "height": 1027,
+        "bytes": 1228253,
+        "mime": "image/jpeg"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
+  },
+  {
+    "id": "discovered-23eac5a7877732d9-5k",
+    "eventId": "schedule-8545440939c1",
+    "eventName": "제2회 천안독립기념관 마라톤대회",
+    "raceDate": "2026-11-29",
+    "distanceLabel": "5K",
+    "officialDistanceKm": 5,
+    "sourceKind": "official-image",
+    "sourcePage": "https://runwithus.co.kr/31/?idx=174918546&bmode=view",
+    "sourceUrl": "https://cdn.imweb.me/upload/S20250521e8c418155c4a1/3452389ac6512.png",
+    "imageUrl": "https://cdn.imweb.me/upload/S20250521e8c418155c4a1/3452389ac6512.png",
+    "sourceSha256": "e385ea407bcbc91007917694ecf619ce92e18cfd3bc629d8ed1023425844e6aa",
+    "checkedAt": "2026-10-24",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://runwithus.co.kr/31/?idx=174918546&bmode=view",
+      "pageKind": "course",
+      "pageSha256": "fbf509481fb5bda8d1de12869e62acb4ce6cacf589739e87d979b9a0bcb4fc49",
+      "pageCheckedAt": "2026-10-23T19:41:00.794Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-11-29",
+        "year": "2026",
+        "matchedDate": "2026년 11월 29",
+        "method": "explicit-year-month-day",
+        "matchedWords": [
+          "천안독립기념관"
+        ],
+        "excerpt": "살펴봐 주세요.현장에서는 안내 표지와 운영요원의 안내에 따라 이동해 주세요.대회 전 홈페이지 공지사항과 코스안내를 다시 확인해 주세요.우리의 한 걸음이 누군가에게 희망이 되는 날,2026년 11월 29일 천안 독립기념관에서 만나겠습니다.참가자 여러분의 뜻깊은 도전과 완주를 응원합니다.감사합니다.2026 천안희망나눔 마라톤 사무국코스안내 바로가기 → [물품 발송 안내] 배번호 등 대회 물품, 11월 9일부터 신청 주소로 우편 발송 목록 주최 : 충남 사랑의열매 ᅵ천안시사랑의열매나눔봉사단 주관 : 이봉주 장학회 ᅵ 천안시사랑의열매나눔봉사단 l 구공스테이 상호 : 주식회사"
+      },
+      "declaredUrl": "https://cdn.imweb.me/upload/S20250521e8c418155c4a1/3452389ac6512.png",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "5K",
+      "declaredDistanceKeys": [
+        "5K"
+      ],
+      "assetCheckedAt": "2026-10-24T00:02:41.540Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 1536,
+        "height": 1024,
+        "bytes": 2637654,
+        "mime": "image/png; charset=utf-8"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
+  },
+  {
+    "id": "discovered-d4db8ae51772c16b-10k",
+    "eventId": "schedule-8545440939c1",
+    "eventName": "제2회 천안독립기념관 마라톤대회",
+    "raceDate": "2026-11-29",
+    "distanceLabel": "10K",
+    "officialDistanceKm": 10,
+    "sourceKind": "official-image",
+    "sourcePage": "https://runwithus.co.kr/31/?idx=174918546&bmode=view",
+    "sourceUrl": "https://cdn.imweb.me/upload/S20250521e8c418155c4a1/4fccf1e42de50.png",
+    "imageUrl": "https://cdn.imweb.me/upload/S20250521e8c418155c4a1/4fccf1e42de50.png",
+    "sourceSha256": "200363a2044ca12dbbcee117fa7fdcc05126168c60f91b2ad3786712d62ce1e8",
+    "checkedAt": "2026-10-24",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://runwithus.co.kr/31/?idx=174918546&bmode=view",
+      "pageKind": "course",
+      "pageSha256": "fbf509481fb5bda8d1de12869e62acb4ce6cacf589739e87d979b9a0bcb4fc49",
+      "pageCheckedAt": "2026-10-23T19:41:00.794Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-11-29",
+        "year": "2026",
+        "matchedDate": "2026년 11월 29",
+        "method": "explicit-year-month-day",
+        "matchedWords": [
+          "천안독립기념관"
+        ],
+        "excerpt": "살펴봐 주세요.현장에서는 안내 표지와 운영요원의 안내에 따라 이동해 주세요.대회 전 홈페이지 공지사항과 코스안내를 다시 확인해 주세요.우리의 한 걸음이 누군가에게 희망이 되는 날,2026년 11월 29일 천안 독립기념관에서 만나겠습니다.참가자 여러분의 뜻깊은 도전과 완주를 응원합니다.감사합니다.2026 천안희망나눔 마라톤 사무국코스안내 바로가기 → [물품 발송 안내] 배번호 등 대회 물품, 11월 9일부터 신청 주소로 우편 발송 목록 주최 : 충남 사랑의열매 ᅵ천안시사랑의열매나눔봉사단 주관 : 이봉주 장학회 ᅵ 천안시사랑의열매나눔봉사단 l 구공스테이 상호 : 주식회사"
+      },
+      "declaredUrl": "https://cdn.imweb.me/upload/S20250521e8c418155c4a1/4fccf1e42de50.png",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "10K",
+      "declaredDistanceKeys": [
+        "10K"
+      ],
+      "assetCheckedAt": "2026-10-24T00:02:42.235Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 1532,
+        "height": 1027,
+        "bytes": 2480111,
+        "mime": "image/png; charset=utf-8"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
   }
 ]

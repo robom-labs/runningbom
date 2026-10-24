@@ -3,6 +3,8 @@ import {readFile,writeFile,mkdir,readdir,lstat} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {resolve,join} from 'node:path';import {fileURLToPath,pathToFileURL} from 'node:url';
 import {buildElevationProfile,elevationRouteHash} from '../apps/mobile/assets/course-src/elevation-profile.mjs';
+import{safeCourseURL}from'./course-discovery-core.mjs';
+import{readCourseBase}from'./course-metadata-inputs.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const digest=text=>createHash('sha256').update(text).digest('hex');
 export const coursePublicationAllowlist=['data/course-catalog.json','data/course-catalog.manifest.json'];
@@ -11,6 +13,7 @@ export function verifyCoursePair(text,manifest,{now=Date.now(),fresh=true,approv
   const data=JSON.parse(text),courses=data.courses,profiles=data.elevation?.profiles;
   if(data.schemaVersion!==1||manifest.schemaVersion!==1||data.elevation?.schemaVersion!==1||!Array.isArray(courses)||!courses.length||!Array.isArray(profiles)||!/^courses-[a-f0-9]{20}$/.test(data.revision??'')||manifest.revision!==data.revision||manifest.generatedAt!==data.generatedAt||manifest.count!==courses.length||manifest.sizeBytes!==Buffer.byteLength(text)||manifest.sha256!==digest(text)||!/^\d+\.\d+\.\d+$/.test(manifest.minimumAppVersion??''))throw Error('Invalid course payload/manifest pair');
   const at=Date.parse(data.generatedAt);if(!Number.isFinite(at)||at>now+300000||(fresh&&now-at>8*86400000))throw Error('Stale/invalid course registry timestamp');
+  if(data.pages!==undefined){if(!Array.isArray(data.pages)||data.pages.length>3000)throw Error('Invalid course page registry');const pageIds=new Set();for(const p of data.pages){const key=p.eventId+'|'+p.raceDate+'|'+p.url,stamp=Date.parse(p.checkedAt);if(!p.eventId||!/^\d{4}-\d{2}-\d{2}$/.test(p.raceDate||'')||!['course','event'].includes(p.kind)||!safeCourseURL(p.url)||!/^[a-f0-9]{64}$/.test(p.sourceSha256||'')||!Number.isFinite(stamp)||stamp>now+300000||(fresh&&now-stamp>30*86400000)||pageIds.has(key)||p.distanceLabels!==undefined&&(!Array.isArray(p.distanceLabels)||p.distanceLabels.length>40||p.distanceLabels.some(d=>typeof d!=='string'||!d.trim()||d.length>60)))throw Error('Unverified/expired/duplicate course page');pageIds.add(key);}}
   const ids=new Set(),profileIds=new Set();
   for(const p of profiles){if(!p?.courseId||profileIds.has(p.courseId)||!courses.some(c=>c.id===p.courseId))throw Error('Duplicate/orphan elevation profile');profileIds.add(p.courseId);}
   for(const c of courses){
@@ -29,8 +32,8 @@ async function hashes(dir,prefix=''){
 }
 export function assertCourseOnlyDelta(before,after){const changed=[...new Set([...Object.keys(before),...Object.keys(after)])].filter(p=>before[p]!==after[p]);if(changed.some(p=>!coursePublicationAllowlist.includes(p)))throw Error('Non-course publication mutation refused');return changed;}
 async function localPair(dataDir){return Promise.all(['course-catalog.json','course-catalog.manifest.json'].map(f=>readFile(join(dataDir,f),'utf8')));}
-export async function readApprovedCourses(base=new URL('../apps/mobile/domains/races/',import.meta.url),imagesUrl=new URL('../data/course-approved-images.json',import.meta.url)){
-  const primary=JSON.parse(await readFile(new URL('course-examples.json',base),'utf8'));
+export async function readApprovedCourses(base,imagesUrl=new URL('../data/course-approved-images.json',import.meta.url)){
+  const primary=base?JSON.parse(await readFile(new URL('course-examples.json',base),'utf8')):(await readCourseBase()).courses;
   let images=[];try{const value=JSON.parse(await readFile(imagesUrl,'utf8'));images=Array.isArray(value)?value:value.courses;if(!Array.isArray(images))throw Error('Approved image registry must be an array or {courses:[]}');}catch(e){if(e.code!=='ENOENT')throw e;}
   if(!Array.isArray(primary)||images.some(c=>c.sourceKind!=='official-image'||!Array.isArray(c.segments)||c.segments.length))throw Error('Approved image registry cannot authorize GPX geometry');
   const courses=[...primary,...images];if(new Set(courses.map(c=>c.id)).size!==courses.length)throw Error('Duplicate approved course IDs');return courses;

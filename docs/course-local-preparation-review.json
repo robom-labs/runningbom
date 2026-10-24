@@ -1,0 +1,334 @@
+{
+  "schemaVersion": 1,
+  "status": "LOCAL_PREPARED_NO_STAGE_COMMIT_PUSH_OR_REMOTE_ACTIVATION",
+  "checkout": "/Volumes/RunningbomBuild38/ops-v53-activation",
+  "head": "f6ca7b5f2a114553c744f923d109dd4a3b0295b0",
+  "base": {
+    "path": "data/course-base.json",
+    "count": 3,
+    "sha256": "dcc98c7c796773ab6d8c908d758ee0f249b0106feeea6f4dad0c18b0ab811667",
+    "exactMainV54Bytes": true
+  },
+  "pair": {
+    "catalog": "data/course-catalog.json",
+    "manifest": "data/course-catalog.manifest.json",
+    "schemaVersion": 1,
+    "revision": "courses-1abdc6aa69cde9ff09b7",
+    "generatedAt": "2026-10-24T00:00:00.000Z",
+    "count": 64,
+    "sha256": "c445f7b0b0e13fda36d0d45bb11c43012ce109cbc9450024651b62922eec346f",
+    "sizeBytes": 175412,
+    "minimumAppVersion": "0.23.4",
+    "pages": 177,
+    "exactMainV54Bytes": true
+  },
+  "tests": {
+    "passed": 62,
+    "failed": 0,
+    "networkCollectionRun": false,
+    "elevationCheckOffline": true,
+    "ciStyleOfflineDryRun": {
+      "races": 106,
+      "currentMetadataSeededRecords": 105,
+      "oldAuditReads": 0,
+      "newRequests": 0,
+      "verifiedEventPageRecords": 54,
+      "verifiedCoursePageRecords": 32,
+      "rawVerifiedPagesRetained": 179,
+      "publishedSlimPages": 177,
+      "sourceCheckTimesAndHashesUnchanged": true
+    },
+    "command": "node --test scripts/course-metadata-inputs.test.mjs scripts/course-discovery-rejections.test.mjs scripts/course-discovery.test.mjs scripts/course-catalog-pipeline.test.mjs scripts/course-data-publication.test.mjs scripts/course-source-refresh-core.test.mjs",
+    "gitDiffCheck": true
+  },
+  "preservation": {
+    "protectedSnapshotFiles": 501,
+    "appFilesCompared": 355,
+    "appFilesChanged": [],
+    "concurrentNonCourseOwnerChangesObserved": [
+      ".github/workflows/refresh-verified-catalog.yml",
+      "scripts/catalog-enrichment.test.mjs",
+      "scripts/catalog-public-evidence.mjs",
+      "scripts/refresh-catalog-enrichment.mjs"
+    ],
+    "nonCourseFilesWrittenByThisAgent": [],
+    "sourceV54WrittenByThisAgent": false,
+    "currentAppDiffPaths": []
+  },
+  "trackedDiffStat": " .github/workflows/refresh-course-catalog.yml |  66 +--\n data/course-approved-images.json             | 626 +++++++++++++++++++++++++++\n data/course-catalog.json                     |   2 +-\n data/course-catalog.manifest.json            |   2 +-\n scripts/course-data-publication.mjs          |   7 +-\n scripts/course-data-publication.test.mjs     |  18 +-\n scripts/publish-course-catalog.mjs           |  16 +-\n scripts/refresh-approved-course-sources.mjs  |   5 +-\n scripts/update-course-elevation.mjs          |   7 +-\n 9 files changed, 702 insertions(+), 47 deletions(-)\n",
+  "newFileLineCounts": [
+    {
+      "path": "data/course-base-quarantine-v54.json",
+      "lines": 24
+    },
+    {
+      "path": "data/course-base.json",
+      "lines": 1
+    },
+    {
+      "path": "data/course-elevation.json",
+      "lines": 5168
+    },
+    {
+      "path": "data/course-source-index.json",
+      "lines": 6494
+    },
+    {
+      "path": "data/course-source-seeds.json",
+      "lines": 771
+    },
+    {
+      "path": "outputs/pushrun-site/data/course-catalog.json",
+      "lines": 1
+    },
+    {
+      "path": "outputs/pushrun-site/data/course-catalog.manifest.json",
+      "lines": 1
+    },
+    {
+      "path": "scripts/course-catalog-build.mjs",
+      "lines": 11
+    },
+    {
+      "path": "scripts/course-catalog-pipeline.test.mjs",
+      "lines": 11
+    },
+    {
+      "path": "scripts/course-dem-candidate-core.mjs",
+      "lines": 27
+    },
+    {
+      "path": "scripts/course-discover-sources.mjs",
+      "lines": 69
+    },
+    {
+      "path": "scripts/course-discovery-approval.mjs",
+      "lines": 22
+    },
+    {
+      "path": "scripts/course-discovery-core.mjs",
+      "lines": 174
+    },
+    {
+      "path": "scripts/course-discovery-fetch.mjs",
+      "lines": 54
+    },
+    {
+      "path": "scripts/course-discovery-rejections.test.mjs",
+      "lines": 26
+    },
+    {
+      "path": "scripts/course-discovery.test.mjs",
+      "lines": 62
+    },
+    {
+      "path": "scripts/course-metadata-inputs.mjs",
+      "lines": 19
+    },
+    {
+      "path": "scripts/course-metadata-inputs.test.mjs",
+      "lines": 27
+    },
+    {
+      "path": "scripts/course-source-index-core.mjs",
+      "lines": 28
+    },
+    {
+      "path": "scripts/course-source-seeds.mjs",
+      "lines": 10
+    }
+  ],
+  "ownedChangedFiles": [
+    {
+      "path": ".github/workflows/refresh-course-catalog.yml",
+      "sha256": "fffff8cb41b4bb85ab38649da83ab7155b9f16ae7018acbcb8cd90b622ddd655"
+    },
+    {
+      "path": "data/course-approved-images.json",
+      "sha256": "b50166e4d620f57586b4ae840a61035ce5810b465d5b102d47c3c65acb81af01"
+    },
+    {
+      "path": "data/course-catalog.json",
+      "sha256": "c445f7b0b0e13fda36d0d45bb11c43012ce109cbc9450024651b62922eec346f"
+    },
+    {
+      "path": "data/course-catalog.manifest.json",
+      "sha256": "51a313295a91bc8de7de2c84531fd5686754675faf64b8ea3cdef6254233e88d"
+    },
+    {
+      "path": "scripts/course-data-publication.mjs",
+      "sha256": "cc1d7b2d983103e9b282622589c81403cee89ce5bd20e763abf0384838946774"
+    },
+    {
+      "path": "scripts/course-data-publication.test.mjs",
+      "sha256": "49d967f2d77dddaea736962024c8e4a0091a36772e416ba23874c6a40ba55e20"
+    },
+    {
+      "path": "scripts/publish-course-catalog.mjs",
+      "sha256": "451994e2b8ab9f622c071861b5f177119a26b5a904e9bf909b7f1ed7a04fe8d6"
+    },
+    {
+      "path": "scripts/refresh-approved-course-sources.mjs",
+      "sha256": "4a037209f298dab50396c0685b1526766d6e6c4663d568a45c825658b9fb5f63"
+    },
+    {
+      "path": "scripts/update-course-elevation.mjs",
+      "sha256": "9ccc38724e2acaf03e99c785249ebdacd9b2d6c893a7d4c3fd8997079d543f2c"
+    },
+    {
+      "path": "data/course-base-quarantine-v54.json",
+      "sha256": "b594a9923787667454d978c7a16488a2bb347fe68e61fa2e2b7d84e68bf0e81d"
+    },
+    {
+      "path": "data/course-base.json",
+      "sha256": "dcc98c7c796773ab6d8c908d758ee0f249b0106feeea6f4dad0c18b0ab811667"
+    },
+    {
+      "path": "data/course-elevation.json",
+      "sha256": "53a908ca3fc31a4f673a490b63dc5d92a139073b925c4c8b09ad756d9b77f01a"
+    },
+    {
+      "path": "data/course-source-index.json",
+      "sha256": "bf3fd86c2186d0a603cd01f3fd18af890012f693bba910122dbe162fa3f1f1c1"
+    },
+    {
+      "path": "data/course-source-seeds.json",
+      "sha256": "2d1784bfeb8e20243628dd3d16779dba458afd5cc598a111bdceb4e2f23565ec"
+    },
+    {
+      "path": "outputs/pushrun-site/data/course-catalog.json",
+      "sha256": "c445f7b0b0e13fda36d0d45bb11c43012ce109cbc9450024651b62922eec346f"
+    },
+    {
+      "path": "outputs/pushrun-site/data/course-catalog.manifest.json",
+      "sha256": "51a313295a91bc8de7de2c84531fd5686754675faf64b8ea3cdef6254233e88d"
+    },
+    {
+      "path": "scripts/course-catalog-build.mjs",
+      "sha256": "7d1a870e939a43e48456142ab513114cbafe1377c2009ede326530f4db98d8e4"
+    },
+    {
+      "path": "scripts/course-catalog-pipeline.test.mjs",
+      "sha256": "419b3c34e215881f3186115a00a537f876af64b33ab67938caf15c7cf453926b"
+    },
+    {
+      "path": "scripts/course-dem-candidate-core.mjs",
+      "sha256": "b84cce11f91b007258ae0735211ceccbbd7286ce92d4c658467cc4c1ad12627b"
+    },
+    {
+      "path": "scripts/course-discover-sources.mjs",
+      "sha256": "3a7be6555676b4bb7476a94e41115929e34c6b87bc98975c666a8d0002f9fce2"
+    },
+    {
+      "path": "scripts/course-discovery-approval.mjs",
+      "sha256": "c961faeb594eecd887134dc2255391c6be89a88531f9aedc3846a510b91dba94"
+    },
+    {
+      "path": "scripts/course-discovery-core.mjs",
+      "sha256": "4c6647debe9c62062d3bbba8e7968981c4e7203904ddf5d233ec505e79328c55"
+    },
+    {
+      "path": "scripts/course-discovery-fetch.mjs",
+      "sha256": "256258e81ddfcf7d3b3a4665951f6d14b07e8529ae0214abc57ba545a44e54f3"
+    },
+    {
+      "path": "scripts/course-discovery-rejections.test.mjs",
+      "sha256": "9d4fa16376663764051d8b2e3f659c0efa3932dc14fd41f606d02d2982c9c5a7"
+    },
+    {
+      "path": "scripts/course-discovery.test.mjs",
+      "sha256": "70149c852d21f2f3501677a1aa84e40c2105285edcb2c20c77785cdc3bc07897"
+    },
+    {
+      "path": "scripts/course-metadata-inputs.mjs",
+      "sha256": "d56c9438ae003f37d10e6004565e336894173d4a5d661bc701155ec6474d3ae0"
+    },
+    {
+      "path": "scripts/course-metadata-inputs.test.mjs",
+      "sha256": "a71947b6dc868a8d835380692a50dfcb64911119d7c553b145a8486026be9bc8"
+    },
+    {
+      "path": "scripts/course-source-index-core.mjs",
+      "sha256": "527aa5047f0b994731ad5064727b294ccd0c64f092ac6a3e7fcf2ffa67edebbe"
+    },
+    {
+      "path": "scripts/course-source-seeds.mjs",
+      "sha256": "e2a6b765b5d6bd65ea14630c318736f2d2c0ffea8f4e1063d80d12e7b83779bb"
+    }
+  ],
+  "workflow": {
+    "schedule": "17 */6 * * *",
+    "maxDiscoveryRequests": 64,
+    "maxRequestsPerRace": 4,
+    "sourceMetadataWrites": [
+      "data/course-base.json",
+      "data/course-elevation.json",
+      "data/course-approved-images.json",
+      "data/course-source-index.json",
+      "data/course-catalog.json",
+      "data/course-catalog.manifest.json"
+    ],
+    "publicOverlayOnly": [
+      "data/course-catalog.json",
+      "data/course-catalog.manifest.json"
+    ],
+    "freshMainAndPagesCAS": true,
+    "metadataCommitSkipsGenericCI": true,
+    "activated": false
+  },
+  "remainingExternalDependencies": [
+    "Main review before any commit/push/activation.",
+    "Official organizer robots/TLS/network may block source updates; existing verified data retained.",
+    "Scheduled official GPX or DEM validation failure stops publication and leaves public last-good pair untouched.",
+    "Shared Chandra catalog changes are intentionally outside the course-owned diff and remain unstaged by this agent."
+  ],
+  "allowlist": {
+    "path": "docs/course-local-allowlist.json",
+    "integrationPathCount": 29,
+    "scheduledMainWritePaths": [
+      "data/course-base.json",
+      "data/course-elevation.json",
+      "data/course-approved-images.json",
+      "data/course-source-index.json",
+      "data/course-catalog.json",
+      "data/course-catalog.manifest.json"
+    ],
+    "publicWritePaths": [
+      "data/course-catalog.json",
+      "data/course-catalog.manifest.json"
+    ],
+    "localPreviewOnlyPaths": [
+      "outputs/pushrun-site/data/course-catalog.json",
+      "outputs/pushrun-site/data/course-catalog.manifest.json"
+    ]
+  },
+  "finalCoverage": {
+    "races": 106,
+    "activeCourses": 64,
+    "officialImages": 62,
+    "officialGPX": 2,
+    "courseCoveredRaceRecords": 30,
+    "matchedDistanceLabels": 62,
+    "totalDistanceLabels": 268,
+    "verifiedSlimPages": 177,
+    "coursePages": 55,
+    "eventPages": 122,
+    "pageCoveredRaceRecords": 54,
+    "coursePageCoveredRaceRecords": 32,
+    "unverifiedPageRaceRecords": 52,
+    "metadataSeededRecords": 105,
+    "unknownSeedRecords": [
+      "schedule-8b8dfa605681"
+    ],
+    "legacyChuncheonActive": false,
+    "JTBCBaseAliasPreserved": true
+  },
+  "publicCandidateHashes": {
+    "data/course-catalog.json": "c445f7b0b0e13fda36d0d45bb11c43012ce109cbc9450024651b62922eec346f",
+    "data/course-catalog.manifest.json": "51a313295a91bc8de7de2c84531fd5686754675faf64b8ea3cdef6254233e88d",
+    "outputs/pushrun-site/data/course-catalog.json": "c445f7b0b0e13fda36d0d45bb11c43012ce109cbc9450024651b62922eec346f",
+    "outputs/pushrun-site/data/course-catalog.manifest.json": "51a313295a91bc8de7de2c84531fd5686754675faf64b8ea3cdef6254233e88d"
+  },
+  "publicHTTPDeploymentVerifiedThisTurn": false,
+  "stagedPaths": []
+}

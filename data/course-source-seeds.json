@@ -1,0 +1,771 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-24T00:09:36.761Z",
+  "sourceIndexSha256": "bf3fd86c2186d0a603cd01f3fd18af890012f693bba910122dbe162fa3f1f1c1",
+  "sourceSnapshotSha256": "b28350c02eafc4764c29ee7a4cb11e9b1c75b96f2c61710527b4a36ab75aa002",
+  "records": [
+    {
+      "eventId": "schedule-c59fad5366bc",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://ggcrun.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-4d07153f4ae8",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://marathon.newsis.com/marathon/code/8049/",
+        "https://marathon.newsis.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-5fd4a9ae042b",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://forms.gle/ga7gKHnRJB7pfLFY6"
+      ]
+    },
+    {
+      "eventId": "schedule-2b405dfa9bda",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://runwithgo.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-e7f54f0af73e",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://iksangiverun.or.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-3260d3ad1bb2",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://xn--439a68tboh.kr/run/9000.asp"
+      ]
+    },
+    {
+      "eventId": "schedule-57b64bb58f18",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://hnrun.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-5f195091250b",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://hgrun.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-072dd0d48e95",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://mujutrail.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-4c1a70609360",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://sejongrun26.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-4cb0f7932538",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://burningfesta.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-3aedd1cf3b44",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://www.mtrailrun.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-0e4e73276928",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://fwr.libertyinnorthkorea.or.kr/2026/",
+        "https://fwr.libertyinnorthkorea.or.kr/2026"
+      ]
+    },
+    {
+      "eventId": "schedule-dd6c6bcc11f2",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://fwr.libertyinnorthkorea.or.kr/2026/"
+      ]
+    },
+    {
+      "eventId": "schedule-1ef05642b1de",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://runmusicfestival.localvibehub.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-a86475dc9c85",
+      "raceDate": "2026-10-24",
+      "urls": [
+        "https://mypb.info/competition/666"
+      ]
+    },
+    {
+      "eventId": "schedule-1fb6211ae2da",
+      "raceDate": "2026-10-25",
+      "urls": [
+        "https://gmrun.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-8f04537cebb5",
+      "raceDate": "2026-10-25",
+      "urls": [
+        "https://www.busan.go.kr/eng/bsevents/1750778",
+        "https://busan.raceplan.co.kr/",
+        "https://busan.wizrun.com/info1"
+      ]
+    },
+    {
+      "eventId": "schedule-f8c69d616324",
+      "raceDate": "2026-10-25",
+      "urls": [
+        "https://csmarathon.co.kr/csmarathon/"
+      ]
+    },
+    {
+      "eventId": "chuncheon-marathon",
+      "raceDate": "2026-10-25",
+      "urls": [
+        "https://www.chuncheonmarathon.com/",
+        "https://www.chuncheonmarathon.com/apply/part-application.html",
+        "https://www.chuncheonmarathon.com/rally/info.html"
+      ]
+    },
+    {
+      "eventId": "schedule-2d32e8b79907",
+      "raceDate": "2026-10-25",
+      "urls": [
+        "https://www.ulsanrunfesta.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-a32d31a4ba0b",
+      "raceDate": "2026-10-25",
+      "urls": [
+        "https://www.jeongseojin.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-c25823ce5bec",
+      "raceDate": "2026-10-25",
+      "urls": [
+        "https://xn--hq1bo4en6bw9cp5mzkpmgi.kr/main.php"
+      ]
+    },
+    {
+      "eventId": "schedule-91ff291800b9",
+      "raceDate": "2026-10-25",
+      "urls": [
+        "https://www.irunman.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-35c9c31cde30",
+      "raceDate": "2026-10-31",
+      "urls": [
+        "https://autismrace.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-1dc17fe7150d",
+      "raceDate": "2026-10-31",
+      "urls": [
+        "https://taejongdaezombie.com/marathon/guide.php",
+        "https://taejongdaezombie.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-22a8401f5711",
+      "raceDate": "2026-10-31",
+      "urls": [
+        "https://runten.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-897e2789cb6d",
+      "raceDate": "2026-10-31",
+      "urls": [
+        "https://sunset.or.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-7dda3bb3a200",
+      "raceDate": "2026-11-01",
+      "urls": [
+        "https://gcmarathon.co.kr/home/main.ubs"
+      ]
+    },
+    {
+      "eventId": "schedule-3b818b7c7267",
+      "raceDate": "2026-11-01",
+      "urls": [
+        "https://mara1080.com/event/d596615e-cf32-4f20-bdbe-13b633f51c4e"
+      ]
+    },
+    {
+      "eventId": "schedule-04f5e475a10f",
+      "raceDate": "2026-11-01",
+      "urls": [
+        "https://dmzopenrun.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-20532f12abdb",
+      "raceDate": "2026-11-01",
+      "urls": [
+        "https://runable.me/product/17639?comp=3402"
+      ]
+    },
+    {
+      "eventId": "jtbc-seoul",
+      "raceDate": "2026-11-01",
+      "urls": [
+        "https://runable.me/product/17639?comp=3402",
+        "https://runable.me/"
+      ]
+    },
+    {
+      "eventId": "schedule-328a80917223",
+      "raceDate": "2026-11-01",
+      "urls": [
+        "https://seoulrun.com/site/",
+        "https://seoulrun.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-fa83d642c552",
+      "raceDate": "2026-11-01",
+      "urls": [
+        "https://www.humanrun.org/"
+      ]
+    },
+    {
+      "eventId": "schedule-b3f6efa48181",
+      "raceDate": "2026-11-01",
+      "urls": [
+        "https://www.djmarathon.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-2d990c21bbb2",
+      "raceDate": "2026-11-07",
+      "urls": [
+        "https://legendtrail.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-43b4c20e7358",
+      "raceDate": "2026-11-07",
+      "urls": [
+        "https://runyc.kr/",
+        "https://runyc.kr/apply"
+      ]
+    },
+    {
+      "eventId": "schedule-a1acb5209782",
+      "raceDate": "2026-11-07",
+      "urls": [
+        "https://runfesta.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-86b634b13a49",
+      "raceDate": "2026-11-07",
+      "urls": [
+        "https://purmerun.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-8dc25f58d104",
+      "raceDate": "2026-11-07",
+      "urls": [
+        "https://mara1080.com/event/ffc023fc-7a54-4610-bdd6-2bb9a1028122"
+      ]
+    },
+    {
+      "eventId": "schedule-32f2905c557a",
+      "raceDate": "2026-11-07",
+      "urls": [
+        "https://www.jinhaemarathon.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-4558b2e019ab",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://kiccrace.com/hwasung1"
+      ]
+    },
+    {
+      "eventId": "schedule-dadb0767110a",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://1004.tbc.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-1a89c5db9208",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://www.gcrun.co.kr/gcrun/",
+        "https://www.gcsports.or.kr/bbs/board.php?bo_table=s4_1&wr_id=315",
+        "https://gcrun.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-4ef8821bc0f3",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://kw-marathon.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-bd6cd6e2d155",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://heritagerun.co.kr/",
+        "https://heritagerun.co.kr/apply/index01.php"
+      ]
+    },
+    {
+      "eventId": "schedule-8b8dfa605681",
+      "raceDate": "2026-11-08",
+      "urls": []
+    },
+    {
+      "eventId": "schedule-80e4f49eb981",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://k-marathon.or.kr/main.php"
+      ]
+    },
+    {
+      "eventId": "schedule-6fe5050d5706",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://ssecorun.co.kr/marathon/guide.php",
+        "https://ssecorun.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-3e00e6873832",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://cymarathon.imweb.me/"
+      ]
+    },
+    {
+      "eventId": "schedule-522eeb6aecd9",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://haenammarathon.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-b94c08230354",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://xn--289a04w1ifu9bvwfi4b78e.com/resv/competition.php"
+      ]
+    },
+    {
+      "eventId": "schedule-b8f5765d35e8",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://www.songparunsportal.com/Home"
+      ]
+    },
+    {
+      "eventId": "schedule-b8d486bdbafd",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://asanmarathon.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-db5420686000",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://xn--oi2bo7bn3do4es0j56afy5b.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-363de0daecc0",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://www.geumsungsan.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-11f6d639b02d",
+      "raceDate": "2026-11-08",
+      "urls": [
+        "https://www.xn--v69ax3ta679frncr7fk7d1bz7fc91d.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-bf6926fdeb0a",
+      "raceDate": "2026-11-14",
+      "urls": [
+        "https://www.leaveit.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-260ab9f489b4",
+      "raceDate": "2026-11-14",
+      "urls": [
+        "https://tongkeun-run.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-edc5d53f90d9",
+      "raceDate": "2026-11-14",
+      "urls": [
+        "https://pohangmarathon.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-53f2b853fa3c",
+      "raceDate": "2026-11-14",
+      "urls": [
+        "https://sc-marathon.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-c2c7dc166e72",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://seoultongilrun.org/20",
+        "https://seoultongilrun.org/"
+      ]
+    },
+    {
+      "eventId": "schedule-51d8319f0085",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://runable.me/product/18977?comp=18962"
+      ]
+    },
+    {
+      "eventId": "schedule-22568bd194f5",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://nanumrun.or.kr/main.php",
+        "https://nanumrun.or.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-84adcdddea2f",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://sonkeechungrun.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-4917c05f3b4f",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://marathon.ihalla.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-a02680686514",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://www.fila.co.kr/pages/fila-run-espresso-10k-seoul"
+      ]
+    },
+    {
+      "eventId": "mbn-seoul",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://www.mbn-seoulmarathon.com/",
+        "https://mbn-seoulmarathon.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-33712298689b",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://www.cwaaf.kr/bbs/board.php?bo_table=rally&wr_id=3"
+      ]
+    },
+    {
+      "eventId": "schedule-8863d26955b1",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://jgmrun.com/",
+        "https://jgmrun.com/marathon_application/app2.asp"
+      ]
+    },
+    {
+      "eventId": "schedule-cf79975a8527",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://happytrailrun.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-c376814d0f6a",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://www.gcrun.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-eb19f6e99dcb",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://koreatrail.net/"
+      ]
+    },
+    {
+      "eventId": "schedule-07897dae2bba",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://www.mara1080.com/event/c8dc2c22-a83a-4743-9e34-c884e9809dbb"
+      ]
+    },
+    {
+      "eventId": "schedule-f8c567d031eb",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://kjmarathon.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-9f4925b1137c",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://sjrun.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-cd4cd11e5f81",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://www.cuk-sports.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-ecd21c0a09f3",
+      "raceDate": "2026-11-15",
+      "urls": [
+        "https://xn--q20bn3kn1bg9oekd84a785cnfg.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-a67364223bae",
+      "raceDate": "2026-11-21",
+      "urls": [
+        "https://rocknrun.kr/2026NTR_INFO",
+        "https://rocknrun.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-320f17393a81",
+      "raceDate": "2026-11-21",
+      "urls": [
+        "https://urfesta.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-d9a569750ca3",
+      "raceDate": "2026-11-22",
+      "urls": [
+        "https://www.djrun.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-5af201a82b25",
+      "raceDate": "2026-11-22",
+      "urls": [
+        "https://mujumarathon.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-1dbe478388d1",
+      "raceDate": "2026-11-22",
+      "urls": [
+        "https://ssrun.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-b640dcd365a5",
+      "raceDate": "2026-11-22",
+      "urls": [
+        "https://incheonmarathon.or.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-d4394bec0c27",
+      "raceDate": "2026-11-22",
+      "urls": [
+        "https://peace-run.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-6dace7afa000",
+      "raceDate": "2026-11-23",
+      "urls": [
+        "https://rocknrun.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-4599ea0df6d4",
+      "raceDate": "2026-11-28",
+      "urls": [
+        "https://mara1080.com/event/c2cec79b-c38a-4832-bf4f-7ecb499cdcd5",
+        "https://mara1080.com/event/c2cec79b-c38a-4832-bf4f-7ecb499cdcd5/guide/overview"
+      ]
+    },
+    {
+      "eventId": "schedule-c659f2a14064",
+      "raceDate": "2026-11-28",
+      "urls": [
+        "https://www.peacerun.kr/marathon/code/8051/"
+      ]
+    },
+    {
+      "eventId": "schedule-c69900191f42",
+      "raceDate": "2026-11-28",
+      "urls": [
+        "https://mokyokrun.shop/"
+      ]
+    },
+    {
+      "eventId": "schedule-a63a87b3ffd2",
+      "raceDate": "2026-11-29",
+      "urls": [
+        "https://sh-run.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-0103ac98f029",
+      "raceDate": "2026-11-29",
+      "urls": [
+        "https://www.xn--ob0bs4k27c8xc9da633vynbkyur2ft5hckl.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-d69c5917f56a",
+      "raceDate": "2026-11-29",
+      "urls": [
+        "https://ajgrun.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-8545440939c1",
+      "raceDate": "2026-11-29",
+      "urls": [
+        "https://runwithus.co.kr/index"
+      ]
+    },
+    {
+      "eventId": "schedule-8eb0ef7668fd",
+      "raceDate": "2026-12-05",
+      "urls": [
+        "https://mara1080.com/event/df4b4e7d-4fbc-4843-858c-f15c032e92cb"
+      ]
+    },
+    {
+      "eventId": "schedule-ea1078c4a6be",
+      "raceDate": "2026-12-05",
+      "urls": [
+        "https://energyrun.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-0a1966a96d32",
+      "raceDate": "2026-12-05",
+      "urls": [
+        "https://mara1080.com/event/ccf77de8-1b14-4170-afcb-c2eeaee1a78d/guide/overview"
+      ]
+    },
+    {
+      "eventId": "schedule-33d3fa60ce84",
+      "raceDate": "2026-12-05",
+      "urls": [
+        "https://www.hangangmarathon.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-131f1dcdf8d7",
+      "raceDate": "2026-12-06",
+      "urls": [
+        "https://www.busanmarathon.com/"
+      ]
+    },
+    {
+      "eventId": "schedule-2de9b74c248d",
+      "raceDate": "2026-12-06",
+      "urls": [
+        "https://roadracing.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-5949f7d5a414",
+      "raceDate": "2026-12-12",
+      "urls": [
+        "https://gibukidsrun.kr/",
+        "https://gibukidsrun.kr/marathon_application/app2.asp"
+      ]
+    },
+    {
+      "eventId": "schedule-221be78438dc",
+      "raceDate": "2026-12-13",
+      "urls": [
+        "https://www.jinma.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-ee939bf465d5",
+      "raceDate": "2026-12-26",
+      "urls": [
+        "https://k-run.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-4414899b84fb",
+      "raceDate": "2027-02-14",
+      "urls": [
+        "https://dkrun.co.kr/"
+      ]
+    },
+    {
+      "eventId": "schedule-4630dd861837",
+      "raceDate": "2027-03-21",
+      "urls": [
+        "https://seoul-marathon.com/96",
+        "https://seoul-marathon.com/",
+        "https://seoul-marathon.com/95"
+      ]
+    },
+    {
+      "eventId": "schedule-c0e2f01b26d3",
+      "raceDate": "2027-04-18",
+      "urls": [
+        "https://www.badarun.co.kr/"
+      ]
+    }
+  ]
+}

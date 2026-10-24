@@ -6,8 +6,9 @@ import {resolve} from 'node:path';
 import {createHash} from 'node:crypto';
 import {setTimeout as delay} from 'node:timers/promises';
 import {buildElevationProfile,elevationQueryPoints,elevationRouteGeometry,elevationRouteHash} from '../apps/mobile/assets/course-src/elevation-profile.mjs';
+import{readCourseBase,readCourseElevation}from'./course-metadata-inputs.mjs';
 
-const OUTPUT=new URL('../apps/mobile/domains/races/course-elevation.json',import.meta.url);
+const OUTPUT=new URL('../data/course-elevation.json',import.meta.url);
 const DATASET='srtm30m',DEM='https://api.opentopodata.org/v1/srtm30m';
 const OVERPASS='https://overpass-api.de/api/interpreter';
 const hash=text=>createHash('sha256').update(text).digest('hex');
@@ -134,9 +135,9 @@ export async function updateCourseElevation(args=process.argv.slice(2)) {
   const checking=args.includes('--check');
   if((args.includes('--offline')||checking)&&args.includes('--refresh'))throw Error('offline/check and refresh are mutually exclusive');
   if(checking&&args.includes('--stdout'))throw Error('--check prints a short summary only; do not combine with --stdout');
-  const courses=JSON.parse(await readFile(new URL('../apps/mobile/domains/races/course-examples.json',import.meta.url),'utf8')).filter(c=>c.sourceKind==='official-gpx');
+  const courses=(await readCourseBase()).courses.filter(c=>c.sourceKind==='official-gpx');
   if(!courses.length||new Set(courses.map(c=>c.id)).size!==courses.length||courses.some(c=>!c.id||!c.eventId||!/^\d{4}-\d{2}-\d{2}$/.test(c.raceDate??'')||!/^https:\/\//.test(c.sourceUrl??'')||!c.sourcePage||!c.checkedAt||!c.reuseStatus||!/^[a-f0-9]{64}$/.test(c.sourceSha256??'')||!elevationRouteGeometry(c)))throw Error('Approved official-GPX rows need unique IDs, edition, provenance, HTTPS URL, source SHA and valid geometry');
-  let previous;try{previous=JSON.parse(await readFile(OUTPUT,'utf8'));}catch{previous={};}
+  let previous;try{previous=(await readCourseElevation()).elevation;}catch(error){if(error.code!=='ENOENT')throw error;previous={};}
   if(checking){
     if(previous.schemaVersion!==1||!Array.isArray(previous.profiles))throw Error('Cached enrichment schema missing or invalid');
     for(const c of courses){const p=buildElevationProfile(c,previous.profiles.find(p=>p.courseId===c.id));if(!p.available)throw Error(`${c.id}: cached binding rejected: ${p.reason}`);}

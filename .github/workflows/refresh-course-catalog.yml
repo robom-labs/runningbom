@@ -1,19 +1,14 @@
-name: Refresh and publish verified course data only
-
+name: Bounded official course discovery and metadata-only publication
 on:
   schedule:
-    # Weekly source-bound DEM check. Stable terrain is not re-scraped every app visit.
-    - cron: '23 2 * * 1'
+    - cron: '17 */6 * * *'
   workflow_dispatch:
-
 permissions:
   contents: write
   pages: write
-
 concurrency:
   group: runningbom-data-writer
   cancel-in-progress: false
-
 jobs:
   course-data:
     concurrency:
@@ -31,61 +26,78 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 22
-      - name: Publication contracts before any source collection
-        run: node --test scripts/course-data-publication.test.mjs scripts/course-source-refresh-core.test.mjs
-      - name: Refresh same-edition approved GPX in CI working checkout only
-        run: node scripts/refresh-approved-course-sources.mjs --write
-      - name: Bounded official-GPX elevation enrichment (no Overpass timeout loop)
-        run: node scripts/update-course-elevation.mjs --refresh --osm-api
-      - name: Generate and check independent course registry
+      - name: Install locked collector dependencies without package lifecycle scripts
+        run: npm ci --ignore-scripts
+      - name: Contracts and new-event lifecycle before collection
+        run: node --test scripts/course-discovery.test.mjs scripts/course-discovery-rejections.test.mjs scripts/course-metadata-inputs.test.mjs scripts/course-data-publication.test.mjs scripts/course-source-refresh-core.test.mjs
+      - name: Discover current seeds, rotating by persisted last actual attempt
+        # Cold-start works without the old447-request audit. All current IDs are classified;
+        # 64 total HTTP GETs/run and4/race INCLUDING robots+redirects. No image binaries committed.
+        run: node scripts/course-discover-sources.mjs --ci-staging --without-audit --live --max-requests 64 --write-index --accept-images --out-dir "$RUNNER_TEMP/course-discovery"
+      - name: Existing source-bound GPX refresh and DEM pipeline
         run: |
+          node scripts/refresh-approved-course-sources.mjs --write
+          node scripts/update-course-elevation.mjs --refresh --osm-api
           node scripts/update-course-elevation.mjs --check
+      - name: Generate SAME catalog courses plus verified slim pages
+        run: |
           node scripts/publish-course-catalog.mjs --remote-only
           node scripts/publish-course-catalog.mjs --remote-only --check
           node scripts/course-data-publication.mjs --check
-      - name: Preserve source and contract evidence
+          node --test scripts/course-catalog-pipeline.test.mjs
+      - name: Retain bounded receipts and quarantine reasons
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: course-source-and-registry-evidence
+          name: official-course-discovery-evidence
           path: |
-            apps/mobile/domains/races/course-elevation.json
+            ${{ runner.temp }}/course-discovery/coverage-candidate.json
+            ${{ runner.temp }}/course-discovery/course-image-acceptance.json
+            ${{ runner.temp }}/course-discovery/course-gpx-dem-handoff.json
+            data/course-source-index.json
+            data/course-source-seeds.json
+            data/course-base.json
+            data/course-elevation.json
             data/course-catalog.json
             data/course-catalog.manifest.json
           retention-days: 30
-          if-no-files-found: warn
-      - name: Persist only validated course pair on main
+      - name: Persist metadata against fresh main CAS, never overwrite another writer
         run: |
           set -euo pipefail
           gh api "repos/$GITHUB_REPOSITORY/pages" | node scripts/course-data-publication.mjs --assert-pages
           git config user.name robom-data-bot
           git config user.email actions@github.com
-          git add -- data/course-catalog.json data/course-catalog.manifest.json
-          test -z "$(git diff --cached --name-only | sed '/^data\/course-catalog\.json$/d; /^data\/course-catalog\.manifest\.json$/d')"
+          BASE=$(git rev-parse HEAD)
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASE"
+          git add -- data/course-base.json data/course-elevation.json data/course-approved-images.json data/course-source-index.json data/course-catalog.json data/course-catalog.manifest.json
+          test -z "$(git diff --cached --name-only | sed '/^data\/course-base\.json$/d; /^data\/course-elevation\.json$/d; /^data\/course-approved-images\.json$/d; /^data\/course-source-index\.json$/d; /^data\/course-catalog\.json$/d; /^data\/course-catalog\.manifest\.json$/d')"
           if ! git diff --cached --quiet; then
-            git commit -m "chore(data): source-bound course registry"
+            git commit -m "chore(data): validated official course images and pages [skip ci]"
             git push origin HEAD:main
           fi
-      - name: Overlay pair on CURRENT deployed site without changing app/binary files
+      - name: Overlay ONLY catalog pair onto latest gh-pages CAS
         run: |
           set -euo pipefail
           git fetch origin gh-pages
           SITE="$RUNNER_TEMP/course-existing-gh-pages"
-          git worktree add --detach "$SITE" origin/gh-pages
+          SITE_BASE=$(git rev-parse origin/gh-pages)
+          git worktree add --detach "$SITE" "$SITE_BASE"
           node scripts/course-data-publication.mjs --site-dir "$SITE"
           git -C "$SITE" add -- data/course-catalog.json data/course-catalog.manifest.json
           test -z "$(git -C "$SITE" diff --cached --name-only | sed '/^data\/course-catalog\.json$/d; /^data\/course-catalog\.manifest\.json$/d')"
+          git fetch origin gh-pages
+          test "$(git rev-parse origin/gh-pages)" = "$SITE_BASE"
           if ! git -C "$SITE" diff --cached --quiet; then
-            git -C "$SITE" commit -m "chore(data): publish course registry pair only"
+            git -C "$SITE" commit -m "chore(data): official course metadata pair only [skip ci]"
             git -C "$SITE" push origin HEAD:gh-pages
           fi
           gh api "repos/$GITHUB_REPOSITORY/pages" | node scripts/course-data-publication.mjs --assert-pages
           gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds" --jq '{status: .status}'
-      - name: Read back actual public course pair and preserved app bytes
+      - name: Actual public pair and preserved site-byte readback
         run: |
           for attempt in 1 2 3 4 5 6; do
             if node scripts/course-data-publication.mjs --verify-public --site-dir "$RUNNER_TEMP/course-existing-gh-pages"; then exit 0; fi
             sleep 20
           done
-          echo "Public readback failed. A queued Pages build is not success."
           exit 1

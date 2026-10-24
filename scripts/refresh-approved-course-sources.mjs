@@ -3,8 +3,9 @@ import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {lookup} from 'node:dns/promises';
 import {isIP} from 'node:net';
 import {assessOfficialCourseChange} from './course-source-refresh-core.mjs';
-const root=new URL('../',import.meta.url),input=new URL('apps/mobile/domains/races/course-examples.json',root);
-const courses=JSON.parse(await readFile(input,'utf8')),updates=[],failures=[];
+import{readCourseBase}from'./course-metadata-inputs.mjs';
+const root=new URL('../',import.meta.url),base=await readCourseBase(root),input=base.writeURL;
+const courses=base.courses,updates=[],failures=[];
 if(courses.filter(c=>c.sourceKind==='official-gpx').length>32)throw Error('Official source batch limit exceeded; last-good data retained');
 async function get(raw){
  const url=new URL(raw);url.hash='';
