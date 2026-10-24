@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-24T01:31:37.497Z",
-  "sourceSnapshotSha256": "b28350c02eafc4764c29ee7a4cb11e9b1c75b96f2c61710527b4a36ab75aa002",
+  "generatedAt": "2026-10-24T01:43:06.065Z",
+  "sourceSnapshotSha256": "c4695dcebed5cd40aadcdcfa0e6fffb15ee58fb70e795ace8d5ef3c40ef45c38",
   "sourceRecordCount": 106,
   "records": [
     {
@@ -17,6 +17,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:41:48.676Z",
       "approvedCourseIds": []
     },
     {
@@ -32,16 +34,16 @@
         "https://marathon.newsis.com/marathon/code/8049/",
         "https://marathon.newsis.com/"
       ],
-      "status": "verified-course-page",
+      "status": "verified-event-page",
       "resolvedOfficialPages": [
         {
           "url": "https://marathon.newsis.com/marathon/code/8049/",
           "pageKind": "event",
           "verified": true,
           "title": "2026 뉴시스 바다마라톤",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
+          "checkedAt": "2026-10-24T01:41:49.760Z",
           "sha256": "913f03a69a347b1d74fe898a664805d67f7e5abdb63d971d3463cad89c6864a8",
-          "verification": "hash-verified-saved-audit",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-24",
@@ -166,6 +168,39 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [
+        {
+          "eventId": "schedule-4d07153f4ae8",
+          "raceDate": "2026-10-24",
+          "url": "https://marathon.newsis.com/marathon/code/8049/sub03-01.php",
+          "label": "코스안내",
+          "anchorURL": "https://marathon.newsis.com/marathon/code/8049/",
+          "anchorSha256": "913f03a69a347b1d74fe898a664805d67f7e5abdb63d971d3463cad89c6864a8",
+          "seedURL": "https://marathon.newsis.com/marathon/code/8049/",
+          "checkedAt": "2026-10-24T01:41:49.760Z"
+        },
+        {
+          "eventId": "schedule-4d07153f4ae8",
+          "raceDate": "2026-10-24",
+          "url": "https://marathon.newsis.com/marathon/code/8049/sub03-04.php",
+          "label": "전체코스도",
+          "anchorURL": "https://marathon.newsis.com/marathon/code/8049/",
+          "anchorSha256": "913f03a69a347b1d74fe898a664805d67f7e5abdb63d971d3463cad89c6864a8",
+          "seedURL": "https://marathon.newsis.com/marathon/code/8049/",
+          "checkedAt": "2026-10-24T01:41:49.760Z"
+        },
+        {
+          "eventId": "schedule-4d07153f4ae8",
+          "raceDate": "2026-10-24",
+          "url": "https://marathon.newsis.com/marathon/code/8049/sub01-01.php",
+          "label": "대회안내",
+          "anchorURL": "https://marathon.newsis.com/marathon/code/8049/",
+          "anchorSha256": "913f03a69a347b1d74fe898a664805d67f7e5abdb63d971d3463cad89c6864a8",
+          "seedURL": "https://marathon.newsis.com/marathon/code/8049/",
+          "checkedAt": "2026-10-24T01:41:49.760Z"
+        }
+      ],
+      "lastAttemptAt": "2026-10-24T01:41:51.065Z",
       "approvedCourseIds": [
         "v53-image-schedule-4d07153f4ae8-20261024-10km",
         "v53-image-schedule-4d07153f4ae8-20261024-5km"
@@ -184,6 +219,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:41:51.268Z",
       "approvedCourseIds": []
     },
     {
@@ -199,6 +236,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:41:51.922Z",
       "approvedCourseIds": []
     },
     {
@@ -219,9 +258,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "2026 익산 기부런 대회",
-          "checkedAt": "2026-10-23T23:52:08.627Z",
-          "sha256": "ff52c3d37b94a070c4db6a76c653585f2edbc89ea4c5bebe7b072a9823d93f2c",
-          "verification": "hash-verified-saved-audit",
+          "checkedAt": "2026-10-24T01:41:54.129Z",
+          "sha256": "20572688b2239fc8cf031b2be5c642c3398caa2c3be152526d3cbe29a9233c74",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-24",
@@ -244,9 +283,9 @@
           "pageKind": "course",
           "verified": true,
           "title": "2026 익산 기부런 대회",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
-          "sha256": "3445beeaa0a3b51ce17296052455e46b961c9505f51f1001300b22c0936598e7",
-          "verification": "hash-verified-saved-audit",
+          "checkedAt": "2026-10-24T01:41:55.365Z",
+          "sha256": "bbaa2c48fd53b301b39f15190b7ebd1fca932a2e1564699eeea6530e09a228fe",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-24",
@@ -269,9 +308,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "2026 익산 기부런 대회",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
-          "sha256": "103fbd011f168b453726175b878cbbc59d12a637e4cd3bfc4e94b51d18636b03",
-          "verification": "hash-verified-saved-audit",
+          "checkedAt": "2026-10-24T01:41:56.199Z",
+          "sha256": "9bc3eeaa5421a555cdea880351b3c4999d87c7302b38e187ab0864a168c7ca75",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-24",
@@ -290,6 +329,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:41:56.221Z",
       "approvedCourseIds": []
     },
     {
@@ -305,6 +346,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:06.696Z",
       "approvedCourseIds": []
     },
     {
@@ -325,9 +368,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "2026 하남 어텀 패밀리 마라톤2026 하남 어텀 패밀리 마라톤하남 어텀 패밀리 마라톤 대회 취소 안내",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
+          "checkedAt": "2026-10-24T01:42:08.610Z",
           "sha256": "72e8edf1171b4c4d8b50c0920da044b0aca8c7021b3a4b36ed9f40365f826c59",
-          "verification": "hash-verified-saved-audit",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-24",
@@ -351,9 +394,9 @@
           "pageKind": "course",
           "verified": true,
           "title": "2026 하남 어텀 패밀리 마라톤2026 서울런",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
+          "checkedAt": "2026-10-24T01:42:09.096Z",
           "sha256": "8408b02b15137d946ca908bf4bcc69b22ec16adfd3e37073076a15e669706e52",
-          "verification": "hash-verified-saved-audit",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-24",
@@ -477,6 +520,59 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [
+        {
+          "eventId": "schedule-57b64bb58f18",
+          "raceDate": "2026-10-24",
+          "url": "https://hnrun.kr/info/course.asp",
+          "label": "코스안내",
+          "anchorURL": "https://hnrun.kr/info/course.asp",
+          "anchorSha256": "8408b02b15137d946ca908bf4bcc69b22ec16adfd3e37073076a15e669706e52",
+          "seedURL": "https://hnrun.kr/",
+          "checkedAt": "2026-10-24T01:42:09.096Z"
+        },
+        {
+          "eventId": "schedule-57b64bb58f18",
+          "raceDate": "2026-10-24",
+          "url": "https://hnrun.kr/info/",
+          "label": "대회안내",
+          "anchorURL": "https://hnrun.kr/",
+          "anchorSha256": "72e8edf1171b4c4d8b50c0920da044b0aca8c7021b3a4b36ed9f40365f826c59",
+          "seedURL": "https://hnrun.kr/",
+          "checkedAt": "2026-10-24T01:42:08.610Z"
+        },
+        {
+          "eventId": "schedule-57b64bb58f18",
+          "raceDate": "2026-10-24",
+          "url": "https://hnrun.kr/info/invite.asp",
+          "label": "인사말",
+          "anchorURL": "https://hnrun.kr/",
+          "anchorSha256": "72e8edf1171b4c4d8b50c0920da044b0aca8c7021b3a4b36ed9f40365f826c59",
+          "seedURL": "https://hnrun.kr/",
+          "checkedAt": "2026-10-24T01:42:08.610Z"
+        },
+        {
+          "eventId": "schedule-57b64bb58f18",
+          "raceDate": "2026-10-24",
+          "url": "https://hnrun.kr/info/notice.asp",
+          "label": "참가유의사항",
+          "anchorURL": "https://hnrun.kr/",
+          "anchorSha256": "72e8edf1171b4c4d8b50c0920da044b0aca8c7021b3a4b36ed9f40365f826c59",
+          "seedURL": "https://hnrun.kr/",
+          "checkedAt": "2026-10-24T01:42:08.610Z"
+        },
+        {
+          "eventId": "schedule-57b64bb58f18",
+          "raceDate": "2026-10-24",
+          "url": "https://hnrun.kr/info/location.asp",
+          "label": "대회장 찾아가기",
+          "anchorURL": "https://hnrun.kr/",
+          "anchorSha256": "72e8edf1171b4c4d8b50c0920da044b0aca8c7021b3a4b36ed9f40365f826c59",
+          "seedURL": "https://hnrun.kr/",
+          "checkedAt": "2026-10-24T01:42:08.610Z"
+        }
+      ],
+      "lastAttemptAt": "2026-10-24T01:42:09.889Z",
       "approvedCourseIds": [
         "v53-image-schedule-57b64bb58f18-20261024-5km",
         "v53-image-schedule-57b64bb58f18-20261024-10km"
@@ -500,9 +596,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "2026 한강런2026 한강런",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
+          "checkedAt": "2026-10-24T01:42:11.775Z",
           "sha256": "7408e0714a4ff105041225f535f2d52eb2ef138b80e3d9e0502b668787d9686b",
-          "verification": "hash-verified-saved-audit",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-24",
@@ -524,9 +620,9 @@
           "pageKind": "course",
           "verified": true,
           "title": "2026 한강런2026 마스터즈 하프 마라톤",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
+          "checkedAt": "2026-10-24T01:42:12.117Z",
           "sha256": "d21662db6d82f07cfb401dd31b8e6688b5ad3110be6cd0eff1c95b767732a478",
-          "verification": "hash-verified-saved-audit",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-24",
@@ -640,6 +736,49 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [
+        {
+          "eventId": "schedule-5f195091250b",
+          "raceDate": "2026-10-24",
+          "url": "https://hgrun.kr/info/",
+          "label": "대회안내",
+          "anchorURL": "https://hgrun.kr/",
+          "anchorSha256": "7408e0714a4ff105041225f535f2d52eb2ef138b80e3d9e0502b668787d9686b",
+          "seedURL": "https://hgrun.kr/",
+          "checkedAt": "2026-10-24T01:42:11.775Z"
+        },
+        {
+          "eventId": "schedule-5f195091250b",
+          "raceDate": "2026-10-24",
+          "url": "https://hgrun.kr/info/invite.asp",
+          "label": "인사말",
+          "anchorURL": "https://hgrun.kr/",
+          "anchorSha256": "7408e0714a4ff105041225f535f2d52eb2ef138b80e3d9e0502b668787d9686b",
+          "seedURL": "https://hgrun.kr/",
+          "checkedAt": "2026-10-24T01:42:11.775Z"
+        },
+        {
+          "eventId": "schedule-5f195091250b",
+          "raceDate": "2026-10-24",
+          "url": "https://hgrun.kr/info/notice.asp",
+          "label": "참가유의사항",
+          "anchorURL": "https://hgrun.kr/",
+          "anchorSha256": "7408e0714a4ff105041225f535f2d52eb2ef138b80e3d9e0502b668787d9686b",
+          "seedURL": "https://hgrun.kr/",
+          "checkedAt": "2026-10-24T01:42:11.775Z"
+        },
+        {
+          "eventId": "schedule-5f195091250b",
+          "raceDate": "2026-10-24",
+          "url": "https://hgrun.kr/info/location.asp",
+          "label": "대회장 찾아가기",
+          "anchorURL": "https://hgrun.kr/",
+          "anchorSha256": "7408e0714a4ff105041225f535f2d52eb2ef138b80e3d9e0502b668787d9686b",
+          "seedURL": "https://hgrun.kr/",
+          "checkedAt": "2026-10-24T01:42:11.775Z"
+        }
+      ],
+      "lastAttemptAt": "2026-10-24T01:42:13.044Z",
       "approvedCourseIds": [
         "v53-image-schedule-5f195091250b-20261024-5km",
         "v53-image-schedule-5f195091250b-20261024-10km"
@@ -659,6 +798,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:16.444Z",
       "approvedCourseIds": []
     },
     {
@@ -679,9 +820,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "네이버웍스와 함께하는 세종런 26",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
-          "sha256": "3689e80258aef6c807b99973f9fdadc663e60e795edc08f8971f8aaf5b3c645d",
-          "verification": "hash-verified-saved-audit",
+          "checkedAt": "2026-10-24T01:42:18.220Z",
+          "sha256": "da175ef0a1d5eef8a3741c5fe6c617e16db825e6518678dd46f15c91655ed23f",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-24",
@@ -693,7 +834,7 @@
               "세종런",
               "26"
             ],
-            "excerpt": "00 후 자동으로 페이지가 초기화됩니다. 계속 이용하기 소개 코스&일정 기념품 참가비 자주 묻는 질문 | 신청조회 소개 코스&일정 기념품 참가비 자주 묻는 질문 오시는길 신청조회 2026년 10월 24일 토요일세종중앙공원 도시축제마당 일의 여유, 달리는 즐거움 네이버웍스와 함께하는 세종런 2026 세종 스포츠 축제 1부 이벤트로 진행됩니다 2026년 10월 24일 토요일 오전 9시 출발 세종중앙공원 도시축제마당 | 5K · 10K 코스 2가지 코스와일정을 체크하세요 5KM - Connect Course 1도시축제마당 → 2이응다리 → 3도시축제마당 10KM - Boo"
+            "excerpt": "페이지가 초기화됩니다. 계속 이용하기 소개 코스&일정 기념품 참가비 자주 묻는 질문 | 신청조회 기록조회 소개 코스&일정 기념품 참가비 자주 묻는 질문 오시는길 신청조회 기록조회 2026년 10월 24일 토요일세종중앙공원 도시축제마당 일의 여유, 달리는 즐거움 네이버웍스와 함께하는 세종런 2026 세종 스포츠 축제 1부 이벤트로 진행됩니다 2026년 10월 24일 토요일 오전 9시 출발 세종중앙공원 도시축제마당 | 5K · 10K 코스 2가지 코스와일정을 체크하세요 5KM - Connect Course 1도시축제마당 → 2이응다리 → 3도시축제마당 10KM - Boo"
           },
           "seedURL": "https://sejongrun26.com/",
           "declaredBy": null,
@@ -701,6 +842,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:19.457Z",
       "approvedCourseIds": [
         "v53-image-schedule-4c1a70609360-20261024-5km",
         "v53-image-schedule-4c1a70609360-20261024-10km"
@@ -720,6 +863,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:19.997Z",
       "approvedCourseIds": []
     },
     {
@@ -734,6 +879,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:30.695Z",
       "approvedCourseIds": []
     },
     {
@@ -754,9 +901,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "프리덤 워크 & 런 2026",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
+          "checkedAt": "2026-10-24T01:42:31.750Z",
           "sha256": "332c6cc0f064691484afc8677b682995ebf698ea2ab1211e50cd280eece2103d",
-          "verification": "hash-verified-saved-audit",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-24",
@@ -775,6 +922,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:33.005Z",
       "approvedCourseIds": []
     },
     {
@@ -794,9 +943,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "프리덤 워크 & 런 2026",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
+          "checkedAt": "2026-10-24T01:42:31.750Z",
           "sha256": "332c6cc0f064691484afc8677b682995ebf698ea2ab1211e50cd280eece2103d",
-          "verification": "hash-verified-saved-audit",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-24",
@@ -816,6 +965,7 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -836,9 +986,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "2026 SBS RUN&MUSIC FESTIVAL in 안동",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
+          "checkedAt": "2026-10-24T01:42:34.512Z",
           "sha256": "92e004ec26c9a8c2d07f97e2adf34dd043e22e3279ebc91e64c6d79199e30a5d",
-          "verification": "hash-verified-saved-audit",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-24",
@@ -888,6 +1038,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:34.552Z",
       "approvedCourseIds": [
         "v53-image-schedule-1ef05642b1de-20261024-10km"
       ]
@@ -905,6 +1057,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:35.794Z",
       "approvedCourseIds": []
     },
     {
@@ -921,6 +1075,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:37.740Z",
       "approvedCourseIds": []
     },
     {
@@ -939,6 +1095,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:40.047Z",
       "approvedCourseIds": []
     },
     {
@@ -955,6 +1113,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:40.950Z",
       "approvedCourseIds": []
     },
     {
@@ -977,9 +1137,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "춘천마라톤 - 조선일보",
-          "checkedAt": "2026-10-23T23:52:09.476Z",
+          "checkedAt": "2026-10-24T01:42:41.840Z",
           "sha256": "a06ce210fe50315651671e5ecadfe943f1e77179190e4ad2203526973d7b94c6",
-          "verification": "hash-verified-saved-audit",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-25",
@@ -1003,9 +1163,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "춘천마라톤 - 조선일보",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
+          "checkedAt": "2026-10-24T01:42:43.242Z",
           "sha256": "42c8bb78412cb635caa12674c84471f4def088d8bec5ab04d1316b6d9852a7eb",
-          "verification": "hash-verified-saved-audit",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-25",
@@ -1025,9 +1185,9 @@
           }
         }
       ],
-      "approvedCourseIds": [
-        "chuncheon-full"
-      ]
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:43.245Z",
+      "approvedCourseIds": []
     },
     {
       "eventId": "schedule-2d32e8b79907",
@@ -1043,6 +1203,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:45.831Z",
       "approvedCourseIds": []
     },
     {
@@ -1064,9 +1226,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "제14회 정서진아라뱃길 전국마라톤대회",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
+          "checkedAt": "2026-10-24T01:42:48.250Z",
           "sha256": "a3f44ca881a82af79227121fcebb147d7a1e5ee3f14675a9295a2fc93a535419",
-          "verification": "hash-verified-saved-audit",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-25",
@@ -1088,9 +1250,9 @@
           "pageKind": "course",
           "verified": true,
           "title": "제14회 정서진아라뱃길 전국마라톤대회",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
+          "checkedAt": "2026-10-24T01:42:49.020Z",
           "sha256": "6907238294259d05584fd6b42e71ad9a2e6323243a95e72c3c62b3a69705ac09",
-          "verification": "hash-verified-saved-audit",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-25",
@@ -1114,9 +1276,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "제14회 정서진아라뱃길 전국마라톤대회",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
+          "checkedAt": "2026-10-24T01:42:49.766Z",
           "sha256": "c8e9e7a264af4b178aa9ca253674c3ed18aa0d81ada6e06b1b29a7e49b7674de",
-          "verification": "hash-verified-saved-audit",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-25",
@@ -1136,6 +1298,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:49.778Z",
       "approvedCourseIds": []
     },
     {
@@ -1152,6 +1316,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:42:51.303Z",
       "approvedCourseIds": []
     },
     {
@@ -1168,6 +1334,8 @@
       ],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:43:01.843Z",
       "approvedCourseIds": []
     },
     {
@@ -1189,9 +1357,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "2026 오티즘 레이스카운트업 카드",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
-          "sha256": "530a38dab0a1f152a136b2cbeb6c49cb064978d99fb86b4475143498f71ffc83",
-          "verification": "hash-verified-saved-audit",
+          "checkedAt": "2026-10-24T01:43:03.884Z",
+          "sha256": "93b923c2a26455df43f03659da32d573a8558c382f6da3a14a762cd6bc6b1bec",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-31",
@@ -1214,9 +1382,9 @@
           "pageKind": "event",
           "verified": true,
           "title": "2026 오티즘 레이스카운트업 카드",
-          "checkedAt": "2026-10-23T19:41:00.794Z",
-          "sha256": "b81f0e67881f8521238e8e4c413bb7fd01d9f9acb7658c553713e74fca7ca0f6",
-          "verification": "hash-verified-saved-audit",
+          "checkedAt": "2026-10-24T01:43:05.704Z",
+          "sha256": "7d6a5e915acc939aaba1d41938e249e7f32d08af2f2a1f32c00c6142195f32e3",
+          "verification": "live-public-https",
           "editionEvidence": {
             "accepted": true,
             "raceDate": "2026-10-31",
@@ -1235,6 +1403,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:43:05.815Z",
       "approvedCourseIds": []
     },
     {
@@ -1248,7 +1418,7 @@
         "https://taejongdaezombie.com/marathon/guide.php",
         "https://taejongdaezombie.com/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://taejongdaezombie.com/marathon/guide.php",
@@ -1403,7 +1573,9 @@
           ]
         }
       ],
+      "navigationFrontier": [],
       "lastAttemptAt": "2026-10-24T00:02:34.289Z",
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -1417,8 +1589,10 @@
       "seedUrls": [
         "https://runten.co.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
+      "lastAttemptAt": "2026-10-24T01:43:06.057Z",
       "approvedCourseIds": []
     },
     {
@@ -1433,8 +1607,9 @@
       "seedUrls": [
         "https://sunset.or.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -1449,8 +1624,9 @@
       "seedUrls": [
         "https://gcmarathon.co.kr/home/main.ubs"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -1464,8 +1640,9 @@
       "seedUrls": [
         "https://mara1080.com/event/d596615e-cf32-4f20-bdbe-13b633f51c4e"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -1479,8 +1656,9 @@
       "seedUrls": [
         "https://dmzopenrun.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -1494,7 +1672,7 @@
       "seedUrls": [
         "https://runable.me/product/17639?comp=3402"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://runable.me/product/17639?comp=3402",
@@ -1521,7 +1699,10 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
+        "jtbc-full",
         "v53-image-schedule-20532f12abdb-20261101-42p195km",
         "v53-image-schedule-20532f12abdb-20261101-10km"
       ]
@@ -1538,7 +1719,7 @@
         "https://runable.me/product/17639?comp=3402",
         "https://runable.me/"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://runable.me/product/17639?comp=3402",
@@ -1566,6 +1747,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "jtbc-full",
         "v53-image-jtbc-seoul-20261101-10km"
@@ -1584,7 +1767,7 @@
         "https://seoulrun.com/site/",
         "https://seoulrun.com/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://seoulrun.com/site/",
@@ -1752,6 +1935,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-328a80917223-20261101-21p0975km",
         "v53-image-schedule-328a80917223-20261101-10km",
@@ -1770,7 +1955,7 @@
       "seedUrls": [
         "https://www.humanrun.org/"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://www.humanrun.org/",
@@ -1797,6 +1982,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -1811,7 +1998,7 @@
       "seedUrls": [
         "https://www.djmarathon.co.kr/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://www.djmarathon.co.kr/",
@@ -1972,6 +2159,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-b3f6efa48181-20261101-10km",
         "v53-image-schedule-b3f6efa48181-20261101-5km"
@@ -1989,7 +2178,7 @@
       "seedUrls": [
         "https://legendtrail.kr/"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://legendtrail.kr/",
@@ -2019,6 +2208,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -2034,7 +2225,7 @@
         "https://runyc.kr/",
         "https://runyc.kr/apply"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://runyc.kr/",
@@ -2085,6 +2276,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-43b4c20e7358-20261107-10km",
         "v53-image-schedule-43b4c20e7358-20261107-5km"
@@ -2100,8 +2293,9 @@
       "seedUrls": [
         "https://runfesta.co.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -2115,7 +2309,7 @@
       "seedUrls": [
         "https://purmerun.com/"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://purmerun.com/",
@@ -2143,6 +2337,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-86b634b13a49-20261107-10km",
         "v53-image-schedule-86b634b13a49-20261107-3km"
@@ -2161,8 +2357,9 @@
       "seedUrls": [
         "https://mara1080.com/event/ffc023fc-7a54-4610-bdd6-2bb9a1028122"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -2176,8 +2373,9 @@
       "seedUrls": [
         "https://www.jinhaemarathon.co.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -2192,7 +2390,7 @@
       "seedUrls": [
         "https://kiccrace.com/hwasung1"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://kiccrace.com/hwasung1",
@@ -2301,6 +2499,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -2315,7 +2515,7 @@
       "seedUrls": [
         "https://1004.tbc.co.kr/"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://1004.tbc.co.kr/sub1_1.php",
@@ -2343,6 +2543,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-dadb0767110a-20261108-10km",
         "v53-image-schedule-dadb0767110a-20261108-5p4km"
@@ -2362,8 +2564,9 @@
         "https://www.gcsports.or.kr/bbs/board.php?bo_table=s4_1&wr_id=315",
         "https://gcrun.co.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -2378,7 +2581,7 @@
       "seedUrls": [
         "https://kw-marathon.com/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://kw-marathon.com/",
@@ -2487,6 +2690,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-4ef8821bc0f3-20261108-5km",
         "v53-image-schedule-4ef8821bc0f3-20261108-10km"
@@ -2504,7 +2709,7 @@
         "https://heritagerun.co.kr/",
         "https://heritagerun.co.kr/apply/index01.php"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://heritagerun.co.kr/",
@@ -2611,6 +2816,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-bd6cd6e2d155-20261108-10km",
         "v53-image-schedule-bd6cd6e2d155-20261108-5km"
@@ -2624,6 +2831,7 @@
       "seedUrls": [],
       "status": "unverified",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -2637,7 +2845,7 @@
       "seedUrls": [
         "https://k-marathon.or.kr/main.php"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://k-marathon.or.kr/main.php",
@@ -2718,6 +2926,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -2732,7 +2942,7 @@
         "https://ssecorun.co.kr/marathon/guide.php",
         "https://ssecorun.co.kr/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://ssecorun.co.kr/marathon/guide.php",
@@ -2872,7 +3082,9 @@
           ]
         }
       ],
+      "navigationFrontier": [],
       "lastAttemptAt": "2026-10-24T00:02:34.465Z",
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -2887,7 +3099,7 @@
       "seedUrls": [
         "https://cymarathon.imweb.me/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://cymarathon.imweb.me/",
@@ -2973,6 +3185,8 @@
           }
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -2988,8 +3202,9 @@
       "seedUrls": [
         "https://haenammarathon.co.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -3004,7 +3219,7 @@
       "seedUrls": [
         "https://xn--289a04w1ifu9bvwfi4b78e.com/resv/competition.php"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://xn--289a04w1ifu9bvwfi4b78e.com/resv/competition.php",
@@ -3031,6 +3246,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -3044,8 +3261,9 @@
       "seedUrls": [
         "https://www.songparunsportal.com/Home"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -3060,7 +3278,7 @@
       "seedUrls": [
         "https://asanmarathon.co.kr/"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://asanmarathon.co.kr/",
@@ -3140,7 +3358,9 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
       "lastAttemptAt": "2026-10-24T00:02:34.606Z",
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -3154,8 +3374,9 @@
       "seedUrls": [
         "https://xn--oi2bo7bn3do4es0j56afy5b.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -3170,8 +3391,9 @@
       "seedUrls": [
         "https://www.geumsungsan.co.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -3182,8 +3404,9 @@
       "seedUrls": [
         "https://www.xn--v69ax3ta679frncr7fk7d1bz7fc91d.com/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -3198,8 +3421,9 @@
       "seedUrls": [
         "https://www.leaveit.co.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -3214,8 +3438,9 @@
       "seedUrls": [
         "https://tongkeun-run.com/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -3229,7 +3454,7 @@
       "seedUrls": [
         "https://pohangmarathon.com/"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://pohangmarathon.com/",
@@ -3309,6 +3534,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-edc5d53f90d9-20261114-10km",
         "v53-image-schedule-edc5d53f90d9-20261114-5km"
@@ -3327,8 +3554,9 @@
       "seedUrls": [
         "https://sc-marathon.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -3343,7 +3571,7 @@
         "https://seoultongilrun.org/20",
         "https://seoultongilrun.org/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://seoultongilrun.org/20",
@@ -3422,7 +3650,9 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
       "lastAttemptAt": "2026-10-24T00:02:36.133Z",
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "discovered-939419c0c1010197-10k",
         "discovered-2cf5cb996516a254-5k"
@@ -3439,8 +3669,9 @@
       "seedUrls": [
         "https://runable.me/product/18977?comp=18962"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -3455,7 +3686,7 @@
         "https://nanumrun.or.kr/main.php",
         "https://nanumrun.or.kr/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://nanumrun.or.kr/main.php",
@@ -3616,6 +3847,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-22568bd194f5-20261115-15km",
         "v53-image-schedule-22568bd194f5-20261115-10km",
@@ -3635,8 +3868,9 @@
       "seedUrls": [
         "https://sonkeechungrun.com/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -3651,7 +3885,7 @@
       "seedUrls": [
         "https://marathon.ihalla.com/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://marathon.ihalla.com/",
@@ -3730,6 +3964,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -3742,7 +3978,7 @@
       "seedUrls": [
         "https://www.fila.co.kr/pages/fila-run-espresso-10k-seoul"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://www.fila.co.kr/pages/fila-run-espresso-10k-seoul",
@@ -3771,6 +4007,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -3785,7 +4023,7 @@
         "https://www.mbn-seoulmarathon.com/",
         "https://mbn-seoulmarathon.com/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://www.mbn-seoulmarathon.com/",
@@ -3813,6 +4051,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "mbn-half",
         "mbn-10k",
@@ -3830,7 +4070,7 @@
       "seedUrls": [
         "https://www.cwaaf.kr/bbs/board.php?bo_table=rally&wr_id=3"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://www.cwaaf.kr/bbs/board.php?bo_table=rally&wr_id=3",
@@ -3859,6 +4099,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -3873,7 +4115,7 @@
         "https://jgmrun.com/",
         "https://jgmrun.com/marathon_application/app2.asp"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://jgmrun.com/",
@@ -4002,6 +4244,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-8863d26955b1-20261115-10km",
         "v53-image-schedule-8863d26955b1-20261115-5km",
@@ -4018,7 +4262,7 @@
       "seedUrls": [
         "https://happytrailrun.com/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://happytrailrun.com/",
@@ -4182,6 +4426,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -4196,8 +4442,9 @@
       "seedUrls": [
         "https://www.gcrun.com/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -4210,8 +4457,9 @@
       "seedUrls": [
         "https://koreatrail.net/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -4227,8 +4475,9 @@
       "seedUrls": [
         "https://www.mara1080.com/event/c8dc2c22-a83a-4743-9e34-c884e9809dbb"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -4243,8 +4492,9 @@
       "seedUrls": [
         "https://kjmarathon.com/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -4258,7 +4508,7 @@
       "seedUrls": [
         "https://sjrun.com/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://sjrun.com/",
@@ -4361,7 +4611,9 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
       "lastAttemptAt": "2026-10-24T00:02:36.285Z",
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -4375,7 +4627,7 @@
       "seedUrls": [
         "https://www.cuk-sports.com/"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://www.cuk-sports.com/",
@@ -4403,6 +4655,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -4417,7 +4671,7 @@
       "seedUrls": [
         "https://xn--q20bn3kn1bg9oekd84a785cnfg.kr/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://xn--q20bn3kn1bg9oekd84a785cnfg.kr/",
@@ -4551,6 +4805,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-ecd21c0a09f3-20261115-10km",
         "v53-image-schedule-ecd21c0a09f3-20261115-5km"
@@ -4569,8 +4825,9 @@
         "https://rocknrun.kr/2026NTR_INFO",
         "https://rocknrun.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -4584,7 +4841,7 @@
       "seedUrls": [
         "https://urfesta.com/"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://urfesta.com/",
@@ -4613,6 +4870,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-320f17393a81-20261121-10km",
         "v54-image-schedule-320f17393a81-20261121-10k-couple",
@@ -4631,8 +4890,9 @@
       "seedUrls": [
         "https://www.djrun.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -4647,7 +4907,7 @@
       "seedUrls": [
         "https://mujumarathon.com/"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://mujumarathon.com/",
@@ -4698,6 +4958,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -4712,7 +4974,7 @@
       "seedUrls": [
         "https://ssrun.kr/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://ssrun.kr/",
@@ -4889,6 +5151,8 @@
           }
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-1dbe478388d1-20261122-21p0975km",
         "v53-image-schedule-1dbe478388d1-20261122-10km",
@@ -4907,7 +5171,7 @@
       "seedUrls": [
         "https://incheonmarathon.or.kr/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://incheonmarathon.or.kr/",
@@ -4995,7 +5259,9 @@
           }
         }
       ],
+      "navigationFrontier": [],
       "lastAttemptAt": "2026-10-24T00:02:37.454Z",
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "discovered-c42d5cf8d84d6c6b-full"
       ]
@@ -5011,7 +5277,7 @@
       "seedUrls": [
         "https://peace-run.kr/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://peace-run.kr/",
@@ -5158,7 +5424,9 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
       "lastAttemptAt": "2026-10-24T00:02:38.975Z",
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "discovered-823abe3ccad88082-5k",
         "discovered-77b147b2fc6cc808-10k"
@@ -5174,8 +5442,9 @@
       "seedUrls": [
         "https://rocknrun.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -5192,8 +5461,9 @@
         "https://mara1080.com/event/c2cec79b-c38a-4832-bf4f-7ecb499cdcd5",
         "https://mara1080.com/event/c2cec79b-c38a-4832-bf4f-7ecb499cdcd5/guide/overview"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -5207,8 +5477,9 @@
       "seedUrls": [
         "https://www.peacerun.kr/marathon/code/8051/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -5222,8 +5493,9 @@
       "seedUrls": [
         "https://mokyokrun.shop/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -5238,7 +5510,7 @@
       "seedUrls": [
         "https://sh-run.co.kr/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://sh-run.co.kr/",
@@ -5347,6 +5619,8 @@
           }
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -5360,8 +5634,9 @@
       "seedUrls": [
         "https://www.xn--ob0bs4k27c8xc9da633vynbkyur2ft5hckl.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -5375,7 +5650,7 @@
       "seedUrls": [
         "https://ajgrun.kr/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://ajgrun.kr/",
@@ -5528,7 +5803,9 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
       "lastAttemptAt": "2026-10-24T00:02:40.598Z",
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "discovered-da0106bc81a79553-5k",
         "discovered-b989ab565e0463ab-10k"
@@ -5546,7 +5823,7 @@
       "seedUrls": [
         "https://runwithus.co.kr/index"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://runwithus.co.kr/index",
@@ -5695,7 +5972,9 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
       "lastAttemptAt": "2026-10-24T00:02:42.300Z",
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "discovered-23eac5a7877732d9-5k",
         "discovered-d4db8ae51772c16b-10k"
@@ -5712,8 +5991,9 @@
       "seedUrls": [
         "https://mara1080.com/event/df4b4e7d-4fbc-4843-858c-f15c032e92cb"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -5727,7 +6007,7 @@
       "seedUrls": [
         "https://energyrun.kr/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://energyrun.kr/",
@@ -5892,6 +6172,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-ea1078c4a6be-20261205-5km",
         "v53-image-schedule-ea1078c4a6be-20261205-10km"
@@ -5907,8 +6189,9 @@
       "seedUrls": [
         "https://mara1080.com/event/ccf77de8-1b14-4170-afcb-c2eeaee1a78d/guide/overview"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -5923,8 +6206,9 @@
       "seedUrls": [
         "https://www.hangangmarathon.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -5938,7 +6222,7 @@
       "seedUrls": [
         "https://www.busanmarathon.com/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://www.busanmarathon.com/",
@@ -6051,6 +6335,8 @@
           }
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-131f1dcdf8d7-20261206-42p195km",
         "v53-image-schedule-131f1dcdf8d7-20261206-10km"
@@ -6067,8 +6353,9 @@
       "seedUrls": [
         "https://roadracing.co.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -6083,7 +6370,7 @@
         "https://gibukidsrun.kr/",
         "https://gibukidsrun.kr/marathon_application/app2.asp"
       ],
-      "status": "verified-event-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://gibukidsrun.kr/",
@@ -6167,6 +6454,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-5949f7d5a414-20261212-10km",
         "v53-image-schedule-5949f7d5a414-20261212-5km"
@@ -6185,7 +6474,7 @@
       "seedUrls": [
         "https://www.jinma.co.kr/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://www.jinma.co.kr/ko/",
@@ -6378,6 +6667,7 @@
           "checkedAt": "2026-10-24T01:15:25.422Z"
         }
       ],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "discovered-fe04e83a43084860-full",
         "discovered-b5a3e078c1874281-half",
@@ -6397,7 +6687,7 @@
       "seedUrls": [
         "https://k-run.kr/"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://k-run.kr/",
@@ -6556,6 +6846,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": [
         "v53-image-schedule-ee939bf465d5-20261226-5km",
         "v53-image-schedule-ee939bf465d5-20261226-10km"
@@ -6574,8 +6866,9 @@
       "seedUrls": [
         "https://dkrun.co.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     },
     {
@@ -6591,7 +6884,7 @@
         "https://seoul-marathon.com/",
         "https://seoul-marathon.com/95"
       ],
-      "status": "verified-course-page",
+      "status": "retained-last-good",
       "resolvedOfficialPages": [
         {
           "url": "https://seoul-marathon.com/96",
@@ -6668,6 +6961,8 @@
           "publishedDistanceKm": {}
         }
       ],
+      "navigationFrontier": [],
+      "lastAttemptStatus": "pending-budget",
       "approvedCourseIds": []
     },
     {
@@ -6682,8 +6977,9 @@
       "seedUrls": [
         "https://www.badarun.co.kr/"
       ],
-      "status": "unverified",
+      "status": "pending-budget",
       "resolvedOfficialPages": [],
+      "navigationFrontier": [],
       "approvedCourseIds": []
     }
   ]
