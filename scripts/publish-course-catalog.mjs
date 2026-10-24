@@ -13,7 +13,9 @@ const built=buildCourseCatalog({courses,elevation,index,races:races.races});
 const{revision,generatedAt}=built.catalog;
 // The same app-side contract is run by tests before deployment/installation.
 const text=built.text,manifest=built.manifestText;
-const files=[...(!process.argv.includes('--remote-only')?[['apps/mobile/domains/races/course-catalog.json',text]]:[]),['data/course-catalog.json',text],['data/course-catalog.manifest.json',manifest],['outputs/pushrun-site/data/course-catalog.json',text],['outputs/pushrun-site/data/course-catalog.manifest.json',manifest]];
 const check=process.argv.includes('--check');
+// A clean checkout has no generated preview directory. Remote-only checking
+// validates the authoritative pair; generation and non-remote checks retain previews.
+const files=[...(!process.argv.includes('--remote-only')?[['apps/mobile/domains/races/course-catalog.json',text]]:[]),['data/course-catalog.json',text],['data/course-catalog.manifest.json',manifest],...(!check||!process.argv.includes('--remote-only')?[['outputs/pushrun-site/data/course-catalog.json',text],['outputs/pushrun-site/data/course-catalog.manifest.json',manifest]]:[])];
 for(const [path,bytes] of files){const target=new URL(path,root);if(check){if(await readFile(target,'utf8')!==bytes)throw Error('Course publication drift: '+path);}else{await mkdir(new URL('./',target),{recursive:true});await writeFile(target,bytes);}}
 console.log(JSON.stringify({check,revision,courses:courses.length,pages:built.catalog.pages.length,quarantinedPages:built.quarantinedPages,profiles:elevation.profiles.length,bytes:Buffer.byteLength(text),remoteMutation:false}));

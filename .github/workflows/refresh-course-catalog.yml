@@ -29,7 +29,7 @@ jobs:
       - name: Install locked collector dependencies without package lifecycle scripts
         run: npm ci --ignore-scripts
       - name: Contracts and new-event lifecycle before collection
-        run: node --test scripts/course-discovery.test.mjs scripts/course-discovery-rejections.test.mjs scripts/course-metadata-inputs.test.mjs scripts/course-data-publication.test.mjs scripts/course-source-refresh-core.test.mjs
+        run: COURSE_REQUIRE_CLEAN_INSTALL=1 node --test scripts/course-discovery.test.mjs scripts/course-discovery-rejections.test.mjs scripts/course-metadata-inputs.test.mjs scripts/course-data-publication.test.mjs scripts/course-source-refresh-core.test.mjs scripts/course-meta-refresh.test.mjs scripts/course-tooling-dependencies.test.mjs scripts/course-discovery-frontier.test.mjs
       - name: Discover current seeds, rotating by persisted last actual attempt
         # Cold-start works without the old447-request audit. All current IDs are classified;
         # 64 total HTTP GETs/run and4/race INCLUDING robots+redirects. No image binaries committed.

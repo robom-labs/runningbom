@@ -75,9 +75,9 @@ export function officialPageKind(page,via={}){
 export function discoverDeclaredCourseAssets(race,page,{pageKind='event'}={}){
  const valid=disciplineKeys(race.distances),out=[],seen=new Set();
  const add=(item,kind)=>{
-  if(seen.has(item.url))return;seen.add(item.url);let decoded=item.url;try{decoded=decodeURIComponent(decoded);}catch{}
+  if(seen.has(item.url))return;let decoded=item.url;try{decoded=decodeURIComponent(decoded);}catch{}
   const own=clean(item.label+' '+(item.localHeading||'')+' '+decoded),context=clean(own+' '+item.context);
-  if(/시상|기념품|사이즈|싱글렛|티셔츠|제품.*스펙|주차|배치도|logo|mascot|banner|icon|button|btn|default_profile|avatar|size[-_ ]?(?:chart|guide)|scenery|course-card__media|course-guide-visual/i.test(context))return;
+  if(/시상|기념품|사이즈|싱글렛|티셔츠|제품.*스펙|주차|배치도|고저도|고도표|elevation[-_ ]?(?:profile|chart)|high[_-]and[_-]low|logo|mascot|banner|icon|button|btn|default_profile|avatar|size[-_ ]?(?:chart|guide)|scenery|course-card__media|course-guide-visual/i.test(context))return;
   const years=[...new URL(item.url).pathname.matchAll(/(?:^|\D)(20\d{2})(?!\d)/g)].map(m=>m[1]);
   if(years.some(y=>y!==race.raceDate.slice(0,4)))return;
   const explicit=kind==='gpx'||/코스도|코스\s*(?:안내|소개|지도)|경로도|course[-_ /]*(?:map|guide)|route[-_ /]*map|(?:^|[\/_. -])(?:course|route)(?:[\/_.? -]|\d)/i.test(context);
@@ -88,7 +88,7 @@ export function discoverDeclaredCourseAssets(race,page,{pageKind='event'}={}){
   fileText=fileText.replace(/[_-]/g,' ').replace(/\bhalf(?=\d)/i,'half ').replace(/\bfull(?=\d)/i,'full ');
   const filenameKeys=disciplineKeys(fileText),observed=filenameKeys.length?filenameKeys:localKeys.length?localKeys:pageKeys,keys=observed.filter(key=>valid.includes(key));
   const distanceKeys=keys.length?keys:valid.length===1&&!observed.length?valid:[];
-  out.push({...item,kind,distanceKeys,distanceEvidence:keys.length?'explicit-asset-caption-or-filename':distanceKeys.length?'single-official-discipline':'unresolved-no-guess',explicitCourseDeclaration:explicit||dedicated});
+  seen.add(item.url);out.push({...item,kind,distanceKeys,distanceEvidence:keys.length?'explicit-asset-caption-or-filename':distanceKeys.length?'single-official-discipline':'unresolved-no-guess',explicitCourseDeclaration:explicit||dedicated});
  };
  for(const l of page.links)if(/\.gpx(?:[?#]|$)/i.test(l.url))add(l,'gpx');else if(/\.(?:png|jpe?g|webp|gif)(?:[?#]|$)/i.test(l.url)&&courseWords.test(l.label+' '+l.url))add(l,'image');
  for(const i of page.images)add(i,'image');return out;
@@ -122,22 +122,43 @@ export function courseCandidate(race,asset,receipt,pageProof,assessment){
   sourcePage:pageProof.url,sourceUrl:asset.kind==='image'?asset.url:receipt.finalUrl,imageUrl:asset.kind==='image'?receipt.finalUrl:undefined,
   sourceSha256:receipt.sha256,checkedAt:date,segments:asset.kind==='image'?[]:assessment.segments,
   startLabel:'공식 코스 안내 참고',endLabel:'공식 코스 안내 참고',
-  notice:asset.kind==='image'?'공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음':'공식 GPX 원본 · 고도 보완 및 출처 결합 검증 전 후보',
+  notice:asset.kind==='image'?'공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음'+(['Half','Full'].includes(key)&&!pageProof.publishedDistanceKm?.[key]?' · 거리는 표준 종목 분류값이며 실측 경로 거리가 아님':''):'공식 GPX 원본 · 고도 보완 및 출처 결합 검증 전 후보',
   reuseStatus:'official-page-declared; redistribution-rights-not-established',
   discoveryEvidence:{schemaVersion:1,pageUrl:pageProof.url,pageKind:pageProof.pageKind,pageSha256:pageProof.sha256,pageCheckedAt:pageProof.checkedAt,
    editionEvidence:pageProof.editionEvidence,declaredUrl:asset.url,distanceEvidence:asset.distanceEvidence,distanceKey:key,declaredDistanceKeys:asset.distanceKeys,
+   distanceBasis:asset.kind==='image'&&['Half','Full'].includes(key)&&!pageProof.publishedDistanceKm?.[key]?'standard-category-nominal':'official-declared-numeric',
+   ...(asset.kind==='image'?{distanceIsMeasuredRoute:false,...(['Half','Full'].includes(key)&&!pageProof.publishedDistanceKm?.[key]?{nominalDistanceKm:distanceKm(key)}:{})}:{}),
    assetCheckedAt:receipt.checkedAt,explicitCourseDeclaration:asset.explicitCourseDeclaration,
    validatedRaster:asset.kind==='image'?{width:assessment.width,height:assessment.height,bytes:receipt.body.length,mime:receipt.contentType}:undefined,
    source:'deterministic-official-source-discovery',candidateOnly:true,requiresVisualReview:asset.kind==='image',requiresDEM:asset.kind==='gpx'}
  }));
 }
-export async function discoverRaceCourseSources(race,{seeds,get,knownPages=[],maxPages=7,maxAssets=5}){
- const seedOrigins=new Set(seeds.map(s=>new URL(s.url).origin)),queue=seeds.map(s=>({...s,depth:0})),seen=new Set(),assetsSeen=new Set(),pages=[],candidates=[],issues=[],proofs=new Map();
+export function validCourseNavigationFrontier(race,seeds,frontier,{now=Date.now()}={}){
+ if(!Array.isArray(frontier))return[];
+ return frontier.slice(0,16).filter(f=>{
+  const age=now-Date.parse(f?.checkedAt);if(f?.eventId!==race.id||f.raceDate!==race.raceDate||!seeds.some(s=>s.url===f.seedURL)||!Number.isFinite(age)||age< -300000||age>7*86400000||!/^[a-f0-9]{64}$/.test(f.anchorSha256||''))return false;
+  const urls=[f.url,f.anchorURL,f.seedURL].map(u=>safeCourseURL(u));return urls.every(Boolean)&&urls.every(u=>new URL(u).origin===new URL(urls[0]).origin)&&!forbidden.test(f.url+' '+(f.label||''));
+ });
+}
+export async function discoverRaceCourseSources(race,{seeds,get,knownPages=[],maxPages=7,maxAssets=5,frontier=[],now=Date.now()}){
+ const savedFrontier=validCourseNavigationFrontier(race,seeds,frontier,{now}),resume=savedFrontier[0],resumeTargets=resume?savedFrontier.filter(f=>f.anchorURL===resume.anchorURL):[];
+ const seedOrigins=new Set(seeds.map(s=>new URL(s.url).origin)),queue=resume?[{url:resume.anchorURL,seedURL:resume.seedURL,depth:0,resumeAnchor:true}]:seeds.map(s=>({...s,depth:0})),seen=new Set(),assetsSeen=new Set(),pages=[],candidates=[],issues=[],proofs=new Map(),pending=savedFrontier.filter(f=>f.anchorURL!==resume?.anchorURL);
+ // Frontier entries are navigation hints, NEVER cached edition/asset approval.
+ // The anchor and its declared child must be re-read and revalidated this run.
+ const defer=(url,label,proof)=>{
+  const anchor=proof.editionEvidence.method==='same-origin-direct-declaration'?proofs.get(proof.editionEvidence.inheritedFrom):proof;
+  if(!anchor?.verified||anchor.editionEvidence.method==='same-origin-direct-declaration'||new URL(url).origin!==new URL(anchor.url).origin)return;
+  if(pending.some(f=>f.url===url&&f.anchorURL===anchor.url))return;
+  if(pending.length>=16){issues.push({url,reason:'frontier-cap-quarantined-not-complete'});return;}
+  pending.push({eventId:race.id,raceDate:race.raceDate,url,label,anchorURL:anchor.url,anchorSha256:anchor.sha256,seedURL:anchor.seedURL,checkedAt:anchor.checkedAt});
+ };
  // Saved pages are still required to be reachable from current seeds by declared links.
  const saved=new Map(knownPages.map(p=>[p.url,p]));
  while(queue.length&&pages.length<maxPages){
   const item=queue.shift();if(seen.has(item.url))continue;seen.add(item.url);
-  const receipt=await get(item.url,{kind:'page'});if(!receipt.ok){pages.push({url:item.url,verified:false,reason:receipt.reason});continue;}
+  const receipt=await get(item.url,{kind:'page'});if(!receipt.ok){pages.push({url:item.url,verified:false,reason:receipt.reason});
+   const parent=proofs.get(item.declaredBy);if(parent&&/network-budget/.test(receipt.reason||''))defer(item.url,item.label,parent);
+   if(item.resumeAnchor){pending.push(...savedFrontier.filter(f=>!pending.some(p=>p.url===f.url&&p.anchorURL===f.anchorURL)).slice(0,16-pending.length));queue.push(...seeds.map(s=>({...s,depth:0})));}continue;}
   if(!receipt.body||courseDigest(receipt.body)!==receipt.sha256){pages.push({url:item.url,verified:false,reason:'page-receipt-integrity'});continue;}
   if(pages.some(p=>p.url===receipt.finalUrl))continue;
   if(!/html/i.test(receipt.contentType||'')){issues.push({url:item.url,reason:'non-html-official-page'});continue;}
@@ -149,26 +170,33 @@ export async function discoverRaceCourseSources(race,{seeds,get,knownPages=[],ma
   for(const m of page.text.matchAll(/(?:^|[^\d])(21[.,](?:0975|1)|42[.,](?:195|2))\s*(?:km|k|㎞|킬로미터)(?![a-z\d])/gi)){const km=Number(m[1].replace(',','.'));proof.publishedDistanceKm[km<30?'Half':'Full']=km;}
   if(kind==='course'&&page.selectedDistanceKeys?.length)proof.distanceLabels=page.selectedDistanceKeys.map(distanceLabel);
   pages.push(proof);if(accepted)proofs.set(page.url,proof);
-  for(const link of courseNavigations(page,seedOrigins).slice(0,8))if(item.depth<2)queue.push({...link,depth:item.depth+1,declaredBy:page.url,seedURL:item.seedURL||item.url});
+  if(item.resumeAnchor&&!edition.accepted){issues.push({url:page.url,reason:'frontier-anchor-current-exact-edition-required'});queue.push(...seeds.map(s=>({...s,depth:0})));continue;}
+  const navigations=courseNavigations(page,seedOrigins).slice(0,8);
+  if(item.resumeAnchor){const order=new Map(resumeTargets.map((f,i)=>[f.url,i]));navigations.sort((a,b)=>(order.get(a.url)??99)-(order.get(b.url)??99));
+   for(const f of resumeTargets)if(f.url!==page.url&&!navigations.some(l=>l.url===f.url))issues.push({url:f.url,reason:'frontier-target-no-longer-declared'});
+  }
+  for(const link of navigations)if(item.depth<2)queue.push({...link,depth:item.depth+1,declaredBy:page.url,seedURL:item.seedURL||item.url});
   // Reuse a cached approved/old-audit course page only when the same parent explicitly declares it.
   for(const link of page.links)if(saved.has(link.url)&&new URL(link.url).origin===new URL(page.url).origin&&item.depth<2&&!forbidden.test(link.url+' '+link.label))queue.push({...link,depth:item.depth+1,declaredBy:page.url,seedURL:item.seedURL||item.url});
   if(!accepted)continue;
   for(const asset of discoverDeclaredCourseAssets(race,page,{pageKind:kind})){
    if(!asset.distanceKeys.length){issues.push({url:asset.url,reason:'discipline-unresolved-no-request'});continue;}
-   if(asset.distanceKeys.some(key=>['Half','Full'].includes(key)&&!proof.publishedDistanceKm[key])){issues.push({url:asset.url,reason:'named-discipline-numeric-distance-not-published-no-guess'});continue;}
-   if(assetsSeen.has(asset.url)||assetsSeen.size>=maxAssets)continue;assetsSeen.add(asset.url);
-   try{const receipt=await get(asset.url,{kind:asset.kind});const assessment=assessCourseAsset(race,asset,receipt);candidates.push(...courseCandidate(race,asset,receipt,proof,assessment));}
+   if(asset.kind==='gpx'&&asset.distanceKeys.some(key=>['Half','Full'].includes(key)&&!proof.publishedDistanceKm[key])){issues.push({url:asset.url,reason:'gpx-named-discipline-numeric-distance-not-published-no-guess'});continue;}
+   if(assetsSeen.has(asset.url))continue;if(assetsSeen.size>=maxAssets){defer(page.url,item.label||page.title,proof);issues.push({url:asset.url,reason:'asset-cap-deferred-not-complete'});continue;}assetsSeen.add(asset.url);
+   try{const receipt=await get(asset.url,{kind:asset.kind});if(!receipt.ok&&/network-budget/.test(receipt.reason||'')){defer(page.url,item.label||page.title,proof);throw Error(receipt.reason);}const assessment=assessCourseAsset(race,asset,receipt);candidates.push(...courseCandidate(race,asset,receipt,proof,assessment));}
    catch(error){issues.push({url:asset.url,reason:error.message});}
   }
  }
  const verified=pages.filter(p=>p.verified),coursePages=verified.filter(p=>p.pageKind==='course');
- return{eventId:race.id,eventName:race.name,raceDate:race.raceDate,distanceKeys:disciplineKeys(race.distances),seedUrls:seeds.map(s=>s.url),status:coursePages.length?'verified-course-page':verified.length?'verified-event-page':pages.some(p=>p.reason==='network-budget')?'pending-budget':'unverified',resolvedOfficialPages:verified,observations:pages,issues,candidates};
+ for(const item of queue){const parent=proofs.get(item.declaredBy);if(parent)defer(item.url,item.label,parent);}
+ return{eventId:race.id,eventName:race.name,raceDate:race.raceDate,distanceKeys:disciplineKeys(race.distances),seedUrls:seeds.map(s=>s.url),status:coursePages.length?'verified-course-page':verified.length?'verified-event-page':pages.some(p=>/network-budget/.test(p.reason||''))?'pending-budget':'unverified',resolvedOfficialPages:verified,observations:pages,issues,candidates,navigationFrontier:pending.slice(0,16)};
 }
 export function mergeCourseDiscoveryIndex(previous,records,races){
  const current=new Map(races.map(r=>[r.id,r]));return records.map(row=>{const old=previous?.records?.find(p=>p.eventId===row.eventId&&p.raceDate===row.raceDate),race=current.get(row.eventId);
   if(!race||race.raceDate!==row.raceDate)throw Error('discovery index edition mismatch');
-  if(row.resolvedOfficialPages.length||!old?.resolvedOfficialPages?.length)return row;
+  if(!old?.resolvedOfficialPages?.length)return row;
   const retained=old.resolvedOfficialPages.filter(p=>p.verified&&row.seedUrls.includes(p.seedURL));
-  return retained.length?{...row,status:'retained-last-good',resolvedOfficialPages:retained,lastAttemptStatus:row.status}:row;
+  const combined=new Map(retained.map(p=>[p.url,p]));for(const p of row.resolvedOfficialPages)combined.set(p.url,p);
+  return retained.length?{...row,status:row.resolvedOfficialPages.length?row.status:'retained-last-good',resolvedOfficialPages:[...combined.values()],...(!row.resolvedOfficialPages.length?{lastAttemptStatus:row.status}:{})}:row;
  });
 }

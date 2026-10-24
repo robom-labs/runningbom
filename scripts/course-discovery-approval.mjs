@@ -9,6 +9,7 @@ export function approveDiscoveredImages(existing,candidates,races,{baseCourses=[
   else if(!e?.editionEvidence?.accepted||e.editionEvidence.raceDate!==c.raceDate||!safeCourseURL(e.pageUrl)||!safeCourseURL(c.imageUrl)||!safeCourseURL(c.sourceUrl))reason='official-exact-edition-proof-required';
   else if(!/^[a-f0-9]{64}$/.test(c.sourceSha256||'')||!/^[a-f0-9]{64}$/.test(e.pageSha256||'')||!e.validatedRaster||!e.explicitCourseDeclaration||e.pageKind!=='course')reason='declared-course-and-validated-raster-required';
   else if(key.length!==1||!disciplineKeys(race.distances).includes(key[0])||e.distanceKey!==key[0]||e.declaredDistanceKeys?.length!==1||e.distanceEvidence!=='explicit-asset-caption-or-filename')reason='explicit-matching-discipline-required';
+  else if(e.distanceBasis==='standard-category-nominal'&&(!['Half','Full'].includes(key[0])||e.nominalDistanceKm!==(key[0]==='Half'?21.0975:42.195)||c.officialDistanceKm!==e.nominalDistanceKm||e.distanceIsMeasuredRoute!==false))reason='invalid-image-category-nominal-metadata';
   else if(!Number.isFinite(Date.parse(e.assetCheckedAt))||now-Date.parse(e.assetCheckedAt)>7*86400000||Date.parse(e.assetCheckedAt)>now+300000)reason='asset-proof-expired';
   else if(c.segments?.length||!Number.isFinite(Date.parse(e.pageCheckedAt))||now-Date.parse(e.pageCheckedAt)>7*86400000||Date.parse(e.pageCheckedAt)>now+300000)reason='page-proof-expired-or-image-geometry';
   if(reason){quarantine.push({id:c.id,eventId:c.eventId,url:c.sourceUrl,reason});continue;}

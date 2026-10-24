@@ -1536,5 +1536,255 @@
       "requiresDEM": false,
       "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
     }
+  },
+  {
+    "id": "discovered-fe04e83a43084860-full",
+    "eventId": "schedule-221be78438dc",
+    "eventName": "제36회 진주마라톤",
+    "raceDate": "2026-12-13",
+    "distanceLabel": "풀코스",
+    "officialDistanceKm": 42.195,
+    "sourceKind": "official-image",
+    "sourcePage": "https://www.jinma.co.kr/ko/sub3_1.html",
+    "sourceUrl": "https://www.jinma.co.kr/ko/images/sub/course/full.jpg",
+    "imageUrl": "https://www.jinma.co.kr/ko/images/sub/course/full.jpg",
+    "sourceSha256": "de7efe23ace729675fa2268f2acabea204e5b8bcb7e4a6b20afbdfe6814b1dba",
+    "checkedAt": "2026-10-24",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음 · 거리는 표준 종목 분류값이며 실측 경로 거리가 아님",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://www.jinma.co.kr/ko/sub3_1.html",
+      "pageKind": "course",
+      "pageSha256": "a33f2fb54170951d856d2479e4cb969f864f13d12263a78a99465c271d914538",
+      "pageCheckedAt": "2026-10-24T01:15:41.461Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-12-13",
+        "year": "2026",
+        "matchedDate": "2026년 12월 13",
+        "method": "same-origin-direct-declaration",
+        "matchedWords": [
+          "진주"
+        ],
+        "excerpt": "[52830] 경상남도 진주시 동진로 415(충무공동, 진주종합경기장내) HOME 사이드메뉴 닫기 LOGIN 시민들이 만드는 풀뿌리 마라톤대회 제36회 진주마라톤대회 D-0일 일시2026년 12월 13일(일) 오전 09:30(출발) 장소진주노을공원(남강댐 물 문화관) 종목4개 종목(풀코스, 하프코스, 10km코스, 5km코스) 접수기간2026년 09월 14일(월) 10:00 ~ (5,000명 선착순) 주최진주시육상연맹 주관진주시육상연맹 record_voice_over인사말 assignment대회요강 emoji_events시상안내 warning_amber유의사항 car",
+        "inheritedFrom": "https://www.jinma.co.kr/ko/",
+        "directlyDeclared": true
+      },
+      "declaredUrl": "https://www.jinma.co.kr/ko/images/sub/course/full.jpg",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "Full",
+      "declaredDistanceKeys": [
+        "Full"
+      ],
+      "distanceBasis": "standard-category-nominal",
+      "distanceIsMeasuredRoute": false,
+      "nominalDistanceKm": 42.195,
+      "assetCheckedAt": "2026-10-24T01:24:51.517Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 2285,
+        "height": 3588,
+        "bytes": 1455399,
+        "mime": "image/jpeg"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "mainVisualApproval": "All four official course images inspected and approved by Main; image-only",
+      "assetMIMEBasis": "validated-JPEG-magic-and-decoder",
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
+  },
+  {
+    "id": "discovered-b5a3e078c1874281-half",
+    "eventId": "schedule-221be78438dc",
+    "eventName": "제36회 진주마라톤",
+    "raceDate": "2026-12-13",
+    "distanceLabel": "하프",
+    "officialDistanceKm": 21.0975,
+    "sourceKind": "official-image",
+    "sourcePage": "https://www.jinma.co.kr/ko/sub3_2.html",
+    "sourceUrl": "https://www.jinma.co.kr/ko/images/sub/course/half.jpg",
+    "imageUrl": "https://www.jinma.co.kr/ko/images/sub/course/half.jpg",
+    "sourceSha256": "1475b6b9edf839030844d367ebc2fbfce929299f473856fafc947f006c17497c",
+    "checkedAt": "2026-10-24",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음 · 거리는 표준 종목 분류값이며 실측 경로 거리가 아님",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://www.jinma.co.kr/ko/sub3_2.html",
+      "pageKind": "course",
+      "pageSha256": "5a4e3123a4f1b4147feb2b5123173fe6b748a660038a32db04664ec7a3411b5e",
+      "pageCheckedAt": "2026-10-24T01:15:41.697Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-12-13",
+        "year": "2026",
+        "matchedDate": "2026년 12월 13",
+        "method": "same-origin-direct-declaration",
+        "matchedWords": [
+          "진주"
+        ],
+        "excerpt": "[52830] 경상남도 진주시 동진로 415(충무공동, 진주종합경기장내) HOME 사이드메뉴 닫기 LOGIN 시민들이 만드는 풀뿌리 마라톤대회 제36회 진주마라톤대회 D-0일 일시2026년 12월 13일(일) 오전 09:30(출발) 장소진주노을공원(남강댐 물 문화관) 종목4개 종목(풀코스, 하프코스, 10km코스, 5km코스) 접수기간2026년 09월 14일(월) 10:00 ~ (5,000명 선착순) 주최진주시육상연맹 주관진주시육상연맹 record_voice_over인사말 assignment대회요강 emoji_events시상안내 warning_amber유의사항 car",
+        "inheritedFrom": "https://www.jinma.co.kr/ko/",
+        "directlyDeclared": true
+      },
+      "declaredUrl": "https://www.jinma.co.kr/ko/images/sub/course/half.jpg",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "Half",
+      "declaredDistanceKeys": [
+        "Half"
+      ],
+      "distanceBasis": "standard-category-nominal",
+      "distanceIsMeasuredRoute": false,
+      "nominalDistanceKm": 21.0975,
+      "assetCheckedAt": "2026-10-24T01:24:51.595Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 1999,
+        "height": 1340,
+        "bytes": 875432,
+        "mime": "image/jpeg"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "mainVisualApproval": "All four official course images inspected and approved by Main; image-only",
+      "assetMIMEBasis": "validated-JPEG-magic-and-decoder",
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
+  },
+  {
+    "id": "discovered-78825265cf80f7d9-10k",
+    "eventId": "schedule-221be78438dc",
+    "eventName": "제36회 진주마라톤",
+    "raceDate": "2026-12-13",
+    "distanceLabel": "10K",
+    "officialDistanceKm": 10,
+    "sourceKind": "official-image",
+    "sourcePage": "https://www.jinma.co.kr/ko/sub3_3.html",
+    "sourceUrl": "https://www.jinma.co.kr/ko/images/sub/course/10km.jpg",
+    "imageUrl": "https://www.jinma.co.kr/ko/images/sub/course/10km.jpg",
+    "sourceSha256": "bfa386fe0b72fe7112039b36c70d1f26fec4abb7cc0c36779f8c9a6f22cba74e",
+    "checkedAt": "2026-10-24",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://www.jinma.co.kr/ko/sub3_3.html",
+      "pageKind": "course",
+      "pageSha256": "4b32c931d0d74d6bb9d2eed4382b3caa075fbfae5617605bebb138f57649bbca",
+      "pageCheckedAt": "2026-10-24T01:15:59.994Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-12-13",
+        "year": "2026",
+        "matchedDate": "2026년 12월 13",
+        "method": "same-origin-direct-declaration",
+        "matchedWords": [
+          "진주"
+        ],
+        "excerpt": "[52830] 경상남도 진주시 동진로 415(충무공동, 진주종합경기장내) HOME 사이드메뉴 닫기 LOGIN 시민들이 만드는 풀뿌리 마라톤대회 제36회 진주마라톤대회 D-0일 일시2026년 12월 13일(일) 오전 09:30(출발) 장소진주노을공원(남강댐 물 문화관) 종목4개 종목(풀코스, 하프코스, 10km코스, 5km코스) 접수기간2026년 09월 14일(월) 10:00 ~ (5,000명 선착순) 주최진주시육상연맹 주관진주시육상연맹 record_voice_over인사말 assignment대회요강 emoji_events시상안내 warning_amber유의사항 car",
+        "inheritedFrom": "https://www.jinma.co.kr/ko/",
+        "directlyDeclared": true
+      },
+      "declaredUrl": "https://www.jinma.co.kr/ko/images/sub/course/10km.jpg",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "10K",
+      "declaredDistanceKeys": [
+        "10K"
+      ],
+      "distanceBasis": "official-declared-numeric",
+      "distanceIsMeasuredRoute": false,
+      "assetCheckedAt": "2026-10-24T01:24:51.623Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 1925,
+        "height": 1262,
+        "bytes": 696622,
+        "mime": "image/jpeg"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "mainVisualApproval": "All four official course images inspected and approved by Main; image-only",
+      "assetMIMEBasis": "validated-JPEG-magic-and-decoder",
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
+  },
+  {
+    "id": "discovered-8bc87ad8db7d6e6b-5k",
+    "eventId": "schedule-221be78438dc",
+    "eventName": "제36회 진주마라톤",
+    "raceDate": "2026-12-13",
+    "distanceLabel": "5K",
+    "officialDistanceKm": 5,
+    "sourceKind": "official-image",
+    "sourcePage": "https://www.jinma.co.kr/ko/sub3_4.html",
+    "sourceUrl": "https://www.jinma.co.kr/ko/images/sub/course/5km.jpg",
+    "imageUrl": "https://www.jinma.co.kr/ko/images/sub/course/5km.jpg",
+    "sourceSha256": "81a558daf9f4ddfa98011b17c342288fb6cdfa450917b261ea019b8fe861c04f",
+    "checkedAt": "2026-10-24",
+    "segments": [],
+    "startLabel": "공식 코스 안내 참고",
+    "endLabel": "공식 코스 안내 참고",
+    "notice": "공식 페이지에 선언된 이미지형 코스도 · 경로·고도 재생 없음",
+    "reuseStatus": "official-page-declared; redistribution-rights-not-established",
+    "discoveryEvidence": {
+      "schemaVersion": 1,
+      "pageUrl": "https://www.jinma.co.kr/ko/sub3_4.html",
+      "pageKind": "course",
+      "pageSha256": "d86dc5fa6153f3a86017dc495983c611f2fc9563e730c4faafb609649d514d8d",
+      "pageCheckedAt": "2026-10-24T01:16:00.478Z",
+      "editionEvidence": {
+        "accepted": true,
+        "raceDate": "2026-12-13",
+        "year": "2026",
+        "matchedDate": "2026년 12월 13",
+        "method": "same-origin-direct-declaration",
+        "matchedWords": [
+          "진주"
+        ],
+        "excerpt": "[52830] 경상남도 진주시 동진로 415(충무공동, 진주종합경기장내) HOME 사이드메뉴 닫기 LOGIN 시민들이 만드는 풀뿌리 마라톤대회 제36회 진주마라톤대회 D-0일 일시2026년 12월 13일(일) 오전 09:30(출발) 장소진주노을공원(남강댐 물 문화관) 종목4개 종목(풀코스, 하프코스, 10km코스, 5km코스) 접수기간2026년 09월 14일(월) 10:00 ~ (5,000명 선착순) 주최진주시육상연맹 주관진주시육상연맹 record_voice_over인사말 assignment대회요강 emoji_events시상안내 warning_amber유의사항 car",
+        "inheritedFrom": "https://www.jinma.co.kr/ko/",
+        "directlyDeclared": true
+      },
+      "declaredUrl": "https://www.jinma.co.kr/ko/images/sub/course/5km.jpg",
+      "distanceEvidence": "explicit-asset-caption-or-filename",
+      "distanceKey": "5K",
+      "declaredDistanceKeys": [
+        "5K"
+      ],
+      "distanceBasis": "official-declared-numeric",
+      "distanceIsMeasuredRoute": false,
+      "assetCheckedAt": "2026-10-24T01:24:51.907Z",
+      "explicitCourseDeclaration": true,
+      "validatedRaster": {
+        "width": 644,
+        "height": 788,
+        "bytes": 485074,
+        "mime": "image/jpeg"
+      },
+      "source": "deterministic-official-source-discovery",
+      "candidateOnly": false,
+      "requiresVisualReview": false,
+      "requiresDEM": false,
+      "mainVisualApproval": "All four official course images inspected and approved by Main; image-only",
+      "assetMIMEBasis": "validated-JPEG-magic-and-decoder",
+      "acceptanceRule": "exact-edition-declared-course-explicit-discipline-raster-v1"
+    }
   }
 ]
