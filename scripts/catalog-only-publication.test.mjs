@@ -2,9 +2,28 @@ import test from 'node:test';import assert from 'node:assert/strict';
 import {readFile,writeFile,mkdir,mkdtemp,rm} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';
 import {sha256} from './catalog-core.mjs';
 import {verifyCatalogPair,assertCatalogOnlyDelta,overlayCatalog,treeHashes,verifyPublicPair,assertPagesSource} from './catalog-only-publication.mjs';
+import {verifyCatalogManifest,syncCatalogManifest} from './sync-verified-products.mjs';
 const now=Date.parse('2026-10-22T12:00:00Z');
 const seed=JSON.parse(await readFile(new URL('../data/verified-products.json',import.meta.url),'utf8'));
 function pair(patch={}){const data={...seed,generatedAt:new Date(now).toISOString(),products:[{...seed.products[0],checkedAt:new Date(now-1000).toISOString()}],...patch};const text=JSON.stringify(data);return {text,manifest:{schemaVersion:1,revision:data.revision,generatedAt:data.generatedAt,sha256:sha256(Buffer.from(text)),count:data.products.length}};}
+test('catalog:check accepts manifest property order, whitespace and compatible metadata without rewriting either file',async()=>{
+ const dir=await mkdtemp(join(tmpdir(),'catalog-semantic-check-'));try{
+  const p=pair(),manifestText=JSON.stringify({...Object.fromEntries(Object.entries(p.manifest).reverse()),sizeBytes:Buffer.byteLength(p.text)},null,4)+'\n\n';
+  await writeFile(join(dir,'verified-products.json'),p.text);await writeFile(join(dir,'verified-products.manifest.json'),manifestText);
+  assert.equal((await syncCatalogManifest(dir,{check:true,now})).count,1);
+  assert.equal(await readFile(join(dir,'verified-products.json'),'utf8'),p.text);assert.equal(await readFile(join(dir,'verified-products.manifest.json'),'utf8'),manifestText);
+ }finally{await rm(dir,{recursive:true,force:true});}
+});
+test('catalog:check refuses real manifest identity/hash/schema errors and payload whitespace changes',()=>{
+ const p=pair();for(const patch of [{sha256:'0'.repeat(64)},{count:2},{revision:'other'},{generatedAt:new Date(now-1000).toISOString()},{schemaVersion:2},{count:'1'},{sha256:'A'.repeat(64)}])assert.throws(()=>verifyCatalogManifest(p.text,{...p.manifest,...patch},now));
+ assert.throws(()=>verifyCatalogManifest(p.text+'\n',p.manifest,now),/Invalid/);
+ const duplicate=pair({products:[seed.products[0],seed.products[0]]});assert.throws(()=>verifyCatalogManifest(duplicate.text,duplicate.manifest,now),/Duplicate/);
+});
+test('catalog:check retains strict timestamp and freshness gates instead of waiving publication failures',()=>{
+ const stale=pair({generatedAt:'2020-01-01T00:00:00Z',products:[{...seed.products[0],checkedAt:'2020-01-01T00:00:00Z'}]});assert.throws(()=>verifyCatalogManifest(stale.text,stale.manifest,now),/fresh/);
+ const future=pair({generatedAt:new Date(now+1000).toISOString()});assert.throws(()=>verifyCatalogManifest(future.text,future.manifest,now),/timestamp/);
+ const invalid=pair({generatedAt:'October 22, 2026'});assert.throws(()=>verifyCatalogManifest(invalid.text,invalid.manifest,now));
+});
 test('catalog pair requires integrity and fresh per-product evidence, not just a fresh envelope',()=>{
  const p=pair();assert.equal(verifyCatalogPair(p.text,p.manifest,now).freshProducts,1);
  assert.throws(()=>verifyCatalogPair(p.text,{...p.manifest,sha256:'0'.repeat(64)},now),/Invalid/);
