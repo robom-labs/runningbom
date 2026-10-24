@@ -14,6 +14,18 @@ const OVERPASS='https://overpass-api.de/api/interpreter';
 const hash=text=>createHash('sha256').update(text).digest('hex');
 const CACHE_MS=30*86400000;
 
+// Persistent provenance policy, not a freshness certificate. Never re-date it.
+// Even rejected/deleted original profiles must not silently enter DEM next run.
+export function originalGPXPolicies(envelope,courses){
+ const rows=envelope.originalGPXPolicies??[];
+ if(!Array.isArray(rows)||rows.length>128||rows.some(p=>!p||typeof p.courseId!=='string'||!p.courseId||p.mode!=='original-gpx-only')||new Set(rows.map(p=>p.courseId)).size!==rows.length)throw Error('Invalid original GPX policy registry');
+ const map=new Map(rows.map(p=>[p.courseId,p]));
+ const protect=id=>{if(courses.some(c=>c.id===id)&&!map.has(id))map.set(id,{courseId:id,mode:'original-gpx-only'});};
+ for(const p of envelope.profiles??[])if(p?.source?.kind==='gpx'||p?.officialGPXEvidence?.originalReceipt)protect(p.courseId);
+ for(const r of envelope.retrievalEvidence?.requests??[])if(r?.kind==='official-gpx'&&/^[a-f0-9]{64}$/.test(r.originalReceiptFileSHA256||''))for(const c of courses)if(c.sourceUrl===r.url)protect(c.id);
+ if(map.size>128)throw Error('Original GPX policy registry budget');return[...map.values()];
+}
+
 /** Strict result count, order, coordinates and dataset; null stays null, never Number(null). */
 export function parseElevationResponse(text,points) {
   const data=JSON.parse(text);
@@ -41,6 +53,50 @@ export function parseOfficialGPX(text) {
   }
   if(!elevationRouteGeometry({segments}))throw Error('GPX geometry invalid');
   return {segments,elevationCount:elevations.length,validElevationCount:elevations.filter(Number.isFinite).length,allZeroPlaceholder:elevations.length>0&&elevations.every(v=>v===0)};
+}
+
+/** Original GPX heights only: retain source order, mixed zero values and invalid gaps.
+ * Equal-distance conflicts cannot be averaged/selected for the strict chart axis. */
+export function originalGPXSamples(text) {
+  const official=parseOfficialGPX(text),geometry=elevationRouteGeometry(official),segments=[];
+  let segmentIndex=0,rawSampleCount=0,validElevationCount=0;
+  const decimal=/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/;
+  for(const block of text.matchAll(/<(?:\w+:)?trkseg\b[^>]*>([\s\S]*?)<\/(?:\w+:)?trkseg\s*>/gi)){
+    const line=[];let originalIndex=0;
+    for(const m of block[1].matchAll(/<(?:\w+:)?trkpt\b([^>]*)>([\s\S]*?)<\/(?:\w+:)?trkpt\s*>/gi)){
+      const raw=m[2].match(/<(?:\w+:)?ele\b[^>]*>([^<]*)<\/(?:\w+:)?ele\s*>/i)?.[1]??null;
+      const value=raw!==null&&decimal.test(raw.trim())?Number(raw):null;
+      const valid=Number.isFinite(value)&&value>=-500&&value<=9000;
+      const point=geometry.segments[segmentIndex][originalIndex++];
+      line.push({...point,elevationM:valid?value:null,valid,originalIndex:originalIndex-1});
+      rawSampleCount++;if(valid)validElevationCount++;
+    }
+    const groups=[];
+    for(const point of line){const last=groups.at(-1);if(last?.distanceM===point.distanceM)last.push(point);else{const group=[point];group.distanceM=point.distanceM;groups.push(group);}}
+    segments.push(groups.map(group=>{
+      const first=group[0],invalid=group.some(p=>!p.valid),conflict=group.some(p=>p.elevationM!==first.elevationM),valid=!invalid&&!conflict;
+      return {distanceM:first.distanceM,lat:first.lat,lon:first.lon,elevationM:valid?first.elevationM:null,valid,originalIndices:group.map(p=>p.originalIndex),invalidReason:invalid?'source-invalid-at-this-distance':conflict?'conflicting-heights-at-identical-distance':null};
+    }));segmentIndex++;
+  }
+  if(rawSampleCount!==[...text.matchAll(/<(?:\w+:)?trkpt\b/gi)].length)throw Error('Original GPX omitted points');
+  const spacing=geometry.segments.flatMap(line=>line.slice(1).map((p,i)=>p.distanceM-line[i].distanceM)).filter(d=>d>0);
+  const resolutionM=spacing.reduce((sum,d)=>sum+d,0)/spacing.length;
+  const masks=segments.flatMap((line,segmentIndex)=>line.filter(p=>!p.valid).map(p=>({segmentIndex,startM:p.distanceM,endM:p.distanceM,reason:p.invalidReason})));
+  return {official,segments,masks,resolutionM,rawSampleCount,validElevationCount};
+}
+/** Verifies the cached raw body, edition, coordinates AND every actual height.
+ * No DEM/OSM acquisition or inferred vertical-accuracy metadata is allowed. */
+export function verifyOriginalGPXProfile(course,profile,receipt) {
+  if(profile?.source?.kind!=='gpx'||receipt?.kind!=='official-gpx'||receipt.httpStatus!==200||typeof receipt.responseText!=='string'||receipt.url!==course.sourceUrl||receipt.responseSha256!==course.sourceSha256||hash(receipt.responseText)!==course.sourceSha256||profile.checkedAt!==receipt.checkedAt)throw Error('Original GPX receipt/source binding mismatch');
+  const source=originalGPXSamples(receipt.responseText);
+  if(elevationRouteHash(source.official)!==elevationRouteHash(course))throw Error('Original GPX coordinate/order mismatch');
+  if(JSON.stringify(profile.segments)!==JSON.stringify(source.segments)||JSON.stringify(profile.masks)!==JSON.stringify(source.masks)||profile.source.resolutionM!==source.resolutionM)throw Error('Original GPX height/gap/spacing reconstruction mismatch');
+  if(profile.source.estimated!==false||profile.source.verticalPrecision!=='unknown; source does not establish accuracy'||profile.source.verticalDatum!=='unknown; not stated by source'||profile.source.resolutionMeaning!=='calculated mean positive horizontal spacing between original consecutive coordinates; NOT vertical accuracy or DEM resolution'||profile.source.accuracyM!==undefined||profile.source.interpolation!==undefined)throw Error('Original GPX provenance must not assert DEM or vertical accuracy');
+  const evidence=profile.officialGPXEvidence;
+  if(evidence?.responseSha256!==receipt.responseSha256||evidence.rawSampleCount!==source.rawSampleCount||evidence.validElevationCount!==source.validElevationCount||evidence.allZeroPlaceholder!==source.official.allZeroPlaceholder)throw Error('Original GPX evidence count/hash mismatch');
+  if(evidence.originalReceipt?.url!==receipt.url||evidence.originalReceipt?.responseSha256!==receipt.responseSha256||evidence.originalReceipt?.checkedAt!==receipt.checkedAt||evidence.originalReceiptFile?.sha256!==receipt.originalReceiptFileSHA256||receipt.bytes!==Buffer.byteLength(receipt.responseText))throw Error('Original GPX original receipt metadata mismatch');
+  const built=buildElevationProfile(course,profile);if(!built.available)throw Error('Original GPX profile invalid: '+built.reason);
+  return profile;
 }
 
 /** Local equirectangular distance is used ONLY for the conservative structure mask. */
@@ -131,22 +187,37 @@ export function createRetriever(previous=[],{offline=false,refresh=false,fetchIm
 }
 
 export async function updateCourseElevation(args=process.argv.slice(2)) {
-  if(args.some(a=>!['--offline','--refresh','--stdout','--osm-api','--check'].includes(a)))throw Error('Options: --offline, --refresh, --stdout, --osm-api, --check');
+  if(args.some(a=>!['--offline','--refresh','--stdout','--osm-api','--overpass-only','--check'].includes(a)))throw Error('Options: --offline, --refresh, --stdout, --osm-api, --overpass-only, --check');
+  if(args.includes('--overpass-only')&&args.includes('--osm-api'))throw Error('Conflicting structure provider policy');
   const checking=args.includes('--check');
   if((args.includes('--offline')||checking)&&args.includes('--refresh'))throw Error('offline/check and refresh are mutually exclusive');
   if(checking&&args.includes('--stdout'))throw Error('--check prints a short summary only; do not combine with --stdout');
-  const courses=(await readCourseBase()).courses.filter(c=>c.sourceKind==='official-gpx');
+  let courses=(await readCourseBase()).courses.filter(c=>c.sourceKind==='official-gpx');
   if(!courses.length||new Set(courses.map(c=>c.id)).size!==courses.length||courses.some(c=>!c.id||!c.eventId||!/^\d{4}-\d{2}-\d{2}$/.test(c.raceDate??'')||!/^https:\/\//.test(c.sourceUrl??'')||!c.sourcePage||!c.checkedAt||!c.reuseStatus||!/^[a-f0-9]{64}$/.test(c.sourceSha256??'')||!elevationRouteGeometry(c)))throw Error('Approved official-GPX rows need unique IDs, edition, provenance, HTTPS URL, source SHA and valid geometry');
   let previous;try{previous=(await readCourseElevation()).elevation;}catch(error){if(error.code!=='ENOENT')throw error;previous={};}
+  const originalOnly=new Set(originalGPXPolicies(previous,courses).map(p=>p.courseId));
+  if(previous.profiles?.some(p=>originalOnly.has(p?.courseId)&&p.source?.kind!=='gpx'))throw Error('Original GPX policy forbids implicit DEM conversion');
+  const geometryOnly=[];
   if(checking){
     if(previous.schemaVersion!==1||!Array.isArray(previous.profiles))throw Error('Cached enrichment schema missing or invalid');
+    if(previous.profiles.some(p=>!p?.courseId||!courses.some(c=>c.id===p.courseId))||new Set(previous.profiles.map(p=>p.courseId)).size!==previous.profiles.length)throw Error('Orphan or duplicate cached elevation profile');
+    geometryOnly.push(...courses.filter(c=>!previous.profiles.some(p=>p.courseId===c.id)).map(c=>c.id));
+    courses=courses.filter(c=>previous.profiles.some(p=>p.courseId===c.id));
     for(const c of courses){const p=buildElevationProfile(c,previous.profiles.find(p=>p.courseId===c.id));if(!p.available)throw Error(`${c.id}: cached binding rejected: ${p.reason}`);}
+    if(!courses.length){console.log(JSON.stringify({ok:true,offline:true,rewritten:false,profiles:[],geometryOnly}));return previous;}
   }
+  const originalProfiles=[];
+  for(const course of courses){const profile=previous.profiles.find(p=>p.courseId===course.id);if(profile?.source?.kind!=='gpx')continue;
+    const receipt=previous.retrievalEvidence?.requests?.find(r=>r.kind==='official-gpx'&&r.url===course.sourceUrl);
+    originalProfiles.push(verifyOriginalGPXProfile(course,profile,receipt));
+  }
+  courses=courses.filter(c=>!originalOnly.has(c.id)&&!originalProfiles.some(p=>p.courseId===c.id));
+  if(!courses.length){if(checking)console.log(JSON.stringify({ok:true,offline:true,rewritten:false,geometryOnly,profiles:originalProfiles.map(p=>({courseId:p.courseId,kind:'gpx'}))}));else if(args.includes('--stdout'))process.stdout.write(JSON.stringify(previous,null,2)+'\n');return previous;}
   const retrieval=createRetriever(previous.retrievalEvidence?.requests??[],{offline:checking||args.includes('--offline'),refresh:args.includes('--refresh')});
   const grids=courses.map(c=>elevationQueryPoints(c)),all=courses.flatMap(c=>c.segments.flat());
   const bbox=[Math.min(...all.map(p=>p.lat))-.002,Math.min(...all.map(p=>p.lon))-.002,Math.max(...all.map(p=>p.lat))+.002,Math.max(...all.map(p=>p.lon))+.002].map(v=>v.toFixed(6)).join(',');
   const query=`[out:json][timeout:20][maxsize:16777216];(way[highway][bridge][bridge!=no](${bbox});way[highway][tunnel][tunnel!=no](${bbox}););out tags geom;`;
-  const useMap=args.includes('--osm-api')||previous.retrievalEvidence?.requests?.some(r=>r.kind==='osm-map');
+  const useMap=!args.includes('--overpass-only')&&(args.includes('--osm-api')||previous.retrievalEvidence?.requests?.some(r=>r.kind==='osm-map'));
   const osmRecords=[];let osm;
   if(useMap){
     const ways=new Map();
@@ -184,10 +255,14 @@ export async function updateCourseElevation(args=process.argv.slice(2)) {
     profiles.push(profile);
     if(!checking)console.error(JSON.stringify({courseId:course.id,lengthM:built.lengthM,rawSamples:flat.length,rawMinM:Math.min(...enriched.filter(p=>p.elevationM!==null).map(p=>p.elevationM)),rawMaxM:Math.max(...enriched.filter(p=>p.elevationM!==null).map(p=>p.elevationM)),minElevationM:built.minElevationM,maxElevationM:built.maxElevationM,validSamples:built.segments.flat().length,runs:built.segments.length,masks:masks.length,maskedM:masks.reduce((n,m)=>n+m.endM-m.startM,0),numericGrades:built.segments.flat().filter(p=>p.gradePercent!==null).length,officialGPX:profile.officialGPXEvidence}));
   }
-  const result={schemaVersion:1,profiles,retrievalEvidence:{cacheMaxAgeDays:30,requestTimeoutMs:25000,maxAttemptsPerRequest:3,maxNetworkAttempts:50,minRequestIntervalMs:1150,requests:retrieval.evidence,attempts:retrieval.attempts}};
+  profiles.push(...originalProfiles);
+  const orderedProfiles=previous.profiles.filter(p=>profiles.some(n=>n.courseId===p.courseId)).map(p=>profiles.find(n=>n.courseId===p.courseId));
+  for(const p of profiles)if(!orderedProfiles.some(n=>n.courseId===p.courseId))orderedProfiles.push(p);
+  const requests=[...(previous.retrievalEvidence?.requests??[])];for(const r of retrieval.evidence){const i=requests.findIndex(p=>p.url===r.url&&p.kind===r.kind);if(i<0)requests.push(r);else requests[i]=r;}
+  const result={...previous,schemaVersion:1,profiles:orderedProfiles,retrievalEvidence:{...previous.retrievalEvidence,cacheMaxAgeDays:30,requestTimeoutMs:25000,maxAttemptsPerRequest:3,maxNetworkAttempts:50,minRequestIntervalMs:1150,requests,attempts:[...(previous.retrievalEvidence?.attempts??[]),...retrieval.attempts]}};
   if(checking){
-    if(JSON.stringify(previous.profiles)!==JSON.stringify(profiles))throw Error('Cached profiles differ from reconstruction of content-hashed source receipts');
-    console.log(JSON.stringify({ok:true,offline:true,rewritten:false,profiles:profiles.map(p=>({courseId:p.courseId,eventId:p.eventId,raceDate:p.raceDate,routeHash:p.routeHash}))}));
+    if(JSON.stringify(previous.profiles)!==JSON.stringify(orderedProfiles))throw Error('Cached profiles differ from reconstruction of content-hashed source receipts');
+    console.log(JSON.stringify({ok:true,offline:true,rewritten:false,geometryOnly,profiles:profiles.map(p=>({courseId:p.courseId,eventId:p.eventId,raceDate:p.raceDate,routeHash:p.routeHash}))}));
     return result;
   }
   const json=JSON.stringify(result,null,2)+'\n';

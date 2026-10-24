@@ -2,7 +2,7 @@
 import {readFile,writeFile,mkdir,readdir,lstat} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {resolve,join} from 'node:path';import {fileURLToPath,pathToFileURL} from 'node:url';
-import {buildElevationProfile,elevationRouteHash} from '../apps/mobile/assets/course-src/elevation-profile.mjs';
+import {buildElevationProfile,elevationRouteHash,elevationRouteGeometry} from '../apps/mobile/assets/course-src/elevation-profile.mjs';
 import{safeCourseURL}from'./course-discovery-core.mjs';
 import{readCourseBase}from'./course-metadata-inputs.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
@@ -19,21 +19,27 @@ export function verifyCoursePair(text,manifest,{now=Date.now(),fresh=true,approv
   for(const c of courses){
     if(!c?.id||ids.has(c.id)||!c.eventId||!/^\d{4}-\d{2}-\d{2}$/.test(c.raceDate??'')||!['official-gpx','official-image'].includes(c.sourceKind)||!Array.isArray(c.segments))throw Error('Invalid course identity/edition');ids.add(c.id);
     for(const key of ['sourceUrl',...(c.imageUrl?['imageUrl']:[])]){let u;try{u=new URL(c[key]);}catch{throw Error('Invalid course source URL');}if(u.protocol!=='https:'||u.username||u.password)throw Error('HTTPS course provenance required');}
-    if(approvedCourses){const approved=approvedCourses.find(a=>a.id===c.id);if(!approved||approved.eventId!==c.eventId||approved.raceDate!==c.raceDate||approved.sourceKind!==c.sourceKind||approved.sourceUrl!==c.sourceUrl||approved.sourceSha256!==c.sourceSha256||approved.imageUrl!==c.imageUrl||elevationRouteHash(approved)!==elevationRouteHash(c))throw Error('Course differs from current approved source rows');}
+    if(approvedCourses){const approved=approvedCourses.find(a=>a.id===c.id);if(!approved||approved.eventId!==c.eventId||approved.raceDate!==c.raceDate||approved.sourceKind!==c.sourceKind||approved.sourceUrl!==c.sourceUrl||approved.sourcePage!==c.sourcePage||approved.sourceSha256!==c.sourceSha256||approved.imageUrl!==c.imageUrl||elevationRouteHash(approved)!==elevationRouteHash(c))throw Error('Course differs from current approved source rows');}
     const e=profiles.find(p=>p.courseId===c.id);
-    if(c.sourceKind==='official-gpx'&&!buildElevationProfile(c,e).available)throw Error('Source-bound GPX elevation unavailable');
+    if(c.sourceKind==='official-gpx'){
+      if(!/^[a-f0-9]{64}$/.test(c.sourceSha256||'')||!safeCourseURL(c.sourceUrl)||!safeCourseURL(c.sourcePage)||!elevationRouteGeometry(c))throw Error('Source-bound GPX geometry/hash/provenance unavailable');
+      // No profile means geometry only. A supplied profile is NEVER dropped or
+      // treated as optional when invalid, unbound, or structurally unqualified.
+      if(e&&(!buildElevationProfile(c,e).available||e.source?.kind==='dem'&&e.structureMask?.status!=='checked'))throw Error('Supplied source-bound GPX elevation invalid or unqualified');
+    }
     if(c.sourceKind==='official-image'&&(c.segments.length||e))throw Error('Image-only course cannot claim route/elevation');
   }
   if(approvedCourses&&approvedCourses.length!==courses.length)throw Error('Course registry omits approved rows');
-  return {count:courses.length,elevationProfiles:profiles.length,revision:data.revision,sha256:manifest.sha256};
+  return {count:courses.length,elevationProfiles:profiles.length,geometryOnlyGPX:courses.filter(c=>c.sourceKind==='official-gpx'&&!profileIds.has(c.id)).length,revision:data.revision,sha256:manifest.sha256};
 }
 async function hashes(dir,prefix=''){
   const out={};for(const e of await readdir(join(dir,prefix),{withFileTypes:true})){if(e.name==='.git')continue;const rel=prefix?prefix+'/'+e.name:e.name,p=join(dir,rel),st=await lstat(p);if(st.isSymbolicLink())throw Error('Symlink in publication tree');if(st.isDirectory())Object.assign(out,await hashes(dir,rel));else if(st.isFile())out[rel]=digest(await readFile(p));}return out;
 }
 export function assertCourseOnlyDelta(before,after){const changed=[...new Set([...Object.keys(before),...Object.keys(after)])].filter(p=>before[p]!==after[p]);if(changed.some(p=>!coursePublicationAllowlist.includes(p)))throw Error('Non-course publication mutation refused');return changed;}
 async function localPair(dataDir){return Promise.all(['course-catalog.json','course-catalog.manifest.json'].map(f=>readFile(join(dataDir,f),'utf8')));}
-export async function readApprovedCourses(base,imagesUrl=new URL('../data/course-approved-images.json',import.meta.url)){
-  const primary=base?JSON.parse(await readFile(new URL('course-examples.json',base),'utf8')):(await readCourseBase()).courses;
+export async function readApprovedCourses(base,imagesUrl,{root:inputRoot=new URL('../',import.meta.url)}={}){
+  const primary=base?JSON.parse(await readFile(new URL('course-examples.json',base),'utf8')):(await readCourseBase(inputRoot)).courses;
+  imagesUrl??=new URL('data/course-approved-images.json',inputRoot);
   let images=[];try{const value=JSON.parse(await readFile(imagesUrl,'utf8'));images=Array.isArray(value)?value:value.courses;if(!Array.isArray(images))throw Error('Approved image registry must be an array or {courses:[]}');}catch(e){if(e.code!=='ENOENT')throw e;}
   if(!Array.isArray(primary)||images.some(c=>c.sourceKind!=='official-image'||!Array.isArray(c.segments)||c.segments.length))throw Error('Approved image registry cannot authorize GPX geometry');
   const courses=[...primary,...images];if(new Set(courses.map(c=>c.id)).size!==courses.length)throw Error('Duplicate approved course IDs');return courses;

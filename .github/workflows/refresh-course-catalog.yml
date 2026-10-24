@@ -29,7 +29,7 @@ jobs:
       - name: Install locked collector dependencies without package lifecycle scripts
         run: npm ci --ignore-scripts
       - name: Contracts and new-event lifecycle before collection
-        run: COURSE_REQUIRE_CLEAN_INSTALL=1 node --test scripts/course-discovery.test.mjs scripts/course-discovery-rejections.test.mjs scripts/course-metadata-inputs.test.mjs scripts/course-data-publication.test.mjs scripts/course-source-refresh-core.test.mjs scripts/course-meta-refresh.test.mjs scripts/course-tooling-dependencies.test.mjs scripts/course-discovery-frontier.test.mjs
+        run: COURSE_REQUIRE_CLEAN_INSTALL=1 node --test scripts/course-discovery.test.mjs scripts/course-discovery-rejections.test.mjs scripts/course-metadata-inputs.test.mjs scripts/course-data-publication.test.mjs scripts/course-source-refresh-core.test.mjs scripts/course-meta-refresh.test.mjs scripts/course-tooling-dependencies.test.mjs scripts/course-discovery-frontier.test.mjs scripts/course-edition-metadata.test.mjs scripts/course-public-projection.test.mjs scripts/course-elevation-maintenance.test.mjs scripts/course-original-gpx-retention.test.mjs
       - name: Discover current seeds, rotating by persisted last actual attempt
         # Cold-start works without the old447-request audit. All current IDs are classified;
         # 64 total HTTP GETs/run and4/race INCLUDING robots+redirects. No image binaries committed.
@@ -37,8 +37,8 @@ jobs:
       - name: Existing source-bound GPX refresh and DEM pipeline
         run: |
           node scripts/refresh-approved-course-sources.mjs --write
-          node scripts/update-course-elevation.mjs --refresh --osm-api
-          node scripts/update-course-elevation.mjs --check
+          node scripts/maintain-course-elevation.mjs --write --max-live-ms 120000
+          node scripts/maintain-course-elevation.mjs --check
       - name: Generate SAME catalog courses plus verified slim pages
         run: |
           node scripts/publish-course-catalog.mjs --remote-only
@@ -54,6 +54,7 @@ jobs:
             ${{ runner.temp }}/course-discovery/coverage-candidate.json
             ${{ runner.temp }}/course-discovery/course-image-acceptance.json
             ${{ runner.temp }}/course-discovery/course-gpx-dem-handoff.json
+            outputs/operations/course-elevation-health.json
             data/course-source-index.json
             data/course-source-seeds.json
             data/course-base.json

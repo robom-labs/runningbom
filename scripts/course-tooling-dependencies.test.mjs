@@ -27,7 +27,7 @@ test('all bare runtime imports reachable from course tools are declared directly
    assert.match(pkg.dependencies?.[name]||'',/^\d+\.\d+\.\d+(?:-[\w.-]+)?$/,`undeclared/unpinned direct course dependency ${name} in ${url.pathname}`);
   }
  }
- for(const path of ['scripts/course-discover-sources.mjs','scripts/refresh-approved-course-sources.mjs','scripts/update-course-elevation.mjs','scripts/publish-course-catalog.mjs','scripts/course-data-publication.mjs'])await walk(new URL(path,root));
+ for(const path of ['scripts/course-discover-sources.mjs','scripts/refresh-approved-course-sources.mjs','scripts/update-course-elevation.mjs','scripts/maintain-course-elevation.mjs','scripts/publish-course-catalog.mjs','scripts/course-data-publication.mjs'])await walk(new URL(path,root));
  assert(bare.has('image-size'));assert(bare.has('cheerio'));
 });
 

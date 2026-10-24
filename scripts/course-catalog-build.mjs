@@ -1,7 +1,15 @@
 import{courseCatalogPages}from'./course-source-index-core.mjs';
 import{courseDigest}from'./course-discovery-core.mjs';
+import{publicElevationProfileProjection}from'./course-elevation-public.mjs';
+export{publicElevationProfileProjection}from'./course-elevation-public.mjs';
+const publicCourseFields=['id','eventId','eventIds','eventName','raceDate','distanceLabel','officialDistanceKm','sourceKind','sourceUrl','checkedAt','segments','imageUrl','startLabel','endLabel','sourceSha256','notice','sourcePage','reuseStatus'];
+/** Collection receipts stay in the private audit registry, not in every APK or
+ * WebView boot payload. Source identity, geometry and user-facing caveats stay. */
+export function publicCourseProjection(course){return Object.fromEntries(publicCourseFields.filter(key=>course[key]!==undefined).map(key=>[key,course[key]]));}
 export function buildCourseCatalog({courses,elevation,index,races,now=Date.now()}){
  if(new Set(courses.map(c=>c.id)).size!==courses.length)throw Error('Duplicate course IDs');
+ courses=courses.map(publicCourseProjection);
+ elevation={schemaVersion:elevation.schemaVersion,profiles:elevation.profiles.map(publicElevationProfileProjection)};
  const quarantinedPages=[],pages=index?courseCatalogPages(index,races,{now,maxAgeDays:30,onQuarantine:p=>quarantinedPages.push(p)}):[];
  const revision='courses-'+courseDigest(JSON.stringify({courses,elevation,...(index?{pages}:{})})).slice(0,20);
  const times=[...courses,...elevation.profiles,...pages].map(p=>Date.parse(p.checkedAt));if(times.some(t=>!Number.isFinite(t)||t>now+300000))throw Error('Catalog source timestamp invalid');

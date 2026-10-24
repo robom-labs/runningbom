@@ -2,6 +2,7 @@
 import{load}from'cheerio';import{createHash}from'node:crypto';import{isIP}from'node:net';import{imageSize}from'image-size';
 import{parseOfficialGPX}from'./update-course-elevation.mjs';
 import{elevationRouteGeometry}from'../apps/mobile/assets/course-src/elevation-profile.mjs';
+import{courseEditionMetadata}from'./course-edition-metadata.mjs';
 export const courseDigest=value=>createHash('sha256').update(value).digest('hex');
 const clean=value=>String(value??'').normalize('NFKC').replace(/\s+/g,' ').trim();
 const compact=value=>clean(value).toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');
@@ -25,7 +26,9 @@ export function disciplineKeys(value){
 export const distanceKm=key=>key==='Full'?42.195:key==='Half'?21.0975:Number(String(key).replace(/K$/i,''));
 export const distanceLabel=key=>key==='Full'?'풀코스':key==='Half'?'하프':key;
 export function materializeCoursePage(html,url){
+ if(typeof html!=='string'||Buffer.byteLength(html,'utf8')>4000000)throw Error('course-page-parser-byte-budget');
  const $=load(html),title=clean($('title').text()),primary=clean($('h1,h2,h3').slice(0,8).text()+' '+($('meta[property="og:title"]').attr('content')||''));
+ const metadata=courseEditionMetadata($,url);
  const structured=[];$('script[type="application/ld+json"]').each((_,el)=>{try{const value=JSON.parse($(el).text());const visit=v=>{if(Array.isArray(v))v.forEach(visit);else if(v&&typeof v==='object'){if(/SportsEvent|Event/.test(String(v['@type'])))structured.push({name:clean(v.name),startDate:v.startDate,endDate:v.endDate,url:v.url});if(v['@graph'])visit(v['@graph']);}};visit(value);}catch{}});
  $('script,style,noscript,footer').remove();const text=clean(title+' '+$('body').text());
  const links=[],images=[],add=(list,raw,label,context,extra={})=>{const target=safeCourseURL(raw,url);if(target&&!list.some(x=>x.url===target))list.push({url:target,label:clean(label),context:clean(context).slice(0,350),...extra});};
@@ -45,24 +48,30 @@ export function materializeCoursePage(html,url){
   add(images,raw,label,context,{primaryCaption,localHeading:clean(heading),pageDistanceKeys:selectedKeys.length===1?selectedKeys:[]});
  });
  $('[style]').each((_,el)=>{const n=$(el),context=[n.attr('class'),n.attr('id'),n.prevAll('h1,h2,h3,h4').first().text()].join(' ');if(/코스|course|route/i.test(context))for(const m of(n.attr('style')||'').matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/gi))add(images,m[1],n.attr('aria-label')||n.prevAll('h1,h2,h3,h4').first().text(),context);});
- return{url,title,primary,text,structured,links,images,selectedDistanceKeys:selectedKeys.length===1?selectedKeys:[]};
+ return{url,title,primary,text,structured,metadata,links,images,selectedDistanceKeys:selectedKeys.length===1?selectedKeys:[]};
 }
 export function exactCourseEdition(race,page){
  const [year,month,day]=race.raceDate.split('-').map(Number),title=page.title+' '+page.primary,years=[...title.matchAll(/20\d{2}/g)].map(m=>Number(m[0]));
  const stem=clean(race.name).replace(/20\d{2}|(?:제\s*)?\d+\s*회|마라톤|대회|국제|전국|특별자치시|특례시/g,' ').trim();
  const identity=compact(stem),words=stem.split(/[\s,&()·-]+/).map(compact).filter(w=>w.length>=2&&!['함께하는','함께','with','the'].includes(w));
+ if(page.metadata?.issue)return {accepted:false,reason:page.metadata.issue};
+ const fits=value=>{const s=compact(value);return identity.length>=3&&s.includes(identity)||words.length>0&&words.every(w=>s.includes(w));};
+ const metadata=page.metadata?.descriptions.filter(d=>fits(d.text))||[];
  const text=compact(page.text),matchedWords=words.filter(w=>text.includes(w));
  const identityOK=identity.length>=3&&text.includes(identity)||words.length>0&&matchedWords.length===words.length;
- if(!identityOK)return{accepted:false,reason:'event-identity-not-established',matchedWords};
+ if(!identityOK&&!metadata.length)return{accepted:false,reason:'event-identity-not-established',matchedWords};
  if(years.some(y=>y!==year))return{accepted:false,reason:'title-edition-conflict',years,matchedWords};
- const literal=new RegExp(`${year}\\s*(?:년|[./-])\\s*0?${month}\\s*(?:월|[./-])\\s*0?${day}(?!\\d)`);
- const splitYear=new RegExp(`${year}\\s*년[^\\d]{0,50}0?${month}\\s*월\\s*0?${day}(?!\\d)`);
+ const literal=new RegExp(`(?:^|[^\\d])${year}\\s*(?:년|[./-])\\s*0?${month}\\s*(?:월|[./-])\\s*0?${day}(?!\\d)`);
+ const splitYear=new RegExp(`(?:^|[^\\d])${year}\\s*년[^\\d]{0,50}0?${month}\\s*월\\s*0?${day}(?!\\d)`);
  const monthDay=new RegExp(`(?:^|[^\\d])0?${month}\\s*월\\s*0?${day}\\s*일`);
  const full=page.text.match(literal)||page.text.match(splitYear);
  const structured=page.structured.find(e=>String(e.startDate).slice(0,10)===race.raceDate&&words.length&&words.every(word=>compact(e.name).includes(word)));
  const short=years.includes(year)&&page.text.match(monthDay);
+ const meta=metadata.map(d=>({...d,match:d.text.match(literal)||d.text.match(splitYear)})).find(d=>d.match);
+ if(metadata.some(d=>/20\d{2}\s*(?:년|[./-])\s*\d{1,2}\s*(?:월|[./-])\s*\d{1,2}/.test(d.text)&&!literal.test(d.text)&&!splitYear.test(d.text)))return {accepted:false,reason:'metadata-event-date-conflict',matchedWords};
  const local=compact(title),primaryIdentity=identity.length>=3&&local.includes(identity)||words.length>0&&words.every(w=>local.includes(w));
- if(!full&&!short&&!structured)return{accepted:false,reason:'exact-event-date-not-established',matchedWords,primaryIdentity,identityOK};
+ if(!full&&!short&&!structured&&!meta)return{accepted:false,reason:'exact-event-date-not-established',matchedWords,primaryIdentity,identityOK};
+ if(meta&&!full&&!short&&!structured)return {accepted:true,raceDate:race.raceDate,year:String(year),matchedDate:clean(meta.match[0]),method:'official-head-description-exact-date',metadataKind:meta.kind,matchedWords:words,excerpt:meta.text.slice(Math.max(0,meta.match.index-100),meta.match.index+220)};
  const match=full?.[0]||short?.[0]||structured.startDate;
  return{accepted:true,raceDate:race.raceDate,year:String(year),matchedDate:clean(match),method:structured?'official-structured-event':full?'explicit-year-month-day':'title-year-and-explicit-month-day',matchedWords,excerpt:page.text.slice(Math.max(0,page.text.indexOf(match)-100),page.text.indexOf(match)+220)};
 }
@@ -162,7 +171,9 @@ export async function discoverRaceCourseSources(race,{seeds,get,knownPages=[],ma
   if(!receipt.body||courseDigest(receipt.body)!==receipt.sha256){pages.push({url:item.url,verified:false,reason:'page-receipt-integrity'});continue;}
   if(pages.some(p=>p.url===receipt.finalUrl))continue;
   if(!/html/i.test(receipt.contentType||'')){issues.push({url:item.url,reason:'non-html-official-page'});continue;}
-  const page=materializeCoursePage(receipt.text??receipt.body.toString('utf8'),receipt.finalUrl),edition=exactCourseEdition(race,page),kind=officialPageKind(page,item);
+  if(!safeCourseURL(receipt.finalUrl)||!seedOrigins.has(new URL(receipt.finalUrl).origin)){pages.push({url:item.url,verified:false,reason:'official-final-page-scope-mismatch'});continue;}
+  let page;try{page=materializeCoursePage(receipt.text??receipt.body.toString('utf8'),receipt.finalUrl);}catch(error){pages.push({url:item.url,verified:false,reason:error.message});continue;}
+  const edition=exactCourseEdition(race,page),kind=officialPageKind(page,item);
  const parentProof=proofs.get(item.declaredBy),inherited=parentProof&&(edition.primaryIdentity===true||kind==='course'&&edition.identityOK===true)&&new URL(page.url).origin===new URL(parentProof.url).origin&&edition.reason==='exact-event-date-not-established';
   const accepted=kind!=='excluded-user-or-account-page'&&(edition.accepted||inherited);
   const proof={url:page.url,pageKind:kind,verified:!!accepted,title:page.title,checkedAt:receipt.checkedAt,sha256:receipt.sha256,verification:receipt.verification??'saved-audit',editionEvidence:edition.accepted?edition:inherited?{...parentProof.editionEvidence,method:'same-origin-direct-declaration',inheritedFrom:parentProof.url,directlyDeclared:true}:edition,seedURL:item.seedURL||item.url,declaredBy:item.declaredBy??null,publishedGeometryLinks:accepted?declaredPublishedGeometryLinks(page):[]};
