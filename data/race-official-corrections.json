@@ -52,6 +52,46 @@
         "registrationDataStatus": "needs-review",
         "registrationDataIssue": "2027년 해당 회차의 공식 대회일과 접수 일정이 아직 확인되지 않았어요. 이전 회차 정보로 접수 중이라고 안내하지 않아요."
       }
+    },
+    {
+      "id": "schedule-221be78438dc",
+      "name": "제36회 진주마라톤",
+      "date": "2026-12-13",
+      "sourceUrl": "https://www.jinma.co.kr/ko/sub2_3.html",
+      "sourceSha256": "4e6026cf5f5c9cd06ca1b26aa5e032e626f44ab384c5e0bd7775d8d1832dbc66",
+      "checkedAt": "2026-10-24T01:16:26.908Z",
+      "evidence": "공식 제36회·2026-12-13 회차: 진주노을공원, 9/14 10:00 접수 시작. 개인참가신청 페이지가 접수 종료를 명시. 정확한 마감 시각·매진 사유는 미확인.",
+      "primaryProof": [
+        {
+          "sourceUrl": "https://www.jinma.co.kr/ko/sub1_2.html",
+          "sha256": "a57fd7cdfaea28db8eaf1b149897afd41ea27ea1d539d4859f22ab87499aed23",
+          "checkedAt": "2026-10-24T01:15:40.905Z",
+          "evidence": "제36회·2026-12-13, 진주노을공원(남강댐 물 문화관), 9/14 10:00 선착순 접수"
+        },
+        {
+          "sourceUrl": "https://www.jinma.co.kr/ko/sub2_1.html",
+          "sha256": "0c9cf2a57e595388a8a4b2dd407b1cf38ab05c3f8616576ecc45b35ebe99290c",
+          "checkedAt": "2026-10-24T01:15:41.186Z",
+          "evidence": "2026-09-14 10:00, 5,000명 선착순 접수"
+        },
+        {
+          "sourceUrl": "https://www.jinma.co.kr/ko/sub2_3.html",
+          "sha256": "4e6026cf5f5c9cd06ca1b26aa5e032e626f44ab384c5e0bd7775d8d1832dbc66",
+          "checkedAt": "2026-10-24T01:16:26.908Z",
+          "evidence": "제36회 진주마라톤대회 참가신청 접수가 종료되었습니다"
+        }
+      ],
+      "patch": {
+        "venue": "진주노을공원(남강댐 물 문화관)",
+        "registrationOpenAt": "2026-09-14T10:00:00+09:00",
+        "registrationOpenTimeConfirmed": true,
+        "registrationPeriodLabel": "09/14 ~ 선착순 마감",
+        "status": "closed"
+      },
+      "removeFields": [
+        "registrationCloseAt",
+        "registrationCloseTimeConfirmed"
+      ]
     }
   ]
 }
