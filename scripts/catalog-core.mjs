@@ -5,6 +5,8 @@ import {publicationFields} from './catalog-publication-core.mjs';
 import {catalogIdentityIssue,catalogRecordKey} from './catalog-identity.mjs';
 import {resolveDeclaredCatalogUrl} from './catalog-source-policy.mjs';
 import {officialBrooksGroups,officialGroupMetadata,isOfficialBrooksSizeVariant} from './catalog-official-groups.mjs';
+import {bindKnownCatalogRow,sourceBoundObservations} from './catalog-source-observations.mjs';
+import {withImageOwnership} from './catalog-image-ownership.mjs';
 export const categoryLabels = {daily:'입문·매일 러닝',cushion:'푹신한 쿠션',stability:'탄탄한 지지',supertrainer:'슈퍼 트레이너',speed:'빠른 훈련',carbon:'대회용 카본',trail:'트레일',unknown:'분류 확인 중'};
 const https = z.string().url().refine(v=>new URL(v).protocol==='https:' && !new URL(v).username && !new URL(v).password);
 export const productSchema = z.object({
@@ -60,27 +62,29 @@ export function announcementForCatalog(products,candidate){
  const hasDate=!!retail.release;const release=retail.release||candidate.release;
  return {...retail,release,releaseSource:hasDate?retail.releaseSource:candidate.releaseSource,releaseRegion:hasDate?retail.releaseRegion:candidate.releaseRegion,upcoming:releaseIsUpcoming(release),announcementCheckedAt:candidate.checkedAt};
 }
-export function extractProductCandidates($,url,source){
+export function extractProductCandidates($,url,source,{previous=[]}={}){
  const found=[];
  const officialGroups=officialBrooksGroups($,url);
  $('script[type="application/ld+json"]').each((_,node)=>{
-  try {for(const p of flattenLd(JSON.parse($(node).text()))){
+  try {const entries=flattenLd(JSON.parse($(node).text()));for(const p of entries){
    if(!['Product','ProductGroup'].includes(p['@type']))continue;
    const offer=Array.isArray(p.offers)?p.offers[0]:p.offers;
    const image=Array.isArray(p.image)?p.image[0]:p.image;
-   const name=String(p.name || '').trim();
+   const name=$('<span>').html(String(p.name || '')).text().trim();
    if(!name || !image || !offer || !offer.priceCurrency)continue;
-   const brand=typeof p.brand==='object'?p.brand.name:p.brand;
+   const parent=entries.find(g=>g['@type']==='ProductGroup'&&g.hasVariant?.includes(p));
+   const declaredBrand=p.brand||parent?.brand;
+   const brand=typeof declaredBrand==='object'?declaredBrand.name:declaredBrand;
    if(brand && !String(brand).toLowerCase().includes(source.brand.toLowerCase()) && !source.aliases?.some(a=>String(brand).toLowerCase().includes(a.toLowerCase())))continue;
    const release=declaredReleaseDate(p.releaseDate);
    const candidate={brand:source.brand,model:name,source:resolveDeclaredCatalogUrl(offer.url || p.url || url,url),imageSource:resolveDeclaredCatalogUrl(typeof image==='string'?image:image.url,url),...(release?{release}:{}),
     sku:p.mpn || p.sku || null,color:p.color || null,price:Number(offer.price),currency:offer.priceCurrency,sourceRegion:source.region,
-    description:p.description || '',gender:declaredProductGender(p.gender||p.audience?.suggestedGender||source.gender,offer.url||p.url||url,name),evidenceKind:'schema.org'};
+    description:p.description || '',sourceCategory:typeof(p.category||parent?.category)==='string'?(p.category||parent?.category):'',gender:declaredProductGender(p.gender||p.audience?.suggestedGender||source.gender,offer.url||p.url||url,name),evidenceKind:'schema.org',observedIdentifiers:[p.sku,p.mpn,p.gtin,p.gtin13].filter(v=>typeof v==='string'&&v),...(parent?{officialVariantEvidence:{kind:'official-product-group-member',sourceUrl:url,parentName:parent.name,productGroupID:parent.productGroupID||parent['@id'],sku:p.sku,size:p.size||null,variesBy:parent.variesBy||null}}:{})};
    const grouping=officialGroupMetadata(candidate,officialGroups);
    // Unsupported size variants stay out of the candidate, retaining last good
    // records; a missing official parent must never recreate model-count spam.
    if(isOfficialBrooksSizeVariant(candidate)&&!grouping)continue;
-   found.push({...candidate,...grouping,sourceTitle:name});
+   found.push(withImageOwnership({...candidate,...grouping,sourceTitle:name},url,'schema.org-product-object'));
   }}catch{/* An unrelated malformed JSON-LD block doesn't authorize filling gaps. */}
  });
  // Nike publishes exact model, colorway, product code, currency and image together.
@@ -90,13 +94,14 @@ export function extractProductCandidates($,url,source){
    const groups=JSON.parse(next).props?.pageProps?.initialState?.Wall?.productGroupings || [];
    for(const group of groups)for(const p of group.products || []){
     if(!/러닝|레이싱/.test(p.copy?.subTitle || '') || /주니어|베이비/.test(p.copy?.subTitle || ''))continue;
-    found.push({brand:'NIKE',model:p.copy.title.replace(/^나이키\s*/,''),source:resolveDeclaredCatalogUrl(p.pdpUrl.url,url),sku:p.productCode,
+    found.push(withImageOwnership({brand:'NIKE',model:p.copy.title.replace(/^나이키\s*/,''),source:resolveDeclaredCatalogUrl(p.pdpUrl.url,url),sku:p.productCode,
      color:p.displayColors?.colorDescription,imageSource:resolveDeclaredCatalogUrl(p.colorwayImages?.squarishURL,url),price:p.prices.currentPrice,
-     regularPrice:p.prices.initialPrice,currency:p.prices.currency,gender:/여성/.test(p.copy.subTitle)?'여성':/남성/.test(p.copy.subTitle)?'남성':'공용',sourceRegion:'한국',description:'',evidenceKind:'official-catalog'});
+     regularPrice:p.prices.initialPrice,currency:p.prices.currency,gender:/여성/.test(p.copy.subTitle)?'여성':/남성/.test(p.copy.subTitle)?'남성':'공용',sourceRegion:'한국',description:'',evidenceKind:'official-catalog'},url,'nike-wall-product-object'));
    }
   }catch{/* Fails closed and retains previous data. */}
  }
- return found;
+ const observations=sourceBoundObservations($,url,source,previous).map(row=>withImageOwnership(row,url,row.sourceIdentityEvidence?.kind||row.evidenceKind));
+ return [...found,...observations].map(row=>bindKnownCatalogRow(row,source,previous,{keywords:$('meta[name="keywords"]').attr('content')||''}));
 }
 export function classify(name,description=''){
  const text=(name+' '+description).toLowerCase();

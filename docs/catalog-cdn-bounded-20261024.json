@@ -1,0 +1,110 @@
+{
+  "checkedAt": "2026-10-23T20:29:44.364Z",
+  "status": "proposed-not-pushed",
+  "originReads": 8,
+  "redirectsFollowed": 0,
+  "retries": 0,
+  "imageDownloads": 0,
+  "timeoutMsPerRead": 15000,
+  "maxBytesPerPage": 12000000,
+  "receiptRun": 40015648317,
+  "receiptArtifact": 12528118050,
+  "results": [
+    {
+      "sourceId": "altra-6",
+      "url": "https://www.altrarunning.com/en-us/products/mens-experience-wild-3-gtx-al0a85se?variant=51414816719015",
+      "status": 200,
+      "bytes": 2400635,
+      "pageSha256": "79ac912fab3cbf2a88522a0d83f8ec117e02ec85f0d88537e54e9beb0ae9a61d",
+      "candidateRows": 2,
+      "imageHost": "www.altrarunning.com",
+      "imagePaths": ["/cdn/shop/files/AL0A85SE73Q-HERO.png", "/cdn/shop/files/AL0A85SE73R-HERO.png"]
+    },
+    {
+      "sourceId": "altra-6",
+      "url": "https://www.altrarunning.com/en-us/products/mens-vanish-tempo-2-al0a85p1?variant=51099223883943",
+      "status": 200,
+      "bytes": 3237089,
+      "pageSha256": "f7c5139911b87721f2ffae6f2bf426e53197ebeb22022bd63fcabbf81c801f5e",
+      "candidateRows": 3,
+      "imageHost": "www.altrarunning.com",
+      "imagePaths": ["/cdn/shop/files/AL0A85P153H-HERO.png", "/cdn/shop/files/AL0A85P170T-HERO.png", "/cdn/shop/files/AL0A85P183S-HERO.png"]
+    },
+    {
+      "sourceId": "karhu-9",
+      "url": "https://us.karhu.com/products/karhu-mens-ikoni-atr-wr-silver-lining-steeple-gray",
+      "status": 200,
+      "bytes": 746806,
+      "pageSha256": "783cbe2072f9a20643094084223b007f6954c51ebcdb921d87ea53f23b10f75b",
+      "candidateRows": 12,
+      "imageHost": "us.karhu.com",
+      "imagePaths": ["/cdn/shop/files/F104912_1.jpg"],
+      "observedVariantExamples": [
+        {"sku": "F104912_8", "model": "KARHU MEN'S IKONI ATR WR - SILVER LINING / STEEPLE GRAY - 8"},
+        {"sku": "F104912_8.5", "model": "KARHU MEN'S IKONI ATR WR - SILVER LINING / STEEPLE GRAY - 8.5"}
+      ]
+    },
+    {
+      "sourceId": "karhu-9",
+      "url": "https://us.karhu.com/products/karhu-mens-mestari-run-2-0-vintage-indigo-bamboo",
+      "status": 200,
+      "bytes": 837665,
+      "pageSha256": "dc41291bc084854fa70b0e82ce9ae23d251dbe44fc0c1396c6328be52e828465",
+      "candidateRows": 12,
+      "imageHost": "us.karhu.com",
+      "imagePaths": ["/cdn/shop/files/F105019_1copy.jpg"],
+      "observedVariantExamples": [
+        {"sku": "F105019_8", "model": "KARHU MEN'S MESTARI RUN 2.0 - VINTAGE INDIGO / BAMBOO - 8"},
+        {"sku": "F105019_8.5", "model": "KARHU MEN'S MESTARI RUN 2.0 - VINTAGE INDIGO / BAMBOO - 8.5"}
+      ]
+    },
+    {
+      "sourceId": "kiprun-10",
+      "url": "https://www.decathlon.com/products/kiprun-kipride-mens-running-shoes-380020",
+      "status": 200,
+      "bytes": 803823,
+      "pageSha256": "71a41dacac5cdcd3b41d5a969ac09c7540245ced808b1192d9141b2218fc8490",
+      "candidateRows": 22,
+      "imageHost": "www.decathlon.com",
+      "imagePaths": ["/cdn/shop/files/8997614-001.jpg", "/cdn/shop/files/8997616-001.jpg"],
+      "observedVariantExamples": [
+        {"sku": "5815513", "model": "Kiprun Kipride Men's Running Shoes - Black\u00a0 / 7"},
+        {"sku": "5815514", "model": "Kiprun Kipride Men's Running Shoes - Black\u00a0 / 8"}
+      ]
+    },
+    {
+      "sourceId": "kiprun-10",
+      "url": "https://www.decathlon.com/products/kiprun-kipsummit-mens-trail-running-shoes-361994",
+      "status": 200,
+      "bytes": 932015,
+      "pageSha256": "b3b808cb380a8c7c977870f24d7b5fa418ea6ebc8126984ae6dd7f7bc14dfcaa",
+      "candidateRows": 33,
+      "imageHost": "www.decathlon.com",
+      "imagePaths": ["/cdn/shop/files/8970094-001.jpg", "/cdn/shop/files/8970095-001.jpg", "/cdn/shop/files/9008743-KIPRUNKIPSUMMITFYELLOWPE26-8970297_8970091-001---Expireson18-11-2035.jpg"],
+      "observedVariantExamples": [
+        {"sku": "5668885", "model": "Kiprun Kipsummit Men's Trail Running Shoes - Black Orange / 7"},
+        {"sku": "5668886", "model": "Kiprun Kipsummit Men's Trail Running Shoes - Black Orange / 8"}
+      ]
+    },
+    {
+      "sourceId": "salomon-13",
+      "url": "https://salomon.co.kr/products/l45403000",
+      "status": 200,
+      "bytes": 692818,
+      "pageSha256": "18a4acea7cd058e5295e78be79929b8985b1f46b1d4ae3e4187ad6c77fa6f4c1",
+      "candidateRows": 1,
+      "imageHost": "salomon.co.kr",
+      "imagePaths": ["/cdn/shop/files/L45403000_0_GHO_AEROBLAZE4GRVLGTX_Black_Black_Paloma_2000x.png"]
+    },
+    {
+      "sourceId": "salomon-13",
+      "url": "https://salomon.co.kr/products/l45400500",
+      "status": 200,
+      "bytes": 679000,
+      "pageSha256": "1e1fad8cb34907ef233aeea18c6433a62b7d5b606daac407dce0d33e1bf8f0f9",
+      "candidateRows": 1,
+      "imageHost": "salomon.co.kr",
+      "imagePaths": ["/cdn/shop/files/L45400500_0_GHO_AEROBLAZE4GRVL_Burro_VanillaIce_Black_2000x.png"]
+    }
+  ]
+}

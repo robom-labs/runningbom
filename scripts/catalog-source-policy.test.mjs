@@ -2,6 +2,28 @@ import test from 'node:test';import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';import {load} from 'cheerio';
 import {approvedCatalogUrl,resolveDeclaredCatalogUrl,sameApprovedCatalogHost} from './catalog-source-policy.mjs';
 import {extractProductCandidates} from './catalog-core.mjs';
+test('eight official first-party Shopify receipts cover exactly the 86 prior image-policy rejections',async()=>{
+ const receipt=JSON.parse(await readFile(new URL('../docs/catalog-cdn-bounded-20261024.json',import.meta.url),'utf8'));
+ const expected={'altra-6':'www.altrarunning.com','karhu-9':'us.karhu.com','kiprun-10':'www.decathlon.com','salomon-13':'salomon.co.kr'},counts={};
+ assert.equal(receipt.originReads,8);assert.equal(receipt.results.length,8);assert.equal(receipt.redirectsFollowed,0);assert.equal(receipt.imageDownloads,0);
+ for(const r of receipt.results){
+  assert.equal(r.status,200);assert.match(r.pageSha256,/^[a-f0-9]{64}$/);assert.equal(r.imageHost,expected[r.sourceId]);
+  const s={id:r.sourceId,imageHosts:['cdn.shopify.com']};counts[r.sourceId]=(counts[r.sourceId]||0)+r.candidateRows;
+  for(const path of r.imagePaths)assert.equal(approvedCatalogUrl('https://'+r.imageHost+path+'?v=1&width=1200',s,{image:true}),true);
+ }
+ assert.deepEqual(counts,{'altra-6':5,'karhu-9':24,'kiprun-10':55,'salomon-13':2});
+});
+test('four proposed image rules never allow another source, whole host, sibling, HTTP, credentials or non-image path',()=>{
+ for(const[id,host]of Object.entries({'altra-6':'www.altrarunning.com','karhu-9':'us.karhu.com','kiprun-10':'www.decathlon.com','salomon-13':'salomon.co.kr'})){
+  const s={id,imageHosts:['cdn.shopify.com'],hosts:[]};
+  for(const value of ['https://'+host+'/cdn/shop/files/real.png','https://'+host+'/cdn/shop/files/real.jpg']){
+   assert.equal(approvedCatalogUrl(value,s,{image:true}),true);
+   assert.equal(approvedCatalogUrl(value,s),false);
+   assert.equal(approvedCatalogUrl(value,{...s,id:'unknown'},{image:true}),false);
+   for(const bad of [value.replace('https:','http:'),value.replace(host,host+'.evil.test'),value.replace(host,'evil@'+host),value.replace(host,host+':8443'),value.replace('/cdn/shop/files/','/other/'),value.replace('/cdn/shop/files/','/cdn/shop/files/nested/'),value.replace(/\.(png|jpg)$/,'.html'),value.replace('real.','../real.')])assert.equal(approvedCatalogUrl(bad,s,{image:true}),false,bad);
+  }
+ }
+});
 test('only observed ASICS/Brooks aliases are accepted, never arbitrary siblings',()=>{
   const a={id:'asics-1',hosts:['asics.co.kr'],imageHosts:['d26wss9rw703v0.cloudfront.net']};
   assert.equal(approvedCatalogUrl('https://www.asics.co.kr/p/AKR_112630234-400',a),true);

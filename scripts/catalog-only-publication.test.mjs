@@ -76,7 +76,9 @@ test('pipeline cannot publish broad app/image changes, mutate Pages settings or 
  const crawler=await readFile(new URL('./refresh-verified-products.mjs',import.meta.url),'utf8');
  assert.match(crawler,/respectRobotsTxtFile:true/);assert.match(crawler,/retryOnBlocked:false/);assert.match(crawler,/useSessionPool:false/);assert.doesNotMatch(crawler,/await fetch\(row.imageSource/);
  const sync=await readFile(new URL('./sync-verified-products.mjs',import.meta.url),'utf8');assert.doesNotMatch(sync,/apps\/mobile|outputs\/pushrun-site/);
- assert.match(crawler,/seeds.slice\(0,Math.max\(1,Math.floor\(max\*\.6\)\)\)/);
+ assert.match(crawler,/planCatalogSeeds\(registry,previous.products,max\)/);
+ const plan=await readFile(new URL('./catalog-refresh-plan.mjs',import.meta.url),'utf8');
+ assert.match(plan,/Math.max\(Math.min\(active,max\),Math.floor\(max\*\.6\)\)\)/);
  assert.match(crawler,/noVerifiedSources/);assert.match(crawler,/mergeSkipped/);
  assert.ok(crawler.indexOf("if(!verified.length)throw")<crawler.indexOf('if(write){'));
 });

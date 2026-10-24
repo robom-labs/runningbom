@@ -20,9 +20,10 @@ jobs:
       group: pages
       cancel-in-progress: false
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 35
     env:
       CATALOG_MAX_REQUESTS: '60'
+      CATALOG_TOOLING_REQUIRED: 'true'
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -34,10 +35,22 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Locked isolated bitmap decoder (no application dependencies)
+        run: npm ci --prefix scripts/catalog-image-tools --ignore-scripts --no-audit --no-fund
+      - name: Restore dated SHA-verified official document and original-byte caches
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: outputs/operations/catalog-enrichment-cache
+          key: catalog-enrichment-v1-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: catalog-enrichment-v1-${{ runner.os }}-
       - name: Tests before any collection
-        run: node --test scripts/catalog-core.test.mjs scripts/catalog-official-groups.test.mjs scripts/catalog-publication-core.test.mjs scripts/catalog-refresh-guard.test.mjs scripts/catalog-only-publication.test.mjs scripts/catalog-family-metadata.test.mjs
+        run: node --test scripts/catalog-core.test.mjs scripts/catalog-official-groups.test.mjs scripts/catalog-source-policy.test.mjs scripts/catalog-source-observations.test.mjs scripts/catalog-refresh-plan.test.mjs scripts/catalog-image-ownership.test.mjs scripts/catalog-photo-source-audit.test.mjs scripts/catalog-enrichment.test.mjs scripts/shoe-features-core.test.mjs scripts/product-frame-audit-core.test.mjs scripts/product-frame-audit-merge.test.mjs scripts/catalog-publication-core.test.mjs scripts/catalog-refresh-guard.test.mjs scripts/catalog-only-publication.test.mjs scripts/catalog-family-metadata.test.mjs
       - name: Robots-respecting official metadata; no image downloads
-        run: npm run catalog:refresh
+        run: node scripts/refresh-verified-products.mjs
+      - name: Source-bound features and exact original frames; bounded partial/LKG
+        run: node scripts/refresh-catalog-enrichment.mjs --document-dir outputs/operations/catalog-source-cache --max-pages 24 --max-images 24
+      - name: Validate slim public budget and retain server-only proof, then stage canonical data
+        run: node scripts/promote-catalog-enrichment.mjs --candidate-dir outputs/operations/catalog-enriched
       - run: npm run catalog:check
       - name: Persist last-good pair on main, then overlay existing gh-pages
         if: ${{ (github.event_name == 'workflow_dispatch' && inputs.publish) || (github.event_name == 'schedule' && vars.CATALOG_PUBLISH_ENABLED == 'true') }}
@@ -46,19 +59,25 @@ jobs:
           gh api repos/${{ github.repository }}/pages | node scripts/catalog-only-publication.mjs --assert-pages
           git config user.name robom-data-bot
           git config user.email actions@github.com
-          git add -- data/verified-products.json data/verified-products.manifest.json
-          test -z "$(git diff --cached --name-only | sed '/^data\/verified-products\.json$/d; /^data\/verified-products\.manifest\.json$/d')"
+          BASE=$(git rev-parse HEAD)
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASE"
+          git add -- data/verified-products.json data/verified-products.manifest.json data/catalog-enrichment-evidence.json
+          test -z "$(git diff --cached --name-only | sed '/^data\/verified-products\.json$/d; /^data\/verified-products\.manifest\.json$/d; /^data\/catalog-enrichment-evidence\.json$/d')"
           if ! git diff --cached --quiet; then
-            git commit -m "chore(data): verified catalog metadata"
+            git commit -m "chore(data): verified catalog metadata [skip ci]"
             git push origin HEAD:main
           fi
           git fetch origin gh-pages
           SITE="$RUNNER_TEMP/catalog-existing-gh-pages"
-          git worktree add --detach "$SITE" origin/gh-pages
+          SITE_BASE=$(git rev-parse origin/gh-pages)
+          git worktree add --detach "$SITE" "$SITE_BASE"
           node scripts/catalog-only-publication.mjs --site-dir "$SITE" --data-dir data
           git -C "$SITE" add -- data/verified-products.json data/verified-products.manifest.json
           test -z "$(git -C "$SITE" diff --cached --name-only | sed '/^data\/verified-products\.json$/d; /^data\/verified-products\.manifest\.json$/d')"
           if ! git -C "$SITE" diff --cached --quiet; then
+            git fetch origin gh-pages
+            test "$(git rev-parse origin/gh-pages)" = "$SITE_BASE"
             git -C "$SITE" commit -m "chore(data): publish verified catalog pair only"
             git -C "$SITE" push origin HEAD:gh-pages
           fi
@@ -77,9 +96,19 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: catalog-metadata-health
-          path: outputs/operations/catalog-refresh.json
+          retention-days: 7
+          path: |
+            outputs/operations/catalog-refresh.json
+            outputs/operations/catalog-enriched/enrichment-report.json
+            outputs/operations/catalog-enriched/catalog-enrichment-evidence.json
+            outputs/operations/catalog-enriched/feature-evidence-full.json
           if-no-files-found: warn
       - name: Do not label partial source coverage as all-sources success
         if: always()
-        run: |
-          node --input-type=module -e "import fs from 'node:fs'; const r=JSON.parse(fs.readFileSync('outputs/operations/catalog-refresh.json')); console.log(JSON.stringify({decision:r.publicationDecision,verified:r.verified,noVerifiedSources:r.noVerifiedSources,failures:r.failures.length})); if(r.publicationDecision!=='validated'||r.noVerifiedSources.length||r.failures.length)process.exitCode=1;"
+        run: node scripts/check-catalog-refresh-health.mjs
+      - name: Preserve actual attempt rotation and bounded caches even for a partial-failed heartbeat
+        if: always()
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: outputs/operations/catalog-enrichment-cache
+          key: catalog-enrichment-v1-${{ runner.os }}-${{ github.run_id }}
