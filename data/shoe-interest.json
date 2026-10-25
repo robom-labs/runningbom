@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-25T08:24:53.943Z",
+  "checkedAt": "2026-10-25T18:26:14.050Z",
   "source": "RunRepeat",
   "sourceUrl": "https://runrepeat.com/catalog/running-shoes",
   "metric": "published-page-views",
@@ -645,7 +645,7 @@
       "model": "adidas Galaxy 8",
       "value": 4175,
       "evidenceUrl": "https://runrepeat.com/adidas-galaxy-8",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=12",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
       "rank": 34
     },
     {
@@ -733,7 +733,7 @@
       "model": "adidas Adizero Boston 12",
       "value": 3474,
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-boston-12",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
       "rank": 42
     },
     {
