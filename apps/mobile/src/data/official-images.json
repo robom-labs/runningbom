@@ -1,7 +1,7 @@
 {
   "note": "공식 페이지가 스스로 공개한 대표 이미지(og:image) 주소만 담습니다. 사람이 만들지 않고 scripts/collect-official-images.mjs가 채웁니다.",
-  "revision": 2,
-  "checkedAt": "2026-07-27",
+  "revision": 3,
+  "checkedAt": "2026-10-26",
   "images": {
     "gyeongju-marathon": {
       "url": "https://cdn.imweb.me/upload/S2022062363fb5e0b6e96f/14f061771b38b.png",
@@ -11,7 +11,7 @@
     "mbn-seoul": {
       "url": "https://www.mbn-seoulmarathon.com/images/web/og_image.jpg",
       "source": "mbn-seoulmarathon.com",
-      "checkedAt": "2026-07-27"
+      "checkedAt": "2026-10-26"
     },
     "schedule-072dd0d48e95": {
       "url": "https://scontent-dfw6-1.xx.fbcdn.net/v/t39.30808-6/655626609_1441563441332892_3046456024742647151_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1179x786&amp;ctp=p600x600&amp;_nc_cat=101&amp;ccb=1-7&amp;_nc_sid=cae128&amp;_nc_ohc=3lDtqSOwuTkQ7kNvwGx1Ppg&amp;_nc_oc=Adr78P02Mt7BC8MZqqSltGjR32p8FiXU4LXGStalnX9oKCDaA0tDSbuKzTQQq3haIrs&amp;_nc_zt=23&amp;_nc_ht=scontent-dfw6-1.xx&amp;_nc_gid=uQ9B8MfCkvsSru4WX9vClQ&amp;_nc_ss=7f289&amp;oh=00_AQBpZVnVdQeFcJFz9aDSccl_cmwCuIwFPNCDiFCu0_ij5g&amp;oe=6A6DAB0E",
@@ -46,12 +46,12 @@
     "schedule-1fb6211ae2da": {
       "url": "https://gmrun.kr/title_img2026.jpg",
       "source": "gmrun.kr",
-      "checkedAt": "2026-07-27"
+      "checkedAt": "2026-10-26"
     },
     "schedule-20532f12abdb": {
       "url": "https://storage.runable.me/main/2df10388-76d1-4ce3-b1a5-88ba049bbb3c_%EB%B3%B8%EC%A0%91%EC%88%98%20%EC%8D%B8%EB%84%A4%EC%9D%BC.jpg?v=undefined",
       "source": "runable.me",
-      "checkedAt": "2026-07-27"
+      "checkedAt": "2026-10-26"
     },
     "schedule-2b0bdb610bbf": {
       "url": "https://cdn.imweb.me/upload/S202509238dd548dc951b6/779aa2f8c2c7a.png",
@@ -66,7 +66,7 @@
     "schedule-320f17393a81": {
       "url": "https://urfesta.com/images/thumb.jpg",
       "source": "urfesta.com",
-      "checkedAt": "2026-07-27"
+      "checkedAt": "2026-10-26"
     },
     "schedule-367895c0a879": {
       "url": "https://cdn.imweb.me/upload/S20260623e6c1838697a1e/8f7071189c21d.png",
@@ -101,7 +101,7 @@
     "schedule-51d8319f0085": {
       "url": "https://storage.runable.me/main/6319c293-7d11-43c9-b9b8-e74787cfbc86_260527-26_%EA%B0%80%EB%AF%BC%EB%9F%B0-%EC%9D%BC%EB%B0%98%EC%A0%91%EC%88%98-%EC%9D%B8%EC%95%B1-%EC%A0%95%EB%B0%A9%ED%98%95%20%EC%8D%B8%EB%84%A4%EC%9D%BC.jpg?v=undefined",
       "source": "runable.me",
-      "checkedAt": "2026-07-27"
+      "checkedAt": "2026-10-26"
     },
     "schedule-523be9afb917": {
       "url": "https://cdn.imweb.me/upload/S202202286603eb04cf447/e43350e0b68bd.png",
@@ -231,7 +231,7 @@
     "schedule-c69900191f42": {
       "url": "https://cdn.sixshop.io/sf-gateway/public/stores/mokyok/website/%EC%96%91%EB%A8%B8%EB%A6%AC-%EC%9D%B4%EB%AF%B8%EC%A7%80_%EB%AA%A9%EC%9A%95%EB%9F%B0-%EB%A1%9C%EA%B3%A0_1783478326634.png",
       "source": "mokyokrun.shop",
-      "checkedAt": "2026-07-27"
+      "checkedAt": "2026-10-26"
     },
     "schedule-c992ddd49d2a": {
       "url": "https://jsrun.kr/title_img2026.jpg",
@@ -244,9 +244,9 @@
       "checkedAt": "2026-07-27"
     },
     "schedule-cd4cd11e5f81": {
-      "url": "https://storage.googleapis.com/cr-resource/image/97dc9c2b10eb5860ca00292efc7e7e10/ucksports/650/9dd45a6326f68eb47f0333f64cee8fe5.png?_1785192492",
+      "url": "https://storage.googleapis.com/cr-resource/image/97dc9c2b10eb5860ca00292efc7e7e10/ucksports/650/9dd45a6326f68eb47f0333f64cee8fe5.png?_1792979424",
       "source": "cuk-sports.com",
-      "checkedAt": "2026-07-27"
+      "checkedAt": "2026-10-26"
     },
     "schedule-e385f7c91b05": {
       "url": "https://cdn.imweb.me/upload/S202004134291ef7e7f84c/834e5bb94363d.png",
@@ -272,6 +272,11 @@
       "url": "https://modern-infinity-9e6.notion.site/image/attachment%3A3f5b5058-8d62-4ac9-8ec5-c0b03f1b951f%3ASocialMediaPreviewImage.png?table=block&id=39591881-0cc2-8075-b602-c0e076d8d3ea&spaceId=d6d91881-0cc2-8155-9239-00031697df5e&width=2000&userId=&cache=v2&imgBuildSrc=pageMetadataCover",
       "source": "modern-infinity-9e6.notion.site",
       "checkedAt": "2026-07-27"
+    },
+    "schedule-ecd21c0a09f3": {
+      "url": "https://xn--q20bn3kn1bg9oekd84a785cnfg.kr/ko/images/main_roll/tt27.png",
+      "source": "xn--q20bn3kn1bg9oekd84a785cnfg.kr",
+      "checkedAt": "2026-10-26"
     },
     "schedule-efb159d38156": {
       "url": "https://cdn.imweb.me/upload/S20260610235da01dda75a/59f84054f5791.png",
