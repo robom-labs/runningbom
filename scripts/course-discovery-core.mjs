@@ -3,6 +3,8 @@ import{load}from'cheerio';import{createHash}from'node:crypto';import{isIP}from'n
 import{parseOfficialGPX}from'./update-course-elevation.mjs';
 import{elevationRouteGeometry}from'../apps/mobile/assets/course-src/elevation-profile.mjs';
 import{courseEditionMetadata}from'./course-edition-metadata.mjs';
+import{classifyCourseContent}from'./course-content-publication.mjs';
+import{decodeCourseReceipt}from'./course-response-body.mjs';
 export const courseDigest=value=>createHash('sha256').update(value).digest('hex');
 const clean=value=>String(value??'').normalize('NFKC').replace(/\s+/g,' ').trim();
 const compact=value=>clean(value).toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');
@@ -63,6 +65,27 @@ export function namedCourseScopeProof(c,race,sourcePages=[]){
  if(option?.kind!=='named'||s?.schemaVersion!==1||s.kind!=='official-literal-asset-declaration'||s.sourceRepresentation!=='raw-html'||!['asset-caption','local-heading','asset-label'].includes(s.declarationKind)||s.literal!==option.literal||s.eventId!==race.id||s.raceDate!==race.raceDate||s.pageUrl!==e.pageUrl||s.pageSha256!==e.pageSha256||s.pageCheckedAt!==e.pageCheckedAt||s.assetUrl!==e.declaredUrl||s.assetUrl!==c.sourceUrl||s.assetSha256!==c.sourceSha256||s.assetCheckedAt!==e.assetCheckedAt||s.assetFinalUrl!==c.imageUrl||!scopeDeclaration(s.declaration,option.literal))return false;
  return sourcePages.some(p=>p.verified&&p.sourceRepresentation==='raw-html'&&p.url===s.pageUrl&&p.sha256===s.pageSha256&&p.checkedAt===s.pageCheckedAt&&p.editionEvidence?.accepted&&p.editionEvidence.raceDate===race.raceDate&&p.disciplineDeclarations?.some(d=>d.assetUrl===s.assetUrl&&d.literal===s.literal&&d.kind==='named'&&d.declaration===s.declaration&&d.declarationKind===s.declarationKind));
 }
+const eventDateLabel=/(?:대회|행사|경기|레이스)\s*(?:일시|일자|날짜|일정|일)|(?:event|race)\s*(?:date|day|start(?:\s*(?:date|time))?)/i;
+function canonicalEventDate(value){
+ const m=String(value??'').match(/(?:^|[^\d])((?:19|20)\d{2})\s*(?:년|[./-])\s*(\d{1,2})\s*(?:월|[./-])\s*(\d{1,2})(?!\d)/);if(!m)return null;
+ const day=m[1]+'-'+m[2].padStart(2,'0')+'-'+m[3].padStart(2,'0');return Number.isFinite(Date.parse(day))&&new Date(day).toISOString().slice(0,10)===day?day:null;
+}
+function eventDateDeclarations($,region){
+ const view=region.clone();view.find('script,style,noscript,template,nav,header,footer,aside,[hidden],[aria-hidden="true"],[role="navigation"],[role="contentinfo"],.site-footer,#footer').remove();
+ const blocks='p,li,td,th,dt,dd,div,section,article,h1,h2,h3,h4,h5,h6',fragments=[],dates=[];
+ view.find(blocks).each((_,el)=>{const n=$(el);if(!n.find(blocks).length){const text=clean(n.text());if(text)fragments.push(text);}});
+ for(let i=0;i<fragments.length;i++){
+  const text=fragments[i],match=text.match(eventDateLabel),prior=fragments[i-1]||'';
+  let local=match?text.slice(match.index+match[0].length):eventDateLabel.test(prior)&&prior.length<=40?text:null;
+  if(local===null)continue;const first=local.search(/(?:19|20)\d{2}/),prefix=first<0?'':local.slice(0,first);
+  if(first<0||first>40||/접수|등록|게시|작성|registration|publication|published|updated/i.test(prefix))continue;
+  const raceDate=canonicalEventDate(local.slice(first));if(raceDate)dates.push({raceDate,basis:'labelled-local-event-date',text:clean((match?'':prior+' ')+text).slice(0,240)});
+ }
+ // Only event-specific semantics: article:published_time / datePublished and
+ // ordinary registration/publication dates deliberately do not qualify.
+ $('meta[itemprop="startDate"],meta[property="event:start_time"],meta[property="og:event:start_time"],meta[name="event:date"],time[itemprop="startDate"]').each((_,el)=>{const n=$(el),raceDate=canonicalEventDate(n.attr('content')||n.attr('datetime')||n.text());if(raceDate)dates.push({raceDate,basis:'event-start-date-metadata'});});
+ return dates;
+}
 export function materializeCoursePage(html,url){
  if(typeof html!=='string'||Buffer.byteLength(html,'utf8')>4000000)throw Error('course-page-parser-byte-budget');
  const $=load(html),title=clean($('title').text()),primary=clean($('h1,h2,h3').slice(0,8).text()+' '+($('meta[property="og:title"]').attr('content')||''));
@@ -86,7 +109,8 @@ export function materializeCoursePage(html,url){
   add(images,raw,label,context,{primaryCaption,localHeading:clean(heading),pageDistanceKeys:selectedKeys.length===1?selectedKeys:[]});
  });
  $('[style]').each((_,el)=>{const n=$(el),context=[n.attr('class'),n.attr('id'),n.prevAll('h1,h2,h3,h4').first().text()].join(' ');if(/코스|course|route/i.test(context))for(const m of(n.attr('style')||'').matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/gi))add(images,m[1],n.attr('aria-label')||n.prevAll('h1,h2,h3,h4').first().text(),context);});
- return{url,title,primary,text,structured,metadata,links,images,selectedDistanceKeys:selectedKeys.length===1?selectedKeys:[]};
+ const content=load(html),main=content('main,[role="main"]'),region=main.length?main:content('body');
+ return{url,title,primary,text,structured,metadata,links,images,eventDateDeclarations:eventDateDeclarations(content,region),courseContent:classifyCourseContent(content,region,{safeURL:safeCourseURL,baseURL:url}),selectedDistanceKeys:selectedKeys.length===1?selectedKeys:[]};
 }
 export function exactCourseEdition(race,page){
  const [year,month,day]=race.raceDate.split('-').map(Number),title=page.title+' '+page.primary,years=[...title.matchAll(/20\d{2}/g)].map(m=>Number(m[0]));
@@ -106,6 +130,11 @@ export function exactCourseEdition(race,page){
  const structured=page.structured.find(e=>String(e.startDate).slice(0,10)===race.raceDate&&words.length&&words.every(word=>compact(e.name).includes(word)));
  const short=years.includes(year)&&page.text.match(monthDay);
  const meta=metadata.map(d=>({...d,match:d.text.match(literal)||d.text.match(splitYear)})).find(d=>d.match);
+ // A parent may fill an ABSENT event date. Registration ranges and publication
+ // stamps are not event dates; only local labelled/current Event start fields
+ // have conflict authority, even if another unrelated date matches the race.
+ const explicit=[...(page.eventDateDeclarations||[]),...page.structured.filter(e=>fits(e.name)).map(e=>({raceDate:canonicalEventDate(e.startDate),basis:'current-event-structured-startDate'})).filter(e=>e.raceDate)];
+ if(explicit.some(e=>e.raceDate!==race.raceDate))return{accepted:false,reason:'content-event-date-conflict',eventDateEvidence:explicit,matchedWords};
  if(metadata.some(d=>/20\d{2}\s*(?:년|[./-])\s*\d{1,2}\s*(?:월|[./-])\s*\d{1,2}/.test(d.text)&&!literal.test(d.text)&&!splitYear.test(d.text)))return {accepted:false,reason:'metadata-event-date-conflict',matchedWords};
  const local=compact(title),primaryIdentity=identity.length>=3&&local.includes(identity)||words.length>0&&words.every(w=>local.includes(w));
  if(!full&&!short&&!structured&&!meta)return{accepted:false,reason:'exact-event-date-not-established',matchedWords,primaryIdentity,identityOK};
@@ -115,11 +144,16 @@ export function exactCourseEdition(race,page){
 }
 const courseWords=/코스|주로|경로|course|route|\.gpx(?:[?#]|$)/i;
 const forbidden=/로그인|비밀번호|개인정보|환불|문의|변경\s*신청|변경\s*가능|참가자유|login|password|privacy|refund|application|\/apply(?:[/?-]|$)|\/board\/(?:games|free|qna)\b/i;
-export function officialPageKind(page,via={}){
+function declaredPageKind(page,via={}){
  if(forbidden.test(page.title+' '+new URL(page.url).pathname))return 'excluded-user-or-account-page';
  return courseWords.test(page.title+' '+new URL(page.url).pathname+' '+via.label)&&!/(?:주차|오시는|대회장\s*배치)/.test(page.title)?'course':'event';
 }
+export function officialPageKind(page,via={}){const kind=declaredPageKind(page,via);return kind==='course'&&page.courseContent?.status==='unpublished'?'event':kind;}
+// Legacy records are kept dated/unrecertified until observed again. Explicitly
+// classified new unknown/held pages are not completed public course coverage.
+export function coursePagePublicationKind(page){return page.pageKind==='course'&&page.courseContentStatus!==undefined&&!['published','mixed'].includes(page.courseContentStatus)?'event':page.pageKind;}
 export function discoverDeclaredCourseAssets(race,page,{pageKind='event'}={}){
+ if(page.courseContent?.status==='unpublished')return[];
  const valid=disciplineKeys(race.distances),out=[],seen=new Set();
  const add=(item,kind)=>{
   if(seen.has(item.url))return;let decoded=item.url;try{decoded=decodeURIComponent(decoded);}catch{}
@@ -213,11 +247,15 @@ export async function discoverRaceCourseSources(race,{seeds,get,knownPages=[],ma
   if(pages.some(p=>p.url===receipt.finalUrl))continue;
   if(!/html/i.test(receipt.contentType||'')){issues.push({url:item.url,reason:'non-html-official-page'});continue;}
   if(!safeCourseURL(receipt.finalUrl)||!seedOrigins.has(new URL(receipt.finalUrl).origin)){pages.push({url:item.url,verified:false,reason:'official-final-page-scope-mismatch'});continue;}
-  let page;try{page=materializeCoursePage(receipt.text??receipt.body.toString('utf8'),receipt.finalUrl);}catch(error){pages.push({url:item.url,verified:false,reason:error.message});continue;}
-  const edition=exactCourseEdition(race,page),kind=officialPageKind(page,item);
- const parentProof=proofs.get(item.declaredBy),inherited=parentProof&&(edition.primaryIdentity===true||kind==='course'&&edition.identityOK===true)&&new URL(page.url).origin===new URL(parentProof.url).origin&&edition.reason==='exact-event-date-not-established';
+  let page,decoded;try{decoded=decodeCourseReceipt(receipt);page=materializeCoursePage(decoded.text,receipt.finalUrl);}catch(error){pages.push({url:item.url,verified:false,reason:error.message});continue;}
+  const edition=exactCourseEdition(race,page),declaredKind=declaredPageKind(page,item),kind=officialPageKind(page,item);
+ const parentProof=proofs.get(item.declaredBy),inherited=parentProof&&(edition.primaryIdentity===true||declaredKind==='course'&&edition.identityOK===true)&&new URL(page.url).origin===new URL(parentProof.url).origin&&edition.reason==='exact-event-date-not-established';
   const accepted=kind!=='excluded-user-or-account-page'&&(edition.accepted||inherited);
-  const proof={url:page.url,sourceRepresentation:receipt.sourceRepresentation||(receipt.verification==='live-public-https'?'raw-html':'unknown'),pageKind:kind,verified:!!accepted,title:page.title,checkedAt:receipt.checkedAt,sha256:receipt.sha256,verification:receipt.verification??'saved-audit',editionEvidence:edition.accepted?edition:inherited?{...parentProof.editionEvidence,method:'same-origin-direct-declaration',inheritedFrom:parentProof.url,directlyDeclared:true}:edition,seedURL:item.seedURL||item.url,declaredBy:item.declaredBy??null,publishedGeometryLinks:accepted?declaredPublishedGeometryLinks(page):[]};
+  const proof={url:page.url,sourceRepresentation:receipt.sourceRepresentation||(receipt.verification==='live-public-https'?'raw-html':'unknown'),pageKind:kind,verified:!!accepted,title:page.title,checkedAt:receipt.checkedAt,sha256:receipt.sha256,verification:receipt.verification??'saved-audit',editionEvidence:edition.accepted?edition:inherited?{...parentProof.editionEvidence,method:'same-origin-direct-declaration',inheritedFrom:parentProof.url,directlyDeclared:true}:edition,seedURL:item.seedURL||item.url,declaredBy:item.declaredBy??null,publishedGeometryLinks:accepted&&page.courseContent.status!=='unpublished'?declaredPublishedGeometryLinks(page):[]};
+  const {text:bodyText,...bodyDecode}=decoded;
+  proof.bodyDecode=bodyDecode;
+  proof.courseContentStatus=page.courseContent.status;
+  proof.courseContentEvidence={...page.courseContent,sourceUrl:page.url,sourceSha256:receipt.sha256,checkedAt:receipt.checkedAt};
   proof.publishedDistanceKm={...(inherited?parentProof.publishedDistanceKm:{})};
   for(const m of page.text.matchAll(/(?:^|[^\d])(21[.,](?:0975|1)|42[.,](?:195|2))\s*(?:km|k|㎞|킬로미터)(?![a-z\d])/gi)){const km=Number(m[1].replace(',','.'));proof.publishedDistanceKm[km<30?'Half':'Full']=km;}
   if(kind==='course'&&page.selectedDistanceKeys?.length)proof.distanceLabels=page.selectedDistanceKeys.map(distanceLabel);
@@ -240,7 +278,7 @@ export async function discoverRaceCourseSources(race,{seeds,get,knownPages=[],ma
    catch(error){issues.push({url:asset.url,reason:error.message});}
   }
  }
- const verified=pages.filter(p=>p.verified),coursePages=verified.filter(p=>p.pageKind==='course');
+ const verified=pages.filter(p=>p.verified),coursePages=verified.filter(p=>coursePagePublicationKind(p)==='course');
  for(const item of queue){const parent=proofs.get(item.declaredBy);if(parent)defer(item.url,item.label,parent);}
  return{eventId:race.id,eventName:race.name,raceDate:race.raceDate,distanceKeys:disciplineKeys(race.distances),seedUrls:seeds.map(s=>s.url),status:coursePages.length?'verified-course-page':verified.length?'verified-event-page':pages.some(p=>/network-budget/.test(p.reason||''))?'pending-budget':'unverified',resolvedOfficialPages:verified,observations:pages,issues,candidates,navigationFrontier:pending.slice(0,16)};
 }
@@ -249,7 +287,11 @@ export function mergeCourseDiscoveryIndex(previous,records,races){
   if(!race||race.raceDate!==row.raceDate)throw Error('discovery index edition mismatch');
   if(!old?.resolvedOfficialPages?.length)return row;
   const retained=old.resolvedOfficialPages.filter(p=>p.verified&&row.seedUrls.includes(p.seedURL));
-  const combined=new Map(retained.map(p=>[p.url,p]));for(const p of row.resolvedOfficialPages)combined.set(p.url,p);
-  return retained.length?{...row,status:row.resolvedOfficialPages.length?row.status:'retained-last-good',resolvedOfficialPages:[...combined.values()],...(!row.resolvedOfficialPages.length?{lastAttemptStatus:row.status}:{})}:row;
+  const combined=new Map(retained.map(p=>[p.url,p]));for(const p of row.resolvedOfficialPages){
+   const prior=combined.get(p.url),at=Date.parse(p.checkedAt),before=Date.parse(prior?.checkedAt);
+   if(!prior||p.verified===true&&Number.isFinite(at)&&(!Number.isFinite(before)||at>before||at===before&&p.sha256===prior.sha256))combined.set(p.url,p);
+  }
+  const resolved=[...combined.values()],status=resolved.some(p=>coursePagePublicationKind(p)==='course')?'verified-course-page':'verified-event-page';
+  return retained.length?{...row,status:row.resolvedOfficialPages.length?status:'retained-last-good',resolvedOfficialPages:resolved,...(!row.resolvedOfficialPages.length?{lastAttemptStatus:row.status}:{})}:row;
  });
 }
