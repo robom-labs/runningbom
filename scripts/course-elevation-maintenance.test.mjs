@@ -18,7 +18,10 @@ test('orphan, duplicate, invalid and structurally unqualified profiles never sur
 });
 test('profile cannot qualify without authentic, fresh GPX/DEM/structure receipts even if numeric profile is renderable',()=>{
  const good=previous.profiles[0],one=courses.filter(c=>c.id===good.courseId);
- for(const change of [p=>p.retrievalEvidence.requests=[],p=>p.retrievalEvidence.requests[0].responseText+=' ',p=>p.retrievalEvidence.requests.forEach(r=>r.checkedAt='2020-01-01T00:00:00Z')]){const envelope=structuredClone({...previous,profiles:[good]});change(envelope);assert.equal(retainQualifiedProfiles(one,envelope,{now}).elevation.profiles.length,0);}
+ const referenced=new Set([one[0].sourceSha256,...good.acquisition.requestSha256,...good.structureMask.responseSha256s]);
+ const selected=previous.retrievalEvidence.requests.find(r=>referenced.has(r.responseSha256));
+ assert.ok(selected,'The corruption fixture must mutate a receipt used by this profile.');
+ for(const change of [p=>p.retrievalEvidence.requests=[],p=>{const receipt=p.retrievalEvidence.requests.find(r=>r.responseSha256===selected.responseSha256);assert.ok(receipt);receipt.responseText+=' ';},p=>p.retrievalEvidence.requests.forEach(r=>r.checkedAt='2020-01-01T00:00:00Z')]){const envelope=structuredClone({...previous,profiles:[good]});change(envelope);assert.equal(retainQualifiedProfiles(one,envelope,{now}).elevation.profiles.length,0);}
  assert.equal(retainQualifiedProfiles(one,{...previous,profiles:[good]},{now:now+31*86400000}).elevation.profiles.length,0);
 });
 test('a partial/unqualified live result cannot replace previous qualified evidence',async()=>fixture(async({root})=>{

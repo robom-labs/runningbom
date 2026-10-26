@@ -6,7 +6,7 @@ import{courseCatalogPages,verifyCourseSourceIndex}from'./course-source-index-cor
 import{buildCourseCatalog}from'./course-catalog-build.mjs';
 import{discoveredDEMPlan,bindDiscoveredDEM}from'./course-dem-candidate-core.mjs';
 import{verifyCoursePair}from'./course-data-publication.mjs';
-const date='2027-04-18T00:00:00.000Z',race={id:'future-starlight-2027',name:'2027 별빛 마라톤',raceDate:'2027-04-18',distances:['10km 로드레이스','5K']};
+const date='2027-04-18T00:00:00.000Z',race={id:'future-starlight-2027',name:'2027 별빛 마라톤',raceDate:'2027-04-18',distances:['10K','5K']};
 const root='<title>2027 별빛 마라톤</title><h1>2027 별빛 마라톤</h1><p>대회일 2027.04.18</p><a href="/course">코스안내</a>';
 const page='<title>2027 별빛 마라톤 코스 안내</title><h1>2027 별빛 마라톤</h1><section><h2>10km 코스도</h2><img alt="10km 코스도" src="/course-10km.png"></section><section><h2>5km 코스도</h2><img alt="5km 코스도" src="/course-5km.png"></section>';
 function png(){const crc=buffer=>{let c=0xffffffff;for(const n of buffer){c^=n;for(let i=0;i<8;i++)c=c&1?0xedb88320^(c>>>1):c>>>1;}return(c^0xffffffff)>>>0;};const chunk=(name,data)=>{const nameB=Buffer.from(name),n=Buffer.alloc(4),c=Buffer.alloc(4);n.writeUInt32BE(data.length);c.writeUInt32BE(crc(Buffer.concat([nameB,data])));return Buffer.concat([n,nameB,data,c]);};const header=Buffer.alloc(13);header.writeUInt32BE(400);header.writeUInt32BE(200,4);header[8]=8;header[9]=2;return Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),chunk('IHDR',header),chunk('IDAT',deflateSync(Buffer.alloc((400*3+1)*200))),chunk('IEND',Buffer.alloc(0))]);}

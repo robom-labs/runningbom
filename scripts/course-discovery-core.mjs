@@ -25,6 +25,44 @@ export function disciplineKeys(value){
 }
 export const distanceKm=key=>key==='Full'?42.195:key==='Half'?21.0975:Number(String(key).replace(/K$/i,''));
 export const distanceLabel=key=>key==='Full'?'풀코스':key==='Half'?'하프':key;
+export const courseDisciplineLiteral=value=>String(value??'').normalize('NFKC').replace(/\s+/g,' ').trim();
+export function plainCourseDivisionKey(label){
+ if(typeof label!=='string')return null;const value=courseDisciplineLiteral(label);
+ if(!/^(?:[1-9]\d{0,2}(?:[.,]\d{1,4})?\s*(?:km|k|킬로미터)|full|half|풀코스|하프)$/i.test(value))return null;
+ const parsed=disciplineKeys(value);return parsed.length===1?parsed[0]:null;
+}
+export function currentCourseOption(race,label){
+ const literal=courseDisciplineLiteral(label),key=plainCourseDivisionKey(label),options=race.distances||[];
+ const matches=key?options.filter(d=>plainCourseDivisionKey(d)===key):options.filter(d=>!plainCourseDivisionKey(d)&&courseDisciplineLiteral(d)===literal);
+ if(!literal||matches.length!==1)return null;const actual=courseDisciplineLiteral(matches[0]),parsed=disciplineKeys(actual);
+ return{kind:key?'plain':'named',literal:actual,key:key||(parsed.length===1?parsed[0]:null),identity:key?'key:'+key:'literal:'+actual};
+}
+function scopeDeclaration(text,literal){
+ const value=courseDisciplineLiteral(text);if(value===literal)return true;
+ if(!value.startsWith(literal))return false;const suffix=value.slice(literal.length).trim();
+ return /^(?:(?:공식|확정)\s*)?(?:코스도|코스\s*(?:안내|지도|소개)|경로도|지도|course(?: map| guide)?|route map|gpx|다운로드)$/i.test(suffix);
+}
+function declaredCourseScope(race,item){
+ const fields=[['asset-caption',item.primaryCaption],['local-heading',item.localHeading],['asset-label',item.label]].filter(([,v])=>v);
+ for(const [declarationKind,declaration]of fields){
+  const matches=(race.distances||[]).filter(d=>scopeDeclaration(declaration,courseDisciplineLiteral(d))).map(d=>currentCourseOption(race,d)).filter(Boolean);
+  // Canonical plain aliases in a literal caption may differ (5km vs 5K), but
+  // a named division is NEVER inferred from its numeric portion or a filename.
+  const stripped=courseDisciplineLiteral(declaration).replace(/(?:\s*(?:(?:공식|확정)\s*)?(?:코스(?:도|안내|지도|소개)?|course(?: map| guide)?|route map|경로도|지도|gpx))+$/i,'').trim();
+  if(!matches.length){const plain=plainCourseDivisionKey(stripped),option=plain&&currentCourseOption(race,stripped);if(option)matches.push(option);}
+  const unique=[...new Map(matches.map(m=>[m.identity,m])).values()];
+  if(unique.length===1)return{...unique[0],declaration:courseDisciplineLiteral(declaration),declarationKind};
+  if(unique.length>1)return null;
+  // Do not borrow a filename/nearby heading over a conflicting explicit caption.
+  if(declarationKind==='asset-caption'&&stripped)return{blocked:true};
+ }
+ return null;
+}
+export function namedCourseScopeProof(c,race,sourcePages=[]){
+ const option=currentCourseOption(race,c.distanceLabel),e=c.discoveryEvidence,s=e?.disciplineScope;
+ if(option?.kind!=='named'||s?.schemaVersion!==1||s.kind!=='official-literal-asset-declaration'||s.sourceRepresentation!=='raw-html'||!['asset-caption','local-heading','asset-label'].includes(s.declarationKind)||s.literal!==option.literal||s.eventId!==race.id||s.raceDate!==race.raceDate||s.pageUrl!==e.pageUrl||s.pageSha256!==e.pageSha256||s.pageCheckedAt!==e.pageCheckedAt||s.assetUrl!==e.declaredUrl||s.assetUrl!==c.sourceUrl||s.assetSha256!==c.sourceSha256||s.assetCheckedAt!==e.assetCheckedAt||s.assetFinalUrl!==c.imageUrl||!scopeDeclaration(s.declaration,option.literal))return false;
+ return sourcePages.some(p=>p.verified&&p.sourceRepresentation==='raw-html'&&p.url===s.pageUrl&&p.sha256===s.pageSha256&&p.checkedAt===s.pageCheckedAt&&p.editionEvidence?.accepted&&p.editionEvidence.raceDate===race.raceDate&&p.disciplineDeclarations?.some(d=>d.assetUrl===s.assetUrl&&d.literal===s.literal&&d.kind==='named'&&d.declaration===s.declaration&&d.declarationKind===s.declarationKind));
+}
 export function materializeCoursePage(html,url){
  if(typeof html!=='string'||Buffer.byteLength(html,'utf8')>4000000)throw Error('course-page-parser-byte-budget');
  const $=load(html),title=clean($('title').text()),primary=clean($('h1,h2,h3').slice(0,8).text()+' '+($('meta[property="og:title"]').attr('content')||''));
@@ -96,8 +134,9 @@ export function discoverDeclaredCourseAssets(race,page,{pageKind='event'}={}){
   const assetURL=new URL(assetFileURL(item.url));let fileText;try{fileText=decodeURIComponent(assetURL.pathname.split('/').at(-1)||'');}catch{return;}
   fileText=fileText.replace(/[_-]/g,' ').replace(/\bhalf(?=\d)/i,'half ').replace(/\bfull(?=\d)/i,'full ');
   const filenameKeys=disciplineKeys(fileText),observed=filenameKeys.length?filenameKeys:localKeys.length?localKeys:pageKeys,keys=observed.filter(key=>valid.includes(key));
-  const distanceKeys=keys.length?keys:valid.length===1&&!observed.length?valid:[];
-  seen.add(item.url);out.push({...item,kind,distanceKeys,distanceEvidence:keys.length?'explicit-asset-caption-or-filename':distanceKeys.length?'single-official-discipline':'unresolved-no-guess',explicitCourseDeclaration:explicit||dedicated});
+  const declaredScope=declaredCourseScope(race,item);
+  const distanceKeys=declaredScope?.key?[declaredScope.key]:declaredScope?[]:keys.length?keys:valid.length===1&&!observed.length?valid:[];
+  seen.add(item.url);out.push({...item,kind,distanceKeys,...(declaredScope&&!declaredScope.blocked?{declaredScope}:{}),distanceEvidence:declaredScope?.blocked?'unresolved-literal-scope':declaredScope?.kind==='named'?'explicit-literal-asset-declaration':keys.length?'explicit-asset-caption-or-filename':distanceKeys.length?'single-official-discipline':'unresolved-no-guess',explicitCourseDeclaration:explicit||dedicated});
  };
  for(const l of page.links)if(/\.gpx(?:[?#]|$)/i.test(l.url))add(l,'gpx');else if(/\.(?:png|jpe?g|webp|gif)(?:[?#]|$)/i.test(l.url)&&courseWords.test(l.label+' '+l.url))add(l,'image');
  for(const i of page.images)add(i,'image');return out;
@@ -110,7 +149,7 @@ export function declaredPublishedGeometryLinks(page){return page.links.flatMap(l
 export function courseNavigations(page,seedOrigins){return page.links.filter(l=>seedOrigins.has(new URL(l.url).origin)&&!forbidden.test(l.label+' '+l.url)&&!courseDirectoryHost(new URL(l.url).hostname)&&!/^https?:.*\.(?:png|jpe?g|webp|gif|gpx)(?:[?#]|$)/i.test(l.url)&&(l.frame||courseWords.test(l.label+' '+l.url)||/대회\s*(안내|요강|소개|개요)|overview|\/info(?:[./?]|$)|\/guide|\/about/i.test(l.label+' '+l.url))).sort((a,b)=>Number(courseWords.test(b.label+' '+b.url))-Number(courseWords.test(a.label+' '+a.url)));}
 export function assessCourseAsset(race,candidate,receipt){
  if(!receipt.ok||!receipt.body||courseDigest(receipt.body)!==receipt.sha256)throw Error('asset-receipt-integrity');
- if(!candidate.distanceKeys.length)throw Error('discipline-unresolved');
+ if(!candidate.distanceKeys.length&&!(candidate.kind==='image'&&candidate.declaredScope?.kind==='named'))throw Error('discipline-unresolved');
  if(candidate.kind==='image'){
   const b=receipt.body,magic=b.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))||b[0]===255&&b[1]===216&&b[2]===255||b.subarray(0,6).toString().startsWith('GIF8')||b.subarray(0,4).toString()==='RIFF'&&b.subarray(8,12).toString()==='WEBP';
   if(!magic||!/^image\//i.test(receipt.contentType||''))throw Error('not-an-actual-raster-image');const size=imageSize(b);
@@ -125,9 +164,10 @@ export function assessCourseAsset(race,candidate,receipt){
 }
 export function courseCandidate(race,asset,receipt,pageProof,assessment){
  const idBase='discovered-'+courseDigest([race.id,race.raceDate,asset.kind,asset.url].join('|')).slice(0,16),date=receipt.checkedAt.slice(0,10);
- return asset.distanceKeys.map(key=>({
-  id:idBase+'-'+key.toLowerCase(),eventId:race.id,eventName:race.name,raceDate:race.raceDate,
-  distanceLabel:distanceLabel(key),officialDistanceKm:pageProof.publishedDistanceKm?.[key]??distanceKm(key),sourceKind:assessment.kind,
+ const scopes=asset.declaredScope?[asset.declaredScope]:asset.distanceKeys.map(key=>({key,kind:'plain',literal:distanceLabel(key)}));
+ return scopes.map(scope=>{const key=scope.key;return{
+  id:idBase+'-'+(scope.kind==='named'?courseDigest(scope.identity).slice(0,12):key.toLowerCase()),eventId:race.id,eventName:race.name,raceDate:race.raceDate,
+  distanceLabel:scope.kind==='named'?scope.literal:distanceLabel(key),...(key?{officialDistanceKm:pageProof.publishedDistanceKm?.[key]??distanceKm(key)}:{}),sourceKind:assessment.kind,
   sourcePage:pageProof.url,sourceUrl:asset.kind==='image'?asset.url:receipt.finalUrl,imageUrl:asset.kind==='image'?receipt.finalUrl:undefined,
   sourceSha256:receipt.sha256,checkedAt:date,segments:asset.kind==='image'?[]:assessment.segments,
   startLabel:'공식 코스 안내 참고',endLabel:'공식 코스 안내 참고',
@@ -135,12 +175,13 @@ export function courseCandidate(race,asset,receipt,pageProof,assessment){
   reuseStatus:'official-page-declared; redistribution-rights-not-established',
   discoveryEvidence:{schemaVersion:1,pageUrl:pageProof.url,pageKind:pageProof.pageKind,pageSha256:pageProof.sha256,pageCheckedAt:pageProof.checkedAt,
    editionEvidence:pageProof.editionEvidence,declaredUrl:asset.url,distanceEvidence:asset.distanceEvidence,distanceKey:key,declaredDistanceKeys:asset.distanceKeys,
-   distanceBasis:asset.kind==='image'&&['Half','Full'].includes(key)&&!pageProof.publishedDistanceKm?.[key]?'standard-category-nominal':'official-declared-numeric',
+   distanceBasis:!key?'official-literal-no-numeric-distance':asset.kind==='image'&&['Half','Full'].includes(key)&&!pageProof.publishedDistanceKm?.[key]?'standard-category-nominal':'official-declared-numeric',
+   ...(scope.kind==='named'?{disciplineScope:{schemaVersion:1,kind:'official-literal-asset-declaration',sourceRepresentation:pageProof.sourceRepresentation||'unknown',literal:scope.literal,eventId:race.id,raceDate:race.raceDate,pageUrl:pageProof.url,pageSha256:pageProof.sha256,pageCheckedAt:pageProof.checkedAt,assetUrl:asset.url,assetSha256:receipt.sha256,assetFinalUrl:receipt.finalUrl,assetCheckedAt:receipt.checkedAt,declaration:scope.declaration,declarationKind:scope.declarationKind}}:{}),
    ...(asset.kind==='image'?{distanceIsMeasuredRoute:false,...(['Half','Full'].includes(key)&&!pageProof.publishedDistanceKm?.[key]?{nominalDistanceKm:distanceKm(key)}:{})}:{}),
    assetCheckedAt:receipt.checkedAt,explicitCourseDeclaration:asset.explicitCourseDeclaration,
    validatedRaster:asset.kind==='image'?{width:assessment.width,height:assessment.height,bytes:receipt.body.length,mime:receipt.contentType}:undefined,
    source:'deterministic-official-source-discovery',candidateOnly:true,requiresVisualReview:asset.kind==='image',requiresDEM:asset.kind==='gpx'}
- }));
+ };});
 }
 export function validCourseNavigationFrontier(race,seeds,frontier,{now=Date.now()}={}){
  if(!Array.isArray(frontier))return[];
@@ -176,7 +217,7 @@ export async function discoverRaceCourseSources(race,{seeds,get,knownPages=[],ma
   const edition=exactCourseEdition(race,page),kind=officialPageKind(page,item);
  const parentProof=proofs.get(item.declaredBy),inherited=parentProof&&(edition.primaryIdentity===true||kind==='course'&&edition.identityOK===true)&&new URL(page.url).origin===new URL(parentProof.url).origin&&edition.reason==='exact-event-date-not-established';
   const accepted=kind!=='excluded-user-or-account-page'&&(edition.accepted||inherited);
-  const proof={url:page.url,pageKind:kind,verified:!!accepted,title:page.title,checkedAt:receipt.checkedAt,sha256:receipt.sha256,verification:receipt.verification??'saved-audit',editionEvidence:edition.accepted?edition:inherited?{...parentProof.editionEvidence,method:'same-origin-direct-declaration',inheritedFrom:parentProof.url,directlyDeclared:true}:edition,seedURL:item.seedURL||item.url,declaredBy:item.declaredBy??null,publishedGeometryLinks:accepted?declaredPublishedGeometryLinks(page):[]};
+  const proof={url:page.url,sourceRepresentation:receipt.sourceRepresentation||(receipt.verification==='live-public-https'?'raw-html':'unknown'),pageKind:kind,verified:!!accepted,title:page.title,checkedAt:receipt.checkedAt,sha256:receipt.sha256,verification:receipt.verification??'saved-audit',editionEvidence:edition.accepted?edition:inherited?{...parentProof.editionEvidence,method:'same-origin-direct-declaration',inheritedFrom:parentProof.url,directlyDeclared:true}:edition,seedURL:item.seedURL||item.url,declaredBy:item.declaredBy??null,publishedGeometryLinks:accepted?declaredPublishedGeometryLinks(page):[]};
   proof.publishedDistanceKm={...(inherited?parentProof.publishedDistanceKm:{})};
   for(const m of page.text.matchAll(/(?:^|[^\d])(21[.,](?:0975|1)|42[.,](?:195|2))\s*(?:km|k|㎞|킬로미터)(?![a-z\d])/gi)){const km=Number(m[1].replace(',','.'));proof.publishedDistanceKm[km<30?'Half':'Full']=km;}
   if(kind==='course'&&page.selectedDistanceKeys?.length)proof.distanceLabels=page.selectedDistanceKeys.map(distanceLabel);
@@ -191,7 +232,8 @@ export async function discoverRaceCourseSources(race,{seeds,get,knownPages=[],ma
   for(const link of page.links)if(saved.has(link.url)&&new URL(link.url).origin===new URL(page.url).origin&&item.depth<2&&!forbidden.test(link.url+' '+link.label))queue.push({...link,depth:item.depth+1,declaredBy:page.url,seedURL:item.seedURL||item.url});
   if(!accepted)continue;
   for(const asset of discoverDeclaredCourseAssets(race,page,{pageKind:kind})){
-   if(!asset.distanceKeys.length){issues.push({url:asset.url,reason:'discipline-unresolved-no-request'});continue;}
+   if(!asset.distanceKeys.length&&!(asset.kind==='image'&&asset.declaredScope?.kind==='named')){issues.push({url:asset.url,reason:'discipline-unresolved-no-request'});continue;}
+   if(asset.declaredScope){proof.disciplineDeclarations??=[];proof.disciplineDeclarations.push({assetUrl:asset.url,literal:asset.declaredScope.literal,kind:asset.declaredScope.kind,declaration:asset.declaredScope.declaration,declarationKind:asset.declaredScope.declarationKind});}
    if(asset.kind==='gpx'&&asset.distanceKeys.some(key=>['Half','Full'].includes(key)&&!proof.publishedDistanceKm[key])){issues.push({url:asset.url,reason:'gpx-named-discipline-numeric-distance-not-published-no-guess'});continue;}
    if(assetsSeen.has(asset.url))continue;if(assetsSeen.size>=maxAssets){defer(page.url,item.label||page.title,proof);issues.push({url:asset.url,reason:'asset-cap-deferred-not-complete'});continue;}assetsSeen.add(asset.url);
    try{const receipt=await get(asset.url,{kind:asset.kind});if(!receipt.ok&&/network-budget/.test(receipt.reason||'')){defer(page.url,item.label||page.title,proof);throw Error(receipt.reason);}const assessment=assessCourseAsset(race,asset,receipt);candidates.push(...courseCandidate(race,asset,receipt,proof,assessment));}
