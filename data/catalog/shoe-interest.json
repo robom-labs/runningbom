@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-28T09:39:16.129Z",
+  "checkedAt": "2026-10-28T20:17:14.456Z",
   "source": "RunRepeat",
   "sourceUrl": "https://runrepeat.com/catalog/running-shoes",
   "metric": "published-page-views",
@@ -133,7 +133,7 @@
       "model": "HOKA Arahi 9",
       "value": 2167,
       "evidenceUrl": "https://runrepeat.com/hoka-arahi-9",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=10",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
       "rank": 68
     },
     {
@@ -150,7 +150,7 @@
       "value": 1223,
       "evidenceUrl": "https://runrepeat.com/hoka-mafate-x",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=14",
-      "rank": 80
+      "rank": 79
     },
     {
       "item_id": "shoe-8e681f264cc1",
@@ -165,7 +165,7 @@
       "model": "HOKA Rocket X Trail",
       "value": 2704,
       "evidenceUrl": "https://runrepeat.com/hoka-rocket-x-trail",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=10",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
       "rank": 55
     },
     {
@@ -174,7 +174,7 @@
       "value": 1121,
       "evidenceUrl": "https://runrepeat.com/hoka-speedgoat-6",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=4",
-      "rank": 83
+      "rank": 82
     },
     {
       "item_id": "shoe-de33814003e1",
@@ -182,14 +182,14 @@
       "value": 1045,
       "evidenceUrl": "https://runrepeat.com/hoka-tecton-x-3",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
-      "rank": 88
+      "rank": 87
     },
     {
       "item_id": "shoe-745aa0bba61f",
       "model": "HOKA Cielo X1 3.0",
       "value": 2861,
       "evidenceUrl": "https://runrepeat.com/hoka-cielo-x-1-3-0",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=17",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=18",
       "rank": 54
     },
     {
@@ -206,14 +206,14 @@
       "value": 1111,
       "evidenceUrl": "https://runrepeat.com/hoka-skyward-x",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=2",
-      "rank": 84
+      "rank": 83
     },
     {
       "item_id": "shoe-5cf50a5552e1",
       "model": "New Balance SuperComp Rebel",
       "value": 11913,
       "evidenceUrl": "https://runrepeat.com/new-balance-super-comp-rebel",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=4",
       "rank": 7
     },
     {
@@ -245,8 +245,8 @@
       "model": "Altra Timp 6",
       "value": 1067,
       "evidenceUrl": "https://runrepeat.com/altra-timp-6",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
-      "rank": 87
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=8",
+      "rank": 86
     },
     {
       "item_id": "shoe-8ba758755f04",
@@ -262,7 +262,7 @@
       "value": 649,
       "evidenceUrl": "https://runrepeat.com/altra-experience-flow-st",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=10",
-      "rank": 90
+      "rank": 89
     },
     {
       "item_id": "shoe-ed9c8c7e1c36",
@@ -321,14 +321,6 @@
       "rank": 66
     },
     {
-      "item_id": "shoe-ff9d9ae6ac9b",
-      "model": "PUMA Deviate Nitro Elite 3",
-      "value": 1329,
-      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=12",
-      "rank": 77
-    },
-    {
       "item_id": "shoe-f0466d19d18a",
       "model": "PUMA Deviate Nitro 4",
       "value": 6326,
@@ -366,7 +358,7 @@
       "value": 1155,
       "evidenceUrl": "https://runrepeat.com/mizuno-wave-inspire-22",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 82
+      "rank": 81
     },
     {
       "item_id": "shoe-1e0f846cb41a",
@@ -405,7 +397,7 @@
       "model": "Salomon Ultra Glide 4",
       "value": 1864,
       "evidenceUrl": "https://runrepeat.com/salomon-ultra-glide-4",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=13",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=14",
       "rank": 71
     },
     {
@@ -413,8 +405,8 @@
       "model": "Salomon S/Lab Pulsar 4",
       "value": 398,
       "evidenceUrl": "https://runrepeat.com/salomon-s-lab-pulsar-4",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=20",
-      "rank": 91
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=21",
+      "rank": 90
     },
     {
       "item_id": "shoe-0b4cf830d938",
@@ -549,7 +541,7 @@
       "model": "ASICS Magic Speed 5",
       "value": 5094,
       "evidenceUrl": "https://runrepeat.com/asics-magic-speed-5",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
       "rank": 31
     },
     {
@@ -558,22 +550,22 @@
       "value": 1257,
       "evidenceUrl": "https://runrepeat.com/asics-gt-1000-15",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=8",
-      "rank": 78
+      "rank": 77
     },
     {
       "item_id": "shoe-41ec3ea8d26e",
       "model": "ASICS Glideride Max 2",
       "value": 1162,
       "evidenceUrl": "https://runrepeat.com/asics-glideride-max-2",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=14",
-      "rank": 81
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=15",
+      "rank": 80
     },
     {
       "item_id": "shoe-c5ef21503010",
       "model": "adidas Adizero Adios Pro 5",
       "value": 9049,
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-adios-pro-5",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
       "rank": 14
     },
     {
@@ -605,7 +597,7 @@
       "model": "adidas Ultraboost 5X",
       "value": 2948,
       "evidenceUrl": "https://runrepeat.com/adidas-ultraboost-5-x",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=2",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
       "rank": 51
     },
     {
@@ -669,7 +661,7 @@
       "model": "adidas Duramo Speed 2",
       "value": 2629,
       "evidenceUrl": "https://runrepeat.com/adidas-duramo-speed-2",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=10",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
       "rank": 57
     },
     {
@@ -677,7 +669,7 @@
       "model": "adidas Adizero Adios 9",
       "value": 3665,
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-adios-9",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=8",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
       "rank": 40
     },
     {
@@ -702,7 +694,7 @@
       "value": 1107,
       "evidenceUrl": "https://runrepeat.com/adidas-hyperboost-gtx",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=15",
-      "rank": 85
+      "rank": 84
     },
     {
       "item_id": "shoe-ea82d6e1974b",
@@ -710,7 +702,7 @@
       "value": 1096,
       "evidenceUrl": "https://runrepeat.com/adidas-supernova-prima-3",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=12",
-      "rank": 86
+      "rank": 85
     },
     {
       "item_id": "shoe-cf23b34b7b8c",
@@ -718,7 +710,7 @@
       "value": 687,
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-adios-pro-evo-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=15",
-      "rank": 89
+      "rank": 88
     },
     {
       "item_id": "shoe-fc501fecfa1d",
@@ -726,7 +718,7 @@
       "value": 1243,
       "evidenceUrl": "https://runrepeat.com/adidas-duramo-speed",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=15",
-      "rank": 79
+      "rank": 78
     },
     {
       "item_id": "shoe-78dd911447c2",
@@ -735,54 +727,6 @@
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-boston-12",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
       "rank": 44
-    },
-    {
-      "item_id": "shoe-8bd93fa37950",
-      "model": "PUMA Deviate Nitro Elite 3",
-      "value": 1329,
-      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=12",
-      "rank": 77
-    },
-    {
-      "item_id": "shoe-e68460c9ef68",
-      "model": "PUMA Deviate Nitro Elite 3",
-      "value": 1329,
-      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=12",
-      "rank": 77
-    },
-    {
-      "item_id": "shoe-4eeaa7d38283",
-      "model": "PUMA Deviate Nitro Elite 3",
-      "value": 1329,
-      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=12",
-      "rank": 77
-    },
-    {
-      "item_id": "shoe-c3e317d24d14",
-      "model": "PUMA Deviate Nitro Elite 3",
-      "value": 1329,
-      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=12",
-      "rank": 77
-    },
-    {
-      "item_id": "shoe-41548a3b7663",
-      "model": "PUMA Deviate Nitro Elite 3",
-      "value": 1329,
-      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=12",
-      "rank": 77
-    },
-    {
-      "item_id": "shoe-023d51e319a9",
-      "model": "PUMA Deviate Nitro Elite 3",
-      "value": 1329,
-      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=12",
-      "rank": 77
     },
     {
       "item_id": "shoe-95dccd06854e",
@@ -4247,14 +4191,6 @@
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
       "rank": 39
-    },
-    {
-      "item_id": "shoe-67dedfc2db62",
-      "model": "PUMA Deviate Nitro Elite 3",
-      "value": 1329,
-      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=12",
-      "rank": 77
     },
     {
       "item_id": "shoe-9bfde422868a",
