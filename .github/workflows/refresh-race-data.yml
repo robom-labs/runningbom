@@ -29,25 +29,39 @@ jobs:
       # 이 단계가 없어서 6시간마다 돌던 대회 일정 갱신이 계속 실패하고 있었습니다.
       - name: 모바일 의존성 설치 (TypeScript 정본 로딩용)
         run: npm --prefix apps/mobile ci
+      - name: Install locked course metadata tooling (no lifecycle scripts)
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: 공개 일정 수집 및 정규화
         run: npm run data:refresh
       - name: 모바일 원격 번들 동기화
         run: npm run mobile:sync
+      - name: Reconcile exact current race membership and course metadata pair
+        run: |
+          node scripts/reconcile-course-source-index.mjs --write
+          node scripts/reconcile-course-source-index.mjs --check
+          node scripts/publish-course-catalog.mjs --remote-only --check
       - name: 대회 데이터·모바일 계약 검증
         run: |
           node scripts/validate-static.mjs
           node --test scripts/race-data-core.test.mjs scripts/mobile-data-contract.test.mjs scripts/secure-link-core.test.mjs
           node --test scripts/race-corrections.test.mjs scripts/race-refresh-targets.test.mjs
+          node --test --test-concurrency=2 scripts/reconcile-course-source-index.test.mjs scripts/course-catalog-pipeline.test.mjs
       - name: 수집 리포트 보관
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: running-race-data-refresh-report
-          path: outputs/race-data-refresh-report.json
+          path: |
+            outputs/race-data-refresh-report.json
+            outputs/operations/course-index-lifecycle*.json
           if-no-files-found: error
       - name: 검증된 변경만 main에 반영
         id: publish
         run: |
+          set -euo pipefail
+          BASE=$(git rev-parse HEAD)
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASE"
           if git diff --quiet -- \
             outputs/pushrun-site/races.json \
             apps/mobile/src/data/races.json \

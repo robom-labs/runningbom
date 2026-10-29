@@ -28,6 +28,11 @@ jobs:
           node-version: 22
       - name: Install locked collector dependencies without package lifecycle scripts
         run: npm ci --ignore-scripts
+      - name: Reconcile exact current race lifecycle before contracts or discovery
+        run: |
+          node --test --test-concurrency=2 scripts/reconcile-course-source-index.test.mjs
+          node scripts/reconcile-course-source-index.mjs --write
+          node scripts/reconcile-course-source-index.mjs --check
       - name: Contracts and new-event lifecycle before collection
         run: COURSE_REQUIRE_CLEAN_INSTALL=1 node --test scripts/course-discovery.test.mjs scripts/course-discovery-rejections.test.mjs scripts/course-metadata-inputs.test.mjs scripts/course-data-publication.test.mjs scripts/course-source-refresh-core.test.mjs scripts/course-meta-refresh.test.mjs scripts/course-tooling-dependencies.test.mjs scripts/course-discovery-frontier.test.mjs scripts/course-edition-metadata.test.mjs scripts/course-public-projection.test.mjs scripts/course-elevation-maintenance.test.mjs scripts/course-original-gpx-retention.test.mjs
       - name: Discover current seeds, rotating by persisted last actual attempt
@@ -55,6 +60,7 @@ jobs:
             ${{ runner.temp }}/course-discovery/course-image-acceptance.json
             ${{ runner.temp }}/course-discovery/course-gpx-dem-handoff.json
             outputs/operations/course-elevation-health.json
+            outputs/operations/course-index-lifecycle*.json
             data/course-source-index.json
             data/course-source-seeds.json
             data/course-base.json
