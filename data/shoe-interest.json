@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-29T09:57:26.930Z",
+  "checkedAt": "2026-10-29T20:18:14.666Z",
   "source": "RunRepeat",
   "sourceUrl": "https://runrepeat.com/catalog/running-shoes",
   "metric": "published-page-views",
@@ -22,7 +22,7 @@
       "value": 2972,
       "evidenceUrl": "https://runrepeat.com/nike-structure-26",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=2",
-      "rank": 48
+      "rank": 49
     },
     {
       "item_id": "nike-vomero18",
@@ -94,7 +94,7 @@
       "value": 3717,
       "evidenceUrl": "https://runrepeat.com/hoka-challenger-8",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
-      "rank": 37
+      "rank": 38
     },
     {
       "item_id": "shoe-b3a0a71c38f6",
@@ -102,7 +102,7 @@
       "value": 2935,
       "evidenceUrl": "https://runrepeat.com/hoka-clifton-pro",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 49
+      "rank": 50
     },
     {
       "item_id": "shoe-70f6433d33aa",
@@ -110,7 +110,7 @@
       "value": 2010,
       "evidenceUrl": "https://runrepeat.com/hoka-gaviota-6",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
-      "rank": 68
+      "rank": 70
     },
     {
       "item_id": "shoe-69a4346a83b2",
@@ -134,7 +134,7 @@
       "value": 2162,
       "evidenceUrl": "https://runrepeat.com/hoka-arahi-9",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
-      "rank": 66
+      "rank": 68
     },
     {
       "item_id": "shoe-30ac1dcdf217",
@@ -142,15 +142,15 @@
       "value": 2858,
       "evidenceUrl": "https://runrepeat.com/hoka-rocket-x-3",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=4",
-      "rank": 53
+      "rank": 54
     },
     {
       "item_id": "shoe-a47b6896b56f",
       "model": "HOKA Mafate X",
-      "value": 1209,
+      "value": 1190,
       "evidenceUrl": "https://runrepeat.com/hoka-mafate-x",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=15",
-      "rank": 77
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=14",
+      "rank": 80
     },
     {
       "item_id": "shoe-8e681f264cc1",
@@ -158,7 +158,7 @@
       "value": 1563,
       "evidenceUrl": "https://runrepeat.com/hoka-mafate-5",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
-      "rank": 71
+      "rank": 73
     },
     {
       "item_id": "shoe-15b7a757211e",
@@ -166,7 +166,7 @@
       "value": 2739,
       "evidenceUrl": "https://runrepeat.com/hoka-rocket-x-trail",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
-      "rank": 54
+      "rank": 55
     },
     {
       "item_id": "shoe-b08de6b8540e",
@@ -174,7 +174,7 @@
       "value": 1127,
       "evidenceUrl": "https://runrepeat.com/hoka-speedgoat-6",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=4",
-      "rank": 81
+      "rank": 84
     },
     {
       "item_id": "shoe-de33814003e1",
@@ -182,15 +182,15 @@
       "value": 1035,
       "evidenceUrl": "https://runrepeat.com/hoka-tecton-x-3",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
-      "rank": 85
+      "rank": 88
     },
     {
       "item_id": "shoe-745aa0bba61f",
       "model": "HOKA Cielo X1 3.0",
       "value": 2865,
       "evidenceUrl": "https://runrepeat.com/hoka-cielo-x-1-3-0",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=17",
-      "rank": 52
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=16",
+      "rank": 53
     },
     {
       "item_id": "shoe-a9182cdb02df",
@@ -198,7 +198,7 @@
       "value": 2329,
       "evidenceUrl": "https://runrepeat.com/hoka-mach-x-3",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=10",
-      "rank": 62
+      "rank": 64
     },
     {
       "item_id": "shoe-aa5f7b982665",
@@ -206,7 +206,7 @@
       "value": 1102,
       "evidenceUrl": "https://runrepeat.com/hoka-skyward-x",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=2",
-      "rank": 82
+      "rank": 85
     },
     {
       "item_id": "shoe-5cf50a5552e1",
@@ -222,7 +222,7 @@
       "value": 1359,
       "evidenceUrl": "https://runrepeat.com/altra-escalante-5",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 74
+      "rank": 76
     },
     {
       "item_id": "shoe-853408c34ec1",
@@ -230,7 +230,7 @@
       "value": 1791,
       "evidenceUrl": "https://runrepeat.com/altra-torin-9",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 70
+      "rank": 72
     },
     {
       "item_id": "shoe-b741fb01c183",
@@ -238,7 +238,7 @@
       "value": 2544,
       "evidenceUrl": "https://runrepeat.com/altra-lone-peak-9",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=4",
-      "rank": 56
+      "rank": 58
     },
     {
       "item_id": "shoe-fcd4f76b3bd1",
@@ -246,7 +246,7 @@
       "value": 1064,
       "evidenceUrl": "https://runrepeat.com/altra-timp-6",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=8",
-      "rank": 84
+      "rank": 87
     },
     {
       "item_id": "shoe-8ba758755f04",
@@ -254,7 +254,7 @@
       "value": 2254,
       "evidenceUrl": "https://runrepeat.com/altra-experience-flow-3",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=9",
-      "rank": 65
+      "rank": 67
     },
     {
       "item_id": "shoe-34b29453ee6d",
@@ -262,7 +262,7 @@
       "value": 651,
       "evidenceUrl": "https://runrepeat.com/altra-experience-flow-st",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=10",
-      "rank": 87
+      "rank": 90
     },
     {
       "item_id": "shoe-ed9c8c7e1c36",
@@ -270,7 +270,7 @@
       "value": 2294,
       "evidenceUrl": "https://runrepeat.com/on-cloudmonster",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=4",
-      "rank": 63
+      "rank": 65
     },
     {
       "item_id": "shoe-cab913788c7a",
@@ -278,7 +278,7 @@
       "value": 3258,
       "evidenceUrl": "https://runrepeat.com/saucony-endorphin-elite-3",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
-      "rank": 41
+      "rank": 42
     },
     {
       "item_id": "shoe-3316bec787b7",
@@ -310,7 +310,7 @@
       "value": 2430,
       "evidenceUrl": "https://runrepeat.com/kiprun-kipsummit-max",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=17",
-      "rank": 61
+      "rank": 63
     },
     {
       "item_id": "shoe-bd156f5ab408",
@@ -318,7 +318,15 @@
       "value": 2279,
       "evidenceUrl": "https://runrepeat.com/kiprun-kipstorm-elite",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=19",
-      "rank": 64
+      "rank": 66
+    },
+    {
+      "item_id": "shoe-ff9d9ae6ac9b",
+      "model": "PUMA Deviate Nitro Elite 3",
+      "value": 1309,
+      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
+      "rank": 77
     },
     {
       "item_id": "shoe-f0466d19d18a",
@@ -334,7 +342,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-b28c8df7f985",
@@ -358,7 +366,7 @@
       "value": 1148,
       "evidenceUrl": "https://runrepeat.com/mizuno-wave-inspire-22",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 80
+      "rank": 83
     },
     {
       "item_id": "shoe-1e0f846cb41a",
@@ -366,7 +374,7 @@
       "value": 2544,
       "evidenceUrl": "https://runrepeat.com/mizuno-wave-rider-30",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=9",
-      "rank": 57
+      "rank": 59
     },
     {
       "item_id": "shoe-bfa14fe681a1",
@@ -374,7 +382,7 @@
       "value": 2687,
       "evidenceUrl": "https://runrepeat.com/mizuno-neo-zen-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=13",
-      "rank": 55
+      "rank": 56
     },
     {
       "item_id": "shoe-726004e8a47f",
@@ -382,7 +390,7 @@
       "value": 3082,
       "evidenceUrl": "https://runrepeat.com/salomon-aero-glide-4-grvl",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
-      "rank": 45
+      "rank": 46
     },
     {
       "item_id": "shoe-4d0be7d4cd06",
@@ -390,7 +398,7 @@
       "value": 2496,
       "evidenceUrl": "https://runrepeat.com/salomon-aero-glide-4",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 58
+      "rank": 60
     },
     {
       "item_id": "shoe-1645df997bc7",
@@ -398,7 +406,7 @@
       "value": 1859,
       "evidenceUrl": "https://runrepeat.com/salomon-ultra-glide-4",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=14",
-      "rank": 69
+      "rank": 71
     },
     {
       "item_id": "shoe-38ed9fd533fe",
@@ -406,7 +414,7 @@
       "value": 406,
       "evidenceUrl": "https://runrepeat.com/salomon-s-lab-pulsar-4",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=21",
-      "rank": 88
+      "rank": 91
     },
     {
       "item_id": "shoe-0b4cf830d938",
@@ -414,7 +422,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-5a63abca4f74",
@@ -446,7 +454,7 @@
       "value": 3613,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-max-4",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 40
+      "rank": 41
     },
     {
       "item_id": "shoe-74ed6ff4bacc",
@@ -454,7 +462,7 @@
       "value": 2433,
       "evidenceUrl": "https://runrepeat.com/brooks-cascadia-20",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
-      "rank": 59
+      "rank": 61
     },
     {
       "item_id": "shoe-01278f532f43",
@@ -462,7 +470,7 @@
       "value": 1449,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-trail",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=8",
-      "rank": 72
+      "rank": 74
     },
     {
       "item_id": "shoe-3a8532b474b0",
@@ -518,7 +526,7 @@
       "value": 2916,
       "evidenceUrl": "https://runrepeat.com/asics-metaspeed-edge-tokyo",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 50
+      "rank": 51
     },
     {
       "item_id": "shoe-0d15c760aa29",
@@ -526,7 +534,7 @@
       "value": 4018,
       "evidenceUrl": "https://runrepeat.com/asics-gel-cumulus-28",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
-      "rank": 36
+      "rank": 37
     },
     {
       "item_id": "shoe-af456246c500",
@@ -534,7 +542,7 @@
       "value": 3092,
       "evidenceUrl": "https://runrepeat.com/asics-gel-excite-11",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
-      "rank": 44
+      "rank": 45
     },
     {
       "item_id": "shoe-f0cf27dee560",
@@ -550,7 +558,7 @@
       "value": 1256,
       "evidenceUrl": "https://runrepeat.com/asics-gt-1000-15",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=8",
-      "rank": 75
+      "rank": 78
     },
     {
       "item_id": "shoe-41ec3ea8d26e",
@@ -558,7 +566,7 @@
       "value": 1160,
       "evidenceUrl": "https://runrepeat.com/asics-glideride-max-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=15",
-      "rank": 79
+      "rank": 82
     },
     {
       "item_id": "shoe-c5ef21503010",
@@ -590,7 +598,7 @@
       "value": 1390,
       "evidenceUrl": "https://runrepeat.com/adidas-galaxy-7",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=13",
-      "rank": 73
+      "rank": 75
     },
     {
       "item_id": "shoe-1c12df656d7c",
@@ -598,15 +606,15 @@
       "value": 2905,
       "evidenceUrl": "https://runrepeat.com/adidas-ultraboost-5-x",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=2",
-      "rank": 51
+      "rank": 52
     },
     {
       "item_id": "shoe-7f54bdd33131",
       "model": "adidas Runfalcon 5",
-      "value": 2077,
+      "value": 2064,
       "evidenceUrl": "https://runrepeat.com/adidas-runfalcon-5",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=14",
-      "rank": 67
+      "rank": 69
     },
     {
       "item_id": "shoe-e4c5d8bd0820",
@@ -614,7 +622,7 @@
       "value": 3250,
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-takumi-sen-11",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=8",
-      "rank": 42
+      "rank": 43
     },
     {
       "item_id": "shoe-db71d2f06c1a",
@@ -630,7 +638,7 @@
       "value": 2431,
       "evidenceUrl": "https://runrepeat.com/adidas-supernova-rise-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
-      "rank": 60
+      "rank": 62
     },
     {
       "item_id": "shoe-d2f23d9224df",
@@ -641,6 +649,14 @@
       "rank": 34
     },
     {
+      "item_id": "shoe-0d4a4008b6a0",
+      "model": "adidas Adizero EVO SL ATR",
+      "value": 4240,
+      "evidenceUrl": "https://runrepeat.com/adidas-adizero-evo-sl-atr",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=8",
+      "rank": 36
+    },
+    {
       "item_id": "shoe-5660af6c6a8f",
       "model": "adidas Supernova Rise 3",
       "value": 9628,
@@ -649,12 +665,20 @@
       "rank": 11
     },
     {
+      "item_id": "shoe-8a9c087daea1",
+      "model": "adidas Duramo Speed 2",
+      "value": 2582,
+      "evidenceUrl": "https://runrepeat.com/adidas-duramo-speed-2",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
+      "rank": 57
+    },
+    {
       "item_id": "shoe-ee32b806b016",
       "model": "adidas Adizero Adios 9",
       "value": 3617,
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-adios-9",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=8",
-      "rank": 39
+      "rank": 40
     },
     {
       "item_id": "shoe-d210d51441b7",
@@ -662,7 +686,7 @@
       "value": 3077,
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-prime-x-3-strung",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
-      "rank": 46
+      "rank": 47
     },
     {
       "item_id": "shoe-207dc9e6f0e0",
@@ -678,7 +702,7 @@
       "value": 1181,
       "evidenceUrl": "https://runrepeat.com/adidas-hyperboost-gtx",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=15",
-      "rank": 78
+      "rank": 81
     },
     {
       "item_id": "shoe-ea82d6e1974b",
@@ -686,23 +710,23 @@
       "value": 1097,
       "evidenceUrl": "https://runrepeat.com/adidas-supernova-prima-3",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=12",
-      "rank": 83
+      "rank": 86
     },
     {
       "item_id": "shoe-cf23b34b7b8c",
       "model": "adidas Adizero Adios Pro Evo 2",
       "value": 679,
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-adios-pro-evo-2",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=15",
-      "rank": 86
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=16",
+      "rank": 89
     },
     {
       "item_id": "shoe-fc501fecfa1d",
       "model": "adidas Duramo Speed",
-      "value": 1241,
+      "value": 1239,
       "evidenceUrl": "https://runrepeat.com/adidas-duramo-speed",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=15",
-      "rank": 76
+      "rank": 79
     },
     {
       "item_id": "shoe-78dd911447c2",
@@ -710,7 +734,55 @@
       "value": 3183,
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-boston-12",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
-      "rank": 43
+      "rank": 44
+    },
+    {
+      "item_id": "shoe-8bd93fa37950",
+      "model": "PUMA Deviate Nitro Elite 3",
+      "value": 1309,
+      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
+      "rank": 77
+    },
+    {
+      "item_id": "shoe-e68460c9ef68",
+      "model": "PUMA Deviate Nitro Elite 3",
+      "value": 1309,
+      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
+      "rank": 77
+    },
+    {
+      "item_id": "shoe-4eeaa7d38283",
+      "model": "PUMA Deviate Nitro Elite 3",
+      "value": 1309,
+      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
+      "rank": 77
+    },
+    {
+      "item_id": "shoe-c3e317d24d14",
+      "model": "PUMA Deviate Nitro Elite 3",
+      "value": 1309,
+      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
+      "rank": 77
+    },
+    {
+      "item_id": "shoe-41548a3b7663",
+      "model": "PUMA Deviate Nitro Elite 3",
+      "value": 1309,
+      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
+      "rank": 77
+    },
+    {
+      "item_id": "shoe-023d51e319a9",
+      "model": "PUMA Deviate Nitro Elite 3",
+      "value": 1309,
+      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
+      "rank": 77
     },
     {
       "item_id": "shoe-95dccd06854e",
@@ -758,7 +830,7 @@
       "value": 2972,
       "evidenceUrl": "https://runrepeat.com/nike-structure-26",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=2",
-      "rank": 48
+      "rank": 49
     },
     {
       "item_id": "shoe-8ee857e5f26d",
@@ -774,7 +846,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-8a3a8b3af1c8",
@@ -782,7 +854,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-36edaeb3c881",
@@ -790,7 +862,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-c60346522e93",
@@ -798,7 +870,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-dd05919b602a",
@@ -806,7 +878,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-154b562fa256",
@@ -814,7 +886,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-c9eafd2afb18",
@@ -822,7 +894,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-3bbc0fab801f",
@@ -830,7 +902,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-6ff63e3eb961",
@@ -838,7 +910,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-07c10fc2d777",
@@ -846,7 +918,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-8acc2b46296b",
@@ -854,7 +926,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-2ad5a703b2ed",
@@ -862,7 +934,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-07e42a10deb4",
@@ -870,7 +942,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-fde1cc3948c0",
@@ -878,7 +950,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-6ddd92d9c557",
@@ -886,7 +958,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-b050861489a7",
@@ -894,7 +966,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-8fe8aa917e34",
@@ -902,7 +974,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-57d7f8fc8bf4",
@@ -910,7 +982,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-f04988a8b137",
@@ -918,7 +990,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-7e1112a8352a",
@@ -926,7 +998,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-837a92f8d6c5",
@@ -934,7 +1006,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-399c5d0c73c8",
@@ -942,7 +1014,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-d62e3cae735f",
@@ -950,7 +1022,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-2f9b3de2a3f0",
@@ -958,7 +1030,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-20226d504d45",
@@ -966,7 +1038,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-33257b9cc1b5",
@@ -974,7 +1046,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-0143d69fb4df",
@@ -982,7 +1054,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-4adc6d97fb82",
@@ -990,7 +1062,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-1eb457989cbf",
@@ -998,7 +1070,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-0aa73a064879",
@@ -1006,7 +1078,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-d6aa06c8e9b5",
@@ -1014,7 +1086,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-dc771e7555a5",
@@ -1022,7 +1094,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-4e703f751db6",
@@ -1030,7 +1102,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-5395fb4dcbb2",
@@ -1038,7 +1110,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-ef921c72660e",
@@ -1046,7 +1118,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-9aac8d0f7211",
@@ -1054,7 +1126,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-37b7bb3882b2",
@@ -1062,7 +1134,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-79fb44c57f08",
@@ -1070,7 +1142,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-1eb11c38350a",
@@ -1078,7 +1150,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-105c23e353c3",
@@ -1086,7 +1158,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-6d1b0ed0bfe9",
@@ -1094,7 +1166,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-d68ea3987baa",
@@ -1102,7 +1174,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-891cb73d2bf5",
@@ -1110,7 +1182,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-ad61eb023ea7",
@@ -1118,7 +1190,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-d193f0c6907f",
@@ -1126,7 +1198,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-ba9e0d65d9bd",
@@ -1134,7 +1206,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-4b64759a3b12",
@@ -1142,7 +1214,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-ce9e6db6e6b3",
@@ -1150,7 +1222,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-862fd68c3b13",
@@ -1158,7 +1230,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-d956ea106b16",
@@ -1166,7 +1238,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-c3d3d45871ee",
@@ -1174,7 +1246,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-8b85c5280372",
@@ -1182,7 +1254,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-f296108e97f3",
@@ -1190,7 +1262,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-bd85825982ae",
@@ -1198,7 +1270,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-b085dc3e54a4",
@@ -1206,7 +1278,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-539fde2a3dff",
@@ -1214,7 +1286,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-c894b923a271",
@@ -1222,7 +1294,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-47f17eb75bb4",
@@ -1230,7 +1302,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-baa29ddb9318",
@@ -1238,7 +1310,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-8003f0769448",
@@ -1246,7 +1318,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-011a7467fedd",
@@ -1254,7 +1326,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-fee03649a052",
@@ -1262,7 +1334,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-391487a277b0",
@@ -1270,7 +1342,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-150e7f84db85",
@@ -1278,7 +1350,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-147e7c0b5ce0",
@@ -1286,7 +1358,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-3f890a141b4d",
@@ -1294,7 +1366,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-10a154e201d0",
@@ -1302,7 +1374,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-1f101a50f7cb",
@@ -1310,7 +1382,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-a7795923b9f3",
@@ -1318,7 +1390,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-8641dbe47105",
@@ -1326,7 +1398,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-5d21bae54fe2",
@@ -1334,7 +1406,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-9e4c3e75f49f",
@@ -1342,7 +1414,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-015e1087885b",
@@ -1350,7 +1422,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-246ccd41be02",
@@ -1358,7 +1430,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-25e716a94490",
@@ -1366,7 +1438,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-c4ed244e410a",
@@ -1374,7 +1446,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-e767866bc598",
@@ -1382,7 +1454,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-fdb00450c485",
@@ -1390,7 +1462,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-5201fedc2212",
@@ -1398,7 +1470,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-7446e86b1a82",
@@ -1406,7 +1478,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-b7697b1564c7",
@@ -1414,7 +1486,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-ff502f205233",
@@ -1422,7 +1494,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-0f22c7f076e7",
@@ -1430,7 +1502,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-96faa8545685",
@@ -1438,7 +1510,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-9da45b629e25",
@@ -1446,7 +1518,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-1ae2120214b8",
@@ -1454,7 +1526,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-99ec7a613213",
@@ -1462,7 +1534,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-0ec0213f2251",
@@ -1470,7 +1542,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-33efddf9d348",
@@ -1478,7 +1550,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-6e918b8d903c",
@@ -1486,7 +1558,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-10728521ec1c",
@@ -1494,7 +1566,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-2a99f9ca30a8",
@@ -1502,7 +1574,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-596d31422919",
@@ -1510,7 +1582,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-ddbcb33815fd",
@@ -1518,7 +1590,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-4a45793bcc2e",
@@ -1526,7 +1598,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-ccf8a9fc16e9",
@@ -1534,7 +1606,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-fb017d3e4f59",
@@ -1542,7 +1614,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-56c2f6b1434c",
@@ -1550,7 +1622,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-dc327b4c4cf4",
@@ -1558,7 +1630,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-3ce000ef9415",
@@ -1566,7 +1638,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-fce9ff27d154",
@@ -1574,7 +1646,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-1ac877208187",
@@ -1582,7 +1654,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-f0ef15aa30ac",
@@ -1590,7 +1662,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-e25740fb5abc",
@@ -1598,7 +1670,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-62f4e10e9b94",
@@ -1606,7 +1678,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-396f11767677",
@@ -1614,7 +1686,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-dd6f7a885ca8",
@@ -1622,7 +1694,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-a97b5bb79688",
@@ -1630,7 +1702,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-886bdccbe209",
@@ -1638,7 +1710,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-29d45a126938",
@@ -1646,7 +1718,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-2a7cdae50295",
@@ -1654,7 +1726,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-c375490fefcb",
@@ -1662,7 +1734,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-b71cb45984c7",
@@ -1670,7 +1742,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-fdd0c7df2a71",
@@ -1678,7 +1750,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-2bc44ddde4f7",
@@ -1686,7 +1758,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-107bcd60e2ed",
@@ -1694,7 +1766,7 @@
       "value": 2998,
       "evidenceUrl": "https://runrepeat.com/brooks-ghost-amp",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
-      "rank": 47
+      "rank": 48
     },
     {
       "item_id": "shoe-2c0448e23018",
@@ -4006,7 +4078,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-6fffe347272d",
@@ -4014,7 +4086,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-87015c8a3a0f",
@@ -4022,7 +4094,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-704ee21c4560",
@@ -4030,7 +4102,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-e3cfbeed9f26",
@@ -4038,7 +4110,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-198f1cfa355e",
@@ -4046,7 +4118,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-2c72fe4d8e21",
@@ -4054,7 +4126,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-1de10fe96226",
@@ -4062,7 +4134,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-d24732098b8c",
@@ -4070,7 +4142,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-ab30f04050db",
@@ -4078,7 +4150,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-70d17f3e4b6b",
@@ -4086,7 +4158,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-83b3683487be",
@@ -4094,7 +4166,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-d3262a6a538b",
@@ -4102,7 +4174,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-6f33d8801093",
@@ -4110,7 +4182,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-149d793cc6ec",
@@ -4118,7 +4190,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-95fffaa9d4b9",
@@ -4126,7 +4198,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-003a6bd161c5",
@@ -4134,7 +4206,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-cb34437936f6",
@@ -4142,7 +4214,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-2c321cdc52c2",
@@ -4150,7 +4222,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-ecedd3171010",
@@ -4158,7 +4230,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-c7c69acaada0",
@@ -4166,7 +4238,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     },
     {
       "item_id": "shoe-90288eafea01",
@@ -4174,7 +4246,15 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
+    },
+    {
+      "item_id": "shoe-67dedfc2db62",
+      "model": "PUMA Deviate Nitro Elite 3",
+      "value": 1309,
+      "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
+      "rank": 77
     },
     {
       "item_id": "shoe-9bfde422868a",
@@ -4190,7 +4270,7 @@
       "value": 3686,
       "evidenceUrl": "https://runrepeat.com/puma-mag-max-nitro-2",
       "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
-      "rank": 38
+      "rank": 39
     }
   ]
 }
