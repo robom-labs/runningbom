@@ -66,12 +66,31 @@ test('정본에 실린 대회가 전부 포스터로 만들어집니다', () => 
   // 데이터가 늘어도 이 테스트는 그대로 전수를 돕니다.
   const list = (raceData as { races: { raceDate: string; region?: string; distances?: string[] }[] })
     .races;
-  assert.ok(list.length > 100, `대회가 ${list.length}개뿐입니다`);
+  assert.ok(list.length > 0, '전수 검증할 대회가 비어 있습니다');
   for (const race of list) {
     const spec = racePosterSpec(race);
     assert.ok(spec.headline.length > 0, `${race.raceDate}의 포스터 제목이 비었습니다`);
     assert.ok(spec.subline.length > 0);
     assert.match(spec.topColor, /^#[0-9A-Fa-f]{6}$/);
+  }
+});
+
+test('합성 대회 128개도 마지막 행까지 빠짐없이 포스터로 만들어집니다', () => {
+  // 현재 피드 크기와 무관하게 100개를 넘는 입력의 회귀를 검증합니다.
+  const list = Array.from({ length: 128 }, (_, index) => ({
+    raceDate: `2026-${String((index % 12) + 1).padStart(2, '0')}-15`,
+    region: `테스트 지역 ${index}`,
+    distances: index % 2 === 0 ? ['5K', '10K'] : ['하프', '풀'],
+  }));
+  const specs = list.map(racePosterSpec);
+  assert.equal(specs.length, 128);
+  for (const [index, spec] of specs.entries()) {
+    assert.equal(spec.headline, index % 2 === 0 ? '10K' : '풀');
+    assert.ok(spec.subline.startsWith(`${list[index]!.region} · `));
+    assert.match(spec.topColor, /^#[0-9A-Fa-f]{6}$/);
+    assert.match(spec.bottomColor, /^#[0-9A-Fa-f]{6}$/);
+    assert.equal(spec.inkColor, '#FFFFFF');
+    assert.equal(spec.headlineScale, 1);
   }
 });
 
