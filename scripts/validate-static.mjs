@@ -26,9 +26,11 @@ const vercelBuild = readFileSync(join(root, "scripts", "build-vercel.mjs"), "utf
 const vercelIgnore = readFileSync(join(root, ".vercelignore"), "utf8");
 
 // ── 신선도 기준(상수) ─────────────────────────────────────────────
-// 접수 예정(오픈 시각이 미래) 대회가 이 수 미만이면 FAIL.
-// "접수 예정" 목록이 비면 앱의 핵심 화면이 빈 채로 배포되기 때문이다.
+// 접수 예정(오픈 시각이 미래) 대회가 이 수 미만이고, 앞으로 열릴 대회도 적으면 FAIL.
+// 시즌 막바지(11~12월)에는 새 접수 오픈이 0개인 것이 정상이라,
+// 앞으로 열릴 대회가 MIN_FUTURE_RACES개 이상 있으면 경고만 남기고 통과시킨다.
 const MIN_UPCOMING_REGISTRATION = 1;
+const MIN_FUTURE_RACES = 5;
 // 대회일이 이미 지난 대회 비율이 이 값을 초과하면 FAIL.
 // 절반 넘게 끝난 대회라면 데이터 자체가 오래된 것으로 본다.
 const MAX_ENDED_RATIO = 0.5;
@@ -186,9 +188,11 @@ const todayKst = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Seoul" }).fo
 let endedRaces = 0;
 let closedRegistrations = 0;
 let upcomingRegistrations = 0;
+let futureRaces = 0;
 for (const race of all) {
   const raceDay = String(race.raceDate || race.date || "").slice(0, 10);
   if (raceDay && raceDay < todayKst) endedRaces += 1;
+  if (raceDay && raceDay >= todayKst) futureRaces += 1;
   if (race.registrationCloseAt && Date.parse(race.registrationCloseAt) < now) closedRegistrations += 1;
   const upcomingTimes = [race.registrationOpenAt, ...(race.registrationWindows || []).map((window) => window.opensAt)]
     .map((value) => Date.parse(value || ""))
@@ -196,9 +200,11 @@ for (const race of all) {
   if (upcomingTimes.length) upcomingRegistrations += 1;
 }
 warn.push(
-  `신선도: 총 ${all.length}개 중 대회 종료 ${endedRaces}개, 접수 마감 ${closedRegistrations}개, 접수 예정 ${upcomingRegistrations}개 (KST ${todayKst} 기준)`
+  `신선도: 총 ${all.length}개 중 대회 종료 ${endedRaces}개, 앞으로 열릴 대회 ${futureRaces}개, 접수 마감 ${closedRegistrations}개, 접수 예정 ${upcomingRegistrations}개 (KST ${todayKst} 기준)`
 );
-if (upcomingRegistrations < MIN_UPCOMING_REGISTRATION) {
+if (upcomingRegistrations < MIN_UPCOMING_REGISTRATION && futureRaces >= MIN_FUTURE_RACES) {
+  warn.push(`신선도 참고: 접수 예정(미래 오픈) 대회가 ${upcomingRegistrations}개지만 앞으로 열릴 대회가 ${futureRaces}개라 통과합니다 (시즌 막바지).`);
+} else if (upcomingRegistrations < MIN_UPCOMING_REGISTRATION) {
   errors.push(`신선도 실패: 접수 예정(미래 오픈) 대회가 ${upcomingRegistrations}개입니다. 최소 ${MIN_UPCOMING_REGISTRATION}개 필요 — races.json 갱신이 필요합니다.`);
 }
 if (all.length > 0 && endedRaces / all.length > MAX_ENDED_RATIO) {
