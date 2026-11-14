@@ -1,4 +1,5 @@
 import{request}from'node:https';import{lookup}from'node:dns/promises';import{isIP}from'node:net';import{load}from'cheerio';import{safeCourseURL,courseDirectoryHost,courseDigest}from'./course-discovery-core.mjs';
+import{decodeCourseReceipt}from'./course-response-body.mjs';
 export const COURSE_DISCOVERY_LIMITS=Object.freeze({maxRequests:24,maxBytes:24000000,maxBodyBytes:2000000,maxAssetBytes:4000000,maxRedirects:3,maxRunMs:240000,timeoutMs:10000,minHostGapMs:700});
 // Navigation wrappers are not edition evidence. Only explicit immediate/short
 // same-origin HTML refreshes are traversed; no JS execution or guessed /ko path.
@@ -48,7 +49,7 @@ export function createCourseSourceRetriever({cache=new Map(),live=false,revalida
   if(!Buffer.isBuffer(r.body)||r.body.length>maxBytes||(!streamed&&bytes+r.body.length>cap.maxBytes))throw Error('body-byte-limit');if(!streamed)bytes+=r.body.length;
   attempts.push({url,status:r.status,bytes:r.body.length,kind,checkedAt:new Date(now()).toISOString()});
   const html=kind==='page'&&r.status===200&&(/(?:text\/html|application\/xhtml\+xml)/i.test(String(r.headers['content-type']||''))||!r.headers['content-type']&&/^\s*(?:<!doctype\s+html|<html|<head|<meta)\b/i.test(r.body.subarray(0,512).toString('utf8')));
-  const next=r.status>=300&&r.status<400?safeCourseURL(r.headers.location,url):html?courseMetaRefreshTarget(r.body.toString('utf8'),url):null;
+  const next=r.status>=300&&r.status<400?safeCourseURL(r.headers.location,url):html?courseMetaRefreshTarget(decodeCourseReceipt({body:r.body,sha256:courseDigest(r.body),contentType:r.headers['content-type']}).text,url):null;
   if(r.status>=300&&r.status<400||next){if(!next||new URL(next).origin!==origin||redirects>=cap.maxRedirects)throw Error('unsafe-cross-origin-or-excess-redirect');if(kind!=='robots'&&robots.has(origin)&&!robotsCourseAllowed(await robots.get(origin),next))throw Error('robots-disallow');return rawGet(next,{kind,redirects:redirects+1,origin,seen});}
   return{...r,finalUrl:url};
  }
@@ -59,12 +60,12 @@ export function createCourseSourceRetriever({cache=new Map(),live=false,revalida
   const task=(async()=>{const cached=cache.get(url);if(cached&&!revalidate.has(url)){const receipt=await(typeof cached==='function'?cached():cached),age=now()-Date.parse(receipt?.checkedAt);if(receipt&&Number.isFinite(age)&&age>=-300000&&age<=(receipt.ok?7*86400000:6*3600000)&&receipt.verification!=='saved-evidence-rejected'){
     // Old cached wrappers must not suppress discovery for seven days. Revalidate
     // through the same bounded live path; never rejuvenate their checkedAt.
-    let wrapper=false;try{wrapper=kind==='page'&&receipt.ok&&!!courseMetaRefreshTarget(receipt.text||receipt.body?.toString('utf8')||'',receipt.finalUrl||url);}catch(error){return{ok:false,requestedUrl:url,reason:error.message,checkedAt:receipt.checkedAt,verification:'saved-evidence-rejected'};}
-    if(!wrapper){hits++;return receipt;}
+    let wrapper=false,decoded;try{if(kind==='page'&&receipt.ok){decoded=decodeCourseReceipt(receipt);wrapper=!!courseMetaRefreshTarget(decoded.text,receipt.finalUrl||url);}}catch(error){return{ok:false,requestedUrl:url,reason:error.message,checkedAt:receipt.checkedAt,verification:'saved-evidence-rejected'};}
+    if(!wrapper){hits++;return decoded&&receipt.text!==decoded.text?{...receipt,text:decoded.text}:receipt;}
    }}
    if(!live)return{ok:false,requestedUrl:url,reason:'offline-cache-miss'};
    try{await allowed(url);const r=await rawGet(url,{kind});if(r.status!==200)throw Error('http-'+r.status);
-    const contentType=String(r.headers['content-type']??''),charset=contentType.match(/charset\s*=\s*([^;\s]+)/i)?.[1]||r.body.subarray(0,4000).toString('ascii').match(/charset\s*=\s*["']?([\w-]+)/i)?.[1]||'utf-8';let text;try{text=new TextDecoder(charset).decode(r.body);}catch{text=r.body.toString('utf8');}
+    const contentType=String(r.headers['content-type']??''),text=kind==='page'?decodeCourseReceipt({body:r.body,sha256:courseDigest(r.body),contentType}).text:'';
     return{ok:true,requestedUrl:url,finalUrl:r.finalUrl,status:200,contentType,body:r.body,text,sha256:courseDigest(r.body),bytes:r.body.length,checkedAt:new Date(now()).toISOString(),verification:'live-public-https'};
    }catch(error){return{ok:false,requestedUrl:url,reason:error.message,checkedAt:new Date(now()).toISOString(),verification:'live-failed'};}
   })();pending.set(url,task);return task;

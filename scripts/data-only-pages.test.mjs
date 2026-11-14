@@ -4,7 +4,7 @@ import {mkdtemp,mkdir,writeFile,readFile,rm,symlink} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,dirname} from 'node:path';
 import {execFileSync} from 'node:child_process';
-import {prepareDataOnlyPages,DATA_ONLY_PATHS} from './data-only-pages.mjs';
+import {prepareDataOnlyPages,DATA_ONLY_PATHS,dataOnlyFailureReport} from './data-only-pages.mjs';
 import {STATIC_DATA_FILES,sha256Text,byteSize,contentVersionFor} from './static-data-core.mjs';
 import {REQUIRED_PERIOD_REVISITS} from './race-refresh-targets.mjs';
 const now=Date.parse('2026-10-22T10:00:00Z');
@@ -81,4 +81,20 @@ test('workflow route cannot publish app web from push/schedule or routine recove
  assert.match(data,/pages: write/);assert.match(data,/--method POST.*pages\/builds/);
  assert.match(data,/\.source.branch == "gh-pages"/);
  assert.match(data,/Buffer.from\(await res.arrayBuffer\(\)\).equals\(expected\[index\]\)/);
+});
+test('KST day rollover rejects expired rows even while the 36-hour refresh clock is still fresh; last-good is untouched',async t=>{
+ const f=await fixture(t),raw={...f.raw,scheduleFeed:f.raw.scheduleFeed.map(r=>({...r,date:'2026-10-22'}))};
+ await f.write(f.sourceDir,'outputs/pushrun-site/races.json',JSON.stringify(raw));
+ const before=await readFile(join(f.publishedDir,'races.json'),'utf8');
+ await assert.rejects(prepareDataOnlyPages({...f,now:Date.parse('2026-10-22T15:00:01Z')}),error=>{
+  const report=dataOnlyFailureReport(error);assert.equal(report.reason,'race-health-rejected');assert(report.details.includes('expired-races-present'));assert(!report.details.includes('successful-refresh-too-old'));return true;
+ });
+ assert.equal(await readFile(join(f.publishedDir,'races.json'),'utf8'),before);
+});
+test('safe failure artifact separates stale/past/sidecar faults without exposing arbitrary error contents or weakening rejection',()=>{
+ const health=dataOnlyFailureReport(Error('race health rejected: 지난 대회 | 50시간 동안 성공하지 않았습니다.'));
+ assert.deepEqual(health.details,['expired-races-present','successful-refresh-too-old']);assert.equal(health.ok,false);assert.equal(health.appCodePublished,false);
+ assert.equal(dataOnlyFailureReport(Error('sidecar checksum/size mismatch')).reason,'sidecar-integrity');
+ const unsafe=dataOnlyFailureReport(Error('https://user:secret@example.invalid/?token=SECRET private payload'));
+ assert.equal(unsafe.reason,'validation-or-io-rejection');assert(!JSON.stringify(unsafe).includes('SECRET'));assert(!JSON.stringify(unsafe).includes('secret'));
 });

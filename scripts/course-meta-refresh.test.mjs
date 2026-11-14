@@ -57,7 +57,7 @@ test('meta parsing is page-only and conflicting declarations fail closed',async(
  assert.throws(()=>courseMetaRefreshTarget('<meta http-equiv="refresh" content="0;url=/a"><meta http-equiv="refresh" content="0;url=/b">',origin+'/'),/ambiguous/);
 });
 test('saved wrapper triggers bounded live revalidation; offline never re-dates it',async()=>{
- const cached={ok:true,requestedUrl:origin+'/',finalUrl:origin+'/',text:wrapper,checkedAt:stamp,verification:'hash-verified-saved-audit'};
+ const cached={ok:true,requestedUrl:origin+'/',finalUrl:origin+'/',body:Buffer.from(wrapper),sha256:courseDigest(wrapper),contentType:'text/html;charset=UTF-8',text:wrapper,checkedAt:stamp,verification:'hash-verified-saved-audit'};
  const cache=new Map([[origin+'/',cached]]),{r,seen}=fixture({[origin+'/']:{body:wrapper},[origin+'/ko/']:{body:event}},{cache});
  assert.equal((await r.get(origin+'/')).finalUrl,origin+'/ko/');assert.equal(seen.length,3);assert.equal(cached.checkedAt,stamp);
  const offline=createCourseSourceRetriever({cache,now:()=>Date.parse(stamp)});assert.equal((await offline.get(origin+'/')).reason,'offline-cache-miss');assert.equal(offline.stats().newRequests,0);

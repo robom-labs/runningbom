@@ -9,6 +9,27 @@ import {correctionProblems,nativeCorrectionProblems} from './race-corrections.mj
 import {periodRevisitProblems} from './race-refresh-targets.mjs';
 export const DATA_ONLY_PATHS=Object.freeze(['races.json','data/manifest.json',...STATIC_DATA_FILES.map(name=>'data/'+name)]);
 const permitted=new Set(DATA_ONLY_PATHS);
+// Public health failures must remain failures, but not opaque ones. Report only
+// fixed diagnostic codes: never serialize arbitrary errors, URLs or payloads.
+export function dataOnlyFailureReport(error){
+ const message=String(error?.message||''),rules=[
+  ['race health rejected:','race-health-rejected'],['required period source revisit','period-revisit-missing'],
+  ['protected raw corrections','protected-raw-corrections'],['protected native corrections','protected-native-corrections'],
+  ['sidecar checksum/size','sidecar-integrity'],['sidecar count/schema','sidecar-schema'],
+  ['root/sidecar revision or count','race-projection-binding'],['duplicate/missing race ID','race-identity'],
+  ['app compatibility change','app-compatibility-change'],['publication downgrade','publication-downgrade'],
+  ['publication count drop','publication-count-drop'],['future manifest','future-manifest'],
+  ['existing deployed app missing','missing-existing-app'],['unsafe publication path','unsafe-path'],
+  ['symlink in published tree','unsafe-path'],['non-data publication tree changed','non-data-mutation']
+ ];
+ const reason=rules.find(([prefix])=>message.startsWith(prefix))?.[1]||'validation-or-io-rejection';
+ const details=reason==='race-health-rejected'?[
+  ...(message.includes('지난 대회')?['expired-races-present']:[]),
+  ...(message.includes('시간 동안 성공')?['successful-refresh-too-old']:[]),
+  ...(message.includes('5분 이상 미래')?['future-successful-refresh']:[])
+ ]:[];
+ return{ok:false,code:'data-only-publication-rejected',reason,details,appCodePublished:false};
+}
 async function plain(root,relative){
  for(const [i,part] of relative.split('/').entries()){
   const path=join(root,...relative.split('/').slice(0,i+1));
@@ -78,7 +99,7 @@ if(resolve(process.argv[1]??'')===fileURLToPath(import.meta.url)){
  const report=new URL('../outputs/operations/data-only-publication.json',import.meta.url);
  let result;
  try{result=await prepareDataOnlyPages({sourceDir:value('--source'),publishedDir:value('--published')});}
- catch{result={ok:false,code:'data-only-publication-rejected',appCodePublished:false};process.exitCode=1;}
+ catch(error){result=dataOnlyFailureReport(error);process.exitCode=1;}
  await mkdir(dirname(fileURLToPath(report)),{recursive:true});await writeFile(report,JSON.stringify(result,null,2)+'\n');
  console.log(JSON.stringify(result));
 }
