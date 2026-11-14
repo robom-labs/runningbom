@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-14T10:24:18.247Z",
+  "checkedAt": "2026-11-14T19:57:28.454Z",
   "source": "RunRepeat",
   "sourceUrl": "https://runrepeat.com/catalog/running-shoes",
   "metric": "published-page-views",
@@ -133,7 +133,7 @@
       "model": "HOKA Arahi 9",
       "value": 1864,
       "evidenceUrl": "https://runrepeat.com/hoka-arahi-9",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=14",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=13",
       "rank": 74
     },
     {
@@ -509,7 +509,7 @@
       "model": "ASICS Superblast 3",
       "value": 17081,
       "evidenceUrl": "https://runrepeat.com/asics-superblast-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=2",
       "rank": 3
     },
     {
@@ -525,7 +525,7 @@
       "model": "ASICS Novablast 6",
       "value": 22158,
       "evidenceUrl": "https://runrepeat.com/asics-novablast-6",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=2",
       "rank": 2
     },
     {
