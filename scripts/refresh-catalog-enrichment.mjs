@@ -73,7 +73,7 @@ export async function runCatalogEnrichment({catalog,registry,cacheDir,documentDi
 export async function writeEnrichedPair(catalog,out,{photoProofs=[]}={}){
  const fullFeatureRecords=catalog.products.filter(p=>p.decisionEvidence).map(p=>({id:p.id,decisionEvidence:p.decisionEvidence})),serverEvidence=captureServerEvidence(catalog,photoProofs);catalog=publicCatalog(catalog);
  const products=catalog.products;for(const p of products)productSchema.parse(p);
- const next={...catalog,generatedAt:new Date().toISOString(),revision:'catalog-'+sha256(Buffer.from(JSON.stringify(products))).slice(0,16)},text=JSON.stringify(next,null,2)+'\n',manifest={schemaVersion:1,revision:next.revision,generatedAt:next.generatedAt,count:products.length,sha256:sha256(Buffer.from(text))};verifyCatalogPair(text,manifest);
+ const next={...catalog,generatedAt:new Date().toISOString(),revision:'catalog-'+sha256(Buffer.from(JSON.stringify(products))).slice(0,16)},text=JSON.stringify(next)+'\n',manifest={schemaVersion:1,revision:next.revision,generatedAt:next.generatedAt,count:products.length,sha256:sha256(Buffer.from(text))};verifyCatalogPair(text,manifest);
  assertPublicBudget(text);
  const auditFull={schemaVersion:1,generatedAt:next.generatedAt,publicRevision:next.revision,featureRecords:fullFeatureRecords,photoProofs};
  const files=[['verified-products.json',text],['verified-products.manifest.json',JSON.stringify(manifest,null,2)+'\n'],['catalog-enrichment-evidence.json',JSON.stringify(serverEvidence,null,2)+'\n']];
