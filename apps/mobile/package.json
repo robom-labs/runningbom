@@ -35,7 +35,7 @@
     "react-native-screens": "~4.26.0",
     "react-native-svg": "15.15.4",
     "react-native-url-polyfill": "^4.0.0",
-    "zod": "^4.4.3"
+    "zod": "4.6.6"
   },
   "devDependencies": {
     "@types/node": "^22.20.1",
@@ -44,11 +44,17 @@
     "typescript": "~6.0.3"
   },
   "overrides": {
-    "brace-expansion": "5.0.9",
-    "js-yaml": "4.3.1",
+    "brace-expansion": "5.0.12",
+    "js-yaml": "4.3.2",
     "nanoid": "3.3.18",
     "postcss": "8.5.23",
-    "uuid": "11.1.1"
+    "uuid": "11.1.1",
+    "compression": "1.8.2",
+    "shell-quote": "1.12.0",
+    "source-map-js": "1.2.2",
+    "@xmldom/xmldom": "0.9.12",
+    "image-size": "2.0.4",
+    "decode-uri-component": "0.5.0"
   },
   "scripts": {
     "start": "expo start",
@@ -60,7 +66,8 @@
     "config": "expo config --type public",
     "verify": "node scripts/verify-config.mjs",
     "check": "npm test && npm run typecheck && npm run verify && npm run config",
-    "export:native": "expo export --platform android --output-dir dist/android && expo export --platform ios --output-dir dist/ios"
+    "export:native": "expo export --platform android --output-dir dist/android && expo export --platform ios --output-dir dist/ios",
+    "postinstall": "node scripts/fix-metro-image-size.mjs"
   },
   "private": true
 }

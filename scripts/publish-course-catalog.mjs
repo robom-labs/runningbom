@@ -7,8 +7,9 @@ const root=new URL('../',import.meta.url),read=async p=>JSON.parse(await readFil
 const courses=await readApprovedCourses(undefined,undefined,{root}),raw=(await readCourseElevation(root)).elevation;
 if(new Set(courses.map(c=>c.id)).size!==courses.length)throw Error('Duplicate course IDs');
 const elevation={schemaVersion:1,profiles:raw.profiles};
-const [index,races]=await Promise.all([read('data/course-source-index.json'),read('apps/mobile/src/data/races.json')]);
-const built=buildCourseCatalog({courses,elevation,index,races:races.races});
+const [index,raceBytes]=await Promise.all([read('data/course-source-index.json'),readFile(new URL('apps/mobile/src/data/races.json',root))]);
+const races=JSON.parse(raceBytes);
+const built=buildCourseCatalog({courses,elevation,index,races:races.races,raceBytes});
 // Validate all geometry and every supplied profile before ANY output writes.
 const verification=verifyCoursePair(built.text,built.manifest,{approvedCourses:courses});
 const{revision,generatedAt}=built.catalog;
