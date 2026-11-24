@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-24T02:13:11.051Z",
+  "checkedAt": "2026-11-24T13:41:00.438Z",
   "source": "RunRepeat",
   "sourceUrl": "https://runrepeat.com/catalog/running-shoes",
   "metric": "published-page-views",
@@ -237,7 +237,7 @@
       "model": "Altra Lone Peak 9",
       "value": 2214,
       "evidenceUrl": "https://runrepeat.com/altra-lone-peak-9",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
       "rank": 65
     },
     {
@@ -493,7 +493,7 @@
       "model": "Brooks Cascadia 20",
       "value": 2330,
       "evidenceUrl": "https://runrepeat.com/brooks-cascadia-20",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=8",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=9",
       "rank": 62
     },
     {
@@ -565,7 +565,7 @@
       "model": "ASICS Gel Cumulus 28",
       "value": 4316,
       "evidenceUrl": "https://runrepeat.com/asics-gel-cumulus-28",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=4",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
       "rank": 37
     },
     {
@@ -581,7 +581,7 @@
       "model": "ASICS Magic Speed 5",
       "value": 4537,
       "evidenceUrl": "https://runrepeat.com/asics-magic-speed-5",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=8",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=9",
       "rank": 35
     },
     {
@@ -613,7 +613,7 @@
       "model": "adidas Adizero Boston 13",
       "value": 10471,
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-boston-13",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=2",
       "rank": 10
     },
     {
@@ -685,7 +685,7 @@
       "model": "adidas Adizero EVO SL ATR",
       "value": 5095,
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-evo-sl-atr",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
       "rank": 30
     },
     {
@@ -701,7 +701,7 @@
       "model": "adidas Duramo Speed 2",
       "value": 2566,
       "evidenceUrl": "https://runrepeat.com/adidas-duramo-speed-2",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
       "rank": 53
     },
     {
@@ -749,7 +749,7 @@
       "model": "adidas Adizero Adios Pro Evo 2",
       "value": 643,
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-adios-pro-evo-2",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=16",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=14",
       "rank": 93
     },
     {
