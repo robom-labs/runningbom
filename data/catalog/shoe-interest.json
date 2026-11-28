@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-27T23:28:41.005Z",
+  "checkedAt": "2026-11-28T11:43:13.543Z",
   "source": "RunRepeat",
   "sourceUrl": "https://runrepeat.com/catalog/running-shoes",
   "metric": "published-page-views",
@@ -157,7 +157,7 @@
       "model": "HOKA Mafate X",
       "value": 1179,
       "evidenceUrl": "https://runrepeat.com/hoka-mafate-x",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=15",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=14",
       "rank": 85
     },
     {
@@ -229,7 +229,7 @@
       "model": "Altra Escalante 5",
       "value": 1199,
       "evidenceUrl": "https://runrepeat.com/altra-escalante-5",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=4",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
       "rank": 83
     },
     {
@@ -245,7 +245,7 @@
       "model": "Altra Lone Peak 9",
       "value": 2276,
       "evidenceUrl": "https://runrepeat.com/altra-lone-peak-9",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=2",
       "rank": 64
     },
     {
@@ -333,7 +333,7 @@
       "model": "KIPRUN Kipsummit Max",
       "value": 2216,
       "evidenceUrl": "https://runrepeat.com/kiprun-kipsummit-max",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=13",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=12",
       "rank": 67
     },
     {
@@ -349,7 +349,7 @@
       "model": "PUMA Deviate Nitro Elite 3",
       "value": 1195,
       "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=9",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
       "rank": 84
     },
     {
@@ -445,7 +445,7 @@
       "model": "Salomon Ultra Glide 4",
       "value": 2027,
       "evidenceUrl": "https://runrepeat.com/salomon-ultra-glide-4",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=13",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=12",
       "rank": 72
     },
     {
@@ -581,7 +581,7 @@
       "model": "ASICS Gel Excite 11",
       "value": 2407,
       "evidenceUrl": "https://runrepeat.com/asics-gel-excite-11",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=7",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=6",
       "rank": 61
     },
     {
@@ -645,7 +645,7 @@
       "model": "adidas Ultraboost 5X",
       "value": 3344,
       "evidenceUrl": "https://runrepeat.com/adidas-ultraboost-5-x",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=3",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=2",
       "rank": 46
     },
     {
@@ -653,7 +653,7 @@
       "model": "adidas Runfalcon 5",
       "value": 2575,
       "evidenceUrl": "https://runrepeat.com/adidas-runfalcon-5",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=10",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
       "rank": 56
     },
     {
@@ -733,7 +733,7 @@
       "model": "adidas Adizero SL2",
       "value": 5544,
       "evidenceUrl": "https://runrepeat.com/adidas-adizero-sl2",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=5",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=4",
       "rank": 27
     },
     {
@@ -789,7 +789,7 @@
       "model": "PUMA Deviate Nitro Elite 3",
       "value": 1195,
       "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=9",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
       "rank": 84
     },
     {
@@ -797,7 +797,7 @@
       "model": "PUMA Deviate Nitro Elite 3",
       "value": 1195,
       "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=9",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
       "rank": 84
     },
     {
@@ -805,7 +805,7 @@
       "model": "PUMA Deviate Nitro Elite 3",
       "value": 1195,
       "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=9",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
       "rank": 84
     },
     {
@@ -813,7 +813,7 @@
       "model": "PUMA Deviate Nitro Elite 3",
       "value": 1195,
       "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=9",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
       "rank": 84
     },
     {
@@ -821,7 +821,7 @@
       "model": "PUMA Deviate Nitro Elite 3",
       "value": 1195,
       "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=9",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
       "rank": 84
     },
     {
@@ -829,7 +829,7 @@
       "model": "PUMA Deviate Nitro Elite 3",
       "value": 1195,
       "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=9",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
       "rank": 84
     },
     {
@@ -4301,7 +4301,7 @@
       "model": "PUMA Deviate Nitro Elite 3",
       "value": 1195,
       "evidenceUrl": "https://runrepeat.com/puma-deviate-nitro-elite-3",
-      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=9",
+      "sourcePage": "https://runrepeat.com/catalog/running-shoes?page=11",
       "rank": 84
     },
     {
