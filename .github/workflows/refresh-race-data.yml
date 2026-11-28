@@ -5,6 +5,11 @@ on:
     # 6시간마다 KST 기준 03:17, 09:17, 15:17, 21:17에 실행한다.
     - cron: "17 */6 * * *"
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "시험 실행: 수집과 검증만 하고 main에는 반영하지 않습니다."
+        type: boolean
+        default: false
 
 permissions:
   actions: write
@@ -21,7 +26,8 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: main
+          # 시험 실행일 때만 실행한 가지의 코드로 검증한다. 예약 실행과 일반 실행은 항상 main이다.
+          ref: ${{ (github.event_name == 'workflow_dispatch' && inputs.dry_run && github.ref_name) || 'main' }}
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
@@ -45,8 +51,14 @@ jobs:
           name: running-race-data-refresh-report
           path: outputs/race-data-refresh-report.json
           if-no-files-found: error
+      - name: 시험 실행 요약 (main에 반영하지 않음)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          git diff --stat -- outputs/pushrun-site/races.json apps/mobile/src/data/races.json data apps/mobile/data/fallback | tail -n 12
+          node -e "const r=require('./outputs/race-data-refresh-report.json');console.log(JSON.stringify(r).slice(0,4000))"
       - name: 검증된 변경만 main에 반영
         id: publish
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
         run: |
           if git diff --quiet -- \
             outputs/pushrun-site/races.json \
