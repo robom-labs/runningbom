@@ -75,7 +75,9 @@ if (!styles.includes(".race-finder .region-select-box { width: 82px; }") || !sty
   errors.push("초기 필터 렌더링 전 모바일 레이아웃 이동 방지 공간이 없습니다.");
 }
 
-if (featured.length === 0) errors.push("featuredRaces가 비어 있습니다.");
+// 대표 대회는 사람이 공식 출처를 확인해 고른 목록이라, 시즌이 끝나 모두 지난 대회가 되면 비는 것이 정상이다.
+// 일정 목록(scheduleFeed)이 살아 있으면 경고만 남기고 자동 갱신을 막지 않는다.
+if (featured.length === 0) warn.push("featuredRaces가 비어 있습니다. 다음 시즌 대표 대회를 골라 넣어 주세요.");
 if (schedule.length === 0) errors.push("scheduleFeed가 비어 있습니다.");
 if (!manifest.id || !manifest.start_url || !manifest.scope || !Array.isArray(manifest.icons) || manifest.icons.length === 0) {
   errors.push("PWA manifest의 id, start_url, scope 또는 icons가 없습니다.");
