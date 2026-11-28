@@ -103,7 +103,8 @@ assert(easJson.build.production.env?.RUNNINGBOM_VARIANT === 'production', 'produ
 assert(easJson.build.production.android?.buildType === 'app-bundle', 'production Android는 AAB여야 합니다.');
 assert(!easJson.submit, '스토어 자동 제출 설정을 두면 안 됩니다.');
 
-assert(raceData.races.length >= 50, '모바일 번들에는 검증된 대회 50개 이상이 필요합니다.');
+// 시즌 막바지(11~2월)에는 열릴 대회가 20여 개로 줄어든다. 게시 바닥값(race-health-core 10)과 맞춘다.
+assert(raceData.races.length >= 10, '모바일 번들에는 검증된 대회 10개 이상이 필요합니다.');
 assert(!raceData.source.includes('샘플'), '출시 모바일 데이터에 샘플 표시가 남아 있으면 안 됩니다.');
 assert(new Set(raceData.races.map((race) => race.id)).size === raceData.races.length, '대회 ID가 중복됩니다.');
 assert(raceData.races.some((race) => race.registrationTimeConfirmed), '정확한 접수 시작 알림 샘플이 필요합니다.');
