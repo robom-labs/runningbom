@@ -3,8 +3,8 @@ import {readFile,writeFile,mkdir,mkdtemp,rm} from 'node:fs/promises';
 import {join} from 'node:path';import {createHash} from 'node:crypto';
 import {verifyCoursePair,overlayCourseRegistry,assertCourseOnlyDelta,assertCoursePagesSource,verifyPublicCourseRegistry,coursePublicationAllowlist} from './course-data-publication.mjs';
 import{readCourseBase,readCourseElevation}from'./course-metadata-inputs.mjs';
-const now=Date.parse('2026-10-24T06:00:00Z'),hash=v=>createHash('sha256').update(v).digest('hex');
-async function pair(){const courses=(await readCourseBase()).courses,e=(await readCourseElevation()).elevation;return encode({schemaVersion:1,revision:'courses-'+'a'.repeat(20),generatedAt:new Date(now).toISOString(),courses,elevation:{schemaVersion:1,profiles:e.profiles}});}
+const fixtureRoot=new URL('./fixtures/course-snapshot-2026-11/',import.meta.url),now=Date.parse('2026-10-24T06:00:00Z'),hash=v=>createHash('sha256').update(v).digest('hex');
+async function pair(){const courses=(await readCourseBase(fixtureRoot)).courses,e=(await readCourseElevation(fixtureRoot)).elevation;return encode({schemaVersion:1,revision:'courses-'+'a'.repeat(20),generatedAt:new Date(now).toISOString(),courses,elevation:{schemaVersion:1,profiles:e.profiles}});}
 function encode(data){const text=JSON.stringify(data),manifest={schemaVersion:1,revision:data.revision,generatedAt:data.generatedAt,count:data.courses.length,sha256:hash(text),sizeBytes:Buffer.byteLength(text),minimumAppVersion:'0.23.4'};return {text,manifest,data};}
 async function temp(fn){const dir=await mkdtemp(new URL('./.course-publication-test-',import.meta.url));try{return await fn(dir);}finally{await rm(dir,{recursive:true,force:true});}}
 test('course envelope validates source-bound actual geometry/elevation, manifest SHA, byte size and schema',async()=>{
