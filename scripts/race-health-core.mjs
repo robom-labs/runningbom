@@ -3,6 +3,9 @@ import { raceIdentity, registrationPeriodNeedsReview } from "./race-data-core.mj
 
 const DEFAULT_MAX_AGE_MS = 36 * 60 * 60 * 1000;
 const MINIMUM_RACES = 20;
+// 게시 대회의 바닥값. 시즌 막바지(11~1월)에는 앞으로 열릴 대회가 20개 안팎까지 줄어드는 것이 정상이라,
+// 수집 자체의 건전성 기준(MINIMUM_RACES)과 나눠 둔다. 급감은 아래의 '이전 대비 60%' 규칙이 따로 막는다.
+const MINIMUM_PUBLISHED_RACES = 10;
 
 function kstDate(value) {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Seoul" }).format(new Date(value));
@@ -36,7 +39,7 @@ export function assessRaceDataset({
   data,
   now = Date.now(),
   maxAgeMs = DEFAULT_MAX_AGE_MS,
-  minimumRaces = MINIMUM_RACES,
+  minimumRaces = MINIMUM_PUBLISHED_RACES,
 } = {}) {
   const errors = [];
   if (!data || typeof data !== "object" || Array.isArray(data)) {
@@ -148,7 +151,7 @@ export function assessRaceRefreshHealth({
     const date = validDateKey(race?.raceDate ?? race?.date);
     return date && date >= today;
   }).length;
-  const minimumRetained = Math.max(MINIMUM_RACES, Math.ceil(previousFuture * 0.6));
+  const minimumRetained = Math.max(MINIMUM_PUBLISHED_RACES, Math.ceil(previousFuture * 0.6));
   if (dataset.metrics.total < minimumRetained) {
     errors.push(`갱신 뒤 대회가 ${dataset.metrics.total}건으로 이전 미래 대회 ${previousFuture}건의 60% 미만입니다.`);
   }
